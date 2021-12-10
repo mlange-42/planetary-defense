@@ -1,56 +1,58 @@
 extends Spatial
 
-var IcoSphere = preload("res://scripts/ico_sphere/ico_sphere.gd")
-
+export var random_seed: int = 0
 export var radius: float = 1.0
 export var max_height: float = 0.1
-export (int, 0, 6) var subdivisions: int = 2
+export var height_curve: Curve
+export var noise_period: float = 0.25
+export var noise_octaves: int = 3
+export (int, 0, 6) var subdivisions: int = 5
+export (int, 0, 6) var water_subdivisions: int = 4
+
+export var land_material: Material
+export var water_material: Material
+
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 func _ready():
-	var mesh = _create_ground()
+	rng.seed = random_seed
 	
+	var ground: MeshInstance = _add_mesh(_create_ground(), "Ground")
+	ground.material_override = land_material
+	
+	var water: MeshInstance = _add_mesh(_create_water(), "Water")
+	water.material_override = water_material
+
+
+func _add_mesh(mesh: Mesh, name: String) -> MeshInstance:
 	var node = MeshInstance.new()
-	node.name = "Ground"
+	node.name = name
 	node.mesh = mesh
-	
 	add_child(node)
+	
+	return node
 
 
 func _create_ground() -> Mesh:
 	var gen = IcoSphere.new(subdivisions, radius, true)
 	var mesh: Mesh = gen.create()
-	add_noise(mesh)
 	
+	_add_noise(mesh)
 	return mesh
 
 
-func add_noise(m: Mesh):
-	var mdt = MeshDataTool.new()
-	mdt.create_from_surface(m, 0)
-	
+func _create_water() -> Mesh:
+	var gen = IcoSphere.new(water_subdivisions, radius, true)
+	var mesh: Mesh = gen.create()
+	return mesh
+
+
+func _add_noise(m: Mesh):
 	var noise := OpenSimplexNoise.new()
 	noise.seed = randi()
-	noise.octaves = 3
-	noise.period = 0.25
+	noise.octaves = noise_octaves
+	noise.period = noise_period * radius
 	noise.persistence = 0.5
 	
-	print(mdt.get_vertex_normal(0))
-	
-	for i in range(mdt.get_vertex_count()):
-		var vertex: Vector3 = mdt.get_vertex(i)
-		var norm = vertex.normalized()
-		vertex += norm * noise.get_noise_3dv(vertex) * max_height
-		mdt.set_vertex(i, vertex)
-	
-	m.surface_remove(0)
-	mdt.commit_to_surface(m)
-	
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	st.add_smooth_group(true)
-	st.append_from(m, 0, Transform.IDENTITY)
-	st.generate_normals()
-	
-	m.surface_remove(0)
-	st.commit(m)
+	var height_map: HeightMap = HeightMap.new(rng, noise, max_height, true)
+	height_map.create_elevation(m, height_curve, true)

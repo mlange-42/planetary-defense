@@ -63,14 +63,19 @@ func create() -> Mesh:
 	return mesh
 	
 	
-func _create_tri(corner1, corner2, corner3):
+func _create_tri(corner1: Vector3, corner2: Vector3, corner3: Vector3, 
+		lla1: Vector3, lla2: Vector3, lla3: Vector3):
 	var corners = [corner1, corner2, corner3]
+	var lla = [lla1, lla2, lla3]
 	
 	if not _smooth:
 		_tool.add_normal(-functions.calc_surface_normal_newell_method(corners))
 		
-	for corner in corners:
-		_tool.add_vertex(corner)
+	for i in range(corners.size()):
+		var ll: Vector3 = lla[i]
+		_tool.add_uv(Vector2(ll.x / 360.0 + 0.5, ll.y / 180.0 + 0.5))
+		_tool.add_uv2(Vector2(ll.x / 360.0 + 0.5, ll.y / 180.0 + 0.5))
+		_tool.add_vertex(corners[i])
 
 
 func _create_mesh(lla1, lla2, lla3, curr_division = _subdivisions):
@@ -78,7 +83,7 @@ func _create_mesh(lla1, lla2, lla3, curr_division = _subdivisions):
 			var corner1 = functions.lla_to_xyz(lla1, _radius)
 			var corner2 = functions.lla_to_xyz(lla2, _radius)
 			var corner3 = functions.lla_to_xyz(lla3, _radius)
-			_create_tri(corner1, corner2, corner3)
+			_create_tri(corner1, corner2, corner3, lla1, lla2, lla3)
 		else:
 			var corner1 = lla1
 			var corner2 = functions.mid_point(lla1, lla2)

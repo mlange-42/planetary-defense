@@ -4,4 +4,3 @@
 
 [node name="Planet" type="Spatial"]
 script = ExtResource( 1 )
-subdivisions = 5
