@@ -4,17 +4,22 @@ var functions = preload("functions.gd").new()
 
 var _subdivisions: int
 var _radius: float
+var _smooth: bool
 var _tool: SurfaceTool
 
 
-func _init(subdivisions: int, radius: float = 1):
+func _init(subdivisions: int, radius: float = 1, smooth = true):
 	self._subdivisions = subdivisions
 	self._radius = radius
+	self._smooth = smooth
 	self._tool = SurfaceTool.new()
 
 
 func create() -> Mesh:
 	_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	if _smooth:
+		_tool.add_smooth_group(true)
 	
 	var lla1 = Vector3(0, -58.5, 0)
 	var lla2 = Vector3(0, 58.5, 0)
@@ -50,6 +55,9 @@ func create() -> Mesh:
 	_create_mesh(lla5, lla1, lla4)
 	_create_mesh(lla4, lla1, lla8)
 	
+	if _smooth:
+		_tool.generate_normals()
+	
 	var mesh: Mesh = _tool.commit()
 	
 	return mesh
@@ -57,7 +65,10 @@ func create() -> Mesh:
 	
 func _create_tri(corner1, corner2, corner3):
 	var corners = [corner1, corner2, corner3]
-	_tool.add_normal(-functions.calc_surface_normal_newell_method(corners))
+	
+	if not _smooth:
+		_tool.add_normal(-functions.calc_surface_normal_newell_method(corners))
+		
 	for corner in corners:
 		_tool.add_vertex(corner)
 
