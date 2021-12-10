@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "IcoSphere",
+"language": "GDScript",
+"path": "res://scripts/ico_sphere/ico_sphere.gd"
+} ]
+_global_script_class_icons={
+"IcoSphere": ""
+}
+
 [application]
 
 config/name="procedural-planet"
