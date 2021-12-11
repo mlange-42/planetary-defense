@@ -1,4 +1,4 @@
-static func calc_surface_normal(vert1, vert2, vert3): # calculate a normal using 3 vertices
+static func calc_surface_normal(vert1, vert2, vert3) -> Vector3: # calculate a normal using 3 vertices
 	var U = (vert2 - vert1)
 	var V = (vert3 - vert1)
 
@@ -9,8 +9,7 @@ static func calc_surface_normal(vert1, vert2, vert3): # calculate a normal using
 	return Vector3(x, y, z).normalized()
 
 
-
-static func calc_surface_normal_newell_method(vert_arr): # Newell's Method of calculating normals
+static func calc_surface_normal_newell_method(vert_arr) -> Vector3: # Newell's Method of calculating normals
 	var normal = Vector3(0, 0, 0)
 
 	var curr_vert = Vector3()
@@ -26,7 +25,7 @@ static func calc_surface_normal_newell_method(vert_arr): # Newell's Method of ca
 	return normal.normalized()
 
 
-static func lla_to_xyz(lla): # Lon Lat Alt to x y z converter.
+static func lla_to_xyz(lla: Vector3, radius: float) -> Vector3: # Lon Lat Alt to x y z converter.
 	var lon = lla.x
 	var lat = lla.y
 	var alt = lla.z
@@ -34,13 +33,14 @@ static func lla_to_xyz(lla): # Lon Lat Alt to x y z converter.
 	var sinLat = sin(deg2rad(lat))
 	var cosLon = cos(deg2rad(lon))
 	var sinLon = sin(deg2rad(lon))
-	var rad = 50.0 + alt
+	var rad = radius + alt
 	var x = rad * cosLat * cosLon
 	var y = rad * sinLat
 	var z = rad * cosLat * sinLon
 	return Vector3(x, y, z)
 
-static func mid_point(lla1, lla2):
+
+static func mid_point(lla1: Vector3, lla2: Vector3) -> Vector3:
 	var lon1 = lla1.x
 	var lat1 = lla1.y
 	var lon2 = lla2.x

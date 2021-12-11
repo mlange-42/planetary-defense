@@ -8,11 +8,31 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "HeightMap",
+"language": "GDScript",
+"path": "res://scripts/geom/height_map.gd"
+}, {
+"base": "Reference",
+"class": "IcoSphere",
+"language": "GDScript",
+"path": "res://scripts/geom/ico_sphere.gd"
+} ]
+_global_script_class_icons={
+"HeightMap": "",
+"IcoSphere": ""
+}
+
 [application]
 
 config/name="procedural-planet"
-run/main_scene="res://scenes/World.tscn"
+run/main_scene="res://scenes/world.tscn"
 config/icon="res://icon.png"
+
+[debug]
+
+settings/stdout/verbose_stdout=true
 
 [physics]
 
@@ -20,4 +40,6 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+quality/shadows/filter_mode=2
+quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"
