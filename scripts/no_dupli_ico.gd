@@ -1,26 +1,32 @@
 extends MeshInstance
 
+
+var middle_point_cache: Dictionary = {}
+var vertices: PoolVector3Array
+
 func _ready():
-	create_ico()
+	create_ico(1)
 
 
-func create_ico():
+func create_ico(subdiv):
 	
-	var vertices: PoolVector2Array = PoolVector2Array()
-	vertices.push_back(Vector2(  0, -58.5))
-	vertices.push_back(Vector2(  0,  58.5))
-	vertices.push_back(Vector2(180,  58.5))
-	vertices.push_back(Vector2(180, -58.5))
+	var verts = PoolVector2Array()
+	verts.push_back(Vector2(  0, -58.5))
+	verts.push_back(Vector2(  0,  58.5))
+	verts.push_back(Vector2(180,  58.5))
+	verts.push_back(Vector2(180, -58.5))
 	
-	vertices.push_back(Vector2( 90, -31.5))
-	vertices.push_back(Vector2( 90,  31.5))
-	vertices.push_back(Vector2(-90,  31.5))
-	vertices.push_back(Vector2(-90, -31.5))
+	verts.push_back(Vector2( 90, -31.5))
+	verts.push_back(Vector2( 90,  31.5))
+	verts.push_back(Vector2(-90,  31.5))
+	verts.push_back(Vector2(-90, -31.5))
 	
-	vertices.push_back(Vector2( -31.5, 0))
-	vertices.push_back(Vector2(  31.5, 0))
-	vertices.push_back(Vector2( 148.5, 0))
-	vertices.push_back(Vector2(-148.5, 0))
+	verts.push_back(Vector2( -31.5, 0))
+	verts.push_back(Vector2(  31.5, 0))
+	verts.push_back(Vector2( 148.5, 0))
+	verts.push_back(Vector2(-148.5, 0))
+	
+	vertices = lla_to_xyz_arr(verts)
 	
 	var indices = PoolIntArray([
 		1, 2, 6,
@@ -45,17 +51,49 @@ func create_ico():
 		3, 0, 7
 	])
 	
-	var xyz = lla_to_xyz_arr(vertices)
+	for _i in range(subdiv):
+		var indices_subdiv = PoolIntArray()
+		for j in range(0, indices.size(), 3):
+			var j1 = indices[j]
+			var j2 = indices[j+1]
+			var j3 = indices[j+2]
+			
+			var v1 = middle_point(j1, j2)
+			var v2 = middle_point(j2, j3)
+			var v3 = middle_point(j3, j1)
+			
+			indices_subdiv.append_array([j1, v1, v3])
+			indices_subdiv.append_array([j2, v2, v1])
+			indices_subdiv.append_array([j3, v3, v2])
+			indices_subdiv.append_array([v1, v2, v3])
+			
+		indices = indices_subdiv
 	
 	var arr = []
 	arr.resize(Mesh.ARRAY_MAX)
-	arr[Mesh.ARRAY_VERTEX] = xyz
+	arr[Mesh.ARRAY_VERTEX] = vertices
 	arr[Mesh.ARRAY_INDEX] = indices
 	
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	
 	generate_normals(mesh)
+
+
+func middle_point(point_1, point_2): 
+	var smaller_index = min(point_1, point_2)
+	var greater_index = max(point_1, point_2)
 	
+	var key = [smaller_index, greater_index]
+	if key in middle_point_cache:
+		return middle_point_cache[key]
+	
+	var middle: Vector3 = 0.5 * (vertices[point_1] + vertices[point_2])
+	
+	vertices.append(middle)
+	var index = vertices.size() - 1
+	middle_point_cache[key] = index
+	return index
+
 
 func generate_normals(mesh):
 	var st = SurfaceTool.new()
@@ -71,13 +109,13 @@ func generate_normals(mesh):
 
 
 func lla_to_xyz_arr(arr: PoolVector2Array) -> PoolVector3Array:
-	var vertices: PoolVector3Array = PoolVector3Array()
-	vertices.resize(arr.size())
+	var verts: PoolVector3Array = PoolVector3Array()
+	verts.resize(arr.size())
 	
 	for i in range(arr.size()):
-		vertices[i] = lla_to_xyz(arr[i])
+		verts[i] = lla_to_xyz(arr[i])
 	
-	return vertices
+	return verts
 
 func lla_to_xyz(lla: Vector2) -> Vector3:
 	var lon = lla.x
