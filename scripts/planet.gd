@@ -13,7 +13,8 @@ export (int, 0, 6) var water_subdivisions: int = 4
 export var land_material: Material
 export var water_material: Material
 
-onready var debug_draw: DebugDraw = $DebugDraw
+onready var path_debug: DebugDraw = $PathDebug
+onready var grid_debug: DebugDraw = $GridDebug
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var nav: AStarNavigation
@@ -31,6 +32,8 @@ func _ready():
 	
 	var water: MeshInstance = _add_mesh(_create_water(), "Water")
 	water.material_override = water_material
+	
+	grid_debug.draw_points(nav, Color.white)
 
 
 func _unhandled_input(event):
@@ -43,7 +46,7 @@ func draw_random_path():
 	var l = nav.get_point_count()
 	var path = nav.get_point_path(int(rand_range(0, l)), int(rand_range(0, l)))
 	print(path)
-	debug_draw.draw_path(path, Color.yellow)
+	path_debug.draw_path(path, Color.yellow)
 
 
 func _add_mesh(mesh: Mesh, name: String) -> MeshInstance:
@@ -67,7 +70,8 @@ func _create_ground() -> IcoSphere.Result:
 func _create_nav(res: IcoSphere.Result) -> AStarNavigation:
 	return AStarNavigation.new(
 				res.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX],
-				res.subdiv_faces[nav_subdivisions])
+				res.subdiv_faces[nav_subdivisions],
+				radius)
 
 
 func _create_water() -> Mesh:
