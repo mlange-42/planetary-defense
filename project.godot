@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="procedural-planet"
-run/main_scene="res://scenes/ico_test.tscn"
+run/main_scene="res://scenes/world.tscn"
 config/icon="res://icon.png"
 
 [debug]
