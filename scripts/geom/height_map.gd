@@ -2,12 +2,15 @@ class_name HeightMap
 
 var _noise: OpenSimplexNoise
 var _max_height: float
+var _height_step: float
 
 
 func _init(noise: OpenSimplexNoise, 
-			max_height: float):
+			max_height: float,
+			height_step: float):
 	self._noise = noise
 	self._max_height = max_height
+	self._height_step = height_step
 
 
 func create_elevation(mesh: Mesh, curve: Curve, change_uv: bool = true):
@@ -18,7 +21,15 @@ func create_elevation(mesh: Mesh, curve: Curve, change_uv: bool = true):
 		var vertex: Vector3 = mdt.get_vertex(i)
 		var norm = vertex.normalized()
 		var rel_elevation = 2 * curve.interpolate(_noise.get_noise_3dv(vertex)/2 + 0.5) - 1
-		vertex += norm * rel_elevation * _max_height
+		var alt = rel_elevation * _max_height
+		
+		if _height_step > 0:
+			alt = stepify(alt, _height_step)
+			if alt == 0.0:
+				if rel_elevation >= 0: alt = _height_step
+				else: alt = -_height_step
+		
+		vertex += norm * alt
 		mdt.set_vertex(i, vertex)
 		
 		if change_uv:

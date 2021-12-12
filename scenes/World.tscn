@@ -38,10 +38,11 @@ use_random_seed = false
 radius = 10.0
 max_height = 1.5
 height_curve = SubResource( 1 )
+height_step = 0.05
 noise_period = 0.5
 noise_octaves = 5
 subdivisions = 6
-nav_subdivisions = 4
+nav_subdivisions = 5
 land_material = ExtResource( 4 )
 water_material = ExtResource( 2 )
 

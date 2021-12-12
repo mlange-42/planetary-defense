@@ -20,6 +20,6 @@ func draw_points(nav: AStar, color: Color):
 	
 	for i in nav.get_points():
 		var p = nav.get_point_position(i)
-		add_vertex(p)
+		add_vertex(p + 0.025 * p.normalized())
 	
 	end()
