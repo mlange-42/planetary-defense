@@ -8,6 +8,9 @@ var smooth: bool
 
 var vertices: PoolVector3Array
 
+class Result:
+	var mesh: Mesh
+	var subdiv_faces: Dictionary
 
 # warning-ignore:shadowed_variable
 # warning-ignore:shadowed_variable
@@ -18,7 +21,8 @@ func _init(subdivisions: int, radius: float = 1, smooth = true):
 	self.smooth = smooth
 
 
-func create() -> Mesh:
+func create(track_subdivs: Array) -> Result:
+	var result = Result.new()
 	var cache := Dictionary()
 	
 	var verts = PoolVector2Array()
@@ -62,7 +66,10 @@ func create() -> Mesh:
 		3, 0, 7
 	])
 	
-	for _i in range(subdivisions):
+	if track_subdivs.has(0):
+		result.subdiv_faces[0] = indices
+	
+	for i in range(subdivisions):
 		var indices_subdiv = PoolIntArray()
 		for j in range(0, indices.size(), 3):
 			var j1 = indices[j]
@@ -79,6 +86,8 @@ func create() -> Mesh:
 			indices_subdiv.append_array([v1, v2, v3])
 			
 		indices = indices_subdiv
+		if track_subdivs.has(i+1):
+			result.subdiv_faces[i+1] = indices
 	
 	var normals = PoolVector3Array(vertices)
 	var uv = calc_uv_lla(vertices)
@@ -106,7 +115,8 @@ func create() -> Mesh:
 		print("Generated Ico Sphere with %d vertices and %d faces" 
 				% [arrs[Mesh.ARRAY_VERTEX].size(), arrs[Mesh.ARRAY_INDEX].size() / 3])
 	
-	return mesh
+	result.mesh = mesh
+	return result
 
 
 func split_unsmooth(mesh: Mesh):

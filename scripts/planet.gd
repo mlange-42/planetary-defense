@@ -35,16 +35,17 @@ func _add_mesh(mesh: Mesh, name: String) -> MeshInstance:
 
 func _create_ground() -> Mesh:
 	var gen = IcoSphere.new(subdivisions, radius, true)
-	var mesh: Mesh = gen.create()
+	var result: IcoSphere.Result = gen.create([0])
 	
-	_add_noise(mesh)
-	return mesh
+	_add_noise(result.mesh)
+	
+	return result.mesh
 
 
 func _create_water() -> Mesh:
 	var gen = IcoSphere.new(water_subdivisions, radius, true)
-	var mesh: Mesh = gen.create()
-	return mesh
+	var result: IcoSphere.Result = gen.create([])
+	return result.mesh
 
 
 func _add_noise(m: Mesh):
