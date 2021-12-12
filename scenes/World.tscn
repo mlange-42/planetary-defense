@@ -42,7 +42,6 @@ noise_period = 0.5
 noise_octaves = 5
 subdivisions = 6
 nav_subdivisions = 4
-water_subdivisions = 5
 land_material = ExtResource( 4 )
 water_material = ExtResource( 2 )
 
