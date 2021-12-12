@@ -33,5 +33,6 @@ height_curve = SubResource( 1 )
 noise_period = 0.5
 noise_octaves = 5
 subdivisions = 6
+nav_subdivisions = 1
 land_material = ExtResource( 4 )
 water_material = ExtResource( 2 )

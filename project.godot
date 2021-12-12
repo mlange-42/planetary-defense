@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "AStar",
+"class": "AStarNavigation",
+"language": "GDScript",
+"path": "res://scripts/nav/navigation.gd"
+}, {
 "base": "Reference",
 "class": "HeightMap",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://scripts/geom/ico_sphere.gd"
 } ]
 _global_script_class_icons={
+"AStarNavigation": "",
 "HeightMap": "",
 "IcoSphere": ""
 }

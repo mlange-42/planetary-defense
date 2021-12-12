@@ -7,17 +7,24 @@ export var height_curve: Curve
 export var noise_period: float = 0.25
 export var noise_octaves: int = 3
 export (int, 0, 6) var subdivisions: int = 5
+export (int, 0, 5) var nav_subdivisions: int = 3
 export (int, 0, 6) var water_subdivisions: int = 4
 
 export var land_material: Material
 export var water_material: Material
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var nav: AStarNavigation
 
 func _ready():
+	assert(nav_subdivisions <= subdivisions, "Navigation subdivisions may not be larger then ground subdivisions")
+	
 	rng.seed = random_seed
 	
-	var ground: MeshInstance = _add_mesh(_create_ground(), "Ground")
+	var gnd = _create_ground()
+	self.nav = _create_nav(gnd)
+	
+	var ground: MeshInstance = _add_mesh(gnd.mesh, "Ground")
 	ground.material_override = land_material
 	
 	var water: MeshInstance = _add_mesh(_create_water(), "Water")
@@ -33,13 +40,20 @@ func _add_mesh(mesh: Mesh, name: String) -> MeshInstance:
 	return node
 
 
-func _create_ground() -> Mesh:
+func _create_ground() -> IcoSphere.Result:
 	var gen = IcoSphere.new(subdivisions, radius, true)
-	var result: IcoSphere.Result = gen.create([0])
+	var result: IcoSphere.Result = gen.create([nav_subdivisions])
 	
 	_add_noise(result.mesh)
 	
-	return result.mesh
+	return result
+
+
+func _create_nav(res: IcoSphere.Result) -> AStarNavigation:
+	return AStarNavigation.new(
+				res.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX],
+				res.subdiv_faces[nav_subdivisions])
+	
 
 
 func _create_water() -> Mesh:
