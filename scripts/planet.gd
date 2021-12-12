@@ -1,5 +1,6 @@
 extends Spatial
 
+export var use_random_seed: bool = true
 export var random_seed: int = 0
 export var radius: float = 1.0
 export var max_height: float = 0.1
@@ -22,7 +23,10 @@ var nav: AStarNavigation
 func _ready():
 	assert(nav_subdivisions <= subdivisions, "Navigation subdivisions may not be larger then ground subdivisions")
 	
-	rng.seed = random_seed
+	if use_random_seed:
+		rng.seed = random_seed
+	else:
+		rng.randomize()
 	
 	var gnd = _create_ground()
 	self.nav = _create_nav(gnd)
@@ -43,9 +47,15 @@ func _unhandled_input(event):
 
 
 func draw_random_path():
-	var l = nav.get_point_count()
-	var path = nav.get_point_path(int(rand_range(0, l)), int(rand_range(0, l)))
-	print(path)
+	var indices = nav.get_points()
+	var l = indices.size()
+	
+	var path = []
+	while path.empty():
+		path = nav.get_point_path(
+					indices[rng.randi_range(0, l-1)], 
+					indices[rng.randi_range(0, l-1)])
+		
 	path_debug.draw_path(path, Color.yellow)
 
 
@@ -82,12 +92,12 @@ func _create_water() -> Mesh:
 
 func _add_noise(m: Mesh):
 	var noise := OpenSimplexNoise.new()
-	noise.seed = randi()
+	noise.seed = rng.randi()
 	noise.octaves = noise_octaves
 	noise.period = noise_period * radius
 	noise.persistence = 0.5
 	
-	var height_map: HeightMap = HeightMap.new(rng, noise, max_height)
+	var height_map: HeightMap = HeightMap.new(noise, max_height)
 	height_map.create_elevation(m, height_curve, true)
 
 
