@@ -8,7 +8,7 @@ func draw_path(points: Array, color: Color):
 	set_color(color)
 	
 	for p in points:
-		add_vertex(p + 0.5 * p.normalized())
+		add_vertex(p + 0.1 * p.normalized())
 	
 	end()
 

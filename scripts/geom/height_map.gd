@@ -1,14 +1,11 @@
 class_name HeightMap
 
-var _rng: RandomNumberGenerator
 var _noise: OpenSimplexNoise
 var _max_height: float
 
 
-func _init(rng: RandomNumberGenerator, 
-			noise: OpenSimplexNoise, 
+func _init(noise: OpenSimplexNoise, 
 			max_height: float):
-	self._rng = rng
 	self._noise = noise
 	self._max_height = max_height
 
