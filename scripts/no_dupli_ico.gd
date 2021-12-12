@@ -5,7 +5,7 @@ var middle_point_cache: Dictionary = {}
 var vertices: PoolVector3Array
 
 func _ready():
-	create_ico(1)
+	create_ico(2)
 
 
 func create_ico(subdiv):
@@ -72,11 +72,15 @@ func create_ico(subdiv):
 	var arr = []
 	arr.resize(Mesh.ARRAY_MAX)
 	arr[Mesh.ARRAY_VERTEX] = vertices
+	arr[Mesh.ARRAY_NORMAL] = PoolVector3Array(vertices)
+	arr[Mesh.ARRAY_TEX_UV] = calc_uv_lla(vertices)
+	arr[Mesh.ARRAY_TEX_UV2] = PoolVector2Array(arr[Mesh.ARRAY_TEX_UV])
 	arr[Mesh.ARRAY_INDEX] = indices
 	
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	
-	generate_normals(mesh)
+	#vertices.resize(0)
+	middle_point_cache.clear()
 
 
 func middle_point(point_1, point_2): 
@@ -87,7 +91,7 @@ func middle_point(point_1, point_2):
 	if key in middle_point_cache:
 		return middle_point_cache[key]
 	
-	var middle: Vector3 = 0.5 * (vertices[point_1] + vertices[point_2])
+	var middle: Vector3 = (0.5 * (vertices[point_1] + vertices[point_2])).normalized()
 	
 	vertices.append(middle)
 	var index = vertices.size() - 1
@@ -95,17 +99,25 @@ func middle_point(point_1, point_2):
 	return index
 
 
-func generate_normals(mesh):
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+func calc_uv_lla(verts: PoolVector3Array) -> PoolVector2Array:
+	var uvs := PoolVector2Array()
+	uvs.resize(verts.size())
 	
-	# WARNING: doing this without smoothing resultsin duplicate vertices!
-	st.add_smooth_group(true)
-	st.append_from(mesh, 0, Transform.IDENTITY)
-	st.generate_normals()
+	var uv: Vector2
+	for i in range(verts.size()):
+		uv = xyz_to_lla(verts[i])
+		uv.x = (uv.x / 360.0) + 0.5
+		uv.y = (uv.y / 180.0) + 0.5
+		uvs[i] = uv
 	
-	mesh.surface_remove(0)
-	st.commit(mesh)
+	return uvs
+
+
+func xyz_to_lla(xyz: Vector3) -> Vector2:
+	var lat = asin(xyz.y)
+	var lon = atan2(xyz.z, xyz.x)
+	
+	return Vector2(rad2deg(lon), rad2deg(lat))
 
 
 func lla_to_xyz_arr(arr: PoolVector2Array) -> PoolVector3Array:
@@ -116,6 +128,7 @@ func lla_to_xyz_arr(arr: PoolVector2Array) -> PoolVector3Array:
 		verts[i] = lla_to_xyz(arr[i])
 	
 	return verts
+
 
 func lla_to_xyz(lla: Vector2) -> Vector3:
 	var lon = lla.x
