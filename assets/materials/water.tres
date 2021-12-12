@@ -5,6 +5,7 @@ octaves = 2
 period = 16.0
 
 [sub_resource type="NoiseTexture" id=2]
+resource_name = "_albedo"
 seamless = true
 bump_strength = 0.2
 noise = SubResource( 3 )
@@ -22,6 +23,7 @@ bump_strength = 0.2
 noise = SubResource( 5 )
 
 [resource]
+params_point_size = 4.0
 albedo_color = Color( 0.188235, 0.286275, 0.470588, 1 )
 albedo_texture = SubResource( 2 )
 roughness = 0.33

@@ -10,8 +10,8 @@ export var noise_period: float = 0.25
 export var noise_octaves: int = 3
 export (int, 0, 6) var subdivisions: int = 5
 export (int, 0, 5) var nav_subdivisions: int = 3
-export (int, 6, 48) var water_rings: int = 24
-export (int, 6, 96) var water_segments: int = 48
+export (int, 2, 48) var water_rings: int = 24
+export (int, 4, 96) var water_segments: int = 48
 
 export var land_material: Material
 export var water_material: Material
@@ -36,7 +36,7 @@ func _ready():
 	var ground: MeshInstance = _add_mesh(gnd.mesh, "Ground")
 	ground.material_override = land_material
 	
-	var water: GeometryInstance = _add_node(_create_water(), "Water")
+	var water: MeshInstance = _add_mesh(_create_water(), "Water")
 	water.material_override = water_material
 	
 	$Area/CollisionShape.shape.radius = radius
@@ -85,12 +85,9 @@ func _create_ground() -> IcoSphere.Result:
 	return result
 
 
-func _create_water() -> CSGSphere:
-	var sphere = CSGSphere.new()
-	sphere.radius = radius
-	sphere.rings = water_rings
-	sphere.radial_segments = water_segments
-	return sphere
+func _create_water() -> Mesh:
+	var sphere = UvSphere.new(water_rings, water_segments, radius)
+	return sphere.create()
 
 
 func _create_nav(res: IcoSphere.Result) -> NavManager:

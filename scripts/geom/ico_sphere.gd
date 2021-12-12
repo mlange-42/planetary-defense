@@ -108,7 +108,7 @@ func create(track_subdivs: Array) -> Result:
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	
 	if not smooth:
-		split_unsmooth(mesh)
+		GeoUtil.split_unsmooth(mesh)
 	
 	if verbose:
 		var arrs = mesh.surface_get_arrays(0)
@@ -117,17 +117,6 @@ func create(track_subdivs: Array) -> Result:
 	
 	result.mesh = mesh
 	return result
-
-
-func split_unsmooth(mesh: Mesh):
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	st.append_from(mesh, 0, Transform.IDENTITY)
-	st.generate_normals()
-	
-	mesh.surface_remove(0)
-	st.commit(mesh)
 
 
 func middle_point(point_1: int, point_2: int, cache: Dictionary): 

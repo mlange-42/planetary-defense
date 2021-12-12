@@ -35,3 +35,15 @@ static func calc_sphere_uv(verts: PoolVector3Array) -> PoolVector2Array:
 		uvs[i] = uv
 	
 	return uvs
+
+
+# Un-smooths a mesh. Results in duplicate vertices and re-odering!
+static func split_unsmooth(mesh: Mesh):
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	st.append_from(mesh, 0, Transform.IDENTITY)
+	st.generate_normals()
+	
+	mesh.surface_remove(0)
+	st.commit(mesh)

@@ -13,6 +13,6 @@ func _input(event):
 		raycast.cast_to = dir * 100
 		raycast.force_raycast_update()
 		
-		if raycast.get_collider() != null:
-			print(raycast.get_collision_point())
+		#if raycast.get_collider() != null:
+		#	print(raycast.get_collision_point())
 		
