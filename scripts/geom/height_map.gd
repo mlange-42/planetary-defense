@@ -35,14 +35,14 @@ func create_elevation(mesh: Mesh, curve: Curve, change_uv: bool = true):
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
 	
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	#var st = SurfaceTool.new()
+	#st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	if _smooth:
-		st.add_smooth_group(true)
+	#if _smooth:
+	#	st.add_smooth_group(true)
 	
-	st.append_from(mesh, 0, Transform.IDENTITY)
-	st.generate_normals()
+	#st.append_from(mesh, 0, Transform.IDENTITY)
+	#st.generate_normals()
 	
-	mesh.surface_remove(0)
-	st.commit(mesh)
+	#mesh.surface_remove(0)
+	#st.commit(mesh)

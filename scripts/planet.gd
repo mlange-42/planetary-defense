@@ -13,6 +13,8 @@ export (int, 0, 6) var water_subdivisions: int = 4
 export var land_material: Material
 export var water_material: Material
 
+onready var debug_draw: DebugDraw = $DebugDraw
+
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var nav: AStarNavigation
 
@@ -29,6 +31,19 @@ func _ready():
 	
 	var water: MeshInstance = _add_mesh(_create_water(), "Water")
 	water.material_override = water_material
+
+
+func _unhandled_input(event):
+	if event is InputEventKey:
+		if event.pressed and event.scancode == KEY_SPACE:
+			draw_random_path()
+
+
+func draw_random_path():
+	var l = nav.get_point_count()
+	var path = nav.get_point_path(int(rand_range(0, l)), int(rand_range(0, l)))
+	print(path)
+	debug_draw.draw_path(path, Color.yellow)
 
 
 func _add_mesh(mesh: Mesh, name: String) -> MeshInstance:
@@ -71,3 +86,7 @@ func _add_noise(m: Mesh):
 	
 	var height_map: HeightMap = HeightMap.new(rng, noise, max_height, true)
 	height_map.create_elevation(m, height_curve, true)
+
+
+func _draw():
+	pass
