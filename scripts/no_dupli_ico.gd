@@ -1,14 +1,18 @@
 extends MeshInstance
 
+var radius: float = 2.0
+var subdivisions: int = 2
+var smooth: bool = true
 
-var middle_point_cache: Dictionary = {}
 var vertices: PoolVector3Array
 
+
 func _ready():
-	create_ico(2)
+	create_ico(subdivisions)
 
 
 func create_ico(subdiv):
+	var cache := Dictionary()
 	
 	var verts = PoolVector2Array()
 	verts.push_back(Vector2(  0, -58.5))
@@ -58,9 +62,9 @@ func create_ico(subdiv):
 			var j2 = indices[j+1]
 			var j3 = indices[j+2]
 			
-			var v1 = middle_point(j1, j2)
-			var v2 = middle_point(j2, j3)
-			var v3 = middle_point(j3, j1)
+			var v1 = middle_point(j1, j2, cache)
+			var v2 = middle_point(j2, j3, cache)
+			var v3 = middle_point(j3, j1, cache)
 			
 			indices_subdiv.append_array([j1, v1, v3])
 			indices_subdiv.append_array([j2, v2, v1])
@@ -69,34 +73,58 @@ func create_ico(subdiv):
 			
 		indices = indices_subdiv
 	
+	var normals = PoolVector3Array(vertices)
+	var uv = calc_uv_lla(vertices)
+	print(vertices.size())
+	
+	# scale vertices to radius
+	if radius != 1.0:
+		scale_vertices(radius)
+	
 	var arr = []
 	arr.resize(Mesh.ARRAY_MAX)
 	arr[Mesh.ARRAY_VERTEX] = vertices
-	arr[Mesh.ARRAY_NORMAL] = PoolVector3Array(vertices)
-	arr[Mesh.ARRAY_TEX_UV] = calc_uv_lla(vertices)
-	arr[Mesh.ARRAY_TEX_UV2] = PoolVector2Array(arr[Mesh.ARRAY_TEX_UV])
+	arr[Mesh.ARRAY_NORMAL] = normals
+	arr[Mesh.ARRAY_TEX_UV] = uv
+	arr[Mesh.ARRAY_TEX_UV2] = PoolVector2Array(uv)
 	arr[Mesh.ARRAY_INDEX] = indices
 	
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	
-	#vertices.resize(0)
-	middle_point_cache.clear()
+	if not smooth:
+		split_unsmooth(mesh)
 
 
-func middle_point(point_1, point_2): 
+func split_unsmooth(mesh: Mesh):
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	st.append_from(mesh, 0, Transform.IDENTITY)
+	st.generate_normals()
+	
+	mesh.surface_remove(0)
+	st.commit(mesh)
+
+
+func middle_point(point_1: int, point_2: int, cache: Dictionary): 
 	var smaller_index = min(point_1, point_2)
 	var greater_index = max(point_1, point_2)
 	
 	var key = [smaller_index, greater_index]
-	if key in middle_point_cache:
-		return middle_point_cache[key]
+	if key in cache:
+		return cache[key]
 	
 	var middle: Vector3 = (0.5 * (vertices[point_1] + vertices[point_2])).normalized()
 	
 	vertices.append(middle)
 	var index = vertices.size() - 1
-	middle_point_cache[key] = index
+	cache[key] = index
 	return index
+
+
+func scale_vertices(rad: float):
+	for i in range(vertices.size()):
+		vertices[i] *= rad
 
 
 func calc_uv_lla(verts: PoolVector3Array) -> PoolVector2Array:
