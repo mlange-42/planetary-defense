@@ -68,7 +68,6 @@ func _create_nav(res: IcoSphere.Result) -> AStarNavigation:
 	return AStarNavigation.new(
 				res.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX],
 				res.subdiv_faces[nav_subdivisions])
-	
 
 
 func _create_water() -> Mesh:
@@ -84,7 +83,7 @@ func _add_noise(m: Mesh):
 	noise.period = noise_period * radius
 	noise.persistence = 0.5
 	
-	var height_map: HeightMap = HeightMap.new(rng, noise, max_height, true)
+	var height_map: HeightMap = HeightMap.new(rng, noise, max_height)
 	height_map.create_elevation(m, height_curve, true)
 
 
