@@ -16,7 +16,7 @@ func draw_points(nav: NavManager):
 	clear()
 	begin(Mesh.PRIMITIVE_POINTS)
 	
-	for data in nav.node_data.values():
+	for data in nav._node_data.values():
 		var p = data.position
 		set_color(Color.blue if data.is_water else Color.wheat)
 		add_vertex(p + 0.025 * p.normalized())
