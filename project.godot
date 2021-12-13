@@ -33,13 +33,19 @@ _global_script_classes=[ {
 "class": "IcoSphere",
 "language": "GDScript",
 "path": "res://scripts/geom/ico_sphere.gd"
+}, {
+"base": "Reference",
+"class": "NavManager",
+"language": "GDScript",
+"path": "res://scripts/nav/nav_manager.gd"
 } ]
 _global_script_class_icons={
 "AStarNavigation": "",
 "DebugDraw": "",
 "GeoUtil": "",
 "HeightMap": "",
-"IcoSphere": ""
+"IcoSphere": "",
+"NavManager": ""
 }
 
 [application]

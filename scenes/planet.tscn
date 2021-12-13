@@ -7,7 +7,7 @@
 flags_unshaded = true
 flags_use_point_size = true
 vertex_color_use_as_albedo = true
-params_point_size = 3.0
+params_point_size = 2.0
 
 [node name="Planet" type="Spatial"]
 script = ExtResource( 1 )

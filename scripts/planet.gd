@@ -20,7 +20,7 @@ onready var path_debug: DebugDraw = $PathDebug
 onready var grid_debug: DebugDraw = $GridDebug
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var nav: AStarNavigation
+var nav: NavManager
 
 func _ready():
 	assert(nav_subdivisions <= subdivisions, "Navigation subdivisions may not be larger then ground subdivisions")
@@ -39,7 +39,7 @@ func _ready():
 	var water: GeometryInstance = _add_node(_create_water(), "Water")
 	water.material_override = water_material
 	
-	grid_debug.draw_points(nav, Color.white)
+	grid_debug.draw_points(nav)
 
 
 func _unhandled_input(event):
@@ -49,12 +49,12 @@ func _unhandled_input(event):
 
 
 func draw_random_path():
-	var indices = nav.get_points()
+	var indices = nav.nav_land.get_points()
 	var l = indices.size()
 	
 	var path = []
 	while path.empty():
-		path = nav.get_point_path(
+		path = nav.nav_land.get_point_path(
 					indices[rng.randi_range(0, l-1)], 
 					indices[rng.randi_range(0, l-1)])
 		
@@ -91,11 +91,11 @@ func _create_water() -> CSGSphere:
 	return sphere
 
 
-func _create_nav(res: IcoSphere.Result) -> AStarNavigation:
-	return AStarNavigation.new(
+func _create_nav(res: IcoSphere.Result) -> NavManager:
+	return NavManager.new(
 				res.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX],
 				res.subdiv_faces[nav_subdivisions],
-				radius, true)
+				radius)
 
 
 func _add_noise(m: Mesh):
