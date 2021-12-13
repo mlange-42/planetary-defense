@@ -39,6 +39,8 @@ func _ready():
 	var water: GeometryInstance = _add_node(_create_water(), "Water")
 	water.material_override = water_material
 	
+	$Area/CollisionShape.shape.radius = radius
+	
 	grid_debug.draw_points(nav)
 
 
