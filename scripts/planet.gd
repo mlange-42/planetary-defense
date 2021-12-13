@@ -14,6 +14,7 @@ export (int, 0, 6) var subdivisions: int = 5
 export (int, 0, 5) var nav_subdivisions: int = 3
 export (int, 2, 48) var water_rings: int = 24
 export (int, 4, 96) var water_segments: int = 48
+export var smooth: bool = false
 
 export var land_material: Material
 export var water_material: Material
@@ -43,6 +44,9 @@ func _ready():
 	
 	var collision = _create_collision_shape(gnd.mesh, gnd.subdiv_faces[nav_subdivisions])
 	add_child(collision)
+	
+	if not smooth:
+		GeoUtil.split_unsmooth(gnd.mesh)
 	
 	grid_debug.draw_points(nav)
 
