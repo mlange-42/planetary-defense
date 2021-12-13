@@ -5,11 +5,13 @@ export var random_seed: int = 0
 export var radius: float = 1.0
 export var max_height: float = 0.1
 export var height_curve: Curve
+export var height_step: float = 0.005
 export var noise_period: float = 0.25
 export var noise_octaves: int = 3
 export (int, 0, 6) var subdivisions: int = 5
 export (int, 0, 5) var nav_subdivisions: int = 3
-export (int, 0, 6) var water_subdivisions: int = 4
+export (int, 6, 48) var water_rings: int = 24
+export (int, 6, 96) var water_segments: int = 48
 
 export var land_material: Material
 export var water_material: Material
@@ -34,7 +36,7 @@ func _ready():
 	var ground: MeshInstance = _add_mesh(gnd.mesh, "Ground")
 	ground.material_override = land_material
 	
-	var water: MeshInstance = _add_mesh(_create_water(), "Water")
+	var water: GeometryInstance = _add_node(_create_water(), "Water")
 	water.material_override = water_material
 	
 	grid_debug.draw_points(nav, Color.white)
@@ -59,12 +61,16 @@ func draw_random_path():
 	path_debug.draw_path(path, Color.yellow)
 
 
-func _add_mesh(mesh: Mesh, name: String) -> MeshInstance:
+func _add_mesh(mesh: Mesh, name: String) -> GeometryInstance:
 	var node = MeshInstance.new()
-	node.name = name
 	node.mesh = mesh
-	add_child(node)
 	
+	return _add_node(node, name)
+
+
+func _add_node(node: GeometryInstance, name: String) -> GeometryInstance:
+	node.name = name
+	add_child(node)
 	return node
 
 
@@ -77,17 +83,19 @@ func _create_ground() -> IcoSphere.Result:
 	return result
 
 
+func _create_water() -> CSGSphere:
+	var sphere = CSGSphere.new()
+	sphere.radius = radius
+	sphere.rings = water_rings
+	sphere.radial_segments = water_segments
+	return sphere
+
+
 func _create_nav(res: IcoSphere.Result) -> AStarNavigation:
 	return AStarNavigation.new(
 				res.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX],
 				res.subdiv_faces[nav_subdivisions],
 				radius)
-
-
-func _create_water() -> Mesh:
-	var gen = IcoSphere.new(water_subdivisions, radius, true)
-	var result: IcoSphere.Result = gen.create([])
-	return result.mesh
 
 
 func _add_noise(m: Mesh):
@@ -97,7 +105,7 @@ func _add_noise(m: Mesh):
 	noise.period = noise_period * radius
 	noise.persistence = 0.5
 	
-	var height_map: HeightMap = HeightMap.new(noise, max_height)
+	var height_map: HeightMap = HeightMap.new(noise, max_height, height_step)
 	height_map.create_elevation(m, height_curve, true)
 
 

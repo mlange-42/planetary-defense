@@ -20,6 +20,11 @@ _global_script_classes=[ {
 "path": "res://scripts/debug_draw.gd"
 }, {
 "base": "Reference",
+"class": "GeoUtil",
+"language": "GDScript",
+"path": "res://scripts/geom/geo_util.gd"
+}, {
+"base": "Reference",
 "class": "HeightMap",
 "language": "GDScript",
 "path": "res://scripts/geom/height_map.gd"
@@ -32,6 +37,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "AStarNavigation": "",
 "DebugDraw": "",
+"GeoUtil": "",
 "HeightMap": "",
 "IcoSphere": ""
 }

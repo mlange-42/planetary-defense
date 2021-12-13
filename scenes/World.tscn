@@ -5,7 +5,7 @@
 [ext_resource path="res://scripts/rotate_y.gd" type="Script" id=3]
 [ext_resource path="res://assets/materials/height_map.tres" type="Material" id=4]
 [ext_resource path="res://default_env.tres" type="Environment" id=5]
-[ext_resource path="res://scripts/CameraControl.gd" type="Script" id=6]
+[ext_resource path="res://scripts/camera_control.gd" type="Script" id=6]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0 ), 0.0, 0.676126, 0, 1, Vector2( 0.309249, 0.209091 ), 0.585201, 0.585201, 0, 0, Vector2( 0.5, 0.509091 ), 0.13106, 0.13106, 0, 0, Vector2( 0.690751, 0.627273 ), 1.39798, 1.39798, 0, 0, Vector2( 0.84104, 0.918182 ), 1.10516, 1.10516, 0, 0, Vector2( 1, 1 ), 0.514711, 0.0, 1, 0 ]
@@ -16,7 +16,7 @@ _data = [ Vector2( 0, 0 ), 0.0, 0.676126, 0, 1, Vector2( 0.309249, 0.209091 ), 0
 script = ExtResource( 6 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="CameraControl"]
-transform = Transform( 0.766044, 0, -0.642788, 0, 1, 0, 0.642788, 0, 0.766044, -9, 0, 0 )
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -9, 0, 0 )
 directional_shadow_mode = 1
 directional_shadow_depth_range = 1
 directional_shadow_max_distance = 50.0
@@ -38,11 +38,11 @@ use_random_seed = false
 radius = 10.0
 max_height = 1.5
 height_curve = SubResource( 1 )
+height_step = 0.05
 noise_period = 0.5
 noise_octaves = 5
 subdivisions = 6
-nav_subdivisions = 4
-water_subdivisions = 5
+nav_subdivisions = 5
 land_material = ExtResource( 4 )
 water_material = ExtResource( 2 )
 

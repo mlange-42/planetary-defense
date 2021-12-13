@@ -90,7 +90,7 @@ func create(track_subdivs: Array) -> Result:
 			result.subdiv_faces[i+1] = indices
 	
 	var normals = PoolVector3Array(vertices)
-	var uv = calc_uv_lla(vertices)
+	var uv = GeoUtil.calc_sphere_uv(vertices)
 	
 	# scale vertices to radius
 	if radius != 1.0:
@@ -151,45 +151,12 @@ func scale_vertices(rad: float):
 		vertices[i] *= rad
 
 
-func calc_uv_lla(verts: PoolVector3Array) -> PoolVector2Array:
-	var uvs := PoolVector2Array()
-	uvs.resize(verts.size())
-	
-	var uv: Vector2
-	for i in range(verts.size()):
-		uv = xyz_to_lla(verts[i])
-		uv.x = (uv.x / 360.0) + 0.5
-		uv.y = (uv.y / 180.0) + 0.5
-		uvs[i] = uv
-	
-	return uvs
-
-
-func xyz_to_lla(xyz: Vector3) -> Vector2:
-	var lat = asin(xyz.y)
-	var lon = atan2(xyz.z, xyz.x)
-	
-	return Vector2(rad2deg(lon), rad2deg(lat))
-
-
 func lla_to_xyz_arr(arr: PoolVector2Array) -> PoolVector3Array:
 	var verts: PoolVector3Array = PoolVector3Array()
 	verts.resize(arr.size())
 	
 	for i in range(arr.size()):
-		verts[i] = lla_to_xyz(arr[i])
+		verts[i] = GeoUtil.lla_to_xyz(arr[i])
 	
 	return verts
 
-
-func lla_to_xyz(lla: Vector2) -> Vector3:
-	var lon = lla.x
-	var lat = lla.y
-	var cosLat = cos(deg2rad(lat))
-	var sinLat = sin(deg2rad(lat))
-	var cosLon = cos(deg2rad(lon))
-	var sinLon = sin(deg2rad(lon))
-	var x = cosLat * cosLon
-	var y = sinLat
-	var z = cosLat * sinLon
-	return Vector3(x, y, z)
