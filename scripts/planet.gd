@@ -1,5 +1,7 @@
 extends Spatial
 
+class_name Planet
+
 export var use_random_seed: bool = true
 export var random_seed: int = 0
 export var radius: float = 1.0
@@ -44,23 +46,13 @@ func _ready():
 	grid_debug.draw_points(nav)
 
 
-func _unhandled_input(event):
-	if event is InputEventKey:
-		if event.pressed and event.scancode == KEY_SPACE:
-			draw_random_path()
-
-
-func draw_random_path():
-	var indices = nav.nav_land.get_points()
-	var l = indices.size()
+func draw_path(from: int, to: int) -> bool:
+	if nav.nav_land.has_point(from) and nav.nav_land.has_point(to):
+		var path = nav.nav_land.get_point_path(from, to)
+		path_debug.draw_path(path, Color.yellow)
+		return true
 	
-	var path = []
-	while path.empty():
-		path = nav.nav_land.get_point_path(
-					indices[rng.randi_range(0, l-1)], 
-					indices[rng.randi_range(0, l-1)])
-		
-	path_debug.draw_path(path, Color.yellow)
+	return false
 
 
 func _add_mesh(mesh: Mesh, name: String) -> GeometryInstance:

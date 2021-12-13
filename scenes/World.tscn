@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/planet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/materials/water.tres" type="Material" id=2]
@@ -6,11 +6,16 @@
 [ext_resource path="res://assets/materials/height_map.tres" type="Material" id=4]
 [ext_resource path="res://default_env.tres" type="Environment" id=5]
 [ext_resource path="res://scenes/mouse.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/world.gd" type="Script" id=7]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0 ), 0.0, 0.676126, 0, 1, Vector2( 0.309249, 0.209091 ), 0.585201, 0.585201, 0, 0, Vector2( 0.5, 0.509091 ), 0.13106, 0.13106, 0, 0, Vector2( 0.690751, 0.627273 ), 1.39798, 1.39798, 0, 0, Vector2( 0.84104, 0.918182 ), 1.10516, 1.10516, 0, 0, Vector2( 1, 1 ), 0.514711, 0.0, 1, 0 ]
 
+[sub_resource type="SpatialMaterial" id=2]
+flags_unshaded = true
+
 [node name="World" type="Spatial"]
+script = ExtResource( 7 )
 
 [node name="Mouse" parent="." instance=ExtResource( 6 )]
 
@@ -31,3 +36,9 @@ water_material = ExtResource( 2 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 5 )
+
+[node name="MousePointer" type="CSGSphere" parent="."]
+radius = 0.1
+radial_segments = 8
+rings = 5
+material = SubResource( 2 )

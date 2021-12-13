@@ -1,7 +1,10 @@
 class_name NavManager
 
 var nav_land: AStarNavigation
-var node_data: Dictionary
+var nav_water: AStarNavigation
+var nav_all: AStarNavigation
+
+var _node_data: Dictionary
 
 class NodeData:
 	var is_water: bool
@@ -9,9 +12,15 @@ class NodeData:
 	var position: Vector3
 
 func _init(vertices: PoolVector3Array, faces: PoolIntArray, planet_radius: float):
-	node_data = generate_node_data(vertices, faces, planet_radius)
+	_node_data = generate_node_data(vertices, faces, planet_radius)
 	
 	nav_land = AStarNavigation.new(vertices, faces, planet_radius, true)
+	nav_water = AStarNavigation.new(vertices, faces, planet_radius, false)
+	nav_all = AStarNavigation.new(vertices, faces, 0, true)
+
+
+func get_node(id: int):
+	return _node_data[id]
 
 
 func generate_node_data(vertices: PoolVector3Array, faces: PoolIntArray, planet_radius: float) -> Dictionary:
