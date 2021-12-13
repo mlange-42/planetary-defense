@@ -12,14 +12,13 @@ func draw_path(points: Array, color: Color):
 	
 	end()
 
-func draw_points(nav: AStar, color: Color):
+func draw_points(nav: NavManager):
 	clear()
 	begin(Mesh.PRIMITIVE_POINTS)
 	
-	set_color(color)
-	
-	for i in nav.get_points():
-		var p = nav.get_point_position(i)
+	for data in nav.node_data.values():
+		var p = data.position
+		set_color(Color.blue if data.is_water else Color.wheat)
 		add_vertex(p + 0.025 * p.normalized())
 	
 	end()
