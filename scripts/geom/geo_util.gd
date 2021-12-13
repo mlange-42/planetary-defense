@@ -1,7 +1,7 @@
 class_name GeoUtil
 
 
-# Calculate lon/lat vector from _normalized_ xyz
+# Calculate lon/lat vector (in degrees) from _normalized_ xyz
 static func xyz_to_lla(xyz: Vector3) -> Vector2:
 	var lat = asin(xyz.y)
 	var lon = atan2(xyz.z, xyz.x)
@@ -9,7 +9,7 @@ static func xyz_to_lla(xyz: Vector3) -> Vector2:
 	return Vector2(rad2deg(lon), rad2deg(lat))
 
 
-# Calculate xyz vector from lon/lat
+# Calculate xyz vector from lon/lat (in degrees)
 static func lla_to_xyz(lla: Vector2) -> Vector3:
 	var lon = lla.x
 	var lat = lla.y
