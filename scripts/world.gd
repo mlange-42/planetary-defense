@@ -20,11 +20,11 @@ func _ready():
 
 
 func _on_planet_entered(_point: Vector3):
-	pass
+	pointer.visible = true
 
 
 func _on_planet_exited():
-	pass
+	pointer.visible = false
 
 
 func _on_planet_hovered(point: Vector3):

@@ -32,7 +32,7 @@ func _ready():
 	else:
 		rng.randomize()
 	
-	var gnd = _create_ground()
+	var gnd: IcoSphere.Result = _create_ground()
 	self.nav = _create_nav(gnd)
 	
 	var ground: MeshInstance = _add_mesh(gnd.mesh, "Ground")
@@ -41,7 +41,8 @@ func _ready():
 	var water: MeshInstance = _add_mesh(_create_water(), "Water")
 	water.material_override = water_material
 	
-	$Area/CollisionShape.shape.radius = radius
+	var collision = _create_collision_shape(gnd.mesh, gnd.subdiv_faces[nav_subdivisions])
+	add_child(collision)
 	
 	grid_debug.draw_points(nav)
 
@@ -88,6 +89,25 @@ func _create_nav(res: IcoSphere.Result) -> NavManager:
 				res.subdiv_faces[nav_subdivisions],
 				radius)
 
+
+func _create_collision_shape(mesh: Mesh, indices: PoolIntArray) -> Area:
+	var vertices = mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	
+	var coll := ConcavePolygonShape.new()
+	var faces := PoolVector3Array()
+	
+	for id in indices:
+		faces.append(vertices[id])
+	
+	coll.set_faces(faces)
+	
+	var area = Area.new()
+	var shape = CollisionShape.new()
+	shape.shape = coll
+	area.add_child(shape)
+	area.name = "Area"
+	
+	return area
 
 func _add_noise(m: Mesh):
 	var noise := OpenSimplexNoise.new()
