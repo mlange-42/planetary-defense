@@ -8,3 +8,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 gdnative = "0.9.3"
+mcmf = "2.0.0"
