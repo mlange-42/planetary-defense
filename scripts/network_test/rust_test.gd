@@ -2,15 +2,24 @@ extends Node2D
 
 onready var net = $NetworkSimplex
 
+var paths: Array
+var nodes: Dictionary
+var edges: Dictionary
+var edge_amount: Dictionary
+var source_amount: Dictionary
+var sink_amount: Dictionary
+
 func _ready():
 	_evaluate()
 
 func _evaluate():
 	net.reset()
 	
-	var nodes: Dictionary = {}
-	var edges: Dictionary = {}
-	var amount: Dictionary = {}
+	nodes = {}
+	edges = {}
+	edge_amount = {}
+	source_amount = {}
+	sink_amount = {}
 	
 	for i in range(net.get_child_count()):
 		var ch = net.get_child(i)
@@ -20,9 +29,11 @@ func _evaluate():
 			
 			if ch.source > 0:
 				net.add_source_edge(ch.id, ch.source, 0)
+				source_amount[ch.id] = 0
 				print("Connected source (%s) to %s" % [ch.source, ch.id])
 			if ch.sink > 0:
 				net.add_sink_edge(ch.id, ch.sink, 0)
+				sink_amount[ch.id] = 0
 				print("Connected %s to sink (%s)" % [ch.id, ch.sink])
 	
 	for i in range(net.get_child_count()):
@@ -33,10 +44,10 @@ func _evaluate():
 			var cost = int(ch.cost * (end.position - start.position).length())
 			net.add_edge(start.id, end.id, ch.capacity, cost)
 			edges[[start.id, end.id]] = ch
-			amount[[start.id, end.id]] = 0
+			edge_amount[[start.id, end.id]] = 0
 			print("Connected %s -> %s (cap: %s, cost: %s)" % [start.id, end.id, ch.capacity, cost])
 	
-	var paths = net.solve()
+	paths = net.solve()
 	print(paths)
 	
 	for path in paths:
@@ -47,12 +58,21 @@ func _evaluate():
 			#var cost = edge[3]
 			
 			if from >= 0 and to >= 0:
-				amount[[from, to]] += amnt
+				edge_amount[[from, to]] += amnt
 			else:
 				if from < 0:
-					nodes[to].set_source_amount(amnt)
+					source_amount[to] += amnt
 				if to < 0:
-					nodes[from].set_sink_amount(amnt)
+					sink_amount[from] += amnt
 	
 	for key in edges:
-		edges[key].set_amount(amount[key])
+		edges[key].set_amount(edge_amount[key])
+		
+	for key in source_amount:
+		nodes[key].set_source_amount(source_amount[key])
+		
+	for key in sink_amount:
+		nodes[key].set_sink_amount(sink_amount[key])
+
+func _unhandled_input(event):
+	pass

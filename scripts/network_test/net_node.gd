@@ -7,12 +7,14 @@ export var sink: int = 0
 
 onready var source_sprite: Sprite = $Source
 onready var sink_sprite: Sprite = $Sink
+onready var label: Label = $Label
 
 var id: int = 0
 
 func _ready():
 	if not Engine.editor_hint:
 		_set_appearance()
+		label.text = "+%d/-%d" % [source, sink]
 
 
 func _process(_delta):

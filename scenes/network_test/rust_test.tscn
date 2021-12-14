@@ -15,34 +15,70 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="NetLink1" parent="NetworkSimplex" instance=ExtResource( 4 )]
-position = Vector2( 243, 202 )
-rotation = -0.533482
-scale = Vector2( 0.675962, 1 )
+position = Vector2( 778.5, 319 )
+rotation = 1.49768
+start = NodePath("../Sink1")
+end = NodePath("../Sink2")
+
+[node name="NetLink7" parent="NetworkSimplex" instance=ExtResource( 4 )]
+position = Vector2( 778.5, 319 )
+rotation = -1.64391
+start = NodePath("../Sink2")
+end = NodePath("../Sink1")
+
+[node name="NetLink3" parent="NetworkSimplex" instance=ExtResource( 4 )]
+position = Vector2( 501.5, 473 )
+rotation = 0.0103983
 start = NodePath("../Source1")
-end = NodePath("../Node1")
+end = NodePath("../Sink2")
 
 [node name="NetLink2" parent="NetworkSimplex" instance=ExtResource( 4 )]
-position = Vector2( 657, 213 )
-rotation = 0.357529
-scale = Vector2( 1.10503, 0.5 )
-start = NodePath("../Node1")
+position = Vector2( 211, 332 )
+rotation = 4.6979
+start = NodePath("../Source1")
+end = NodePath("../Source2")
+
+[node name="NetLink5" parent="NetworkSimplex" instance=ExtResource( 4 )]
+position = Vector2( 211, 332 )
+rotation = 7.83949
+start = NodePath("../Source2")
+end = NodePath("../Source1")
+
+[node name="NetLink6" parent="NetworkSimplex" instance=ExtResource( 4 )]
+position = Vector2( 211, 332 )
+rotation = 7.83949
+start = NodePath("../Source2")
+end = NodePath("../Source1")
+
+[node name="NetLink4" parent="NetworkSimplex" instance=ExtResource( 4 )]
+position = Vector2( 488, 178 )
+rotation = -0.0572849
+start = NodePath("../Source2")
 end = NodePath("../Sink1")
-capacity = 50
 
 [node name="Source1" parent="NetworkSimplex" instance=ExtResource( 3 )]
 self_modulate = Color( 0, 1, 0, 1 )
-position = Vector2( 94, 290 )
+position = Vector2( 213, 470 )
 scale = Vector2( 0.45, 0.45 )
 source = 25
 
+[node name="Source2" parent="NetworkSimplex" instance=ExtResource( 3 )]
+self_modulate = Color( 0, 1, 0, 1 )
+position = Vector2( 209, 194 )
+scale = Vector2( 1.2, 1.2 )
+source = 100
+
 [node name="Sink1" parent="NetworkSimplex" instance=ExtResource( 3 )]
 self_modulate = Color( 1, 0, 0, 1 )
-position = Vector2( 922, 312 )
+position = Vector2( 767, 162 )
 scale = Vector2( 0.7, 0.7 )
 sink = 50
 
-[node name="Node1" parent="NetworkSimplex" instance=ExtResource( 3 )]
-position = Vector2( 392, 114 )
+[node name="Sink2" parent="NetworkSimplex" instance=ExtResource( 3 )]
+self_modulate = Color( 1, 0, 0, 1 )
+position = Vector2( 790, 476 )
+scale = Vector2( 0.7, 0.7 )
+sink = 50
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 512, 304 )

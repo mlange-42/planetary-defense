@@ -7,6 +7,8 @@ export var end: NodePath
 export var capacity: int = 100
 export var cost: int = 1
 
+onready var label: Label = $Label
+
 func _ready():
 	if not Engine.editor_hint:
 		_set_appearance()
@@ -18,8 +20,12 @@ func _process(_delta):
 
 
 func set_amount(value: int):
-	var v = value/float(capacity)
-	modulate = Colors.heat_map(1-v)
+	if value == 0:
+		modulate = Color(0.3, 0.3, 0.3)
+	else:
+		var v = value/float(capacity)
+		modulate = Colors.heat_map(1-v)
+	label.text = "%d/%d" % [value, capacity]
 
 
 func _set_appearance():
@@ -36,6 +42,6 @@ func _set_appearance():
 	look_at(end_node.position)
 	
 	var scx = (end_node.position - start_node.position).length() / $Sprite.texture.get_width()
-	var scy = capacity / 100.0
-	scale = Vector2(scx, scy)
+	var scy = 2 * capacity / 100.0
+	$Sprite.scale = Vector2(scx, scy)
 	
