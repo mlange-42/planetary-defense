@@ -2,7 +2,10 @@ extends Node2D
 
 onready var net = $NetworkSimplex
 
+var total_cost: int
+var total_amount: int
 var paths: Array
+
 var nodes: Dictionary
 var edges: Dictionary
 var edge_amount: Dictionary
@@ -32,11 +35,9 @@ func _evaluate():
 			if ch.source > 0:
 				net.add_source_edge(ch.id, ch.source, 0)
 				source_amount[ch.id] = 0
-				print("Connected source (%s) to %s" % [ch.source, ch.id])
 			if ch.sink > 0:
 				net.add_sink_edge(ch.id, ch.sink, 0)
 				sink_amount[ch.id] = 0
-				print("Connected %s to sink (%s)" % [ch.id, ch.sink])
 	
 	for ch in all_edges:
 		if ch is NetLink:
@@ -46,25 +47,33 @@ func _evaluate():
 			net.add_edge(start.id, end.id, ch.capacity, cost)
 			edges[[start.id, end.id]] = ch
 			edge_amount[[start.id, end.id]] = 0
-			print("Connected %s -> %s (cap: %s, cost: %s)" % [start.id, end.id, ch.capacity, cost])
 	
-	paths = net.solve()
-	print(paths)
+	var result = net.solve()
+	total_cost = result[0]
+	total_amount = 0
+	paths = result[1]
+	
+	var cost_stats = []
 	
 	for path in paths:
+		var path_cost = 0
 		for edge in path:
 			var from = edge[0]
 			var to = edge[1]
 			var amnt = edge[2]
-			#var cost = edge[3]
+			var cost = edge[3]
+			
+			path_cost += cost
 			
 			if from >= 0 and to >= 0:
 				edge_amount[[from, to]] += amnt
 			else:
 				if from < 0:
 					source_amount[to] += amnt
+					total_amount += amnt
 				if to < 0:
 					sink_amount[from] += amnt
+		cost_stats.append([path_cost, path[0][2]])
 	
 	for key in edges:
 		edges[key].set_amount(edge_amount[key])
@@ -74,3 +83,47 @@ func _evaluate():
 		
 	for key in sink_amount:
 		nodes[key].set_sink_amount(sink_amount[key])
+	
+	print("Amount: %d, Cost: %d (%f per unit)" % [total_cost, total_amount, total_cost / float(total_amount)])
+	print_cost_hist(cost_stats)
+
+func print_cost_hist(cost_stats):
+	var bins = 10
+	var width = 50
+	
+	print("Cost statistics:")
+	
+	var max_cost = 0
+	var max_amount = 0
+	
+	for entry in cost_stats:
+		if entry[0] > max_cost: max_cost = entry[0]
+	
+	var step = (max_cost * 1.0001) / float(bins)
+	var bin_values = []
+	for i in range(bins): bin_values.append(0)
+	
+	for entry in cost_stats:
+		var b = int(entry[0] / step)
+		bin_values[b] += entry[1]
+	
+	for v in bin_values:
+		if v > max_amount: max_amount = v
+		
+	var scale = width / float(max_amount)
+	
+	for i in range(bins):
+		bin_values[i] = round(bin_values[i] * scale)
+	
+	for i in range(bins-1, -1, -1):
+		var v = bin_values[i]
+		var prefix = ("%6d |" % max_cost) if i == bins-1 else "      0|" if i == 0 else "       |"
+		var s = ""
+		for j in range(v): s += "#"
+		
+		if i == 0: 
+			for j in range(width - s.length()):
+				s += " "
+			s += " " + str(max_amount)
+		print(prefix + s)
+	

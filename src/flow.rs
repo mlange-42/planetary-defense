@@ -43,8 +43,8 @@ impl NetworkSimplex {
     }
 
     #[export]
-    fn solve(&self, _owner: &Node) -> Vec<Vec<(isize, isize, u32, i32)>> {
-        let (_cost, paths) = self.builder.mcmf();
+    fn solve(&self, _owner: &Node) -> (i32, Vec<Vec<(isize, isize, u32, i32)>>) {
+        let (cost, paths) = self.builder.mcmf();
 
         let p = paths
             .iter()
@@ -62,7 +62,7 @@ impl NetworkSimplex {
                     .collect::<Vec<_>>()
             })
             .collect::<Vec<_>>();
-        p
+        (cost, p)
     }
 }
 
