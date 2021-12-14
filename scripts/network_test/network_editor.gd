@@ -21,8 +21,10 @@ func _evaluate():
 	source_amount = {}
 	sink_amount = {}
 	
-	for i in range(net.get_child_count()):
-		var ch = net.get_child(i)
+	var all_nodes = net.get_node("Nodes").get_children()
+	var all_edges = net.get_node("Links").get_children()
+	for i in range(all_nodes.size()):
+		var ch = all_nodes[i]
 		if ch is NetNode:
 			ch.id = i
 			nodes[i] = ch
@@ -36,8 +38,7 @@ func _evaluate():
 				sink_amount[ch.id] = 0
 				print("Connected %s to sink (%s)" % [ch.id, ch.sink])
 	
-	for i in range(net.get_child_count()):
-		var ch = net.get_child(i)
+	for ch in all_edges:
 		if ch is NetLink:
 			var start = ch.get_node(ch.start)
 			var end = ch.get_node(ch.end)

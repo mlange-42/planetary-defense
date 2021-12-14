@@ -14,55 +14,62 @@ script = ExtResource( 1 )
 [node name="NetworkSimplex" type="Node" parent="."]
 script = ExtResource( 2 )
 
-[node name="NetLink1" parent="NetworkSimplex" instance=ExtResource( 4 )]
+[node name="Links" type="Node" parent="NetworkSimplex"]
+
+[node name="NetLink1" parent="NetworkSimplex/Links" instance=ExtResource( 4 )]
 position = Vector2( 778.5, 319 )
 rotation = 1.49768
-start = NodePath("../Sink1")
-end = NodePath("../Sink2")
+start = NodePath("../../Nodes/Sink1")
+end = NodePath("../../Nodes/Sink2")
 
-[node name="NetLink7" parent="NetworkSimplex" instance=ExtResource( 4 )]
+[node name="NetLink7" parent="NetworkSimplex/Links" instance=ExtResource( 4 )]
 position = Vector2( 778.5, 319 )
 rotation = -1.64391
-start = NodePath("../Sink2")
-end = NodePath("../Sink1")
+scale = Vector2( 1, 1 )
+start = NodePath("../../Nodes/Sink2")
+end = NodePath("../../Nodes/Sink1")
 
-[node name="NetLink3" parent="NetworkSimplex" instance=ExtResource( 4 )]
+[node name="NetLink3" parent="NetworkSimplex/Links" instance=ExtResource( 4 )]
 position = Vector2( 501.5, 473 )
 rotation = 0.0103983
-start = NodePath("../Source1")
-end = NodePath("../Sink2")
+start = NodePath("../../Nodes/Source1")
+end = NodePath("../../Nodes/Sink2")
 
-[node name="NetLink2" parent="NetworkSimplex" instance=ExtResource( 4 )]
+[node name="NetLink2" parent="NetworkSimplex/Links" instance=ExtResource( 4 )]
 position = Vector2( 211, 332 )
-rotation = 4.6979
-start = NodePath("../Source1")
-end = NodePath("../Source2")
+rotation = -1.58529
+scale = Vector2( 1, 1 )
+start = NodePath("../../Nodes/Source1")
+end = NodePath("../../Nodes/Source2")
 
-[node name="NetLink5" parent="NetworkSimplex" instance=ExtResource( 4 )]
+[node name="NetLink5" parent="NetworkSimplex/Links" instance=ExtResource( 4 )]
 position = Vector2( 211, 332 )
-rotation = 7.83949
-start = NodePath("../Source2")
-end = NodePath("../Source1")
+rotation = 1.5563
+scale = Vector2( 1, 1 )
+start = NodePath("../../Nodes/Source2")
+end = NodePath("../../Nodes/Source1")
 
-[node name="NetLink4" parent="NetworkSimplex" instance=ExtResource( 4 )]
+[node name="NetLink4" parent="NetworkSimplex/Links" instance=ExtResource( 4 )]
 position = Vector2( 488, 178 )
 rotation = -0.0572849
-start = NodePath("../Source2")
-end = NodePath("../Sink1")
+start = NodePath("../../Nodes/Source2")
+end = NodePath("../../Nodes/Sink1")
 
-[node name="Source1" parent="NetworkSimplex" instance=ExtResource( 3 )]
+[node name="Nodes" type="Node" parent="NetworkSimplex"]
+
+[node name="Source1" parent="NetworkSimplex/Nodes" instance=ExtResource( 3 )]
 position = Vector2( 213, 470 )
 source = 100
 
-[node name="Source2" parent="NetworkSimplex" instance=ExtResource( 3 )]
+[node name="Source2" parent="NetworkSimplex/Nodes" instance=ExtResource( 3 )]
 position = Vector2( 209, 194 )
 source = 25
 
-[node name="Sink1" parent="NetworkSimplex" instance=ExtResource( 3 )]
+[node name="Sink1" parent="NetworkSimplex/Nodes" instance=ExtResource( 3 )]
 position = Vector2( 767, 162 )
 sink = 50
 
-[node name="Sink2" parent="NetworkSimplex" instance=ExtResource( 3 )]
+[node name="Sink2" parent="NetworkSimplex/Nodes" instance=ExtResource( 3 )]
 position = Vector2( 790, 476 )
 sink = 50
 
