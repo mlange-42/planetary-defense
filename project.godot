@@ -54,7 +54,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/network_test/net_link.gd"
 }, {
-"base": "Sprite",
+"base": "Node2D",
 "class": "NetNode",
 "language": "GDScript",
 "path": "res://scripts/network_test/net_node.gd"

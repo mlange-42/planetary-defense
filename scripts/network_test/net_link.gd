@@ -42,6 +42,6 @@ func _set_appearance():
 	look_at(end_node.position)
 	
 	var scx = (end_node.position - start_node.position).length() / $Sprite.texture.get_width()
-	var scy = 2 * capacity / 100.0
+	var scy = capacity / 100.0
 	$Sprite.scale = Vector2(scx, scy)
-	
+	$Label.text = "%d" % capacity

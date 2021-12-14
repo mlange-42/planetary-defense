@@ -73,6 +73,3 @@ func _evaluate():
 		
 	for key in sink_amount:
 		nodes[key].set_sink_amount(sink_amount[key])
-
-func _unhandled_input(event):
-	pass
