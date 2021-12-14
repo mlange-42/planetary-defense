@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/network_test/net_node.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/factory.svg" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/quad.svg" type="Texture" id=3]
+
+[node name="NetNode" type="Sprite"]
+self_modulate = Color( 0.75, 0.75, 0.75, 1 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 2 )
+script = ExtResource( 1 )
+
+[node name="Source" type="Sprite" parent="."]
+position = Vector2( -25, 30 )
+texture = ExtResource( 3 )
+
+[node name="Sink" type="Sprite" parent="."]
+position = Vector2( 25, 30 )
+texture = ExtResource( 3 )
