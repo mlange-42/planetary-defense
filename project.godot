@@ -68,7 +68,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="procedural-planet"
+config/name="PlanetaryDefense"
 run/main_scene="res://scenes/world.tscn"
 config/icon="res://icon.png"
 
