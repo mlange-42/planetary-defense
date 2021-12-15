@@ -1,5 +1,7 @@
 use gdnative::prelude::*;
-use mcmf::{Capacity, Cost, GraphBuilder, Vertex};
+use mcmf::{Capacity, Cost, GraphBuilder, Path, Vertex};
+
+type GodotPath = Vec<(isize, isize, u32, i32)>;
 
 #[derive(NativeClass)]
 #[inherit(Node)]
@@ -43,27 +45,26 @@ impl NetworkSimplex {
     }
 
     #[export]
-    fn solve(&self, _owner: &Node) -> (i32, Vec<Vec<(isize, isize, u32, i32)>>) {
+    fn solve(&self, _owner: &Node) -> (i32, Vec<GodotPath>) {
         let (cost, paths) = self.builder.mcmf();
 
-        let p = paths
-            .iter()
-            .map(|path| {
-                path.flows
-                    .iter()
-                    .map(|flow| {
-                        (
-                            vertex_to_id(&flow.a),
-                            vertex_to_id(&flow.b),
-                            flow.amount,
-                            flow.cost,
-                        )
-                    })
-                    .collect::<Vec<_>>()
-            })
-            .collect::<Vec<_>>();
+        let p = paths.into_iter().map(to_godot_paths).collect::<Vec<_>>();
         (cost, p)
     }
+}
+
+fn to_godot_paths(path: Path<usize>) -> GodotPath {
+    path.flows
+        .iter()
+        .map(|flow| {
+            (
+                vertex_to_id(&flow.a),
+                vertex_to_id(&flow.b),
+                flow.amount,
+                flow.cost,
+            )
+        })
+        .collect::<Vec<_>>()
 }
 
 fn vertex_to_id(vertex: &Vertex<usize>) -> isize {

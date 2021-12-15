@@ -101,7 +101,7 @@ func print_cost_hist(cost_stats):
 	
 	var step = (max_cost * 1.0001) / float(bins)
 	var bin_values = []
-	for i in range(bins): bin_values.append(0)
+	for _i in range(bins): bin_values.append(0)
 	
 	for entry in cost_stats:
 		var b = int(entry[0] / step)
@@ -119,10 +119,10 @@ func print_cost_hist(cost_stats):
 		var v = bin_values[i]
 		var prefix = ("%6d |" % max_cost) if i == bins-1 else "      0|" if i == 0 else "       |"
 		var s = ""
-		for j in range(v): s += "#"
+		for _j in range(v): s += "#"
 		
 		if i == 0: 
-			for j in range(width - s.length()):
+			for _j in range(width - s.length()):
 				s += " "
 			s += " " + str(max_amount)
 		print(prefix + s)
