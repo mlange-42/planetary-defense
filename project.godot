@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/nav/navigation.gd"
 }, {
+"base": "Reference",
+"class": "Colors",
+"language": "GDScript",
+"path": "res://scripts/network_test/colors.gd"
+}, {
 "base": "ImmediateGeometry",
 "class": "DebugDraw",
 "language": "GDScript",
@@ -44,6 +49,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/nav/nav_manager.gd"
 }, {
+"base": "Node2D",
+"class": "NetLink",
+"language": "GDScript",
+"path": "res://scripts/network_test/net_link.gd"
+}, {
+"base": "Node2D",
+"class": "NetNode",
+"language": "GDScript",
+"path": "res://scripts/network_test/net_node.gd"
+}, {
 "base": "Spatial",
 "class": "Planet",
 "language": "GDScript",
@@ -56,12 +71,15 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AStarNavigation": "",
+"Colors": "",
 "DebugDraw": "",
 "GeoUtil": "",
 "HeightMap": "",
 "IcoSphere": "",
 "Mouse": "",
 "NavManager": "",
+"NetLink": "",
+"NetNode": "",
 "Planet": "",
 "UvSphere": ""
 }
@@ -83,5 +101,6 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 quality/shadows/filter_mode=2
+environment/default_clear_color=Color( 0, 0, 0, 1 )
 quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"
