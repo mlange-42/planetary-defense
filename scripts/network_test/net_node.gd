@@ -2,9 +2,13 @@ tool
 extends Node2D
 class_name NetNode
 
+export var commodity: String = ""
 export var source: int = 0
 export var sink: int = 0
-export var commodity: String = ""
+
+export var convert_from_amount: int = 0
+export var convert_to: String = ""
+export var convert_to_amount: int = 0
 
 onready var sprite: Sprite = $Sprite
 onready var source_sprite: Sprite = $Sprite/Source
@@ -24,16 +28,18 @@ func _process(_delta):
 		_set_appearance()
 
 func set_source_amount(value: int):
-	var v = value / float(source)
-	source_sprite.self_modulate = Colors.heat_map(v)
-	$SourceLabel.text = "%d/%d" % [value, source]
-	$SourceLabel.visible = true
+	if source > 0:
+		var v = value / float(source)
+		source_sprite.self_modulate = Colors.heat_map(v)
+		$SourceLabel.text = "%d/%d" % [value, source]
+		$SourceLabel.visible = true
 
 func set_sink_amount(value: int):
-	var v = value / float(sink)
-	sink_sprite.self_modulate = Colors.heat_map(v)
-	$SinkLabel.text = "%d/%d" % [value, sink]
-	$SinkLabel.visible = true
+	if sink > 0:
+		var v = value / float(sink)
+		sink_sprite.self_modulate = Colors.heat_map(v)
+		$SinkLabel.text = "%d/%d" % [value, sink]
+		$SinkLabel.visible = true
 
 func _set_appearance():
 	if source > sink:

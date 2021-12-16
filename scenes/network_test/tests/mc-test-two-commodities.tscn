@@ -110,23 +110,23 @@ capacity = 10
 
 [node name="Source1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
 position = Vector2( 213, 493 )
-source = 10
 commodity = "A"
+source = 10
 
 [node name="Source2" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
 position = Vector2( 225, 160 )
-source = 10
 commodity = "B"
+source = 10
 
 [node name="Sink1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
 position = Vector2( 759, 160 )
-sink = 25
 commodity = "A"
+sink = 25
 
 [node name="Sink2" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
 position = Vector2( 741, 464 )
-sink = 25
 commodity = "B"
+sink = 25
 
 [node name="Node1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
 position = Vector2( 380, 384 )

@@ -73,6 +73,20 @@ impl MultiCommodityFlow {
     }
 
     #[export]
+    pub fn set_converter(
+        &mut self,
+        _owner: &GdNode,
+        vertex: usize,
+        from: String,
+        from_amount: u32,
+        to: String,
+        to_amount: u32,
+    ) {
+        self.builder
+            .set_converter(vertex, from, from_amount, to, to_amount);
+    }
+
+    #[export]
     fn solve(&self, _owner: &GdNode, load_dependence: f32) -> GodotFlows {
         let flows = self.builder.solve(load_dependence);
         to_godot_flows(flows)
@@ -228,9 +242,9 @@ impl Graph {
 
         while has_path.iter().any(|p| *p) {
             let comm = thread_rng().gen_range(0..self.commodities);
-            if !has_path[comm] {
-                continue;
-            }
+            //if !has_path[comm] {
+            //    continue;
+            //}
             let result = self.find_path(comm);
             if let Some((path, _cost)) = result {
                 self.apply_path(&path, comm, 1);
@@ -331,11 +345,12 @@ impl Graph {
 }
 
 type EdgeList<T, U> = Vec<(Vertex<T, U>, Vertex<T, U>, Capacity, Cost)>;
+type Converter<U> = (U, u32, U, u32);
 
 #[allow(dead_code)]
 pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
     pub edge_list: EdgeList<T, U>,
-    pub converters: Vec<(Vertex<T, U>, (U, u32, U, u32))>,
+    pub converters: Vec<(Vertex<T, U>, Converter<U>)>,
 }
 
 #[allow(dead_code)]
@@ -475,6 +490,8 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::path::Vertex::Node;
+    use std::collections::HashMap;
 
     #[test]
     fn test_build_network() {
@@ -548,7 +565,10 @@ mod tests {
         builder.set_converter("ConvAB", "A", 1, "B", 1);
 
         let flows = builder.solve(0.2);
+        let map: HashMap<_, _> = flows.iter().map(|f| ((f.a, f.b), f.amount)).collect();
 
-        println!("{:?}", flows);
+        println!("{:?}", map);
+        assert_eq!(map[&(Node("SrcA"), Node("ConvAB"))], 10);
+        assert_eq!(map[&(Node("ConvAB"), Node("SinkB"))], 10);
     }
 }

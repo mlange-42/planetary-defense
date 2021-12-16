@@ -15,126 +15,144 @@ __meta__ = {
 }
 source_cost = 1000
 sink_cost = 1000
-load_depencence = 0.2
 
 [node name="NetworkSimplex" type="Node" parent="."]
 script = ExtResource( 4 )
 
 [node name="Links" type="Node" parent="NetworkSimplex"]
 
-[node name="F1N1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 250, 354 )
-rotation = 5.69518
-start = NodePath("../../Nodes/Source1")
-end = NodePath("../../Nodes/Node1")
-capacity = 10
+[node name="C12" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 461.5, 297.5 )
+rotation = -6.84939
+start = NodePath("../../Nodes/Sink1")
+end = NodePath("../../Nodes/Sink2")
+capacity = 25
 
-[node name="F1N2" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 269, 436.5 )
-rotation = 6.61606
-start = NodePath("../../Nodes/Source1")
-end = NodePath("../../Nodes/Node2")
-capacity = 10
+[node name="C21" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 461.5, 297.5 )
+rotation = -3.7078
+start = NodePath("../../Nodes/Sink2")
+end = NodePath("../../Nodes/Sink1")
+capacity = 25
 
-[node name="N5C1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 788, 342 )
-rotation = 13.0842
-start = NodePath("../../Nodes/Node5")
+[node name="C13" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 447, 428 )
+rotation = 0.445131
+start = NodePath("../../Nodes/Sink1")
+end = NodePath("../../Nodes/Sink3")
+capacity = 25
+
+[node name="C31" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 447, 428 )
+rotation = -2.69646
+start = NodePath("../../Nodes/Sink3")
+end = NodePath("../../Nodes/Sink1")
+capacity = 25
+
+[node name="C23" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 570.5, 349.5 )
+rotation = 1.68145
+start = NodePath("../../Nodes/Sink2")
+end = NodePath("../../Nodes/Sink3")
+capacity = 25
+
+[node name="C32" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 570.5, 349.5 )
+rotation = 4.82305
+start = NodePath("../../Nodes/Sink3")
+end = NodePath("../../Nodes/Sink2")
+capacity = 25
+
+[node name="C34" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 671.5, 488.5 )
+rotation = 6.35665
+start = NodePath("../../Nodes/Sink3")
+end = NodePath("../../Nodes/Sink4")
+capacity = 25
+
+[node name="F1C1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 254.5, 433.5 )
+rotation = 5.68014
+start = NodePath("../../Nodes/Source1")
 end = NodePath("../../Nodes/Sink1")
 capacity = 10
 
-[node name="N6C1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 789, 421 )
-rotation = 12.1553
-start = NodePath("../../Nodes/Node6")
+[node name="F2C1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 246, 386.5 )
+rotation = 6.16955
+start = NodePath("../../Nodes/Source2")
 end = NodePath("../../Nodes/Sink1")
 capacity = 10
 
-[node name="N1N3" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 414.5, 232.5 )
-rotation = 11.8923
-start = NodePath("../../Nodes/Node1")
-end = NodePath("../../Nodes/Node3")
+[node name="F3C1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 248.5, 347 )
+rotation = 6.59653
+start = NodePath("../../Nodes/Source3")
+end = NodePath("../../Nodes/Sink1")
 capacity = 10
 
-[node name="N1N4" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 419, 383 )
-rotation = 13.2653
-start = NodePath("../../Nodes/Node1")
-end = NodePath("../../Nodes/Node4")
+[node name="F4C2" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 528.5, 185 )
+rotation = 6.82491
+start = NodePath("../../Nodes/Source4")
+end = NodePath("../../Nodes/Sink2")
 capacity = 10
 
-[node name="N2N3" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 433.5, 315 )
-rotation = -1.14148
-start = NodePath("../../Nodes/Node2")
-end = NodePath("../../Nodes/Node3")
+[node name="F5C2" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 594, 155.5 )
+rotation = 7.99478
+start = NodePath("../../Nodes/Source5")
+end = NodePath("../../Nodes/Sink2")
 capacity = 10
 
-[node name="N2N4" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 438, 465.5 )
-rotation = 12.5197
-start = NodePath("../../Nodes/Node2")
-end = NodePath("../../Nodes/Node4")
-capacity = 10
-
-[node name="N3N5" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 606.5, 229 )
-rotation = 13.1521
-start = NodePath("../../Nodes/Node3")
-end = NodePath("../../Nodes/Node5")
-capacity = 10
-
-[node name="N3N6" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 607.5, 308 )
-rotation = 13.5237
-start = NodePath("../../Nodes/Node3")
-end = NodePath("../../Nodes/Node6")
-capacity = 10
-
-[node name="N4N5" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 611, 379.5 )
-rotation = -0.699736
-start = NodePath("../../Nodes/Node4")
-end = NodePath("../../Nodes/Node5")
-capacity = 10
-
-[node name="N4N6" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
-position = Vector2( 612, 458.5 )
-rotation = 12.531
-start = NodePath("../../Nodes/Node4")
-end = NodePath("../../Nodes/Node6")
+[node name="F6C2" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 656.5, 170.5 )
+rotation = 8.82875
+start = NodePath("../../Nodes/Source6")
+end = NodePath("../../Nodes/Sink2")
 capacity = 10
 
 [node name="Nodes" type="Node" parent="NetworkSimplex"]
 
 [node name="Source1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
-position = Vector2( 175, 404 )
+position = Vector2( 171, 491 )
 source = 10
-commodity = "A"
+
+[node name="Source2" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 154, 397 )
+source = 10
+
+[node name="Source3" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 159, 318 )
+source = 10
+
+[node name="Source4" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 472, 151 )
+source = 10
+
+[node name="Source5" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 603, 92 )
+source = 10
+
+[node name="Source6" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 728, 122 )
+source = 10
 
 [node name="Sink1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
-position = Vector2( 867, 387 )
+position = Vector2( 338, 376 )
 sink = 25
-commodity = "A"
 
-[node name="Node1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
-position = Vector2( 325, 304 )
+[node name="Sink2" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 585, 219 )
+sink = 25
 
-[node name="Node2" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
-position = Vector2( 363, 469 )
+[node name="Sink3" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 556, 480 )
+sink = 25
 
-[node name="Node3" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
-position = Vector2( 504, 161 )
-
-[node name="Node4" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
-position = Vector2( 513, 462 )
-
-[node name="Node5" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
-position = Vector2( 709, 297 )
-
-[node name="Node6" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
-position = Vector2( 711, 455 )
+[node name="Sink4" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 787, 497 )
+sink = 25
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 512, 304 )

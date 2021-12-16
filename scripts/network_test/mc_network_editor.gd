@@ -32,10 +32,20 @@ func _evaluate():
 	var all_edges = net.get_node("Links").get_children()
 	for i in range(all_nodes.size()):
 		var ch = all_nodes[i]
-		if ch is NetNode:
-			ch.id = i
-			nodes[i] = ch
-			
+		if not ch is NetNode:
+			break
+		
+		ch.id = i
+		nodes[i] = ch
+		
+		if ch.sink > 0 and ch.convert_to_amount > 0:
+			net.add_sink_edge(ch.id, ch.commodity, ch.sink, sink_cost)
+			net.add_source_edge(ch.id, ch.convert_to, 0, source_cost)
+			net.set_converter(ch.id, ch.commodity, ch.convert_from_amount,
+									ch.convert_to, ch.convert_to_amount)
+			source_amount[ch.id] = 0
+			sink_amount[ch.id] = 0
+		else:
 			if ch.source > 0:
 				net.add_source_edge(ch.id, ch.commodity, ch.source, source_cost)
 				source_amount[ch.id] = 0
@@ -44,13 +54,15 @@ func _evaluate():
 				sink_amount[ch.id] = 0
 	
 	for ch in all_edges:
-		if ch is NetLink:
-			var start = ch.get_node(ch.start)
-			var end = ch.get_node(ch.end)
-			var cost = int(ch.cost * (end.position - start.position).length())
-			net.add_edge(start.id, end.id, ch.capacity, cost)
-			edges[[start.id, end.id]] = ch
-			edge_amount[[start.id, end.id]] = 0
+		if not ch is NetLink:
+			break
+			
+		var start = ch.get_node(ch.start)
+		var end = ch.get_node(ch.end)
+		var cost = int(ch.cost * (end.position - start.position).length())
+		net.add_edge(start.id, end.id, ch.capacity, cost)
+		edges[[start.id, end.id]] = ch
+		edge_amount[[start.id, end.id]] = 0
 	
 	var flows = net.solve(load_depencence)
 	
