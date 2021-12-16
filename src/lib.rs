@@ -1,6 +1,8 @@
 extern crate gdnative;
 
 mod flow;
+mod path;
+
 pub use flow::NetworkSimplex;
 
 use gdnative::prelude::*;

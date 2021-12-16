@@ -9,3 +9,4 @@ crate-type = ["cdylib"]
 [dependencies]
 gdnative = "0.9.3"
 mcmf = "2.0.0"
+pathfinding = "3.0.5"
