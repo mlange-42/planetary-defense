@@ -4,6 +4,7 @@ class_name NetNode
 
 export var source: int = 0
 export var sink: int = 0
+export var commodity: String = ""
 
 onready var sprite: Sprite = $Sprite
 onready var source_sprite: Sprite = $Sprite/Source
@@ -15,7 +16,7 @@ var id: int = 0
 func _ready():
 	if not Engine.editor_hint:
 		_set_appearance()
-		label.text = "+%d/-%d" % [source, sink]
+		label.text = "%s +%d/-%d" % [commodity, source, sink]
 
 
 func _process(_delta):
@@ -52,5 +53,5 @@ func _set_appearance():
 	#$Sprite.scale = Vector2.ONE
 	$Sprite.scale = Vector2.ONE * sc
 	
-	$Label.text = "+%d/-%d" % [source, sink]
+	$Label.text = "%s +%d/-%d" % [commodity, source, sink]
 	

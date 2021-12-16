@@ -73,8 +73,8 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn solve(&self, _owner: &GdNode) -> GodotFlows {
-        let flows = self.builder.solve();
+    fn solve(&self, _owner: &GdNode, load_dependence: f32) -> GodotFlows {
+        let flows = self.builder.solve(load_dependence);
         to_godot_flows(flows)
     }
 }
@@ -175,6 +175,7 @@ pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
 
 struct Graph {
     commodities: usize,
+    load_dependence: f32,
     nodes: Vec<NodeData>,
     edges: Vec<Edge>,
     out_edges: Vec<Vec<usize>>,
@@ -197,11 +198,12 @@ impl Graph {
     pub fn delta_supply(&mut self, node: Node, commodity: usize, amount: i32) {
         self.nodes[node.0].supply[commodity] += amount;
     }
-    pub fn new_default(num_vertices: usize, commodities: usize) -> Self {
+    pub fn new_default(num_vertices: usize, commodities: usize, load_dependence: f32) -> Self {
         let nodes = vec![NodeData::new(commodities); num_vertices];
         let out_edges = vec![vec![]; num_vertices];
         Graph {
             commodities,
+            load_dependence,
             nodes,
             edges: Vec::new(),
             out_edges,
@@ -268,19 +270,20 @@ impl Graph {
             .iter()
             .filter_map(|edge_id| {
                 let edge = &self.edges[*edge_id];
-                let remaining = edge.data.capacity - edge.data.flow;
-                if remaining <= 0 {
-                    None
-                } else {
-                    let rel_remaining = remaining as f32 / edge.data.capacity as f32;
-                    Some((
-                        edge.b.0,
-                        (edge.data.cost as f32 / rel_remaining).round() as u32,
-                    ))
-                }
+                self.calc_cost(edge).map(|c| (edge.b.0, c))
             })
             .collect();
         s
+    }
+
+    fn calc_cost(&self, edge: &Edge) -> Option<u32> {
+        let remaining = edge.data.capacity - edge.data.flow;
+        if remaining <= 0 {
+            None
+        } else {
+            let rel_remaining = remaining as f32 / edge.data.capacity as f32;
+            Some((edge.data.cost as f32 * rel_remaining.powf(-self.load_dependence)).round() as u32)
+        }
     }
 }
 
@@ -318,7 +321,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         self
     }
 
-    fn solve(&self) -> Vec<Flow<T, U>> {
+    fn solve(&self, load_dependence: f32) -> Vec<Flow<T, U>> {
         let mut next_id = 0;
         let mut next_comm_id = 0_usize;
         let mut index_mapper = BTreeMap::new();
@@ -350,7 +353,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         }
 
         let num_vertices = next_id;
-        let mut g = Graph::new_default(num_vertices, commodity_mapper.len());
+        let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
         for &(ref a, ref b, cap, cost) in &self.edge_list {
             let node_a = Node(*index_mapper.get(&a).unwrap());
             let node_b = Node(*index_mapper.get(&b).unwrap());
@@ -447,6 +450,6 @@ mod tests {
             Cost(0),
         );
 
-        let _flows = builder.solve();
+        let _flows = builder.solve(1.0);
     }
 }
