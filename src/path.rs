@@ -1,15 +1,120 @@
 use rand::prelude::*;
+use std::collections::btree_map::Entry;
 use std::collections::BTreeMap;
 use std::fmt::Debug;
 use std::iter;
 
 use pathfinding::directed::dijkstra::dijkstra;
 
+use gdnative::prelude::Node as GdNode;
+use gdnative::prelude::*;
+
+type GodotFlows = Vec<(isize, isize, u32, u32)>;
+
+#[derive(NativeClass)]
+#[inherit(GdNode)]
+pub struct MultiCommodityFlow {
+    builder: GraphBuilder<usize, String>,
+}
+
+#[methods]
+impl MultiCommodityFlow {
+    fn new(_owner: &GdNode) -> Self {
+        Self {
+            builder: GraphBuilder::new(),
+        }
+    }
+
+    #[export]
+    fn _ready(&mut self, _owner: &GdNode) {}
+
+    #[export]
+    fn reset(&mut self, _owner: &GdNode) {
+        self.builder = GraphBuilder::new();
+    }
+    #[export]
+    fn add_edge(&mut self, _owner: &GdNode, from: usize, to: usize, capacity: i32, cost: i32) {
+        self.builder
+            .add_edge(from, to, Capacity(capacity), Cost(cost));
+    }
+
+    #[export]
+    fn add_source_edge(
+        &mut self,
+        _owner: &GdNode,
+        to: usize,
+        commodity: String,
+        capacity: i32,
+        cost: i32,
+    ) {
+        self.builder.add_edge(
+            Vertex::Source(commodity),
+            to,
+            Capacity(capacity),
+            Cost(cost),
+        );
+    }
+
+    #[export]
+    fn add_sink_edge(
+        &mut self,
+        _owner: &GdNode,
+        from: usize,
+        commodity: String,
+        capacity: i32,
+        cost: i32,
+    ) {
+        self.builder.add_edge(
+            from,
+            Vertex::Sink(commodity),
+            Capacity(capacity),
+            Cost(cost),
+        );
+    }
+
+    #[export]
+    fn solve(&self, _owner: &GdNode) -> GodotFlows {
+        let flows = self.builder.solve();
+        to_godot_flows(flows)
+    }
+}
+
+fn to_godot_flows(flows: Vec<Flow<usize, String>>) -> GodotFlows {
+    flows
+        .iter()
+        .map(|flow| {
+            (
+                vertex_to_id(&flow.a),
+                vertex_to_id(&flow.b),
+                flow.amount,
+                flow.cost as u32,
+            )
+        })
+        .collect::<Vec<_>>()
+}
+
+fn vertex_to_id(vertex: &Vertex<usize, String>) -> isize {
+    match vertex {
+        Vertex::Source(_) => -1,
+        Vertex::Sink(_) => -2,
+        Vertex::Node(id) => *id as isize,
+    }
+}
 #[derive(Copy, Clone, Hash, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Vertex<T: Clone + Ord, U: Clone + Ord> {
     Source(U),
     Sink(U),
     Node(T),
+}
+
+impl<T, U> From<T> for Vertex<T, U>
+where
+    T: Clone + Ord,
+    U: Clone + Ord,
+{
+    fn from(x: T) -> Vertex<T, U> {
+        Vertex::Node(x)
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -117,14 +222,13 @@ impl Graph {
                 self.apply_path(&path, comm, 1);
                 total_transported[comm] += 1;
                 has_path[comm] = true;
-                // println!("{:?}", path);
             } else {
                 has_path[comm] = false;
             }
         }
     }
 
-    fn apply_path(&mut self, path: &Vec<usize>, commodity: usize, amount: u32) {
+    fn apply_path(&mut self, path: &[usize], commodity: usize, amount: u32) {
         for i in 0..(path.len() - 1) {
             let n1 = path[i];
             let n2 = path[i + 1];
@@ -180,9 +284,11 @@ impl Graph {
     }
 }
 
+type EdgeList<T, U> = Vec<(Vertex<T, U>, Vertex<T, U>, Capacity, Cost)>;
+
 #[allow(dead_code)]
 pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
-    pub edge_list: Vec<(Vertex<T, U>, Vertex<T, U>, Capacity, Cost)>,
+    pub edge_list: EdgeList<T, U>,
 }
 
 #[allow(dead_code)]
@@ -223,20 +329,21 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .iter()
             .flat_map(move |&(ref a, ref b, _, _)| iter::once(a).chain(iter::once(b)))
         {
-            if !index_mapper.contains_key(&vertex) {
-                index_mapper.insert(vertex, next_id);
+            if let Entry::Vacant(e) = index_mapper.entry(vertex) {
+                e.insert(next_id);
                 node_mapper.insert(next_id, vertex);
                 next_id += 1;
             }
+
             if let Vertex::Source(comm) = vertex {
-                if !commodity_mapper.contains_key(comm) {
-                    commodity_mapper.insert(comm, next_comm_id);
+                if let Entry::Vacant(e) = commodity_mapper.entry(comm) {
+                    e.insert(next_comm_id);
                     next_comm_id += 1;
                 }
             }
             if let Vertex::Sink(comm) = vertex {
-                if !commodity_mapper.contains_key(comm) {
-                    commodity_mapper.insert(comm, next_comm_id);
+                if let Entry::Vacant(e) = commodity_mapper.entry(comm) {
+                    e.insert(next_comm_id);
                     next_comm_id += 1;
                 }
             }
@@ -287,7 +394,7 @@ mod tests {
 
     #[test]
     fn test_build_network() {
-        let mut builder = GraphBuilder::new();
+        let mut builder: GraphBuilder<&str, _> = GraphBuilder::new();
 
         builder.add_edge(
             Vertex::Source("Res"),
@@ -340,8 +447,6 @@ mod tests {
             Cost(0),
         );
 
-        let flows = builder.solve();
-
-        println!("{:?}", flows);
+        let _flows = builder.solve();
     }
 }
