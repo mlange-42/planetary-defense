@@ -136,12 +136,24 @@ struct Edge {
 #[derive(Clone, Debug)]
 struct NodeData {
     supply: Vec<i32>,
+    convert: Option<CommodityConversion>,
+}
+
+#[derive(Clone, Debug)]
+struct CommodityConversion {
+    from: usize,
+    from_amount: u32,
+    to: usize,
+    to_amount: u32,
+    storage: u32,
+    source: Option<usize>,
 }
 
 impl NodeData {
     fn new(commodities: usize) -> Self {
         Self {
             supply: vec![0; commodities],
+            convert: None,
         }
     }
 }
@@ -243,6 +255,37 @@ impl Graph {
         }
         self.nodes[path[0]].supply[commodity] -= amount as i32;
         self.nodes[path[path.len() - 1]].supply[commodity] += amount as i32;
+
+        let result = {
+            let receiver_idx = path[path.len() - 2];
+            let receiver = &mut self.nodes[receiver_idx];
+            if let Some(convert) = &mut receiver.convert {
+                if convert.from == commodity {
+                    convert.storage += amount;
+                    let mut total_amount = 0;
+                    while convert.storage >= convert.from_amount {
+                        total_amount += convert.to_amount;
+                        convert.storage -= convert.from_amount;
+                    }
+                    let source = convert
+                        .source
+                        .expect("No source node for converter node found!");
+                    let edge = self.out_edges[source]
+                        .iter()
+                        .find(|e| self.edges[**e].b.0 == receiver_idx)
+                        .expect("No connection to source for converter node found!");
+                    Some((source, *edge, convert.to, total_amount))
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        };
+        if let Some((source, edge, to_comm, amount)) = result {
+            self.nodes[source].supply[to_comm] += amount as i32;
+            self.edges[edge].data.capacity += amount as i32;
+        }
     }
 
     fn find_path(&self, commodity: usize) -> Option<(Vec<usize>, u32)> {
@@ -292,6 +335,7 @@ type EdgeList<T, U> = Vec<(Vertex<T, U>, Vertex<T, U>, Capacity, Cost)>;
 #[allow(dead_code)]
 pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
     pub edge_list: EdgeList<T, U>,
+    pub converters: Vec<(Vertex<T, U>, (U, u32, U, u32))>,
 }
 
 #[allow(dead_code)]
@@ -299,6 +343,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
     fn new() -> Self {
         Self {
             edge_list: Vec::new(),
+            converters: Default::default(),
         }
     }
 
@@ -319,6 +364,18 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         assert!(!matches!(b, Vertex::Source(_)));
         self.edge_list.push((a, b, capacity, cost));
         self
+    }
+
+    pub fn set_converter<A: Into<Vertex<T, U>>>(
+        &mut self,
+        vertex: A,
+        from: U,
+        from_amount: u32,
+        to: U,
+        to_amount: u32,
+    ) {
+        self.converters
+            .push((vertex.into(), (from, from_amount, to, to_amount)));
     }
 
     fn solve(&self, load_dependence: f32) -> Vec<Flow<T, U>> {
@@ -354,15 +411,39 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         let num_vertices = next_id;
         let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
+
+        for (vertex, conv) in &self.converters {
+            let idx = index_mapper[&vertex];
+
+            assert!(
+                g.nodes[idx].convert.is_none(),
+                "Only one converter allowed per node!"
+            );
+            g.nodes[idx].convert = Some(CommodityConversion {
+                from: commodity_mapper[&conv.0],
+                from_amount: conv.1,
+                to: commodity_mapper[&conv.2],
+                to_amount: conv.3,
+                storage: 0,
+                source: None,
+            })
+        }
+
         for &(ref a, ref b, cap, cost) in &self.edge_list {
             let node_a = Node(*index_mapper.get(&a).unwrap());
             let node_b = Node(*index_mapper.get(&b).unwrap());
             if let Vertex::Source(comm) = a {
+                let comm_id = commodity_mapper[comm];
                 g.delta_supply(
                     Node(*index_mapper.get(&a).unwrap()),
                     *commodity_mapper.get(comm).unwrap(),
                     cap.0,
                 );
+                if let Some(convert) = &mut g.nodes[node_b.0].convert {
+                    if convert.to == comm_id {
+                        convert.source = Some(node_a.0);
+                    }
+                }
             }
             if let Vertex::Sink(comm) = b {
                 g.delta_supply(
@@ -450,6 +531,24 @@ mod tests {
             Cost(0),
         );
 
-        let _flows = builder.solve(1.0);
+        //let _flows = builder.solve(1.0);
+    }
+
+    #[test]
+    fn test_converter() {
+        let mut builder: GraphBuilder<&str, _> = GraphBuilder::new();
+
+        builder.add_edge(Vertex::Source("A"), "SrcA", Capacity(10), Cost(0));
+        builder.add_edge("SrcA", "ConvAB", Capacity(10), Cost(0));
+        builder.add_edge("ConvAB", "SinkB", Capacity(10), Cost(0));
+        builder.add_edge(Vertex::Source("B"), "ConvAB", Capacity(0), Cost(0));
+        builder.add_edge("ConvAB", Vertex::Sink("A"), Capacity(10), Cost(0));
+        builder.add_edge("SinkB", Vertex::Sink("B"), Capacity(10), Cost(0));
+
+        builder.set_converter("ConvAB", "A", 1, "B", 1);
+
+        let flows = builder.solve(0.2);
+
+        println!("{:?}", flows);
     }
 }
