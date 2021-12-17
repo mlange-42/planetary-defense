@@ -65,6 +65,11 @@ _global_script_classes=[ {
 "path": "res://scripts/planet.gd"
 }, {
 "base": "Reference",
+"class": "RoadNetwork",
+"language": "GDScript",
+"path": "res://scripts/nav/road_network.gd"
+}, {
+"base": "Reference",
 "class": "UvSphere",
 "language": "GDScript",
 "path": "res://scripts/geom/uv_sphere.gd"
@@ -81,6 +86,7 @@ _global_script_class_icons={
 "NetLink": "",
 "NetNode": "",
 "Planet": "",
+"RoadNetwork": "",
 "UvSphere": ""
 }
 

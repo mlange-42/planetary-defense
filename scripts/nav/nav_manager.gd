@@ -19,7 +19,7 @@ func _init(vertices: PoolVector3Array, faces: PoolIntArray, planet_radius: float
 	nav_all = AStarNavigation.new(vertices, faces, 0, true)
 
 
-func get_node(id: int):
+func get_node(id: int) -> NodeData:
 	return _node_data[id]
 
 
