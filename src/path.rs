@@ -151,6 +151,8 @@ struct Edge {
 struct NodeData {
     supply: Vec<i32>,
     convert: Option<CommodityConversion>,
+    is_source: Option<usize>,
+    is_sink: Option<usize>,
 }
 
 #[derive(Clone, Debug)]
@@ -168,6 +170,8 @@ impl NodeData {
         Self {
             supply: vec![0; commodities],
             convert: None,
+            is_source: None,
+            is_sink: None,
         }
     }
 }
@@ -237,6 +241,17 @@ impl Graph {
     }
 
     fn solve(&mut self) {
+        let mut sources = vec![None; self.commodities];
+        let mut sinks = vec![None; self.commodities];
+        for (i, n) in self.nodes.iter().enumerate() {
+            if let Some(s) = n.is_source {
+                sources[s] = Some(i);
+            }
+            if let Some(s) = n.is_sink {
+                sinks[s] = Some(i);
+            }
+        }
+
         let mut has_path = vec![true; self.commodities];
         let mut total_transported = vec![0; self.commodities];
 
@@ -399,6 +414,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         let mut index_mapper = BTreeMap::new();
         let mut node_mapper = BTreeMap::new();
         let mut commodity_mapper = BTreeMap::new();
+        let mut commodities = vec![];
         for vertex in self
             .edge_list
             .iter()
@@ -413,12 +429,14 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             if let Vertex::Source(comm) = vertex {
                 if let Entry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
+                    commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
             }
             if let Vertex::Sink(comm) = vertex {
                 if let Entry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
+                    commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
             }
@@ -426,6 +444,16 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         let num_vertices = next_id;
         let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
+
+        for comm in commodities.into_iter() {
+            let comm_id = commodity_mapper[&comm];
+            if let Some(source) = index_mapper.get(&Vertex::Source(comm.clone())) {
+                g.nodes[*source].is_source = Some(comm_id);
+            }
+            if let Some(sink) = index_mapper.get(&Vertex::Sink(comm)) {
+                g.nodes[*sink].is_sink = Some(comm_id);
+            }
+        }
 
         for (vertex, conv) in &self.converters {
             let idx = index_mapper[&vertex];
