@@ -1,5 +1,9 @@
 extends Node2D
 
+export var source_cost: int = 0
+export var sink_cost: int = 0
+export (float, 0, 5) var load_depencence: float = 0
+
 onready var net = $NetworkSimplex
 
 var total_cost: int
@@ -28,52 +32,58 @@ func _evaluate():
 	var all_edges = net.get_node("Links").get_children()
 	for i in range(all_nodes.size()):
 		var ch = all_nodes[i]
-		if ch is NetNode:
-			ch.id = i
-			nodes[i] = ch
-			
+		if not ch is NetNode:
+			break
+		
+		ch.id = i
+		nodes[i] = ch
+		
+		if ch.sink > 0 and ch.convert_to_amount > 0:
+			net.add_sink_edge(ch.id, ch.commodity, ch.sink, sink_cost)
+			net.add_source_edge(ch.id, ch.convert_to, 0, source_cost)
+			net.set_converter(ch.id, ch.commodity, ch.convert_from_amount,
+									ch.convert_to, ch.convert_to_amount)
+			source_amount[ch.id] = 0
+			sink_amount[ch.id] = 0
+		else:
 			if ch.source > 0:
-				net.add_source_edge(ch.id, ch.source, 0)
+				net.add_source_edge(ch.id, ch.commodity, ch.source, source_cost)
 				source_amount[ch.id] = 0
 			if ch.sink > 0:
-				net.add_sink_edge(ch.id, ch.sink, 0)
+				net.add_sink_edge(ch.id, ch.commodity, ch.sink, sink_cost)
 				sink_amount[ch.id] = 0
 	
 	for ch in all_edges:
-		if ch is NetLink:
-			var start = ch.get_node(ch.start)
-			var end = ch.get_node(ch.end)
-			var cost = int(ch.cost * (end.position - start.position).length())
-			net.add_edge(start.id, end.id, ch.capacity, cost)
-			edges[[start.id, end.id]] = ch
-			edge_amount[[start.id, end.id]] = 0
+		if not ch is NetLink:
+			break
+			
+		var start = ch.get_node(ch.start)
+		var end = ch.get_node(ch.end)
+		var cost = int(ch.cost * (end.position - start.position).length())
+		net.add_edge(start.id, end.id, ch.capacity, cost)
+		edges[[start.id, end.id]] = ch
+		edge_amount[[start.id, end.id]] = 0
 	
-	var result = net.solve()
-	total_cost = result[0]
+	var flows = net.solve(load_depencence)
+	
+	print(flows)
+	
 	total_amount = 0
-	paths = result[1]
 	
-	var cost_stats = []
-	
-	for path in paths:
-		var path_cost = 0
-		for edge in path:
-			var from = edge[0]
-			var to = edge[1]
-			var amnt = edge[2]
-			var cost = edge[3]
-			
-			path_cost += cost
-			
-			if from >= 0 and to >= 0:
-				edge_amount[[from, to]] += amnt
-			else:
-				if from < 0:
-					source_amount[to] += amnt
-					total_amount += amnt
-				if to < 0:
-					sink_amount[from] += amnt
-		cost_stats.append([path_cost, path[0][2]])
+	for edge in flows:
+		var from = edge[0]
+		var to = edge[1]
+		var amnt = edge[2]
+		#var cost = edge[3]
+		
+		if from >= 0 and to >= 0:
+			edge_amount[[from, to]] = amnt
+		else:
+			if from < 0:
+				source_amount[to] = amnt
+				total_amount += amnt
+			if to < 0:
+				sink_amount[from] += amnt
 	
 	for key in edges:
 		edges[key].set_amount(edge_amount[key])
@@ -84,8 +94,8 @@ func _evaluate():
 	for key in sink_amount:
 		nodes[key].set_sink_amount(sink_amount[key])
 	
-	print("Amount: %d, Cost: %d (%f per unit)" % [total_cost, total_amount, total_cost / float(total_amount)])
-	print_cost_hist(cost_stats)
+	print("Amount: %d" % [total_amount])
+
 
 func print_cost_hist(cost_stats):
 	var bins = 10

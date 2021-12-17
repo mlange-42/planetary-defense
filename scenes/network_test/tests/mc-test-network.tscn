@@ -1,0 +1,147 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/network_test/net_node.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/network_test/net_link.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/network_test/mc_network_editor.gd" type="Script" id=3]
+[ext_resource path="res://native/multi_commodity.gdns" type="Script" id=4]
+
+[sub_resource type="Environment" id=1]
+background_color = Color( 0.647059, 0.647059, 0.647059, 1 )
+
+[node name="Test cities" type="Node2D"]
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+source_cost = 1000
+sink_cost = 1000
+load_depencence = 0.2
+
+[node name="NetworkSimplex" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Links" type="Node" parent="NetworkSimplex"]
+
+[node name="F1N1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 250, 354 )
+rotation = 5.69518
+start = NodePath("../../Nodes/Source1")
+end = NodePath("../../Nodes/Node1")
+capacity = 10
+
+[node name="F1N2" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 269, 436.5 )
+rotation = 6.61606
+start = NodePath("../../Nodes/Source1")
+end = NodePath("../../Nodes/Node2")
+capacity = 10
+
+[node name="N5C1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 788, 342 )
+rotation = 13.0842
+start = NodePath("../../Nodes/Node5")
+end = NodePath("../../Nodes/Sink1")
+capacity = 10
+
+[node name="N6C1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 789, 421 )
+rotation = 12.1553
+start = NodePath("../../Nodes/Node6")
+end = NodePath("../../Nodes/Sink1")
+capacity = 10
+
+[node name="N1N3" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 414.5, 232.5 )
+rotation = 11.8923
+start = NodePath("../../Nodes/Node1")
+end = NodePath("../../Nodes/Node3")
+capacity = 10
+
+[node name="N1N4" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 419, 383 )
+rotation = 13.2653
+start = NodePath("../../Nodes/Node1")
+end = NodePath("../../Nodes/Node4")
+capacity = 10
+
+[node name="N2N3" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 433.5, 315 )
+rotation = -1.14148
+start = NodePath("../../Nodes/Node2")
+end = NodePath("../../Nodes/Node3")
+capacity = 10
+
+[node name="N2N4" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 438, 465.5 )
+rotation = 12.5197
+start = NodePath("../../Nodes/Node2")
+end = NodePath("../../Nodes/Node4")
+capacity = 10
+
+[node name="N3N5" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 606.5, 229 )
+rotation = 13.1521
+start = NodePath("../../Nodes/Node3")
+end = NodePath("../../Nodes/Node5")
+capacity = 10
+
+[node name="N3N6" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 607.5, 308 )
+rotation = 13.5237
+start = NodePath("../../Nodes/Node3")
+end = NodePath("../../Nodes/Node6")
+capacity = 10
+
+[node name="N4N5" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 611, 379.5 )
+rotation = -0.699736
+start = NodePath("../../Nodes/Node4")
+end = NodePath("../../Nodes/Node5")
+capacity = 10
+
+[node name="N4N6" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 612, 458.5 )
+rotation = 12.531
+start = NodePath("../../Nodes/Node4")
+end = NodePath("../../Nodes/Node6")
+capacity = 10
+
+[node name="Nodes" type="Node" parent="NetworkSimplex"]
+
+[node name="Source1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 175, 404 )
+commodity = "A"
+source = 10
+
+[node name="Sink1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 867, 387 )
+commodity = "A"
+sink = 25
+
+[node name="Node1" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 325, 304 )
+
+[node name="Node2" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 363, 469 )
+
+[node name="Node3" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 504, 161 )
+
+[node name="Node4" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 513, 462 )
+
+[node name="Node5" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 709, 297 )
+
+[node name="Node6" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 711, 455 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 512, 304 )
+current = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )

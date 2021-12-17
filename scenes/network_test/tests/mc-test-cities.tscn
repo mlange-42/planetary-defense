@@ -2,8 +2,8 @@
 
 [ext_resource path="res://scenes/network_test/net_node.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/network_test/net_link.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scripts/network_test/network_editor.gd" type="Script" id=3]
-[ext_resource path="res://native/network_simplex.gdns" type="Script" id=4]
+[ext_resource path="res://scripts/network_test/mc_network_editor.gd" type="Script" id=3]
+[ext_resource path="res://native/multi_commodity.gdns" type="Script" id=4]
 
 [sub_resource type="Environment" id=1]
 background_color = Color( 0.647059, 0.647059, 0.647059, 1 )
@@ -13,6 +13,8 @@ script = ExtResource( 3 )
 __meta__ = {
 "_edit_lock_": true
 }
+source_cost = 1000
+sink_cost = 1000
 
 [node name="NetworkSimplex" type="Node" parent="."]
 script = ExtResource( 4 )
@@ -24,42 +26,49 @@ position = Vector2( 461.5, 297.5 )
 rotation = -6.84939
 start = NodePath("../../Nodes/Sink1")
 end = NodePath("../../Nodes/Sink2")
-capacity = 10
+capacity = 25
 
 [node name="C21" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
 position = Vector2( 461.5, 297.5 )
 rotation = -3.7078
 start = NodePath("../../Nodes/Sink2")
 end = NodePath("../../Nodes/Sink1")
-capacity = 10
+capacity = 25
 
 [node name="C13" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
 position = Vector2( 447, 428 )
 rotation = 0.445131
 start = NodePath("../../Nodes/Sink1")
 end = NodePath("../../Nodes/Sink3")
-capacity = 10
+capacity = 25
 
 [node name="C31" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
 position = Vector2( 447, 428 )
 rotation = -2.69646
 start = NodePath("../../Nodes/Sink3")
 end = NodePath("../../Nodes/Sink1")
-capacity = 10
+capacity = 25
 
 [node name="C23" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
 position = Vector2( 570.5, 349.5 )
 rotation = 1.68145
 start = NodePath("../../Nodes/Sink2")
 end = NodePath("../../Nodes/Sink3")
-capacity = 10
+capacity = 25
 
 [node name="C32" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
 position = Vector2( 570.5, 349.5 )
 rotation = 4.82305
 start = NodePath("../../Nodes/Sink3")
 end = NodePath("../../Nodes/Sink2")
-capacity = 10
+capacity = 25
+
+[node name="C34" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
+position = Vector2( 671.5, 488.5 )
+rotation = 6.35665
+start = NodePath("../../Nodes/Sink3")
+end = NodePath("../../Nodes/Sink4")
+capacity = 25
 
 [node name="F1C1" parent="NetworkSimplex/Links" instance=ExtResource( 2 )]
 position = Vector2( 254.5, 433.5 )
@@ -139,6 +148,10 @@ sink = 25
 
 [node name="Sink3" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
 position = Vector2( 556, 480 )
+sink = 25
+
+[node name="Sink4" parent="NetworkSimplex/Nodes" instance=ExtResource( 1 )]
+position = Vector2( 787, 497 )
 sink = 25
 
 [node name="Camera2D" type="Camera2D" parent="."]
