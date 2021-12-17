@@ -252,23 +252,57 @@ impl Graph {
             }
         }
 
-        let mut has_path = vec![true; self.commodities];
+        // TODO: use for termination criterion
+
+        let mut crowded = vec![false; self.commodities];
         let mut total_transported = vec![0; self.commodities];
 
-        while has_path.iter().any(|p| *p) {
-            let comm = thread_rng().gen_range(0..self.commodities);
-            //if !has_path[comm] {
-            //    continue;
-            //}
-            let result = self.find_path(comm);
+        while !crowded.iter().all(|p| *p) {
+            let candidates: Vec<_> = self
+                .find_source_candidates(&sources, &sinks, &crowded)
+                .collect();
+            if candidates.is_empty() {
+                break;
+            }
+
+            let (comm, start) = candidates.choose(&mut thread_rng()).unwrap();
+
+            let result = self.find_path(*comm, *start);
             if let Some((path, _cost)) = result {
-                self.apply_path(&path, comm, 1);
-                total_transported[comm] += 1;
-                has_path[comm] = true;
+                self.apply_path(&path, *comm, 1);
+                total_transported[*comm] += 1;
+                crowded[*comm] = false;
             } else {
-                has_path[comm] = false;
+                crowded[*comm] = true;
             }
         }
+    }
+
+    fn find_source_candidates<'s>(
+        &'s self,
+        sources: &'s [Option<usize>],
+        sinks: &'s [Option<usize>],
+        crowded: &'s [bool],
+    ) -> impl Iterator<Item = (usize, usize)> + 's {
+        sources
+            .iter()
+            .zip(sinks)
+            .zip(crowded)
+            .enumerate()
+            .filter_map(|(i, ((s, t), crowded))| {
+                if let (Some(sn), Some(tn)) = (s, t) {
+                    if !*crowded
+                        && (self.nodes[*sn].supply[i] > 0)
+                        && (self.nodes[*tn].supply[i] < 0)
+                    {
+                        Some((i, *sn))
+                    } else {
+                        None
+                    }
+                } else {
+                    None
+                }
+            })
     }
 
     fn apply_path(&mut self, path: &[usize], commodity: usize, amount: u32) {
@@ -317,24 +351,12 @@ impl Graph {
         }
     }
 
-    fn find_path(&self, commodity: usize) -> Option<(Vec<usize>, u32)> {
-        let sources = self.nodes.iter().enumerate().filter_map(|(i, n)| {
-            if n.supply[commodity] > 0 {
-                Some(i)
-            } else {
-                None
-            }
-        });
-
-        if let Some(start) = sources.choose(&mut rand::thread_rng()) {
-            dijkstra::<usize, u32, _, Vec<_>, _>(
-                &start,
-                |id| self.get_successor(*id),
-                |id| self.nodes[*id].supply[commodity] < 0,
-            )
-        } else {
-            None
-        }
+    fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<usize>, u32)> {
+        dijkstra::<usize, u32, _, Vec<_>, _>(
+            &start,
+            |id| self.get_successor(*id),
+            |id| self.nodes[*id].supply[commodity] < 0,
+        )
     }
 
     fn get_successor(&self, id: usize) -> Vec<(usize, u32)> {
