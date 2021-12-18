@@ -3,6 +3,7 @@ extends Spatial
 onready var planet: Planet = $Planet
 onready var mouse: Mouse = $Mouse
 onready var pointer: Spatial = $MousePointer
+onready var gui: Gui = $GUI
 
 
 var start_point: int = -1
@@ -31,12 +32,26 @@ func _on_planet_hovered(point: Vector3):
 	var id = planet.nav.nav_all.get_closest_point(point)
 	var node = planet.nav.get_node(id)
 	pointer.translation = node.position
-
-
-func _on_planet_clicked(point: Vector3):
-	var id = planet.nav.nav_all.get_closest_point(point)
-	if start_point >= 0:
-		if planet.draw_path(start_point, id):
-			start_point = id
+	
+	var sel_tool = gui.get_selected_tool()
+	if sel_tool == "Road":
+		if start_point >= 0:
+			planet.draw_path(start_point, id)
 	else:
-		start_point = id
+		start_point = -1
+
+
+func _on_planet_clicked(point: Vector3, button: int):
+	var sel_tool = gui.get_selected_tool()
+	if sel_tool == "Road":
+		if button == BUTTON_LEFT:
+			var id = planet.nav.nav_all.get_closest_point(point)
+			if start_point >= 0:
+				planet.add_road(start_point, id)
+				start_point = -1
+				planet.clear_path()
+			else:
+				start_point = id
+		else:
+			start_point = -1
+			planet.clear_path()

@@ -12,6 +12,24 @@ func draw_path(points: Array, color: Color):
 	
 	end()
 
+
+func draw_roads(nav: NavManager, roads: RoadNetwork, color: Color):
+	clear()
+	begin(Mesh.PRIMITIVE_LINES)
+	
+	set_color(color)
+	
+	for node1 in roads.neighbors:
+		var n = roads.neighbors[node1]
+		var p1 = nav.get_node(node1).position
+		for node2 in n:
+			var p2 = nav.get_node(node2).position
+			add_vertex(p1 + 0.1 * p1.normalized())
+			add_vertex(p2 + 0.1 * p2.normalized())
+	
+	end()
+
+
 func draw_points(nav: NavManager):
 	clear()
 	begin(Mesh.PRIMITIVE_POINTS)

@@ -19,11 +19,14 @@ export var smooth: bool = false
 export var land_material: Material
 export var water_material: Material
 
+onready var road_debug: DebugDraw = $RoadDebug
 onready var path_debug: DebugDraw = $PathDebug
 onready var grid_debug: DebugDraw = $GridDebug
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var nav: NavManager
+var roads: RoadNetwork
+var builder: BuildManager
 
 func _ready():
 	assert(nav_subdivisions <= subdivisions, "Navigation subdivisions may not be larger then ground subdivisions")
@@ -35,6 +38,8 @@ func _ready():
 	
 	var gnd: IcoSphere.Result = _create_ground()
 	self.nav = _create_nav(gnd)
+	self.roads = RoadNetwork.new()
+	self.builder = BuildManager.new(roads)
 	
 	var ground: MeshInstance = _add_mesh(gnd.mesh, "Ground")
 	ground.material_override = land_material
@@ -51,13 +56,39 @@ func _ready():
 	grid_debug.draw_points(nav)
 
 
-func draw_path(from: int, to: int) -> bool:
+func calc_point_path(from: int, to: int) -> Array:
 	if nav.nav_land.has_point(from) and nav.nav_land.has_point(to):
 		var path = nav.nav_land.get_point_path(from, to)
+		return path
+	
+	return []
+
+
+func calc_id_path(from: int, to: int) -> Array:
+	if nav.nav_land.has_point(from) and nav.nav_land.has_point(to):
+		var path = nav.nav_land.get_id_path(from, to)
+		return path
+	
+	return []
+
+
+func draw_path(from: int, to: int) -> bool:
+	var path = calc_point_path(from, to)
+	if path.size() > 0:
 		path_debug.draw_path(path, Color.yellow)
 		return true
 	
 	return false
+
+
+func add_road(from: int, to: int):
+	var path = calc_id_path(from, to)
+	if builder.add_road(path):
+		road_debug.draw_roads(nav, roads, Color.gray)
+
+
+func clear_path():
+	path_debug.draw_path([], Color.yellow)
 
 
 func _add_mesh(mesh: Mesh, name: String) -> GeometryInstance:

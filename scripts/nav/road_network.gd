@@ -26,6 +26,14 @@ func remove_facility(v: int):
 	assert(facilities.erase(v), "There is no a facility at node %s to remove" % v)
 
 
+func points_connected(v1: int, v2: int) -> bool:
+	if not neighbors.has(v1):
+		return false
+	
+	var n: Array = neighbors[v1]
+	return n.has(v2)
+
+
 func get_edges():
 	var edges = []
 	

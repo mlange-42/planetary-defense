@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://scripts/nav/navigation.gd"
 }, {
 "base": "Reference",
+"class": "BuildManager",
+"language": "GDScript",
+"path": "res://scripts/managers/build_manager.gd"
+}, {
+"base": "Reference",
 "class": "Colors",
 "language": "GDScript",
 "path": "res://scripts/network_test/colors.gd"
@@ -28,6 +33,11 @@ _global_script_classes=[ {
 "class": "GeoUtil",
 "language": "GDScript",
 "path": "res://scripts/geom/geo_util.gd"
+}, {
+"base": "Control",
+"class": "Gui",
+"language": "GDScript",
+"path": "res://scripts/gui/gui.gd"
 }, {
 "base": "Reference",
 "class": "HeightMap",
@@ -76,9 +86,11 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AStarNavigation": "",
+"BuildManager": "",
 "Colors": "",
 "DebugDraw": "",
 "GeoUtil": "",
+"Gui": "",
 "HeightMap": "",
 "IcoSphere": "",
 "Mouse": "",
