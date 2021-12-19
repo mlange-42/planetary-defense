@@ -4,6 +4,7 @@ const ROAD_CAPACITY = 25
 
 const SCENES = {
 	"Town": "res://scenes/objects/town.tscn",
+	"Mine": "res://scenes/objects/mine.tscn",
 	"Factory": "res://scenes/objects/factory.tscn",
 }
 

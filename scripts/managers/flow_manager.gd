@@ -33,7 +33,8 @@ func solve():
 		for from_to_comm in facility.conversions:
 			var from = from_to_comm[0]
 			var to = from_to_comm[1]
-			var conv = from_to_comm
+			var conv = facility.conversions[from_to_comm]
+			
 			if facility.sinks.has(from):
 				flow.add_source_edge(facility.node_id, to, 0, source_cost)
 				flow.set_converter(facility.node_id, from, conv[0], to, conv[1])

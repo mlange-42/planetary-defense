@@ -55,7 +55,7 @@ func points_connected(v1: int, v2: int) -> bool:
 
 
 func get_edges():
-	var edges = []
+	var edge_list = []
 	
 	for key in neighbors:
 		var n: Array = neighbors[key]
@@ -65,9 +65,9 @@ func get_edges():
 		for i in range(n.size()):
 			var trace = _trace_edge(key, i)
 			if not trace.empty():
-				edges.append(trace)
+				edge_list.append(trace)
 	
-	return edges
+	return edge_list
 
 
 func reset_flow():

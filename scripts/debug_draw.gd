@@ -23,7 +23,7 @@ func draw_roads(nav: NavManager, roads: RoadNetwork, color1: Color, color2: Colo
 		for node2 in n:
 			var edge = roads.edges[[node1, node2]]
 			var p2 = nav.get_node(node2).position
-			var off = (p2 - p1).cross(p1).normalized() * 0.015
+			var off = (p2 - p1).cross(p1).normalized() * 0.02
 			
 			set_color(color1.linear_interpolate(color2, edge.flow/float(edge.capacity)))
 			add_vertex(p1 + 0.02 * p1.normalized() + off)

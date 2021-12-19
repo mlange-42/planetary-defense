@@ -3,16 +3,14 @@
 [ext_resource path="res://scripts/objects/facility.gd" type="Script" id=1]
 
 [sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.247059, 0.247059, 0.247059, 1 )
 
-[node name="Factory" type="Spatial"]
+[node name="Mine" type="Spatial"]
 script = ExtResource( 1 )
 sources = {
-}
-sinks = {
 "Resources": 10
 }
-conversions = {
-[ "Resources", "Products" ]: [ 1, 1 ]
+sinks = {
 }
 
 [node name="CSGCylinder" type="CSGCylinder" parent="."]
