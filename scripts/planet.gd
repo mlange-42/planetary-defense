@@ -88,7 +88,11 @@ func draw_path(from: int, to: int) -> bool:
 func add_road(from: int, to: int):
 	var path = calc_id_path(from, to)
 	if builder.add_road(path):
-		road_debug.draw_roads(nav, roads, Color.gray)
+		_redraw_roads()
+
+
+func _redraw_roads():
+	road_debug.draw_roads(nav, roads, Color.green, Color.red)
 
 
 func add_facility(type: String, location: int):
@@ -165,3 +169,4 @@ func _add_noise(m: Mesh):
 
 func next_turn():
 	flow.solve()
+	_redraw_roads()

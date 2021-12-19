@@ -1,5 +1,6 @@
 class_name BuildManager
 
+const ROAD_CAPACITY = 25
 
 const SCENES = {
 	"Town": "res://scenes/objects/town.tscn",
@@ -26,7 +27,7 @@ func add_road(path: Array) -> bool:
 		var p1 = path[i]
 		var p2 = path[i+1]
 		if not network.points_connected(p1, p2):
-			network.connect_points(p1, p2)
+			network.connect_points(p1, p2, ROAD_CAPACITY)
 	
 	return true
 

@@ -1,15 +1,29 @@
 class_name RoadNetwork
 
+const MAX_INT = 9223372036854775807
+
+class Edge:
+	var from: int
+	var to: int
+	var flow: int
+	var capacity: int
+	
+	func _init(from_id: int, to_id: int, cap: int):
+		self.from = from_id
+		self.to = to_id
+		self.capacity = cap
+
 var neighbors: Dictionary = {}
+var edges: Dictionary = {}
 var facilities: Dictionary = {}
 
 func _init():
 	pass
 
 
-func connect_points(v1: int, v2: int):
-	_connect(v1, v2)
-	_connect(v2, v1)
+func connect_points(v1: int, v2: int, capacity: int):
+	_connect(v1, v2, capacity)
+	_connect(v2, v1, capacity)
 
 
 func disconnect_points(v1: int, v2: int):
@@ -37,11 +51,7 @@ func get_facility(v: int):
 
 
 func points_connected(v1: int, v2: int) -> bool:
-	if not neighbors.has(v1):
-		return false
-	
-	var n: Array = neighbors[v1]
-	return n.has(v2)
+	return edges.has([v1, v2])
 
 
 func get_edges():
@@ -60,22 +70,31 @@ func get_edges():
 	return edges
 
 
+func reset_flow():
+	for edge in edges.values():
+		edge.flow = 0
+
+
 func _trace_edge(node: int, neighbor: int) -> Array:
 	var n: Array
 	var result = [node]
 	var first = node
 	var previous: int = node
 	var current: int = neighbors[node][neighbor]
+	var capacity = MAX_INT
 	
 	while true:
 		if current == first: # dead-end loop -> omit
 			return []
 		
 		result.append(current)
+		var edge: Edge = edges[[previous, current]]
+		if edge.capacity < capacity:
+			capacity = edge.capacity
 		
 		n = neighbors[current]
 		if n.size() != 2 or facilities.has(current):
-			return result
+			return [result, capacity]
 		
 		var n0 = n[0]
 		var old = previous
@@ -85,7 +104,7 @@ func _trace_edge(node: int, neighbor: int) -> Array:
 	return [] # should never be reached
 
 
-func _connect(v1: int, v2: int):
+func _connect(v1: int, v2: int, capacity: int):
 	if neighbors.has(v1):
 		var n: Array = neighbors[v1]
 		assert(not n.has(v2), "Points %d and %d are already connected" % [v1, v2])
@@ -93,6 +112,8 @@ func _connect(v1: int, v2: int):
 		n.append(v2)
 	else:
 		neighbors[v1] = [v2]
+	
+	edges[[v1, v2]] = Edge.new(v1, v2, capacity)
 
 
 func _disconnect(v1: int, v2: int):
@@ -103,3 +124,4 @@ func _disconnect(v1: int, v2: int):
 	assert(idx >= 0, "Points %d and %d are not connected" % [v1, v2])
 	
 	n.remove(idx)
+	edges.erase([v1, v2])

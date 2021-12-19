@@ -3,8 +3,8 @@ class_name FlowManager
 var MultiCommodityFlow = preload("res://native/multi_commodity.gdns")
 
 
-var source_cost: int = 0
-var sink_cost: int = 0
+var source_cost: int = 10
+var sink_cost: int = 10
 var load_depencence: float = 0.25
 
 
@@ -21,10 +21,11 @@ func solve():
 	var facilities = network.facilities
 	
 	for edge in edges:
-		var p1 = edge[0]
-		var p2 = edge[edge.size()-1]
-		var cost = edge.size()-1
-		var capacity = 10
+		var path = edge[0]
+		var p1 = path[0]
+		var p2 = path[path.size()-1]
+		var cost = path.size()-1
+		var capacity = edge[1]
 		flow.add_edge(p1, p2, capacity, cost)
 		
 	for fid in facilities:
@@ -38,12 +39,27 @@ func solve():
 				flow.set_converter(facility.node_id, from, conv[0], to, conv[1])
 		
 		for source in facility.sources:
-			print("Adding source %d to %s" % [facility.sources[source], facility.node_id])
 			flow.add_source_edge(facility.node_id, source, facility.sources[source], source_cost)
 			
 		for sink in facility.sinks:
-			print("Adding sink %d to %s" % [facility.sinks[sink], facility.node_id])
 			flow.add_sink_edge(facility.node_id, sink, facility.sinks[sink], sink_cost)
 	
 	var result = flow.solve(load_depencence)
-	print(result)
+	
+	network.reset_flow()
+	
+	var i = 0
+	for edge in result:
+		if edge[0] < 1 or edge[1] < 1:
+			continue
+		
+		var path_cap = edges[i]
+		var path = path_cap[0]
+		var amount = edge[2]
+		
+		for j in range(path.size()-1):
+			var net_edge = network.edges[[path[j], path[j+1]]]
+			net_edge.flow = amount
+		
+		i += 1
+	
