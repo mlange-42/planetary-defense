@@ -36,6 +36,7 @@ func _on_planet_hovered(point: Vector3):
 	var sel_tool = gui.get_selected_tool()
 	if sel_tool == "Road":
 		if start_point >= 0:
+			# warning-ignore:return_value_discarded
 			planet.draw_path(start_point, id)
 	else:
 		start_point = -1
