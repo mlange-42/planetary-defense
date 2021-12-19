@@ -88,8 +88,8 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn solve(&mut self, _owner: &Resource, load_dependence: f32) {
-        self.builder.solve(load_dependence);
+    fn solve(&mut self, _owner: &Resource, bidiretional: bool, load_dependence: f32) {
+        self.builder.solve(bidiretional, load_dependence);
     }
 
     #[export]
@@ -228,6 +228,7 @@ pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
 }
 
 struct Graph {
+    bidirectional: bool,
     commodities: usize,
     load_dependence: f32,
     nodes: Vec<NodeData>,
@@ -249,10 +250,16 @@ impl Graph {
     pub fn delta_supply(&mut self, node: Node, commodity: usize, amount: i32) {
         self.nodes[node.0].supply[commodity] += amount;
     }
-    pub fn new_default(num_vertices: usize, commodities: usize, load_dependence: f32) -> Self {
+    pub fn new_default(
+        num_vertices: usize,
+        commodities: usize,
+        bidirectional: bool,
+        load_dependence: f32,
+    ) -> Self {
         let nodes = vec![NodeData::new(commodities); num_vertices];
         let out_edges = vec![vec![]; num_vertices];
         Graph {
+            bidirectional,
             commodities,
             load_dependence,
             nodes,
@@ -330,12 +337,10 @@ impl Graph {
         for i in 0..(path.len() - 1) {
             let n1 = path[i];
             let n2 = path[i + 1];
-            let edge_idx = self.out_edges[n1]
-                .iter()
-                .find(|id| self.edges[**id].b.0 == n2)
-                .unwrap();
-
-            self.edges[*edge_idx].data.flow += amount as i32;
+            self.apply_to_edge(n1, n2, amount);
+            if self.bidirectional && i > 0 && i < path.len() - 2 {
+                self.apply_to_edge(n2, n1, amount);
+            }
         }
         self.nodes[path[0]].supply[commodity] -= amount as i32;
         self.nodes[path[path.len() - 1]].supply[commodity] += amount as i32;
@@ -376,6 +381,15 @@ impl Graph {
             self.nodes[source].supply[to_comm] += amount as i32;
             self.edges[edge].data.capacity += amount as i32;
         }
+    }
+
+    fn apply_to_edge(&mut self, from: usize, to: usize, amount: u32) {
+        let edge_idx = self.out_edges[from]
+            .iter()
+            .find(|id| self.edges[**id].b.0 == to)
+            .unwrap();
+
+        self.edges[*edge_idx].data.flow += amount as i32;
     }
 
     fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<usize>, u32)> {
@@ -475,7 +489,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .push((vertex.into(), (from, from_amount, to, to_amount)));
     }
 
-    fn solve(&mut self, load_dependence: f32) {
+    fn solve(&mut self, bidirectional: bool, load_dependence: f32) {
         assert!(
             self.flows.is_none(),
             "Cannot re-evaluate an already solved graph."
@@ -515,7 +529,12 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         }
 
         let num_vertices = next_id;
-        let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
+        let mut g = Graph::new_default(
+            num_vertices,
+            commodity_mapper.len(),
+            bidirectional,
+            load_dependence,
+        );
 
         for comm in commodities.into_iter() {
             let comm_id = commodity_mapper[&comm];
@@ -698,7 +717,7 @@ mod tests {
 
         builder.set_converter("ConvAB", "A", 1, "B", 1);
 
-        builder.solve(0.2);
+        builder.solve(false, 0.2);
         let flows = builder.get_flows();
         let map: HashMap<_, _> = flows.iter().map(|f| ((f.a, f.b), f.amount)).collect();
 
