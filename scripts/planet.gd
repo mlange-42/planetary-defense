@@ -19,6 +19,8 @@ export var smooth: bool = false
 export var land_material: Material
 export var water_material: Material
 
+onready var facilities: Spatial = $Facilities
+
 onready var road_debug: DebugDraw = $RoadDebug
 onready var path_debug: DebugDraw = $PathDebug
 onready var grid_debug: DebugDraw = $GridDebug
@@ -27,6 +29,7 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var nav: NavManager
 var roads: RoadNetwork
 var builder: BuildManager
+var flow: FlowManager
 
 func _ready():
 	assert(nav_subdivisions <= subdivisions, "Navigation subdivisions may not be larger then ground subdivisions")
@@ -39,7 +42,8 @@ func _ready():
 	var gnd: IcoSphere.Result = _create_ground()
 	self.nav = _create_nav(gnd)
 	self.roads = RoadNetwork.new()
-	self.builder = BuildManager.new(roads)
+	self.builder = BuildManager.new(roads, nav, facilities)
+	self.flow = FlowManager.new(roads)
 	
 	var ground: MeshInstance = _add_mesh(gnd.mesh, "Ground")
 	ground.material_override = land_material
@@ -85,6 +89,10 @@ func add_road(from: int, to: int):
 	var path = calc_id_path(from, to)
 	if builder.add_road(path):
 		road_debug.draw_roads(nav, roads, Color.gray)
+
+
+func add_facility(type: String, location: int):
+	builder.add_facility(type, location)
 
 
 func clear_path():
@@ -155,5 +163,5 @@ func _add_noise(m: Mesh):
 	height_map.create_elevation(m, height_curve, true)
 
 
-func _draw():
-	pass
+func next_turn():
+	flow.solve()

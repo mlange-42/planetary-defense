@@ -44,3 +44,5 @@ rings = 5
 material = SubResource( 2 )
 
 [node name="GUI" parent="." instance=ExtResource( 8 )]
+
+[connection signal="next_turn" from="GUI" to="." method="_on_next_turn"]

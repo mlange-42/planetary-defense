@@ -24,8 +24,9 @@ func draw_roads(nav: NavManager, roads: RoadNetwork, color: Color):
 		var p1 = nav.get_node(node1).position
 		for node2 in n:
 			var p2 = nav.get_node(node2).position
-			add_vertex(p1 + 0.1 * p1.normalized())
-			add_vertex(p2 + 0.1 * p2.normalized())
+			var off = (p2 - p1).cross(p1).normalized() * 0.015
+			add_vertex(p1 + 0.02 * p1.normalized() + off)
+			add_vertex(p2 + 0.02 * p2.normalized() + off)
 	
 	end()
 

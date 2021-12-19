@@ -42,10 +42,10 @@ func _on_planet_hovered(point: Vector3):
 
 
 func _on_planet_clicked(point: Vector3, button: int):
+	var id = planet.nav.nav_all.get_closest_point(point)
 	var sel_tool = gui.get_selected_tool()
 	if sel_tool == "Road":
 		if button == BUTTON_LEFT:
-			var id = planet.nav.nav_all.get_closest_point(point)
 			if start_point >= 0:
 				planet.add_road(start_point, id)
 				start_point = -1
@@ -55,3 +55,10 @@ func _on_planet_clicked(point: Vector3, button: int):
 		else:
 			start_point = -1
 			planet.clear_path()
+	elif sel_tool != null:
+		if button == BUTTON_LEFT:
+			planet.add_facility(sel_tool, id)
+
+
+func _on_next_turn():
+	planet.next_turn()

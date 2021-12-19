@@ -15,11 +15,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Controls" type="VBoxContainer" parent="."]
 margin_right = 58.0
 margin_bottom = 580.0
 
-[node name="Town" type="Button" parent="VBoxContainer"]
+[node name="BuildButtons" type="VBoxContainer" parent="Controls"]
+margin_right = 58.0
+margin_bottom = 92.0
+
+[node name="Town" type="Button" parent="Controls/BuildButtons"]
 margin_right = 58.0
 margin_bottom = 20.0
 toggle_mode = true
@@ -28,7 +32,7 @@ text = "Town"
 script = ExtResource( 3 )
 tool_type = "Town"
 
-[node name="Mine" type="Button" parent="VBoxContainer"]
+[node name="Mine" type="Button" parent="Controls/BuildButtons"]
 margin_top = 24.0
 margin_right = 58.0
 margin_bottom = 44.0
@@ -38,7 +42,7 @@ text = "Mine"
 script = ExtResource( 3 )
 tool_type = "Mine"
 
-[node name="Factory" type="Button" parent="VBoxContainer"]
+[node name="Factory" type="Button" parent="Controls/BuildButtons"]
 margin_top = 48.0
 margin_right = 58.0
 margin_bottom = 68.0
@@ -46,8 +50,9 @@ toggle_mode = true
 group = ExtResource( 1 )
 text = "Factory"
 script = ExtResource( 3 )
+tool_type = "Factory"
 
-[node name="Road" type="Button" parent="VBoxContainer"]
+[node name="Road" type="Button" parent="Controls/BuildButtons"]
 margin_top = 72.0
 margin_right = 58.0
 margin_bottom = 92.0
@@ -56,3 +61,17 @@ group = ExtResource( 1 )
 text = "Road"
 script = ExtResource( 3 )
 tool_type = "Road"
+
+[node name="Control" type="Control" parent="Controls"]
+margin_top = 96.0
+margin_right = 58.0
+margin_bottom = 556.0
+size_flags_vertical = 3
+
+[node name="NextTurnButton" type="Button" parent="Controls"]
+margin_top = 560.0
+margin_right = 58.0
+margin_bottom = 580.0
+text = "Turn"
+
+[connection signal="pressed" from="Controls/NextTurnButton" to="." method="_on_NextTurnButton_pressed"]

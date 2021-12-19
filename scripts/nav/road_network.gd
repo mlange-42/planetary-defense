@@ -17,13 +17,23 @@ func disconnect_points(v1: int, v2: int):
 	_disconnect(v2, v1)
 
 
-func add_facility(v: int):
+func add_facility(v: int, facility: Facility):
 	assert(not facilities.has(v), "There is already a facility at node %s" % v)
-	facilities[v] = true
+	facilities[v] = facility
 
 
 func remove_facility(v: int):
 	assert(facilities.erase(v), "There is no a facility at node %s to remove" % v)
+
+
+func has_facility(v: int) -> bool:
+	return facilities.has(v)
+
+
+func get_facility(v: int):
+	if not facilities.has(v):
+		return null
+	return facilities[v]
 
 
 func points_connected(v1: int, v2: int) -> bool:
