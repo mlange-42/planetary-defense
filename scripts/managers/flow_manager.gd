@@ -3,9 +3,10 @@ class_name FlowManager
 var MultiCommodityFlow = preload("res://native/multi_commodity.gdns")
 
 
-var source_cost: int = 10
-var sink_cost: int = 10
+var source_cost: int = 25
+var sink_cost: int = 25
 var load_depencence: float = 0.25
+var bidirectional: bool = true
 
 
 var network: RoadNetwork
@@ -45,12 +46,15 @@ func solve():
 		for sink in facility.sinks:
 			flow.add_sink_edge(facility.node_id, sink, facility.sinks[sink], sink_cost)
 	
-	var result = flow.solve(load_depencence)
+	flow.solve(bidirectional, load_depencence)
+	var flows = flow.get_flows()
+	for fid in facilities:
+		facilities[fid].flows = flow.get_node_flows(fid)
 	
 	network.reset_flow()
 	
 	var i = 0
-	for edge in result:
+	for edge in flows:
 		if edge[0] < 1 or edge[1] < 1:
 			continue
 		

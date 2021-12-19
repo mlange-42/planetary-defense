@@ -45,11 +45,16 @@ func _on_planet_hovered(point: Vector3):
 func _on_planet_clicked(point: Vector3, button: int):
 	var id = planet.nav.nav_all.get_closest_point(point)
 	var sel_tool = gui.get_selected_tool()
-	if sel_tool == "Road":
+	if sel_tool == "Inspect":
+		if button == BUTTON_LEFT:
+			_show_info(id)
+		elif button == BUTTON_RIGHT:
+			_hide_info()
+	elif sel_tool == "Road":
 		if button == BUTTON_LEFT:
 			if start_point >= 0:
 				planet.add_road(start_point, id)
-				start_point = -1
+				start_point = id
 				planet.clear_path()
 			else:
 				start_point = id
@@ -59,6 +64,34 @@ func _on_planet_clicked(point: Vector3, button: int):
 	elif sel_tool != null:
 		if button == BUTTON_LEFT:
 			planet.add_facility(sel_tool, id)
+
+
+func _show_info(id: int):
+	var facility: Facility = planet.get_facility(id)
+	if facility == null:
+		_hide_info()
+		return
+	
+	var text = "%s (%d)\nFlows:\n" % [facility.name, id]
+	
+	var flows = facility.flows
+	for comm in flows:
+		text += "  %s %d/%d -> X -> %d/%d\n" % \
+				[comm, flows[comm][1], facility.sinks.get(comm, 0), flows[comm][0], facility.sources.get(comm, 0)]
+	
+	if facility.conversions.size() > 0:
+		text += "Conversions:\n"
+		for from_to in facility.conversions:
+			var amounts = facility.conversions[from_to]
+			text += "  %d %s -> %d %s" % \
+					[amounts[0], from_to[0], amounts[1], from_to[1]]
+			
+	
+	gui.show_info(text)
+
+
+func _hide_info():
+	gui.hide_info()
 
 
 func _on_next_turn():

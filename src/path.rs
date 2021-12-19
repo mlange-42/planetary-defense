@@ -7,6 +7,7 @@ use std::iter;
 use pathfinding::directed::dijkstra::dijkstra;
 
 use gdnative::api::Resource;
+use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
 
 type GodotFlows = Vec<(isize, isize, u32, u32)>;
@@ -87,13 +88,31 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn solve(&self, _owner: &Resource, load_dependence: f32) -> GodotFlows {
-        let flows = self.builder.solve(load_dependence);
+    fn solve(&mut self, _owner: &Resource, bidiretional: bool, load_dependence: f32) {
+        self.builder.solve(bidiretional, load_dependence);
+    }
+
+    #[export]
+    fn get_flows(&self, _owner: &Resource) -> GodotFlows {
+        let flows = self.builder.get_flows();
         to_godot_flows(flows)
+    }
+
+    #[export]
+    fn get_node_flows(&self, _owner: &Resource, node: usize) -> Dictionary<Unique> {
+        let ids = self.builder.commodity_ids();
+        let flows = self.builder.get_node_flows(node);
+        let dict = Dictionary::new();
+
+        for (name, id) in ids {
+            dict.insert(name, (flows.sent[*id], flows.received[*id]));
+        }
+
+        dict
     }
 }
 
-fn to_godot_flows(flows: Vec<Flow<usize, String>>) -> GodotFlows {
+fn to_godot_flows(flows: &[Flow<usize, String>]) -> GodotFlows {
     flows
         .iter()
         .map(|flow| {
@@ -153,6 +172,8 @@ struct NodeData {
     convert: Option<CommodityConversion>,
     is_source: Option<usize>,
     is_sink: Option<usize>,
+    sent: Vec<i32>,
+    received: Vec<i32>,
 }
 
 #[derive(Clone, Debug)]
@@ -172,6 +193,8 @@ impl NodeData {
             convert: None,
             is_source: None,
             is_sink: None,
+            sent: vec![0; commodities],
+            received: vec![0; commodities],
         }
     }
 }
@@ -195,6 +218,7 @@ impl EdgeData {
         }
     }
 }
+
 #[derive(Clone, Debug)]
 pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
     pub a: Vertex<T, U>,
@@ -204,6 +228,7 @@ pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
 }
 
 struct Graph {
+    bidirectional: bool,
     commodities: usize,
     load_dependence: f32,
     nodes: Vec<NodeData>,
@@ -219,19 +244,22 @@ impl Graph {
         self.out_edges[a.0].push(self.edges.len() - 1);
         self
     }
-    pub fn extract(self) -> (Vec<NodeData>, Vec<Edge>) {
-        (self.nodes, self.edges)
-    }
 }
 
 impl Graph {
     pub fn delta_supply(&mut self, node: Node, commodity: usize, amount: i32) {
         self.nodes[node.0].supply[commodity] += amount;
     }
-    pub fn new_default(num_vertices: usize, commodities: usize, load_dependence: f32) -> Self {
+    pub fn new_default(
+        num_vertices: usize,
+        commodities: usize,
+        bidirectional: bool,
+        load_dependence: f32,
+    ) -> Self {
         let nodes = vec![NodeData::new(commodities); num_vertices];
         let out_edges = vec![vec![]; num_vertices];
         Graph {
+            bidirectional,
             commodities,
             load_dependence,
             nodes,
@@ -309,16 +337,20 @@ impl Graph {
         for i in 0..(path.len() - 1) {
             let n1 = path[i];
             let n2 = path[i + 1];
-            let edge_idx = self.out_edges[n1]
-                .iter()
-                .find(|id| self.edges[**id].b.0 == n2)
-                .unwrap();
-
-            self.edges[*edge_idx].data.flow += amount as i32;
+            self.apply_to_edge(n1, n2, amount);
+            if self.bidirectional && i > 0 && i < path.len() - 2 {
+                self.apply_to_edge(n2, n1, amount);
+            }
         }
         self.nodes[path[0]].supply[commodity] -= amount as i32;
         self.nodes[path[path.len() - 1]].supply[commodity] += amount as i32;
 
+        if path.len() > 2 {
+            self.nodes[path[1]].sent[commodity] += amount as i32;
+            self.nodes[path[path.len() - 2]].received[commodity] += amount as i32;
+        }
+
+        // Converters
         let result = {
             let receiver_idx = path[path.len() - 2];
             let receiver = &mut self.nodes[receiver_idx];
@@ -349,6 +381,15 @@ impl Graph {
             self.nodes[source].supply[to_comm] += amount as i32;
             self.edges[edge].data.capacity += amount as i32;
         }
+    }
+
+    fn apply_to_edge(&mut self, from: usize, to: usize, amount: u32) {
+        let edge_idx = self.out_edges[from]
+            .iter()
+            .find(|id| self.edges[**id].b.0 == to)
+            .unwrap();
+
+        self.edges[*edge_idx].data.flow += amount as i32;
     }
 
     fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<usize>, u32)> {
@@ -386,8 +427,11 @@ type Converter<U> = (U, u32, U, u32);
 
 #[allow(dead_code)]
 pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
-    pub edge_list: EdgeList<T, U>,
-    pub converters: Vec<(Vertex<T, U>, Converter<U>)>,
+    edge_list: EdgeList<T, U>,
+    converters: Vec<(Vertex<T, U>, Converter<U>)>,
+    flows: Option<Vec<Flow<T, U>>>,
+    nodes: Option<BTreeMap<Vertex<T, U>, NodeData>>,
+    commodity_ids: Option<BTreeMap<U, usize>>,
 }
 
 #[allow(dead_code)]
@@ -396,6 +440,9 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         Self {
             edge_list: Vec::new(),
             converters: Default::default(),
+            flows: None,
+            nodes: None,
+            commodity_ids: None,
         }
     }
 
@@ -406,9 +453,16 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         capacity: Capacity,
         cost: Cost,
     ) -> &mut Self {
-        if capacity.0 < 0 {
-            panic!("capacity cannot be negative (capacity was {})", capacity.0)
-        }
+        assert!(
+            self.flows.is_none(),
+            "Cannot modify an already solved graph."
+        );
+        assert!(
+            capacity.0 >= 0,
+            "Capacity cannot be negative (capacity was {})",
+            capacity.0
+        );
+
         let a = a.into();
         let b = b.into();
         assert_ne!(a, b);
@@ -426,11 +480,21 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         to: U,
         to_amount: u32,
     ) {
+        assert!(
+            self.flows.is_none(),
+            "Cannot modify an already solved graph."
+        );
+
         self.converters
             .push((vertex.into(), (from, from_amount, to, to_amount)));
     }
 
-    fn solve(&self, load_dependence: f32) -> Vec<Flow<T, U>> {
+    fn solve(&mut self, bidirectional: bool, load_dependence: f32) {
+        assert!(
+            self.flows.is_none(),
+            "Cannot re-evaluate an already solved graph."
+        );
+
         let mut next_id = 0;
         let mut next_comm_id = 0_usize;
         let mut index_mapper = BTreeMap::new();
@@ -465,7 +529,12 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         }
 
         let num_vertices = next_id;
-        let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
+        let mut g = Graph::new_default(
+            num_vertices,
+            commodity_mapper.len(),
+            bidirectional,
+            load_dependence,
+        );
 
         for comm in commodities.into_iter() {
             let comm_id = commodity_mapper[&comm];
@@ -522,8 +591,8 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         g.solve();
 
-        let (_, edges) = g.extract();
-        let flows: Vec<_> = edges
+        let flows: Vec<_> = g
+            .edges
             .iter()
             .map(|e| Flow {
                 a: node_mapper[&e.a.0].clone(),
@@ -533,7 +602,41 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             })
             .collect();
 
-        flows
+        let nodes: BTreeMap<_, _> = g
+            .nodes
+            .into_iter()
+            .enumerate()
+            .map(|(i, nd)| (node_mapper[&i].clone(), nd))
+            .collect();
+
+        self.flows = Some(flows);
+        self.nodes = Some(nodes);
+        self.commodity_ids = Some(
+            commodity_mapper
+                .iter()
+                .map(|(k, v)| ((*k).clone(), *v))
+                .collect(),
+        );
+    }
+
+    fn commodity_ids(&self) -> &BTreeMap<U, usize> {
+        self.commodity_ids
+            .as_ref()
+            .expect("Unable to extract commodity id from unsolved graph")
+    }
+
+    fn get_flows(&self) -> &[Flow<T, U>] {
+        self.flows
+            .as_ref()
+            .expect("Unable to extract flows from unsolved graph")
+    }
+
+    fn get_node_flows(&self, node: T) -> &NodeData {
+        self.nodes
+            .as_ref()
+            .expect("Unable to extract node flows from unsolved graph")
+            .get(&Vertex::Node(node))
+            .expect("No flow data found for node")
     }
 }
 
@@ -614,7 +717,8 @@ mod tests {
 
         builder.set_converter("ConvAB", "A", 1, "B", 1);
 
-        let flows = builder.solve(0.2);
+        builder.solve(false, 0.2);
+        let flows = builder.get_flows();
         let map: HashMap<_, _> = flows.iter().map(|f| ((f.a, f.b), f.amount)).collect();
 
         println!("{:?}", map);

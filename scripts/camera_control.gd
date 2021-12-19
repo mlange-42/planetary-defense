@@ -22,7 +22,7 @@ func _ready():
 	rotation_y_target = rotation.y
 
 
-func _input(event) -> void:
+func _unhandled_input(event) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_RIGHT:
 			dragging = event.pressed

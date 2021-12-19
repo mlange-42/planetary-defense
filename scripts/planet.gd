@@ -91,6 +91,10 @@ func add_road(from: int, to: int):
 		_redraw_roads()
 
 
+func get_facility(id: int):
+	return roads.facilities.get(id)
+
+
 func _redraw_roads():
 	road_debug.draw_roads(nav, roads, Color.green, Color.red)
 
