@@ -698,7 +698,8 @@ mod tests {
 
         builder.set_converter("ConvAB", "A", 1, "B", 1);
 
-        let flows = builder.solve(0.2);
+        builder.solve(0.2);
+        let flows = builder.get_flows();
         let map: HashMap<_, _> = flows.iter().map(|f| ((f.a, f.b), f.amount)).collect();
 
         println!("{:?}", map);

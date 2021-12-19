@@ -4,74 +4,121 @@
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
 [ext_resource path="res://scripts/gui/tool_button.gd" type="Script" id=3]
 
-[node name="GUI" type="MarginContainer"]
+[node name="GUI" type="Control"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = -10.0
+mouse_filter = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Controls" type="VBoxContainer" parent="."]
-margin_right = 58.0
+[node name="MarginControls" type="MarginContainer" parent="."]
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 10.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Controls" type="VBoxContainer" parent="MarginControls"]
+margin_right = 60.0
 margin_bottom = 580.0
 
-[node name="BuildButtons" type="VBoxContainer" parent="Controls"]
-margin_right = 58.0
-margin_bottom = 92.0
+[node name="BuildButtons" type="VBoxContainer" parent="MarginControls/Controls"]
+margin_right = 60.0
+margin_bottom = 116.0
 
-[node name="Town" type="Button" parent="Controls/BuildButtons"]
-margin_right = 58.0
+[node name="Inspect" type="Button" parent="MarginControls/Controls/BuildButtons"]
+margin_right = 60.0
 margin_bottom = 20.0
+toggle_mode = true
+group = ExtResource( 1 )
+text = "Inspect"
+script = ExtResource( 3 )
+tool_type = "Inspect"
+
+[node name="Town" type="Button" parent="MarginControls/Controls/BuildButtons"]
+margin_top = 24.0
+margin_right = 60.0
+margin_bottom = 44.0
 toggle_mode = true
 group = ExtResource( 1 )
 text = "Town"
 script = ExtResource( 3 )
 tool_type = "Town"
 
-[node name="Mine" type="Button" parent="Controls/BuildButtons"]
-margin_top = 24.0
-margin_right = 58.0
-margin_bottom = 44.0
+[node name="Mine" type="Button" parent="MarginControls/Controls/BuildButtons"]
+margin_top = 48.0
+margin_right = 60.0
+margin_bottom = 68.0
 toggle_mode = true
 group = ExtResource( 1 )
 text = "Mine"
 script = ExtResource( 3 )
 tool_type = "Mine"
 
-[node name="Factory" type="Button" parent="Controls/BuildButtons"]
-margin_top = 48.0
-margin_right = 58.0
-margin_bottom = 68.0
+[node name="Factory" type="Button" parent="MarginControls/Controls/BuildButtons"]
+margin_top = 72.0
+margin_right = 60.0
+margin_bottom = 92.0
 toggle_mode = true
 group = ExtResource( 1 )
 text = "Factory"
 script = ExtResource( 3 )
 tool_type = "Factory"
 
-[node name="Road" type="Button" parent="Controls/BuildButtons"]
-margin_top = 72.0
-margin_right = 58.0
-margin_bottom = 92.0
+[node name="Road" type="Button" parent="MarginControls/Controls/BuildButtons"]
+margin_top = 96.0
+margin_right = 60.0
+margin_bottom = 116.0
 toggle_mode = true
 group = ExtResource( 1 )
 text = "Road"
 script = ExtResource( 3 )
 tool_type = "Road"
 
-[node name="Control" type="Control" parent="Controls"]
-margin_top = 96.0
-margin_right = 58.0
+[node name="Control" type="Control" parent="MarginControls/Controls"]
+margin_top = 120.0
+margin_right = 60.0
 margin_bottom = 556.0
 size_flags_vertical = 3
 
-[node name="NextTurnButton" type="Button" parent="Controls"]
+[node name="NextTurnButton" type="Button" parent="MarginControls/Controls"]
 margin_top = 560.0
-margin_right = 58.0
+margin_right = 60.0
 margin_bottom = 580.0
 text = "Turn"
 
-[connection signal="pressed" from="Controls/NextTurnButton" to="." method="_on_NextTurnButton_pressed"]
+[node name="InfoContainer" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -260.0
+margin_top = -130.0
+margin_right = -10.0
+margin_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="InfoContainer"]
+margin_right = 250.0
+margin_bottom = 120.0
+
+[node name="Text" type="RichTextLabel" parent="InfoContainer/Panel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 245.0
+margin_bottom = 115.0
+text = "Test"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="MarginControls/Controls/NextTurnButton" to="." method="_on_NextTurnButton_pressed"]
