@@ -6,34 +6,34 @@ use std::iter;
 
 use pathfinding::directed::dijkstra::dijkstra;
 
-use gdnative::prelude::Node as GdNode;
+use gdnative::api::Resource;
 use gdnative::prelude::*;
 
 type GodotFlows = Vec<(isize, isize, u32, u32)>;
 
 #[derive(NativeClass)]
-#[inherit(GdNode)]
+#[inherit(Resource)]
 pub struct MultiCommodityFlow {
     builder: GraphBuilder<usize, String>,
 }
 
 #[methods]
 impl MultiCommodityFlow {
-    fn new(_owner: &GdNode) -> Self {
+    fn new(_owner: &Resource) -> Self {
         Self {
             builder: GraphBuilder::new(),
         }
     }
 
     #[export]
-    fn _ready(&mut self, _owner: &GdNode) {}
+    fn _init(&mut self, _owner: &Resource) {}
 
     #[export]
-    fn reset(&mut self, _owner: &GdNode) {
+    fn reset(&mut self, _owner: &Resource) {
         self.builder = GraphBuilder::new();
     }
     #[export]
-    fn add_edge(&mut self, _owner: &GdNode, from: usize, to: usize, capacity: i32, cost: i32) {
+    fn add_edge(&mut self, _owner: &Resource, from: usize, to: usize, capacity: i32, cost: i32) {
         self.builder
             .add_edge(from, to, Capacity(capacity), Cost(cost));
     }
@@ -41,7 +41,7 @@ impl MultiCommodityFlow {
     #[export]
     fn add_source_edge(
         &mut self,
-        _owner: &GdNode,
+        _owner: &Resource,
         to: usize,
         commodity: String,
         capacity: i32,
@@ -58,7 +58,7 @@ impl MultiCommodityFlow {
     #[export]
     fn add_sink_edge(
         &mut self,
-        _owner: &GdNode,
+        _owner: &Resource,
         from: usize,
         commodity: String,
         capacity: i32,
@@ -75,7 +75,7 @@ impl MultiCommodityFlow {
     #[export]
     pub fn set_converter(
         &mut self,
-        _owner: &GdNode,
+        _owner: &Resource,
         vertex: usize,
         from: String,
         from_amount: u32,
@@ -87,7 +87,7 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn solve(&self, _owner: &GdNode, load_dependence: f32) -> GodotFlows {
+    fn solve(&self, _owner: &Resource, load_dependence: f32) -> GodotFlows {
         let flows = self.builder.solve(load_dependence);
         to_godot_flows(flows)
     }

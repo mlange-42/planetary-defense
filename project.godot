@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://scripts/nav/navigation.gd"
 }, {
 "base": "Reference",
+"class": "BuildManager",
+"language": "GDScript",
+"path": "res://scripts/managers/build_manager.gd"
+}, {
+"base": "Reference",
 "class": "Colors",
 "language": "GDScript",
 "path": "res://scripts/network_test/colors.gd"
@@ -24,10 +29,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/debug_draw.gd"
 }, {
+"base": "Spatial",
+"class": "Facility",
+"language": "GDScript",
+"path": "res://scripts/objects/facility.gd"
+}, {
+"base": "Reference",
+"class": "FlowManager",
+"language": "GDScript",
+"path": "res://scripts/managers/flow_manager.gd"
+}, {
 "base": "Reference",
 "class": "GeoUtil",
 "language": "GDScript",
 "path": "res://scripts/geom/geo_util.gd"
+}, {
+"base": "Control",
+"class": "Gui",
+"language": "GDScript",
+"path": "res://scripts/gui/gui.gd"
 }, {
 "base": "Reference",
 "class": "HeightMap",
@@ -65,15 +85,24 @@ _global_script_classes=[ {
 "path": "res://scripts/planet.gd"
 }, {
 "base": "Reference",
+"class": "RoadNetwork",
+"language": "GDScript",
+"path": "res://scripts/nav/road_network.gd"
+}, {
+"base": "Reference",
 "class": "UvSphere",
 "language": "GDScript",
 "path": "res://scripts/geom/uv_sphere.gd"
 } ]
 _global_script_class_icons={
 "AStarNavigation": "",
+"BuildManager": "",
 "Colors": "",
 "DebugDraw": "",
+"Facility": "",
+"FlowManager": "",
 "GeoUtil": "",
+"Gui": "",
 "HeightMap": "",
 "IcoSphere": "",
 "Mouse": "",
@@ -81,6 +110,7 @@ _global_script_class_icons={
 "NetLink": "",
 "NetNode": "",
 "Planet": "",
+"RoadNetwork": "",
 "UvSphere": ""
 }
 

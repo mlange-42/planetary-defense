@@ -3,7 +3,7 @@ extends Spatial
 class_name Mouse
 
 signal planet_hovered(point)
-signal planet_clicked(point)
+signal planet_clicked(point, button)
 signal planet_entered(point)
 signal planet_exited()
 
@@ -17,12 +17,12 @@ func _ready():
 	camera = get_viewport().get_camera()
 
 
-func _input(event):
+func _unhandled_input(event):
 	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == BUTTON_LEFT:
+		if event.pressed:
 			var point = _get_get_collision_point()
 			if point != null:
-				emit_signal("planet_clicked", point)
+				emit_signal("planet_clicked", point, event.button_index)
 	elif event is InputEventMouseMotion:
 		var point = _get_get_collision_point()
 		
