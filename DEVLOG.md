@@ -1,5 +1,21 @@
 # Development Log
 
+## 2021/12/19 -- Network and Facilities on Planet
+
+### Progress
+
+* Implement building roads and facilities on planet map
+* Calculate flows using stochastic flow solver
+* Visualize flows as color scale on network
+* Info panel for inspecting facility in/out flows
+* Add option for bi-directional version (retour also uses up capacity)
+
+### Next step
+
+* Implement intersection-free networks through additional network-specific node ids
+   * Will allow for roads, railways, power lines, etc. in the same network
+   * Requires special facilities (e.g. freight yards) as interface
+
 ## 2021/12/18 -- Transport Flow Experiments
 
 ### Progress
