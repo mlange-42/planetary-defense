@@ -7,6 +7,7 @@ use std::iter;
 use pathfinding::directed::dijkstra::dijkstra;
 
 use gdnative::api::Resource;
+use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
 
 type GodotFlows = Vec<(isize, isize, u32, u32)>;
@@ -87,13 +88,31 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn solve(&self, _owner: &Resource, load_dependence: f32) -> GodotFlows {
-        let flows = self.builder.solve(load_dependence);
+    fn solve(&mut self, _owner: &Resource, load_dependence: f32) {
+        self.builder.solve(load_dependence);
+    }
+
+    #[export]
+    fn get_flows(&self, _owner: &Resource) -> GodotFlows {
+        let flows = self.builder.get_flows();
         to_godot_flows(flows)
+    }
+
+    #[export]
+    fn get_node_flows(&self, _owner: &Resource, node: usize) -> Dictionary<Unique> {
+        let ids = self.builder.commodity_ids();
+        let flows = self.builder.get_node_flows(node);
+        let dict = Dictionary::new();
+
+        for (name, id) in ids {
+            dict.insert(name, (flows.sent[*id], flows.received[*id]));
+        }
+
+        dict
     }
 }
 
-fn to_godot_flows(flows: Vec<Flow<usize, String>>) -> GodotFlows {
+fn to_godot_flows(flows: &[Flow<usize, String>]) -> GodotFlows {
     flows
         .iter()
         .map(|flow| {
@@ -153,6 +172,8 @@ struct NodeData {
     convert: Option<CommodityConversion>,
     is_source: Option<usize>,
     is_sink: Option<usize>,
+    sent: Vec<i32>,
+    received: Vec<i32>,
 }
 
 #[derive(Clone, Debug)]
@@ -172,6 +193,8 @@ impl NodeData {
             convert: None,
             is_source: None,
             is_sink: None,
+            sent: vec![0; commodities],
+            received: vec![0; commodities],
         }
     }
 }
@@ -195,6 +218,7 @@ impl EdgeData {
         }
     }
 }
+
 #[derive(Clone, Debug)]
 pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
     pub a: Vertex<T, U>,
@@ -218,9 +242,6 @@ impl Graph {
         self.edges.push(Edge { a, b, data });
         self.out_edges[a.0].push(self.edges.len() - 1);
         self
-    }
-    pub fn extract(self) -> (Vec<NodeData>, Vec<Edge>) {
-        (self.nodes, self.edges)
     }
 }
 
@@ -319,6 +340,12 @@ impl Graph {
         self.nodes[path[0]].supply[commodity] -= amount as i32;
         self.nodes[path[path.len() - 1]].supply[commodity] += amount as i32;
 
+        if path.len() > 2 {
+            self.nodes[path[1]].sent[commodity] += amount as i32;
+            self.nodes[path[path.len() - 2]].received[commodity] += amount as i32;
+        }
+
+        // Converters
         let result = {
             let receiver_idx = path[path.len() - 2];
             let receiver = &mut self.nodes[receiver_idx];
@@ -386,8 +413,11 @@ type Converter<U> = (U, u32, U, u32);
 
 #[allow(dead_code)]
 pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
-    pub edge_list: EdgeList<T, U>,
-    pub converters: Vec<(Vertex<T, U>, Converter<U>)>,
+    edge_list: EdgeList<T, U>,
+    converters: Vec<(Vertex<T, U>, Converter<U>)>,
+    flows: Option<Vec<Flow<T, U>>>,
+    nodes: Option<BTreeMap<Vertex<T, U>, NodeData>>,
+    commodity_ids: Option<BTreeMap<U, usize>>,
 }
 
 #[allow(dead_code)]
@@ -396,6 +426,9 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         Self {
             edge_list: Vec::new(),
             converters: Default::default(),
+            flows: None,
+            nodes: None,
+            commodity_ids: None,
         }
     }
 
@@ -406,9 +439,16 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         capacity: Capacity,
         cost: Cost,
     ) -> &mut Self {
-        if capacity.0 < 0 {
-            panic!("capacity cannot be negative (capacity was {})", capacity.0)
-        }
+        assert!(
+            self.flows.is_none(),
+            "Cannot modify an already solved graph."
+        );
+        assert!(
+            capacity.0 >= 0,
+            "Capacity cannot be negative (capacity was {})",
+            capacity.0
+        );
+
         let a = a.into();
         let b = b.into();
         assert_ne!(a, b);
@@ -426,11 +466,21 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         to: U,
         to_amount: u32,
     ) {
+        assert!(
+            self.flows.is_none(),
+            "Cannot modify an already solved graph."
+        );
+
         self.converters
             .push((vertex.into(), (from, from_amount, to, to_amount)));
     }
 
-    fn solve(&self, load_dependence: f32) -> Vec<Flow<T, U>> {
+    fn solve(&mut self, load_dependence: f32) {
+        assert!(
+            self.flows.is_none(),
+            "Cannot re-evaluate an already solved graph."
+        );
+
         let mut next_id = 0;
         let mut next_comm_id = 0_usize;
         let mut index_mapper = BTreeMap::new();
@@ -522,8 +572,8 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         g.solve();
 
-        let (_, edges) = g.extract();
-        let flows: Vec<_> = edges
+        let flows: Vec<_> = g
+            .edges
             .iter()
             .map(|e| Flow {
                 a: node_mapper[&e.a.0].clone(),
@@ -533,7 +583,41 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             })
             .collect();
 
-        flows
+        let nodes: BTreeMap<_, _> = g
+            .nodes
+            .into_iter()
+            .enumerate()
+            .map(|(i, nd)| (node_mapper[&i].clone(), nd))
+            .collect();
+
+        self.flows = Some(flows);
+        self.nodes = Some(nodes);
+        self.commodity_ids = Some(
+            commodity_mapper
+                .iter()
+                .map(|(k, v)| ((*k).clone(), *v))
+                .collect(),
+        );
+    }
+
+    fn commodity_ids(&self) -> &BTreeMap<U, usize> {
+        self.commodity_ids
+            .as_ref()
+            .expect("Unable to extract commodity id from unsolved graph")
+    }
+
+    fn get_flows(&self) -> &[Flow<T, U>] {
+        self.flows
+            .as_ref()
+            .expect("Unable to extract flows from unsolved graph")
+    }
+
+    fn get_node_flows(&self, node: T) -> &NodeData {
+        self.nodes
+            .as_ref()
+            .expect("Unable to extract node flows from unsolved graph")
+            .get(&Vertex::Node(node))
+            .expect("No flow data found for node")
     }
 }
 

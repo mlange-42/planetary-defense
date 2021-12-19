@@ -45,12 +45,15 @@ func solve():
 		for sink in facility.sinks:
 			flow.add_sink_edge(facility.node_id, sink, facility.sinks[sink], sink_cost)
 	
-	var result = flow.solve(load_depencence)
+	flow.solve(load_depencence)
+	var flows = flow.get_flows()
+	for fid in facilities:
+		facilities[fid].flows = flow.get_node_flows(fid)
 	
 	network.reset_flow()
 	
 	var i = 0
-	for edge in result:
+	for edge in flows:
 		if edge[0] < 1 or edge[1] < 1:
 			continue
 		
