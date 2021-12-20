@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://default_env.tres" type="Environment" id=1]
+[ext_resource path="res://assets/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scripts/world.gd" type="Script" id=2]
 [ext_resource path="res://scenes/mouse.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/camera_control.tscn" type="PackedScene" id=4]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/materials/water.tres" type="Material" id=6]
 [ext_resource path="res://assets/materials/height_map.tres" type="Material" id=7]
 [ext_resource path="res://scenes/gui/gui.tscn" type="PackedScene" id=8]
+
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0 ), 0.0, 0.676126, 0, 1, Vector2( 0.309249, 0.209091 ), 0.585201, 0.585201, 0, 0, Vector2( 0.5, 0.509091 ), 0.13106, 0.13106, 0, 0, Vector2( 0.690751, 0.627273 ), 1.39798, 1.39798, 0, 0, Vector2( 0.84104, 0.918182 ), 1.10516, 1.10516, 0, 0, Vector2( 1, 1 ), 0.514711, 0.0, 1, 0 ]

@@ -19,11 +19,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/managers/build_manager.gd"
 }, {
-"base": "Reference",
-"class": "Colors",
-"language": "GDScript",
-"path": "res://scripts/network_test/colors.gd"
-}, {
 "base": "ImmediateGeometry",
 "class": "DebugDraw",
 "language": "GDScript",
@@ -69,16 +64,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/nav/nav_manager.gd"
 }, {
-"base": "Node2D",
-"class": "NetLink",
-"language": "GDScript",
-"path": "res://scripts/network_test/net_link.gd"
-}, {
-"base": "Node2D",
-"class": "NetNode",
-"language": "GDScript",
-"path": "res://scripts/network_test/net_node.gd"
-}, {
 "base": "Spatial",
 "class": "Planet",
 "language": "GDScript",
@@ -97,7 +82,6 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "AStarNavigation": "",
 "BuildManager": "",
-"Colors": "",
 "DebugDraw": "",
 "Facility": "",
 "FlowManager": "",
@@ -107,8 +91,6 @@ _global_script_class_icons={
 "IcoSphere": "",
 "Mouse": "",
 "NavManager": "",
-"NetLink": "",
-"NetNode": "",
 "Planet": "",
 "RoadNetwork": "",
 "UvSphere": ""
@@ -118,7 +100,7 @@ _global_script_class_icons={
 
 config/name="PlanetaryDefense"
 run/main_scene="res://scenes/world.tscn"
-config/icon="res://icon.png"
+config/icon="res://assets/icons/icon.png"
 
 [debug]
 
@@ -133,4 +115,4 @@ common/enable_pause_aware_picking=true
 quality/shadows/filter_mode=2
 environment/default_clear_color=Color( 0, 0, 0, 1 )
 quality/filters/msaa=2
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://assets/default_env.tres"
