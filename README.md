@@ -10,4 +10,6 @@ Made with [Godot](https://godotengine.org/) and :crab: [Rust](https://rust-lang.
 
 **Very early work in progress.**
 
+See the [DEVLOG](DEVLOG.md) for the general idea, as well as planned and implemented features.
+
 **Contributions and feedback welcome!**

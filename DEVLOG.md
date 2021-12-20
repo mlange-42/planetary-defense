@@ -1,5 +1,38 @@
 # Development Log
 
+## 2021/12/20 -- City-centric Economy
+
+The next iteration will be to try an economy where everything is tied to cities/settlements.
+
+Starting with a planet with 40k nav nodes (corresp. 200x200 square map), cities incl. surroundings are expected to have a radius of up to more than 10 cells. Given the large number of cells to be managed per settlement, we will take a semi-automatic approach.
+
+The player will be able to decide on the share of the population working in each sector (resources, production, food, [energy?]). The exact allocation of land uses to cells is automated, but the player can change allocations.
+
+Planet vertices need either a property like "landscape type", or underlying properties like "temperature" and "precipitation". Further, mineral resources are distributed over the planet. Based in resources and landscape type, the commodities "food", "resources" and "energy" can be produced with:
+
+* different output per area
+* different labour/population requirements
+* different investment costs?
+
+E.g. type "temperate forest" with "lignite deposit" could be suitable for either:
+
+* 2 food per cell, 2 pop (crop farming)
+* 1 food per cell, 1 pop (pastoral farming)
+* 1 resource per cell, 1 pop (forestry; non-exhaustible)
+* 5 resources per cell, 3 pop (lignite mining; exhaustible)
+
+Roads will need to connect cities, but not individual productive cells. However, the output of cells (or the general possibility to assign usage) may depend on the distance to the network.
+
+### TODOs
+
+* Restructure planet generator:
+   * Primary output: vertices with properties, edges (i.e. network links)
+   * Secondary output: UV-mapped mesh
+   * To use tiled textures (hexes), the geometry needs one more subdivision than the nav mesh (7 and 6 resp., for the underlying setup)
+* Add a simple "climate model", i.e. add moisture/precipitation to generate landscape types
+   * Will start with simplex noise; simple model with air flows may come later
+* Given the above points: port the generator to Rust?
+
 ## 2021/12/19 -- Network and Facilities on Planet
 
 ### Progress
