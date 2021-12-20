@@ -6,7 +6,7 @@ var MultiCommodityFlow = preload("res://native/multi_commodity.gdns")
 var source_cost: int = 25
 var sink_cost: int = 25
 var load_depencence: float = 0.25
-var bidirectional: bool = true
+var bidirectional: bool = false
 
 
 var network: RoadNetwork
