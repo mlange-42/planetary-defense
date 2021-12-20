@@ -1,6 +1,6 @@
 class_name FlowManager
 
-var MultiCommodityFlow = preload("res://native/multi_commodity.gdns")
+var MultiCommodityFlow = preload("res://scripts/native/multi_commodity.gdns")
 
 
 var source_cost: int = 25
