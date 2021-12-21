@@ -1,4 +1,4 @@
 mod godot_util;
 pub(crate) mod ico_sphere;
-mod types;
+pub(crate) mod planet_generator;
 mod util;

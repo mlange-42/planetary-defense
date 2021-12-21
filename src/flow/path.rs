@@ -6,35 +6,35 @@ use std::iter;
 
 use pathfinding::directed::dijkstra::dijkstra;
 
-use gdnative::api::Resource;
+use gdnative::api::Reference;
 use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
 
 type GodotFlows = Vec<(isize, isize, u32, u32)>;
 
 #[derive(NativeClass)]
-#[inherit(Resource)]
+#[inherit(Reference)]
 pub struct MultiCommodityFlow {
     builder: GraphBuilder<usize, String>,
 }
 
 #[methods]
 impl MultiCommodityFlow {
-    fn new(_owner: &Resource) -> Self {
+    fn new(_owner: &Reference) -> Self {
         Self {
             builder: GraphBuilder::new(),
         }
     }
 
     #[export]
-    fn _init(&mut self, _owner: &Resource) {}
+    fn _init(&mut self, _owner: &Reference) {}
 
     #[export]
-    fn reset(&mut self, _owner: &Resource) {
+    fn reset(&mut self, _owner: &Reference) {
         self.builder = GraphBuilder::new();
     }
     #[export]
-    fn add_edge(&mut self, _owner: &Resource, from: usize, to: usize, capacity: i32, cost: i32) {
+    fn add_edge(&mut self, _owner: &Reference, from: usize, to: usize, capacity: i32, cost: i32) {
         self.builder
             .add_edge(from, to, Capacity(capacity), Cost(cost));
     }
@@ -42,7 +42,7 @@ impl MultiCommodityFlow {
     #[export]
     fn add_source_edge(
         &mut self,
-        _owner: &Resource,
+        _owner: &Reference,
         to: usize,
         commodity: String,
         capacity: i32,
@@ -59,7 +59,7 @@ impl MultiCommodityFlow {
     #[export]
     fn add_sink_edge(
         &mut self,
-        _owner: &Resource,
+        _owner: &Reference,
         from: usize,
         commodity: String,
         capacity: i32,
@@ -76,7 +76,7 @@ impl MultiCommodityFlow {
     #[export]
     pub fn set_converter(
         &mut self,
-        _owner: &Resource,
+        _owner: &Reference,
         vertex: usize,
         from: String,
         from_amount: u32,
@@ -88,18 +88,18 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn solve(&mut self, _owner: &Resource, bidiretional: bool, load_dependence: f32) {
+    fn solve(&mut self, _owner: &Reference, bidiretional: bool, load_dependence: f32) {
         self.builder.solve(bidiretional, load_dependence);
     }
 
     #[export]
-    fn get_flows(&self, _owner: &Resource) -> GodotFlows {
+    fn get_flows(&self, _owner: &Reference) -> GodotFlows {
         let flows = self.builder.get_flows();
         to_godot_flows(flows)
     }
 
     #[export]
-    fn get_node_flows(&self, _owner: &Resource, node: usize) -> Dictionary<Unique> {
+    fn get_node_flows(&self, _owner: &Reference, node: usize) -> Dictionary<Unique> {
         let ids = self.builder.commodity_ids();
         let flows = self.builder.get_node_flows(node);
         let dict = Dictionary::new();

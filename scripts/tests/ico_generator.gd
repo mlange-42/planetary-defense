@@ -3,12 +3,14 @@ extends ImmediateGeometry
 
 
 func _ready():
-	var ico_gen = preload("res://scripts/native/ico_sphere.gdns").new()
-	var result = ico_gen.create_ico_sphere(10.0, 6)
-	var vertices = result[0]
-	var indices = result[1]
+	var planet_gen = preload("res://scripts/native/planet_generator.gdns").new()
 	
-	var mesh: ArrayMesh = ico_gen.to_mesh(vertices, indices)
+	var data = planet_gen.generate(10.0, 5)
+	
+	#for i in data.get_node_count():
+	#	print(data.get_neighbors(i))
+	
+	var mesh: ArrayMesh = data.get_mesh()
 	
 	var inst := MeshInstance.new()
 	inst.mesh = mesh

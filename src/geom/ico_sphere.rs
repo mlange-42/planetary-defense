@@ -3,48 +3,47 @@ use std::collections::HashMap;
 use gdnative::api::ArrayMesh;
 use gdnative::prelude::*;
 
-use crate::geom::{godot_util::to_mesh, types::Vec3, util::ll_to_xyz};
+use crate::geom::{godot_util::to_mesh, util::ll_to_xyz};
 
-#[derive(NativeClass, Copy, Clone, Default)]
-#[user_data(Aether<IcoSphere>)]
-#[inherit(Object)]
+#[derive(NativeClass)]
+#[inherit(Reference)]
 pub struct IcoSphere;
 
 #[methods]
 impl IcoSphere {
-    fn new(_owner: &Object) -> Self {
+    fn new(_owner: &Reference) -> Self {
         Self {}
     }
 
     #[export]
     pub fn create_ico_sphere(
         &self,
-        _owner: &Object,
+        _owner: &Reference,
         radius: f32,
         subdivisions: u32,
-    ) -> (Vec<Vec3>, Vec<(usize, usize, usize)>) {
+    ) -> (Vec<Vector3>, Vec<(usize, usize, usize)>) {
         IcoSphereGenerator::new(radius, subdivisions).generate()
     }
 
     #[export]
     pub fn to_mesh(
         &self,
-        _owner: &Object,
-        vertices: Vec<Vec3>,
+        _owner: &Reference,
+        vertices: Vec<Vector3>,
         faces: Vec<(usize, usize, usize)>,
     ) -> Ref<ArrayMesh, Unique> {
-        to_mesh(vertices, faces)
+        to_mesh(&vertices, &faces)
     }
 }
 
 pub struct IcoSphereGenerator {
     radius: f32,
     subdivisions: u32,
-    vertices: Vec<Vec3>,
+    vertices: Vec<Vector3>,
 }
 
 impl IcoSphereGenerator {
-    fn new(radius: f32, subdivisions: u32) -> Self {
+    pub(crate) fn new(radius: f32, subdivisions: u32) -> Self {
         Self {
             radius,
             subdivisions,
@@ -52,7 +51,7 @@ impl IcoSphereGenerator {
         }
     }
 
-    fn generate(mut self) -> (Vec<Vec3>, Vec<(usize, usize, usize)>) {
+    pub(crate) fn generate(mut self) -> (Vec<Vector3>, Vec<(usize, usize, usize)>) {
         let mut cache: HashMap<(usize, usize), usize> = HashMap::new();
 
         self.vertices.push(ll_to_xyz(0.0, -58.5));
@@ -131,7 +130,7 @@ impl IcoSphereGenerator {
         if cache.contains_key(&key) {
             return cache[&key];
         }
-        let middle = (0.5 * (self.vertices[point_1] + self.vertices[point_2])).normalized();
+        let middle = ((self.vertices[point_1] + self.vertices[point_2]) * 0.5).normalize();
 
         self.vertices.push(middle);
         let index = self.vertices.len() - 1;
