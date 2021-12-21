@@ -642,8 +642,8 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
 #[cfg(test)]
 mod tests {
+    use super::Vertex::Node;
     use super::*;
-    use crate::path::Vertex::Node;
     use std::collections::HashMap;
 
     #[test]
