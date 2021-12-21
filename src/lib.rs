@@ -1,8 +1,8 @@
 extern crate gdnative;
 
-mod path;
+mod flow;
 
-pub use path::MultiCommodityFlow;
+pub use flow::path::MultiCommodityFlow;
 
 use gdnative::prelude::*;
 
