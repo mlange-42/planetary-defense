@@ -4,7 +4,7 @@ extends ImmediateGeometry
 
 func _ready():
 	var ico_gen = preload("res://scripts/native/ico_sphere.gdns").new()
-	var result = ico_gen.create_ico_sphere(10.0, 2)
+	var result = ico_gen.create_ico_sphere(10.0, 6)
 	var vertices = result[0]
 	var indices = result[1]
 	

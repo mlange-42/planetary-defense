@@ -1,11 +1,13 @@
 use std::collections::HashMap;
-use std::f32::consts::PI;
 
 use gdnative::api::{ArrayMesh, Mesh};
 use gdnative::core_types::{Int32Array, Vector3Array};
 use gdnative::prelude::*;
 
-const DEG2RAD: f32 = PI / 180.0;
+use crate::geom::{
+    types::Vec3,
+    util::{calc_normals, ll_to_xyz},
+};
 
 #[derive(NativeClass, Copy, Clone, Default)]
 #[user_data(Aether<IcoSphere>)]
@@ -39,10 +41,11 @@ impl IcoSphere {
         let mut indices = Int32Array::new();
         let mut normals = Vector3Array::new();
 
-        for v in vertices {
-            let vec = Vector3::new(v.0, v.1, v.2);
-            verts.push(vec);
-            normals.push(vec.normalize());
+        let norm = calc_normals(&vertices, &faces);
+
+        for (v, n) in vertices.iter().zip(norm) {
+            verts.push(Vector3::new(v.0, v.1, v.2));
+            normals.push(Vector3::new(n.0, n.1, n.2));
         }
 
         for face in faces {
@@ -175,105 +178,11 @@ impl IcoSphereGenerator {
     }
 }
 
-fn ll_to_xyz(lon: f32, lat: f32) -> Vec3 {
-    let lon = lon * DEG2RAD;
-    let lat = lat * DEG2RAD;
-    let cos_lat = lat.cos();
-    let sin_lat = lat.sin();
-    let cos_lon = lon.cos();
-    let sin_lon = lon.sin();
-
-    let x = cos_lat * cos_lon;
-    let y = sin_lat;
-    let z = cos_lat * sin_lon;
-
-    Vec3(x, y, z)
-}
-
-#[derive(Copy, Clone, Debug, PartialEq, FromVariant, ToVariant)]
-pub struct Vec3(pub f32, pub f32, pub f32);
-
-impl Vec3 {
-    fn normalized(self) -> Self {
-        let len = self.length();
-        Self(self.0 / len, self.1 / len, self.2 / len)
-    }
-    fn length(self) -> f32 {
-        self.length_sq().sqrt()
-    }
-
-    fn length_sq(self) -> f32 {
-        self.0 * self.0 + self.1 * self.1 + self.2 * self.2
-    }
-}
-
-impl std::ops::Add for Vec3 {
-    type Output = Vec3;
-    fn add(self, rhs: Self) -> Self::Output {
-        Self(self.0 + rhs.0, self.1 + rhs.1, self.2 + rhs.2)
-    }
-}
-
-impl std::ops::Mul<f32> for Vec3 {
-    type Output = Vec3;
-    fn mul(self, rhs: f32) -> Self::Output {
-        Self(self.0 * rhs, self.1 * rhs, self.2 * rhs)
-    }
-}
-
-impl std::ops::Mul<Vec3> for f32 {
-    type Output = Vec3;
-    fn mul(self, rhs: Vec3) -> Self::Output {
-        Vec3(self * rhs.0, self * rhs.1, self * rhs.2)
-    }
-}
-
-impl std::ops::MulAssign<f32> for Vec3 {
-    fn mul_assign(&mut self, rhs: f32) {
-        *self = Self(self.0 * rhs, self.1 * rhs, self.2 * rhs)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     const DELTA: f32 = 0.0000001;
-
-    #[test]
-    fn test_ll_to_xyz() {
-        let xyz = ll_to_xyz(0.0, 90.0);
-        assert!((xyz.0 - 0.0).abs() < DELTA);
-        assert!((xyz.1 - 1.0).abs() < DELTA);
-        assert!((xyz.2 - 0.0).abs() < DELTA);
-
-        let xyz = ll_to_xyz(0.0, 0.0);
-        assert!((xyz.0 - 1.0).abs() < DELTA);
-        assert!((xyz.1 - 0.0).abs() < DELTA);
-        assert!((xyz.2 - 0.0).abs() < DELTA);
-
-        let xyz = ll_to_xyz(90.0, 0.0);
-        assert!((xyz.0 - 0.0).abs() < DELTA);
-        assert!((xyz.1 - 0.0).abs() < DELTA);
-        assert!((xyz.2 - 1.0).abs() < DELTA);
-    }
-
-    #[test]
-    fn test_vec3() {
-        assert_eq!(
-            Vec3(1.0, 2.0, 3.0) + Vec3(3.0, 2.0, 1.0),
-            Vec3(4.0, 4.0, 4.0)
-        );
-
-        assert_eq!(Vec3(1.0, 2.0, 3.0) * 2.0, Vec3(2.0, 4.0, 6.0));
-        assert_eq!(2.0 * Vec3(1.0, 2.0, 3.0), Vec3(2.0, 4.0, 6.0));
-
-        let mut vec = Vec3(1.0, 2.0, 3.0);
-        vec *= 2.0;
-        assert_eq!(vec, Vec3(2.0, 4.0, 6.0));
-
-        assert!((Vec3(1.0, 1.0, 1.0).normalized().length() - 1.0).abs() < DELTA);
-    }
 
     #[test]
     fn test_ico_sphere() {
