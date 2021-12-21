@@ -1,6 +1,9 @@
-use gdnative::prelude::*;
 use std::collections::HashMap;
 use std::f32::consts::PI;
+
+use gdnative::api::{ArrayMesh, Mesh};
+use gdnative::core_types::{Int32Array, Vector3Array};
+use gdnative::prelude::*;
 
 const DEG2RAD: f32 = PI / 180.0;
 
@@ -23,6 +26,49 @@ impl IcoSphere {
         subdivisions: u32,
     ) -> (Vec<Vec3>, Vec<(usize, usize, usize)>) {
         IcoSphereGenerator::new(radius, subdivisions).generate()
+    }
+
+    #[export]
+    pub fn to_mesh(
+        &self,
+        _owner: &Object,
+        vertices: Vec<Vec3>,
+        faces: Vec<(usize, usize, usize)>,
+    ) -> Ref<ArrayMesh, Unique> {
+        let mut verts = Vector3Array::new();
+        let mut indices = Int32Array::new();
+        let mut normals = Vector3Array::new();
+
+        for v in vertices {
+            let vec = Vector3::new(v.0, v.1, v.2);
+            verts.push(vec);
+            normals.push(vec.normalize());
+        }
+
+        for face in faces {
+            indices.push(face.0 as i32);
+            indices.push(face.1 as i32);
+            indices.push(face.2 as i32);
+        }
+
+        let arr = VariantArray::new_shared();
+        unsafe {
+            #[allow(deprecated)]
+            arr.resize(Mesh::ARRAY_MAX as i32);
+        }
+        arr.set(Mesh::ARRAY_INDEX as i32, indices);
+        arr.set(Mesh::ARRAY_VERTEX as i32, verts);
+        arr.set(Mesh::ARRAY_NORMAL as i32, normals);
+
+        let mesh = ArrayMesh::new();
+        mesh.add_surface_from_arrays(
+            Mesh::PRIMITIVE_TRIANGLES,
+            arr,
+            VariantArray::new_shared(),
+            97280,
+        );
+
+        mesh
     }
 }
 
