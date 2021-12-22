@@ -13,13 +13,13 @@ static func xyz_to_lla(xyz: Vector3) -> Vector2:
 static func lla_to_xyz(lla: Vector2) -> Vector3:
 	var lon = lla.x
 	var lat = lla.y
-	var cosLat = cos(deg2rad(lat))
-	var sinLat = sin(deg2rad(lat))
-	var cosLon = cos(deg2rad(lon))
-	var sinLon = sin(deg2rad(lon))
-	var x = cosLat * cosLon
-	var y = sinLat
-	var z = cosLat * sinLon
+	var cos_lat = cos(deg2rad(lat))
+	var sin_lat = sin(deg2rad(lat))
+	var cos_lon = cos(deg2rad(lon))
+	var sin_lon = sin(deg2rad(lon))
+	var x = cos_lat * cos_lon
+	var y = sin_lat
+	var z = cos_lat * sin_lon
 	return Vector3(x, y, z)
 
 # Calculate UV coordinates on a _unit_ sphere (i.e. assumes radius 0)

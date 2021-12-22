@@ -33,6 +33,13 @@ Roads will need to connect cities, but not individual productive cells. However,
    * Will start with simplex noise; simple model with air flows may come later
 * Given the above points: port the generator to Rust?
 
+### Questions
+
+* In which technological state does the game start? Are we...
+   * ...intelligent live that emerged in the planet, and have to work up the technology tree?
+   * ...something like shipwreck people stranded on that planet?
+   * ... colonists with a connection to the outer world?
+
 ## 2021/12/19 -- Network and Facilities on Planet
 
 ### Progress
