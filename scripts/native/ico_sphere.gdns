@@ -5,3 +5,4 @@
 [resource]
 class_name = "IcoSphere"
 library = ExtResource( 1 )
+script_class_name = "IcoSphere"

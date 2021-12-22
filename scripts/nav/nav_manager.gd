@@ -6,11 +6,6 @@ var nav_all: AStarNavigation
 
 var _node_data: Dictionary
 
-class NodeData:
-	var is_water: bool
-	var height: float
-	var position: Vector3
-
 func _init(vertices: PoolVector3Array, faces: PoolIntArray, planet_radius: float):
 	_node_data = generate_node_data(vertices, faces, planet_radius)
 	

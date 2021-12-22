@@ -5,7 +5,7 @@ use noise::{BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, RidgedM
 
 use crate::geom::godot_util::{to_collision_shape, to_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
-use crate::geom::planet::data::{NodeData, PlanetData, DIST_FACTOR};
+use crate::geom::planet::data::{NodeData, NodeNeighbors, PlanetData, DIST_FACTOR};
 
 struct PlanetGeneratorParams {
     radius: f32,
@@ -63,26 +63,27 @@ impl PlanetGenerator {
         let (mut vertices, faces) =
             IcoSphereGenerator::new(params.radius, params.subdivisions).generate();
 
-        let mut nodes = self.generate_terrain(&mut vertices);
+        let nodes = self.generate_terrain(&mut vertices);
+        let mut neighbors: Vec<_> = nodes.iter().map(|_| NodeNeighbors::default()).collect();
 
         for face in faces.iter() {
-            nodes[face.0].neighbors.push(face.1);
-            nodes[face.0]
+            neighbors[face.0].neighbors.push(face.1);
+            neighbors[face.0]
                 .distances
                 .push((vertices[face.0].distance_to(vertices[face.1]) * DIST_FACTOR as f32) as u32);
 
-            nodes[face.1].neighbors.push(face.2);
-            nodes[face.1]
+            neighbors[face.1].neighbors.push(face.2);
+            neighbors[face.1]
                 .distances
                 .push((vertices[face.1].distance_to(vertices[face.2]) * DIST_FACTOR as f32) as u32);
 
-            nodes[face.2].neighbors.push(face.0);
-            nodes[face.2]
+            neighbors[face.2].neighbors.push(face.0);
+            neighbors[face.2]
                 .distances
                 .push((vertices[face.2].distance_to(vertices[face.0]) * DIST_FACTOR as f32) as u32);
         }
 
-        let data = PlanetData::new(nodes);
+        let data = PlanetData::new(nodes, neighbors);
 
         let mesh = to_mesh(&vertices, &faces);
         let shape = to_collision_shape(&vertices, &faces);
@@ -124,8 +125,6 @@ impl PlanetGenerator {
                     position: *v,
                     elevation,
                     is_water: elevation < 0.0,
-                    neighbors: vec![],
-                    distances: vec![],
                 }
             })
             .collect()

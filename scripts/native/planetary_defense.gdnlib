@@ -7,9 +7,9 @@ reloadable=true
 
 [entry]
 
-OSX.64="res://target/debug/libplanetary_defense.dylib"
-Windows.64="res://target/debug/planetary_defense.dll"
-X11.64="res://target/debug/libplanetary_defense.so"
+OSX.64="res://target/release/libplanetary_defense.dylib"
+Windows.64="res://target/release/planetary_defense.dll"
+X11.64="res://target/release/libplanetary_defense.so"
 
 [dependencies]
 

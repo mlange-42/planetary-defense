@@ -12,8 +12,7 @@ export var height_curve: Curve
 
 
 func _ready():
-	var PlanetGen = preload("res://scripts/native/planet_generator.gdns")
-	var planet_gen = PlanetGen.new()
+	var planet_gen = PlanetGenerator.new()
 	planet_gen.initialize(radius, subdivisions, max_height, height_step, noise_type, noise_period, noise_octaves, height_curve)
 	
 	var result = planet_gen.generate()

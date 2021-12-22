@@ -3,6 +3,6 @@
 [ext_resource path="res://scripts/native/planetary_defense.gdnlib" type="GDNativeLibrary" id=1]
 
 [resource]
-class_name = "PlanetGenerator"
+class_name = "PlanetData"
 library = ExtResource( 1 )
-script_class_name = "PlanetGenerator"
+script_class_name = "PlanetData"
