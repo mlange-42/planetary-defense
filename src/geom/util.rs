@@ -1,20 +1,10 @@
-use std::f32::consts::PI;
-
 use gdnative::core_types::Vector3;
 
-const DEG2RAD: f32 = PI / 180.0;
-
 pub fn ll_to_xyz(lon: f32, lat: f32) -> Vector3 {
-    let lon = lon * DEG2RAD;
-    let lat = lat * DEG2RAD;
-    let cos_lat = lat.cos();
-    let sin_lat = lat.sin();
-    let cos_lon = lon.cos();
-    let sin_lon = lon.sin();
-
-    let x = cos_lat * cos_lon;
-    let y = sin_lat;
-    let z = cos_lat * sin_lon;
+    let r = lat.to_radians().cos();
+    let x = r * lon.to_radians().cos();
+    let y = lat.to_radians().sin();
+    let z = r * lon.to_radians().sin();
 
     Vector3::new(x, y, z)
 }
