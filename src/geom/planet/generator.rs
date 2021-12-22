@@ -1,55 +1,11 @@
-use gdnative::api::{ArrayMesh, Curve};
+use gdnative::api::Curve;
 use gdnative::prelude::*;
 
 use noise::{BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, RidgedMulti};
 
 use crate::geom::godot_util::to_mesh;
 use crate::geom::ico_sphere::IcoSphereGenerator;
-
-pub struct NodeData {
-    pub position: Vector3,
-    pub elevation: f32,
-    pub neighbors: Vec<usize>,
-}
-
-#[derive(NativeClass)]
-#[no_constructor]
-#[inherit(Reference)]
-pub struct PlanetData {
-    nodes: Vec<NodeData>,
-    collision_mesh: Ref<ArrayMesh, Shared>,
-}
-
-#[methods]
-impl PlanetData {
-    #[export]
-    fn _init(&mut self, _owner: &Reference) {}
-
-    #[export]
-    fn get_collision_mesh(&self, _owner: &Reference) -> &Ref<ArrayMesh> {
-        &self.collision_mesh
-    }
-
-    #[export]
-    fn get_node_count(&self, _owner: &Reference) -> usize {
-        self.nodes.len()
-    }
-
-    #[export]
-    fn get_position(&self, _owner: &Reference, idx: usize) -> Vector3 {
-        self.nodes[idx].position
-    }
-
-    #[export]
-    fn get_elevation(&self, _owner: &Reference, idx: usize) -> f32 {
-        self.nodes[idx].elevation
-    }
-
-    #[export]
-    fn get_neighbors(&self, _owner: &Reference, idx: usize) -> &[usize] {
-        &self.nodes[idx].neighbors[..]
-    }
-}
+use crate::geom::planet::data::{NodeData, PlanetData, DIST_FACTOR};
 
 struct PlanetGeneratorParams {
     radius: f32,
@@ -111,14 +67,23 @@ impl PlanetGenerator {
 
         for face in faces.iter() {
             nodes[face.0].neighbors.push(face.1);
+            nodes[face.0]
+                .distances
+                .push((vertices[face.0].distance_to(vertices[face.1]) * DIST_FACTOR as f32) as u32);
+
             nodes[face.1].neighbors.push(face.2);
+            nodes[face.1]
+                .distances
+                .push((vertices[face.1].distance_to(vertices[face.2]) * DIST_FACTOR as f32) as u32);
+
             nodes[face.2].neighbors.push(face.0);
+            nodes[face.2]
+                .distances
+                .push((vertices[face.2].distance_to(vertices[face.0]) * DIST_FACTOR as f32) as u32);
         }
 
-        let data = PlanetData {
-            nodes,
-            collision_mesh: to_mesh(&vertices, &faces).into_shared(),
-        };
+        let data = PlanetData::new(nodes, to_mesh(&vertices, &faces).into_shared());
+
         data.emplace()
     }
 
@@ -150,7 +115,9 @@ impl PlanetGenerator {
                 NodeData {
                     position: *v,
                     elevation,
+                    is_water: elevation < 0.0,
                     neighbors: vec![],
+                    distances: vec![],
                 }
             })
             .collect()

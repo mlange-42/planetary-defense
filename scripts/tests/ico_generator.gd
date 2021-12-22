@@ -24,3 +24,4 @@ func _ready():
 	
 	add_child(inst)
 	
+	print(data.get_id_path(0, 100, data.NAV_WATER))
