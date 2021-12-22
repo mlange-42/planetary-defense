@@ -3,7 +3,7 @@ use gdnative::prelude::*;
 
 use noise::{BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, RidgedMulti};
 
-use crate::geom::godot_util::to_mesh;
+use crate::geom::godot_util::{to_collision_shape, to_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
 use crate::geom::planet::data::{NodeData, PlanetData, DIST_FACTOR};
 
@@ -57,7 +57,7 @@ impl PlanetGenerator {
     }
 
     #[export]
-    fn generate(&self, _owner: &Reference) -> Instance<PlanetData, Unique> {
+    fn generate(&self, _owner: &Reference) -> VariantArray<Unique> {
         let params = self.params.as_ref().unwrap();
 
         let (mut vertices, faces) =
@@ -82,9 +82,17 @@ impl PlanetGenerator {
                 .push((vertices[face.2].distance_to(vertices[face.0]) * DIST_FACTOR as f32) as u32);
         }
 
-        let data = PlanetData::new(nodes, to_mesh(&vertices, &faces).into_shared());
+        let data = PlanetData::new(nodes);
 
-        data.emplace()
+        let mesh = to_mesh(&vertices, &faces);
+        let shape = to_collision_shape(&vertices, &faces);
+
+        let arr = VariantArray::new();
+        arr.push(data.emplace());
+        arr.push(mesh);
+        arr.push(shape);
+
+        arr
     }
 
     fn generate_terrain(&self, vertices: &mut [Vector3]) -> Vec<NodeData> {

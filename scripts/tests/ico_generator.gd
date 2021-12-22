@@ -16,12 +16,13 @@ func _ready():
 	var planet_gen = PlanetGen.new()
 	planet_gen.initialize(radius, subdivisions, max_height, height_step, noise_type, noise_period, noise_octaves, height_curve)
 	
-	var data = planet_gen.generate()
+	var result = planet_gen.generate()
 	
-	var mesh: ArrayMesh = data.get_collision_mesh()
+	var data = result[0]
+	var mesh: ArrayMesh = result[1]
 	var inst := MeshInstance.new()
 	inst.mesh = mesh
 	
 	add_child(inst)
 	
-	print(data.get_id_path(0, 100, data.NAV_WATER))
+	print(data.get_id_path(0, 100, data.NAV_ALL))

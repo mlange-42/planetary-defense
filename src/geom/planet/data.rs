@@ -1,4 +1,3 @@
-use gdnative::api::ArrayMesh;
 use gdnative::prelude::*;
 use kdtree::{distance::squared_euclidean, KdTree};
 use pathfinding::directed::astar::astar;
@@ -23,7 +22,6 @@ pub struct NodeData {
 #[allow(non_snake_case)]
 pub struct PlanetData {
     pub nodes: Vec<NodeData>,
-    pub collision_mesh: Ref<ArrayMesh, Shared>,
     tree: KdTree<f32, usize, [f32; 3]>,
 
     #[property]
@@ -35,14 +33,13 @@ pub struct PlanetData {
 }
 
 impl PlanetData {
-    pub fn new(nodes: Vec<NodeData>, collision_mesh: Ref<ArrayMesh, Shared>) -> Self {
+    pub fn new(nodes: Vec<NodeData>) -> Self {
         let mut tree = KdTree::with_capacity(3, nodes.len());
         for (i, node) in nodes.iter().enumerate() {
             tree.add(node.position.to_array(), i).unwrap();
         }
         Self {
             nodes,
-            collision_mesh,
             tree,
             NAV_ALL,
             NAV_LAND,
@@ -55,11 +52,6 @@ impl PlanetData {
 impl PlanetData {
     #[export]
     fn _init(&mut self, _owner: &Reference) {}
-
-    #[export]
-    fn get_collision_mesh(&self, _owner: &Reference) -> &Ref<ArrayMesh> {
-        &self.collision_mesh
-    }
 
     #[export]
     fn get_node_count(&self, _owner: &Reference) -> usize {
@@ -109,21 +101,19 @@ impl PlanetData {
         )
     }
 
-    fn get_successor(&self, id: usize, nav_type: u32) -> Vec<(usize, u32)> {
+    fn get_successor<'s>(
+        &'s self,
+        id: usize,
+        nav_type: u32,
+    ) -> impl Iterator<Item = (usize, u32)> + 's {
         let node = &self.nodes[id];
         let water = node.is_water;
-        let s = node
-            .neighbors
-            .iter()
-            .enumerate()
-            .filter_map(|(i, n)| {
-                if nav_type == self.NAV_ALL || (nav_type == self.NAV_WATER) == water {
-                    Some((*n, node.distances[i]))
-                } else {
-                    None
-                }
-            })
-            .collect();
-        s
+        node.neighbors.iter().enumerate().filter_map(move |(i, n)| {
+            if nav_type == self.NAV_ALL || (nav_type == self.NAV_WATER) == water {
+                Some((*n, node.distances[i]))
+            } else {
+                None
+            }
+        })
     }
 }

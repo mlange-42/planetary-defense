@@ -393,22 +393,18 @@ impl Graph {
     }
 
     fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<usize>, u32)> {
-        dijkstra::<usize, u32, _, Vec<_>, _>(
+        dijkstra(
             &start,
             |id| self.get_successor(*id),
             |id| self.nodes[*id].supply[commodity] < 0,
         )
     }
 
-    fn get_successor(&self, id: usize) -> Vec<(usize, u32)> {
-        let s = self.out_edges[id]
-            .iter()
-            .filter_map(|edge_id| {
-                let edge = &self.edges[*edge_id];
-                self.calc_cost(edge).map(|c| (edge.b.0, c))
-            })
-            .collect();
-        s
+    fn get_successor<'s>(&'s self, id: usize) -> impl Iterator<Item = (usize, u32)> + 's {
+        self.out_edges[id].iter().filter_map(|edge_id| {
+            let edge = &self.edges[*edge_id];
+            self.calc_cost(edge).map(|c| (edge.b.0, c))
+        })
     }
 
     fn calc_cost(&self, edge: &Edge) -> Option<u32> {
