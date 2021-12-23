@@ -5,8 +5,9 @@ mod geom;
 
 pub use flow::path::MultiCommodityFlow;
 pub use geom::ico_sphere::IcoSphere;
-pub use geom::planet_generator::PlanetData;
-pub use geom::planet_generator::PlanetGenerator;
+pub use geom::planet::data::NodeData;
+pub use geom::planet::data::PlanetData;
+pub use geom::planet::generator::PlanetGenerator;
 
 use gdnative::prelude::*;
 
@@ -14,6 +15,7 @@ fn init(handle: InitHandle) {
     handle.add_class::<MultiCommodityFlow>();
     handle.add_class::<IcoSphere>();
     handle.add_class::<PlanetData>();
+    handle.add_class::<NodeData>();
     handle.add_class::<PlanetGenerator>();
 }
 

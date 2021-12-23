@@ -10,13 +10,14 @@ const SCENES = {
 
 
 var network: RoadNetwork
-var navigation: NavManager
+var planet_data = null
 var parent_node: Spatial
 
 
-func _init(net: RoadNetwork, nav: NavManager, node: Spatial):
+# warning-ignore:shadowed_variable
+func _init(net: RoadNetwork, planet_data, node: Spatial):
 	self.network = net
-	self.navigation = nav
+	self.planet_data = planet_data
 	self.parent_node = node
 
 
@@ -38,7 +39,7 @@ func add_facility(type: String, location: int):
 		print("WARNING: no scene resource found for %s" % type)
 		return
 	
-	var info: NavManager.NodeData = navigation.get_node(location)
+	var info = planet_data.get_node(location)
 	
 	if info.is_water:
 		return

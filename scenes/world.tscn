@@ -26,12 +26,12 @@ script = ExtResource( 2 )
 use_random_seed = false
 radius = 10.0
 max_height = 1.5
-height_curve = SubResource( 1 )
 height_step = 0.05
+noise_type = "fbm"
 noise_period = 0.5
-noise_octaves = 5
+noise_octaves = 4
+height_curve = SubResource( 1 )
 subdivisions = 6
-nav_subdivisions = 6
 land_material = ExtResource( 7 )
 water_material = ExtResource( 6 )
 

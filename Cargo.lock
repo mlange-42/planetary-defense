@@ -419,6 +419,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "kdtree"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "80ee359328fc9087e9e3fc0a4567c4dd27ec69a127d6a70e8d9dd22845b8b1a2"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -639,6 +648,7 @@ name = "planetary_defense"
 version = "0.1.0"
 dependencies = [
  "gdnative",
+ "kdtree",
  "noise",
  "pathfinding",
  "rand 0.8.4",

@@ -5,3 +5,4 @@
 [resource]
 class_name = "MultiCommodityFlow"
 library = ExtResource( 1 )
+script_class_name = "MultiCommodityFlow"

@@ -29,10 +29,11 @@ func _on_planet_exited():
 
 
 func _on_planet_hovered(point: Vector3):
-	var id = planet.nav.nav_all.get_closest_point(point)
-	var node = planet.nav.get_node(id)
+	var id = planet.planet_data.get_closest_point(point)
+
+	var node = planet.planet_data.get_node(id)
 	pointer.translation = node.position
-	
+
 	var sel_tool = gui.get_selected_tool()
 	if sel_tool == "Road":
 		if start_point >= 0:
@@ -43,7 +44,8 @@ func _on_planet_hovered(point: Vector3):
 
 
 func _on_planet_clicked(point: Vector3, button: int):
-	var id = planet.nav.nav_all.get_closest_point(point)
+	pass
+	var id = planet.planet_data.get_closest_point(point)
 	var sel_tool = gui.get_selected_tool()
 	if sel_tool == "Inspect":
 		if button == BUTTON_LEFT:

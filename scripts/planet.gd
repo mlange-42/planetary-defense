@@ -6,12 +6,13 @@ export var use_random_seed: bool = true
 export var random_seed: int = 0
 export var radius: float = 1.0
 export var max_height: float = 0.1
-export var height_curve: Curve
 export var height_step: float = 0.005
+export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") var noise_type: String = ""
 export var noise_period: float = 0.25
 export var noise_octaves: int = 3
+export var height_curve: Curve
+
 export (int, 0, 6) var subdivisions: int = 5
-export (int, 0, 6) var nav_subdivisions: int = 3
 export (int, 2, 48) var water_rings: int = 24
 export (int, 4, 96) var water_segments: int = 48
 export var smooth: bool = false
@@ -23,54 +24,57 @@ onready var facilities: Spatial = $Facilities
 
 onready var road_debug: DebugDraw = $RoadDebug
 onready var path_debug: DebugDraw = $PathDebug
-onready var grid_debug: DebugDraw = $GridDebug
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var nav: NavManager
+var planet_data = null
 var roads: RoadNetwork
 var builder: BuildManager
 var flow: FlowManager
 
 func _ready():
-	assert(nav_subdivisions <= subdivisions, "Navigation subdivisions may not be larger then ground subdivisions")
 	
 	if use_random_seed:
 		rng.seed = random_seed
 	else:
 		rng.randomize()
 	
-	var gnd: IcoSphere.Result = _create_ground()
-	self.nav = _create_nav(gnd)
+	var gen = PlanetGenerator.new()
+	gen.initialize(
+		radius, subdivisions, max_height, height_step, 
+		noise_type, noise_period, noise_octaves, height_curve)
+	
+	var result = gen.generate()
+	
+	self.planet_data = result[0]
 	self.roads = RoadNetwork.new()
-	self.builder = BuildManager.new(roads, nav, facilities)
+	self.builder = BuildManager.new(roads, planet_data, facilities)
 	self.flow = FlowManager.new(roads)
 	
-	var ground: MeshInstance = _add_mesh(gnd.mesh, "Ground")
+	var ground: MeshInstance = _add_mesh(result[1], "Ground")
 	ground.material_override = land_material
 	
 	var water: MeshInstance = _add_mesh(_create_water(), "Water")
 	water.material_override = water_material
 	
-	var collision = _create_collision_shape(gnd.mesh, gnd.subdiv_faces[nav_subdivisions])
+	var collision = _create_collision(result[2])
 	add_child(collision)
 	
 	if not smooth:
-		GeoUtil.split_unsmooth(gnd.mesh)
+		GeoUtil.split_unsmooth(ground.mesh)
 	
-	grid_debug.draw_points(nav)
 
 
 func calc_point_path(from: int, to: int) -> Array:
-	if nav.nav_land.has_point(from) and nav.nav_land.has_point(to):
-		var path = nav.nav_land.get_point_path(from, to)
+	if planet_data.has_point(from, planet_data.NAV_LAND) and planet_data.has_point(to, planet_data.NAV_LAND):
+		var path = planet_data.get_point_path(from, to, planet_data.NAV_LAND)
 		return path
 	
 	return []
 
 
 func calc_id_path(from: int, to: int) -> Array:
-	if nav.nav_land.has_point(from) and nav.nav_land.has_point(to):
-		var path = nav.nav_land.get_id_path(from, to)
+	if planet_data.has_point(from, planet_data.NAV_LAND) and planet_data.has_point(to, planet_data.NAV_LAND):
+		var path = planet_data.get_id_path(from, to, planet_data.NAV_LAND)
 		return path
 	
 	return []
@@ -96,7 +100,7 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_debug.draw_roads(nav, roads, Color.green, Color.red)
+	road_debug.draw_roads(planet_data, roads, Color.green, Color.red)
 
 
 func add_facility(type: String, location: int):
@@ -120,55 +124,19 @@ func _add_node(node: GeometryInstance, name: String) -> GeometryInstance:
 	return node
 
 
-func _create_ground() -> IcoSphere.Result:
-	var gen = IcoSphere.new(subdivisions, radius, true)
-	var result: IcoSphere.Result = gen.create([nav_subdivisions])
-	
-	_add_noise(result.mesh)
-	
-	return result
-
-
 func _create_water() -> Mesh:
 	var sphere = UvSphere.new(water_rings, water_segments, radius)
 	return sphere.create()
 
 
-func _create_nav(res: IcoSphere.Result) -> NavManager:
-	return NavManager.new(
-				res.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX],
-				res.subdiv_faces[nav_subdivisions],
-				radius)
-
-
-func _create_collision_shape(mesh: Mesh, indices: PoolIntArray) -> Area:
-	var vertices = mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
-	
-	var coll := ConcavePolygonShape.new()
-	var faces := PoolVector3Array()
-	
-	for id in indices:
-		faces.append(vertices[id])
-	
-	coll.set_faces(faces)
-	
+func _create_collision(shape: ConcavePolygonShape) -> Area:
 	var area = Area.new()
-	var shape = CollisionShape.new()
-	shape.shape = coll
-	area.add_child(shape)
+	var shp = CollisionShape.new()
+	shp.shape = shape
+	area.add_child(shp)
 	area.name = "Area"
 	
 	return area
-
-func _add_noise(m: Mesh):
-	var noise := OpenSimplexNoise.new()
-	noise.seed = rng.randi()
-	noise.octaves = noise_octaves
-	noise.period = noise_period * radius
-	noise.persistence = 0.5
-	
-	var height_map: HeightMap = HeightMap.new(noise, max_height, height_step)
-	height_map.create_elevation(m, height_curve, true)
 
 
 func next_turn():
