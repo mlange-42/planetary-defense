@@ -22,7 +22,11 @@ pub fn to_collision_shape(
     shape
 }
 
-pub fn to_mesh(vertices: &[Vector3], faces: &[(usize, usize, usize)]) -> Ref<ArrayMesh, Unique> {
+pub fn to_mesh(
+    vertices: &[Vector3],
+    faces: &[(usize, usize, usize)],
+    colors: Option<ColorArray>,
+) -> Ref<ArrayMesh, Unique> {
     let mut verts = Vector3Array::new();
     let mut indices = Int32Array::new();
     let mut normals = Vector3Array::new();
@@ -48,6 +52,10 @@ pub fn to_mesh(vertices: &[Vector3], faces: &[(usize, usize, usize)]) -> Ref<Arr
     arr.set(Mesh::ARRAY_INDEX as i32, indices);
     arr.set(Mesh::ARRAY_VERTEX as i32, verts);
     arr.set(Mesh::ARRAY_NORMAL as i32, normals);
+
+    if let Some(colors) = colors {
+        arr.set(Mesh::ARRAY_COLOR as i32, colors);
+    }
 
     let mesh = ArrayMesh::new();
     mesh.add_surface_from_arrays(

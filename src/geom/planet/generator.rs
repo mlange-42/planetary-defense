@@ -19,6 +19,9 @@ struct PlanetGeneratorParams {
     terrain_noise_period: f32,
     terrain_noise_octaves: usize,
     terrain_curve: Ref<Curve>,
+    climate_noise_type: String,
+    climate_noise_period: f32,
+    climate_noise_octaves: usize,
 }
 
 #[derive(NativeClass)]
@@ -46,6 +49,9 @@ impl PlanetGenerator {
         terrain_noise_period: f32,
         terrain_noise_octaves: usize,
         terrain_curve: Ref<Curve>,
+        climate_noise_type: String,
+        climate_noise_period: f32,
+        climate_noise_octaves: usize,
     ) {
         self.params = Some(PlanetGeneratorParams {
             radius,
@@ -56,6 +62,9 @@ impl PlanetGenerator {
             terrain_noise_period,
             terrain_noise_octaves,
             terrain_curve,
+            climate_noise_type,
+            climate_noise_period,
+            climate_noise_octaves,
         })
     }
 
@@ -86,9 +95,11 @@ impl PlanetGenerator {
                 .push((vertices[face.2].distance_to(vertices[face.0]) * DIST_FACTOR as f32) as u32);
         }
 
+        let colors = self.generate_colors(&nodes);
+
         let data = PlanetData::new(nodes, neighbors);
 
-        let mesh = to_mesh(&vertices, &faces);
+        let mesh = to_mesh(&vertices, &faces, Some(colors));
         let shape = to_collision_shape(&vertices, &faces);
 
         let arr = VariantArray::new();
@@ -103,35 +114,62 @@ impl PlanetGenerator {
         let params = self.params.as_ref().unwrap();
 
         let noise = create_noise(&params.terrain_noise_type, params.terrain_noise_octaves);
+        let climate_noise = create_noise(&params.climate_noise_type, params.climate_noise_octaves);
 
         let h_max = params.terrain_max_height;
         let h_step = params.terrain_height_step;
         let curve = unsafe { &params.terrain_curve.clone().assume_unique() };
+
         let scale = 1.0 / (params.terrain_noise_period * params.radius);
+        let climate_scale = 1.0 / (params.climate_noise_period * params.radius);
 
         vertices
             .iter_mut()
             .map(|v| {
                 let normal = v.normalize();
-                let n = noise.get([
+                let el = noise.get([
                     (scale * v.x) as f64,
                     (scale * v.y) as f64,
                     (scale * v.z) as f64,
                 ]);
-                let rel_elevation = 2.0 * curve.interpolate(n / 2.0 + 0.5) - 1.0;
+                let cl = climate_noise.get([
+                    (climate_scale * v.x) as f64,
+                    (climate_scale * v.y) as f64,
+                    (climate_scale * v.z) as f64,
+                ]) as f32
+                    / 2.0
+                    + 0.5;
+                let rel_elevation = 2.0 * curve.interpolate(el / 2.0 + 0.5) - 1.0;
                 let mut elevation = rel_elevation as f32 * h_max;
                 if h_step > 0.0 {
                     elevation = (elevation / h_step).round() * h_step
                 }
                 *v += normal * elevation;
 
+                let lat = normal.y.asin().to_degrees().abs();
+                let lat_factor = lat / 90.0;
+                let alt_factor = (elevation / h_max).max(0.0);
+                let temperature = 1.0 - (lat_factor + alt_factor).clamp(0.0, 1.0);
+
                 NodeData {
                     position: *v,
                     elevation,
                     is_water: elevation < 0.0,
+                    temperature,
+                    precipitation: cl,
                 }
             })
             .collect()
+    }
+
+    fn generate_colors(&self, nodes: &[NodeData]) -> ColorArray {
+        let mut colors = ColorArray::new();
+        for node in nodes {
+            let color = Color::rgb(node.temperature, 1.0 - node.temperature, 0.0);
+            colors.push(color);
+        }
+
+        colors
     }
 }
 

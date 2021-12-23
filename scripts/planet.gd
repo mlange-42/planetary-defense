@@ -5,12 +5,19 @@ class_name Planet
 export var use_random_seed: bool = true
 export var random_seed: int = 0
 export var radius: float = 1.0
+
 export var max_height: float = 0.1
-export var height_step: float = 0.005
-export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") var noise_type: String = ""
-export var noise_period: float = 0.25
-export var noise_octaves: int = 3
+export var height_step: float = 0.05
+export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
+		var noise_type: String = ""
+export var noise_period: float = 0.5
+export var noise_octaves: int = 4
 export var height_curve: Curve
+
+export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
+		var climate_noise_type: String = ""
+export var climate_noise_period: float = 0.5
+export var climate_noise_octaves: int = 3
 
 export (int, 0, 6) var subdivisions: int = 5
 export (int, 2, 48) var water_rings: int = 24
@@ -41,7 +48,8 @@ func _ready():
 	var gen = PlanetGenerator.new()
 	gen.initialize(
 		radius, subdivisions, max_height, height_step, 
-		noise_type, noise_period, noise_octaves, height_curve)
+		noise_type, noise_period, noise_octaves, height_curve,
+		climate_noise_type, climate_noise_period, climate_noise_octaves)
 	
 	var result = gen.generate()
 	

@@ -18,6 +18,10 @@ pub struct NodeData {
     pub elevation: f32,
     #[property]
     pub is_water: bool,
+    #[property]
+    pub temperature: f32,
+    #[property]
+    pub precipitation: f32,
 }
 
 #[methods]

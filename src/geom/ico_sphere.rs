@@ -1,9 +1,8 @@
 use std::collections::HashMap;
 
-use gdnative::api::ArrayMesh;
 use gdnative::prelude::*;
 
-use crate::geom::{godot_util::to_mesh, util::ll_to_xyz};
+use crate::geom::util::ll_to_xyz;
 
 #[derive(NativeClass)]
 #[inherit(Reference)]
@@ -23,16 +22,6 @@ impl IcoSphere {
         subdivisions: u32,
     ) -> (Vec<Vector3>, Vec<(usize, usize, usize)>) {
         IcoSphereGenerator::new(radius, subdivisions).generate()
-    }
-
-    #[export]
-    pub fn to_mesh(
-        &self,
-        _owner: &Reference,
-        vertices: Vec<Vector3>,
-        faces: Vec<(usize, usize, usize)>,
-    ) -> Ref<ArrayMesh, Unique> {
-        to_mesh(&vertices, &faces)
     }
 }
 
