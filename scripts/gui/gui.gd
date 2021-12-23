@@ -10,7 +10,7 @@ var tool_buttons: ButtonGroup
 
 
 func _ready():
-	tool_buttons = $MarginControls/Controls/BuildButtons/Factory.group
+	tool_buttons = $MarginControls/Controls/BuildButtons/Inspect.group
 	tool_buttons.get_buttons()[0].pressed = true
 
 

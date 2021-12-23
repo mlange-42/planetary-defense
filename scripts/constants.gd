@@ -19,13 +19,11 @@ class Conversion:
 		max_from_amount = max_amount
 		to = t
 		to_amount = t_amt
-	
+
+const DRAW_HEIGHT_OFFSET: float = 0.02
 
 const FACILITY_SCENES = {
 	"City": "res://scenes/objects/city.tscn",
-	"Town": "res://scenes/objects/town.tscn",
-	"Mine": "res://scenes/objects/mine.tscn",
-	"Factory": "res://scenes/objects/factory.tscn",
 }
 
 const COMM_FOOD: String = "Food"

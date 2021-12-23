@@ -118,7 +118,7 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_debug.draw_roads(planet_data, roads, Color.green, Color.red)
+	road_debug.draw_roads(planet_data, roads, Color(0.02, 0.02, 0.02), Color.red)
 
 
 func add_facility(type: String, location: int):
