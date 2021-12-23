@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::{
     fs::File,
     io::{BufWriter, Write},
@@ -13,7 +14,7 @@ const NAV_ALL: u32 = 0;
 const NAV_LAND: u32 = 1;
 const NAV_WATER: u32 = 2;
 
-#[derive(NativeClass, ToVariant)]
+#[derive(NativeClass, ToVariant, Clone, Default)]
 #[no_constructor]
 #[inherit(Reference)]
 pub struct NodeData {
@@ -114,6 +115,40 @@ impl PlanetData {
     }
 
     #[export]
+    fn get_in_radius(&self, _owner: &Reference, id: usize, radius: u32) -> Vec<(usize, u32)> {
+        self.get_nodes_in_radius(id, radius)
+    }
+
+    fn get_nodes_in_radius(&self, id: usize, radius: u32) -> Vec<(usize, u32)> {
+        let mut vec = Vec::new();
+        let mut visited = HashSet::new();
+        let mut open = HashSet::new();
+        let mut new_open = HashSet::new();
+
+        vec.push((id, 0_u32));
+        visited.insert(id);
+        open.insert(id);
+
+        for r in 0..radius {
+            for curr in open.drain() {
+                let neigh: Vec<_> = self.neighbors[curr]
+                    .neighbors
+                    .iter()
+                    .filter(|n| !visited.contains(n))
+                    .cloned()
+                    .collect();
+
+                vec.extend(neigh.iter().map(|n| (*n, r + 1)));
+                visited.extend(&neigh);
+                new_open.extend(&neigh);
+            }
+            std::mem::swap(&mut open, &mut new_open);
+        }
+
+        vec
+    }
+
+    #[export]
     fn get_id_path(
         &self,
         _owner: &Reference,
@@ -184,5 +219,58 @@ impl PlanetData {
             )
             .unwrap();
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_get_in_radius() {
+        let nodes = vec![NodeData::default(); 4];
+
+        let neighbors = vec![
+            NodeNeighbors {
+                neighbors: vec![1],
+                distances: vec![1],
+            },
+            NodeNeighbors {
+                neighbors: vec![0, 2],
+                distances: vec![1, 1],
+            },
+            NodeNeighbors {
+                neighbors: vec![1, 3],
+                distances: vec![1, 1],
+            },
+            NodeNeighbors {
+                neighbors: vec![2],
+                distances: vec![1],
+            },
+        ];
+        let data = PlanetData::new(nodes, neighbors);
+
+        assert_eq!(data.get_nodes_in_radius(0, 0), [(0, 0)]);
+        assert_eq!(data.get_nodes_in_radius(0, 1), [(0, 0), (1, 1)]);
+        assert_eq!(data.get_nodes_in_radius(0, 2), [(0, 0), (1, 1), (2, 2)]);
+        assert_eq!(
+            data.get_nodes_in_radius(0, 3),
+            [(0, 0), (1, 1), (2, 2), (3, 3)]
+        );
+        assert_eq!(
+            data.get_nodes_in_radius(0, 4),
+            [(0, 0), (1, 1), (2, 2), (3, 3)]
+        );
+
+        assert_eq!(data.get_nodes_in_radius(1, 0), [(1, 0)]);
+        assert_eq!(data.get_nodes_in_radius(1, 1), [(1, 0), (0, 1), (2, 1)]);
+        assert_eq!(
+            data.get_nodes_in_radius(1, 2),
+            [(1, 0), (0, 1), (2, 1), (3, 2)]
+        );
+        assert_eq!(
+            data.get_nodes_in_radius(1, 3),
+            [(1, 0), (0, 1), (2, 1), (3, 2)]
+        );
     }
 }
