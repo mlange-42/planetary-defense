@@ -206,6 +206,11 @@ impl PlanetGenerator {
                 if h_step > 0.0 {
                     elevation = (elevation / h_step).round() * h_step
                 }
+                let v_node = if elevation < 0.0 {
+                    *v
+                } else {
+                    *v + normal * elevation
+                };
                 *v += normal * elevation;
 
                 let lat = normal.y.asin().to_degrees().abs();
@@ -238,9 +243,9 @@ impl PlanetGenerator {
                 };*/
 
                 NodeData {
-                    position: *v,
+                    position: v_node,
                     elevation,
-                    is_water: elevation < 0.0,
+                    is_water: elevation <= 0.0,
                     temperature,
                     precipitation: cl,
                     land_use,
