@@ -2,12 +2,6 @@ class_name BuildManager
 
 const ROAD_CAPACITY = 25
 
-const SCENES = {
-	"Town": "res://scenes/objects/town.tscn",
-	"Mine": "res://scenes/objects/mine.tscn",
-	"Factory": "res://scenes/objects/factory.tscn",
-}
-
 
 var network: RoadNetwork
 var planet_data = null
@@ -35,7 +29,7 @@ func add_road(path: Array) -> bool:
 
 
 func add_facility(type: String, location: int):
-	if not SCENES.has(type):
+	if not Constants.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
 		return
 	
@@ -47,7 +41,8 @@ func add_facility(type: String, location: int):
 	if network.has_facility(location):
 		return
 	
-	var facility: Facility = load(SCENES[type]).instance()
+	var facility: Facility = load(Constants.FACILITY_SCENES[type]).instance()
+	facility.init(location, planet_data)
 	network.add_facility(location, facility)
 	
 	parent_node.add_child(facility)
@@ -55,4 +50,6 @@ func add_facility(type: String, location: int):
 	facility.node_id = location
 	facility.translation = info.position
 	facility.look_at(2 * info.position, Vector3.UP)
+	
+	facility.on_ready(planet_data)
 	

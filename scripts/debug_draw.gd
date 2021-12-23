@@ -1,7 +1,6 @@
 extends ImmediateGeometry
 class_name DebugDraw
 
-export var height_offset: float = 0.02
 export var road_width: float = 0.05
 
 func draw_path(points: Array, color: Color):
@@ -11,7 +10,7 @@ func draw_path(points: Array, color: Color):
 	set_color(color)
 	
 	for p in points:
-		add_vertex(p + 2 * height_offset * p.normalized())
+		add_vertex(p + 2 * Constants.DRAW_HEIGHT_OFFSET * p.normalized())
 	
 	end()
 
@@ -28,7 +27,7 @@ func draw_roads(planet_data, roads: RoadNetwork, color1: Color, color2: Color):
 			var p2 = planet_data.get_position(node2)
 			var x_off = (p2 - p1).cross(p1).normalized() * road_width
 			var y_off = (p2 - p1).normalized() * (0.5 * road_width)
-			var h_off = height_offset * p1.normalized()
+			var h_off = Constants.DRAW_HEIGHT_OFFSET * p1.normalized()
 			
 			set_color(color1.linear_interpolate(color2, edge.flow/float(edge.capacity)))
 			add_vertex(p1 + h_off - y_off)

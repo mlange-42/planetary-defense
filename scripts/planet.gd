@@ -118,7 +118,7 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_debug.draw_roads(planet_data, roads, Color.green, Color.red)
+	road_debug.draw_roads(planet_data, roads, Color(0.02, 0.02, 0.02), Color.red)
 
 
 func add_facility(type: String, location: int):
@@ -143,7 +143,7 @@ func _add_node(node: GeometryInstance, name: String) -> GeometryInstance:
 
 
 func _create_water() -> Mesh:
-	var sphere = UvSphere.new(water_rings, water_segments, radius)
+	var sphere = UvSphere.new(water_rings, water_segments, radius + 0.95 * height_step)
 	return sphere.create()
 
 

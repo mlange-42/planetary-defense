@@ -1,6 +1,5 @@
 use gdnative::api::Curve;
 use gdnative::prelude::*;
-use std::collections::HashMap;
 
 use noise::{
     BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, OpenSimplex, Perlin, RidgedMulti,
@@ -11,29 +10,38 @@ use crate::geom::godot_util::{to_collision_shape, to_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
 use crate::geom::planet::data::{NodeData, NodeNeighbors, PlanetData, DIST_FACTOR};
 
-const LU_DESERT: u32 = 0;
-const LU_GLACIER: u32 = 1;
-const LU_TUNDRA: u32 = 2;
-const LU_TAIGA: u32 = 3;
-const LU_STEPPE: u32 = 4;
-const LU_TEMPERATE_FOREST: u32 = 5;
-const LU_SUBTROPICAL_FOREST: u32 = 6;
-const LU_TROPICAL_FOREST: u32 = 7;
+#[allow(dead_code)]
+const VEG_DESERT: u32 = 0;
+#[allow(dead_code)]
+const VEG_GLACIER: u32 = 1;
+#[allow(dead_code)]
+const VEG_TUNDRA: u32 = 2;
+#[allow(dead_code)]
+const VEG_TAIGA: u32 = 3;
+#[allow(dead_code)]
+const VEG_STEPPE: u32 = 4;
+#[allow(dead_code)]
+const VEG_TEMPERATE_FOREST: u32 = 5;
+#[allow(dead_code)]
+const VEG_SUBTROPICAL_FOREST: u32 = 6;
+#[allow(dead_code)]
+const VEG_TROPICAL_FOREST: u32 = 7;
+#[allow(dead_code)]
+const VEG_WATER: u32 = 8;
 
 lazy_static! {
-    static ref LU_COLORS: HashMap<u32, Color> = {
-        let mut m = HashMap::new();
-        m.insert(LU_DESERT, Color::rgb(1.0, 1.0, 0.3));
-        m.insert(LU_GLACIER, Color::rgb(1.0, 1.0, 1.0));
-        m.insert(LU_TUNDRA, Color::rgb(0.0, 0.9, 0.3));
-        m.insert(LU_TAIGA, Color::rgb(0.0, 0.5, 0.3));
-        m.insert(LU_STEPPE, Color::rgb(0.5, 0.7, 0.2));
-        m.insert(LU_TEMPERATE_FOREST, Color::rgb(0.2, 0.6, 0.0));
-        m.insert(LU_SUBTROPICAL_FOREST, Color::rgb(0.0, 1.0, 0.0));
-        m.insert(LU_TROPICAL_FOREST, Color::rgb(0.0, 0.5, 0.0));
-        m
-    };
-    static ref LU_MATRIX: Vec<Vec<u32>> = str_to_vec(
+    static ref VEG_COLORS: [Color; 9] = [
+        Color::rgb(1.0, 1.0, 0.3),
+        Color::rgb(1.0, 1.0, 1.0),
+        Color::rgb(0.0, 0.9, 0.3),
+        Color::rgb(0.0, 0.5, 0.3),
+        Color::rgb(0.5, 0.7, 0.2),
+        Color::rgb(0.2, 0.6, 0.0),
+        Color::rgb(0.0, 1.0, 0.0),
+        Color::rgb(0.0, 0.5, 0.0),
+        Color::rgb(1.0, 1.0, 0.5),
+    ];
+    static ref VEG_MATRIX: Vec<Vec<u32>> = str_to_vec(
         r#"
     11111120000000000000
     11111120000000000000
@@ -202,48 +210,59 @@ impl PlanetGenerator {
                     / 2.0
                     + 0.5;
                 let rel_elevation = 2.0 * curve.interpolate(el / 2.0 + 0.5) - 1.0;
+
                 let mut elevation = rel_elevation as f32 * h_max;
-                if h_step > 0.0 {
-                    elevation = (elevation / h_step).round() * h_step
-                }
+                stepify(&mut elevation, h_step, true);
+
+                let v_node = if elevation < 0.0 {
+                    *v
+                } else {
+                    *v + normal * elevation
+                };
                 *v += normal * elevation;
+
+                let is_water = elevation <= 0.0;
 
                 let lat = normal.y.asin().to_degrees().abs();
                 let lat_factor = lat / 90.0;
                 let alt_factor = (elevation / h_max).max(0.0);
                 let temperature = 1.0 - (lat_factor + alt_factor).clamp(0.0, 1.0);
 
-                let m_index = (cl.clamp(0.0, 0.99999) * LU_MATRIX.len() as f32) as usize;
+                let m_index = (cl.clamp(0.0, 0.99999) * VEG_MATRIX.len() as f32) as usize;
                 let t_index =
-                    (temperature.clamp(0.0, 0.99999) * LU_MATRIX[0].len() as f32) as usize;
+                    (temperature.clamp(0.0, 0.99999) * VEG_MATRIX[0].len() as f32) as usize;
 
-                let land_use = LU_MATRIX[m_index][t_index];
+                let land_use = if is_water {
+                    VEG_WATER
+                } else {
+                    VEG_MATRIX[m_index][t_index]
+                };
 
                 /*let land_use = if temperature < 0.3 {
-                    LU_GLACIER
+                    VEG_GLACIER
                 } else if temperature < 0.35 {
-                    LU_TUNDRA
+                    VEG_TUNDRA
                 } else if cl < 0.4 {
-                    LU_DESERT
+                    VEG_DESERT
                 } else if cl < 0.45 {
-                    LU_STEPPE
+                    VEG_STEPPE
                 } else if temperature < 0.5 {
-                    LU_TAIGA
+                    VEG_TAIGA
                 } else if temperature < 0.75 {
-                    LU_TEMPERATE_FOREST
+                    VEG_TEMPERATE_FOREST
                 } else if temperature < 0.80 {
-                    LU_SUBTROPICAL_FOREST
+                    VEG_SUBTROPICAL_FOREST
                 } else {
-                    LU_TROPICAL_FOREST
+                    VEG_TROPICAL_FOREST
                 };*/
 
                 NodeData {
-                    position: *v,
+                    position: v_node,
                     elevation,
-                    is_water: elevation < 0.0,
+                    is_water,
                     temperature,
                     precipitation: cl,
-                    land_use,
+                    vegetation_type: land_use,
                 }
             })
             .collect()
@@ -252,11 +271,23 @@ impl PlanetGenerator {
     fn generate_colors(&self, nodes: &[NodeData]) -> ColorArray {
         let mut colors = ColorArray::new();
         for node in nodes {
-            let color = LU_COLORS[&node.land_use];
+            let color = VEG_COLORS[node.vegetation_type as usize];
             colors.push(color);
         }
 
         colors
+    }
+}
+
+fn stepify(value: &mut f32, step: f32, exclude_zero: bool) {
+    if step <= 0.0 {
+        return;
+    }
+    let temp = (*value / step).round() * step;
+    if exclude_zero && temp.abs() < step {
+        *value = if *value > 0.0 { step } else { -step };
+    } else {
+        *value = temp;
     }
 }
 
@@ -301,8 +332,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_lu_matrix() {
-        for row in LU_MATRIX.iter() {
+    fn test_veg_matrix() {
+        for row in VEG_MATRIX.iter() {
             println!("{:?}", row);
         }
     }
