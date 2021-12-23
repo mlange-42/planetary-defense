@@ -1,3 +1,8 @@
+use std::{
+    fs::File,
+    io::{BufWriter, Write},
+};
+
 use gdnative::prelude::*;
 use kdtree::{distance::squared_euclidean, KdTree};
 use pathfinding::directed::astar::astar;
@@ -155,5 +160,29 @@ impl PlanetData {
                     None
                 }
             })
+    }
+
+    #[export]
+    pub fn to_csv(&self, _owner: &Reference, file: String) {
+        let f = File::create(file).expect("Unable to create file");
+        let mut f = BufWriter::new(f);
+
+        writeln!(f, "x;y;z;lat;elevation;temperature;precipitation;land_use").unwrap();
+        for node in &self.nodes {
+            let lat = node.position.normalize().y.asin().to_degrees().abs();
+            writeln!(
+                f,
+                "{};{};{};{};{};{};{};{}",
+                node.position.x,
+                node.position.y,
+                node.position.z,
+                lat,
+                node.elevation,
+                node.temperature,
+                node.precipitation,
+                node.land_use
+            )
+            .unwrap();
+        }
     }
 }

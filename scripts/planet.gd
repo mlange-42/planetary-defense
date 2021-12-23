@@ -12,12 +12,15 @@ export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex"
 		var noise_type: String = ""
 export var noise_period: float = 0.5
 export var noise_octaves: int = 4
+export var noise_seed: int = -1
+
 export var height_curve: Curve
 
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
 		var climate_noise_type: String = ""
 export var climate_noise_period: float = 0.5
 export var climate_noise_octaves: int = 3
+export var climate_noise_seed: int = -1
 
 export (int, 0, 6) var subdivisions: int = 5
 export (int, 2, 48) var water_rings: int = 24
@@ -45,11 +48,16 @@ func _ready():
 	else:
 		rng.randomize()
 	
+	if noise_seed < 0:
+		noise_seed = rng.randi()
+	if climate_noise_seed < 0:
+		climate_noise_seed = rng.randi()
+	
 	var gen = PlanetGenerator.new()
 	gen.initialize(
 		radius, subdivisions, max_height, height_step, 
-		noise_type, noise_period, noise_octaves, height_curve,
-		climate_noise_type, climate_noise_period, climate_noise_octaves)
+		noise_type, noise_period, noise_octaves, noise_seed, height_curve,
+		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed)
 	
 	var result = gen.generate()
 	
@@ -69,6 +77,8 @@ func _ready():
 	
 	if not smooth:
 		GeoUtil.split_unsmooth(ground.mesh)
+	
+	# self.planet_data.to_csv("planet.csv")
 	
 
 

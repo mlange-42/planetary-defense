@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 use noise::{
     BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, OpenSimplex, Perlin, RidgedMulti,
-    SuperSimplex,
+    Seedable, SuperSimplex,
 };
 
 use crate::geom::godot_util::{to_collision_shape, to_mesh};
@@ -27,7 +27,7 @@ lazy_static! {
         m.insert(LU_GLACIER, Color::rgb(1.0, 1.0, 1.0));
         m.insert(LU_TUNDRA, Color::rgb(0.0, 0.9, 0.3));
         m.insert(LU_TAIGA, Color::rgb(0.0, 0.5, 0.3));
-        m.insert(LU_STEPPE, Color::rgb(0.5, 1.0, 0.0));
+        m.insert(LU_STEPPE, Color::rgb(0.5, 0.7, 0.2));
         m.insert(LU_TEMPERATE_FOREST, Color::rgb(0.2, 0.6, 0.0));
         m.insert(LU_SUBTROPICAL_FOREST, Color::rgb(0.0, 1.0, 0.0));
         m.insert(LU_TROPICAL_FOREST, Color::rgb(0.0, 0.5, 0.0));
@@ -43,10 +43,12 @@ struct PlanetGeneratorParams {
     terrain_noise_type: String,
     terrain_noise_period: f32,
     terrain_noise_octaves: usize,
+    terrain_noise_seed: u32,
     terrain_curve: Ref<Curve>,
     climate_noise_type: String,
     climate_noise_period: f32,
     climate_noise_octaves: usize,
+    climate_noise_seed: u32,
 }
 
 #[derive(NativeClass)]
@@ -73,10 +75,12 @@ impl PlanetGenerator {
         terrain_noise_type: String,
         terrain_noise_period: f32,
         terrain_noise_octaves: usize,
+        terrain_noise_seed: u32,
         terrain_curve: Ref<Curve>,
         climate_noise_type: String,
         climate_noise_period: f32,
         climate_noise_octaves: usize,
+        climate_noise_seed: u32,
     ) {
         self.params = Some(PlanetGeneratorParams {
             radius,
@@ -86,10 +90,12 @@ impl PlanetGenerator {
             terrain_noise_type,
             terrain_noise_period,
             terrain_noise_octaves,
+            terrain_noise_seed,
             terrain_curve,
             climate_noise_type,
             climate_noise_period,
             climate_noise_octaves,
+            climate_noise_seed,
         })
     }
 
@@ -138,8 +144,16 @@ impl PlanetGenerator {
     fn generate_terrain(&self, vertices: &mut [Vector3]) -> Vec<NodeData> {
         let params = self.params.as_ref().unwrap();
 
-        let noise = create_noise(&params.terrain_noise_type, params.terrain_noise_octaves);
-        let climate_noise = create_noise(&params.climate_noise_type, params.climate_noise_octaves);
+        let noise = create_noise(
+            &params.terrain_noise_type,
+            params.terrain_noise_seed,
+            params.terrain_noise_octaves,
+        );
+        let climate_noise = create_noise(
+            &params.climate_noise_type,
+            params.climate_noise_seed,
+            params.climate_noise_octaves,
+        );
 
         let h_max = params.terrain_max_height;
         let h_step = params.terrain_height_step;
@@ -173,12 +187,12 @@ impl PlanetGenerator {
 
                 let lat = normal.y.asin().to_degrees().abs();
                 let lat_factor = lat / 90.0;
-                let alt_factor = (1.5 * elevation / h_max).max(0.0);
+                let alt_factor = (elevation / h_max).max(0.0);
                 let temperature = 1.0 - (lat_factor + alt_factor).clamp(0.0, 1.0);
 
-                let land_use = if temperature < 0.25 {
+                let land_use = if temperature < 0.3 {
                     LU_GLACIER
-                } else if temperature < 0.32 {
+                } else if temperature < 0.35 {
                     LU_TUNDRA
                 } else if cl < 0.4 {
                     LU_DESERT
@@ -188,7 +202,7 @@ impl PlanetGenerator {
                     LU_TAIGA
                 } else if temperature < 0.75 {
                     LU_TEMPERATE_FOREST
-                } else if temperature < 0.85 {
+                } else if temperature < 0.80 {
                     LU_SUBTROPICAL_FOREST
                 } else {
                     LU_TROPICAL_FOREST
@@ -217,16 +231,16 @@ impl PlanetGenerator {
     }
 }
 
-fn create_noise(noise_type: &str, octaves: usize) -> Box<dyn NoiseFn<[f64; 3]>> {
+fn create_noise(noise_type: &str, seed: u32, octaves: usize) -> Box<dyn NoiseFn<[f64; 3]>> {
     match noise_type {
-        "basic" => Box::new(BasicMulti::new().set_octaves(octaves)),
-        "billow" => Box::new(Billow::new().set_octaves(octaves)),
-        "fbm" => Box::new(Fbm::new().set_octaves(octaves)),
-        "hybrid" => Box::new(HybridMulti::new().set_octaves(octaves)),
-        "ridged" => Box::new(RidgedMulti::new().set_octaves(octaves)),
-        "open-simplex" => Box::new(OpenSimplex::new()),
-        "super-simplex" => Box::new(SuperSimplex::new()),
-        "perlin" => Box::new(Perlin::new()),
+        "basic" => Box::new(BasicMulti::new().set_seed(seed).set_octaves(octaves)),
+        "billow" => Box::new(Billow::new().set_seed(seed).set_octaves(octaves)),
+        "fbm" => Box::new(Fbm::new().set_seed(seed).set_octaves(octaves)),
+        "hybrid" => Box::new(HybridMulti::new().set_seed(seed).set_octaves(octaves)),
+        "ridged" => Box::new(RidgedMulti::new().set_seed(seed).set_octaves(octaves)),
+        "open-simplex" => Box::new(OpenSimplex::new().set_seed(seed)),
+        "super-simplex" => Box::new(SuperSimplex::new().set_seed(seed)),
+        "perlin" => Box::new(Perlin::new().set_seed(seed)),
         _ => panic!("Unknown noise type {}", noise_type),
     }
 }

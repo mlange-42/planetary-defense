@@ -9,7 +9,7 @@
 [ext_resource path="res://scenes/gui/gui.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 0 ), 0.0, 0.631294, 0, 1, Vector2( 0.33121, 0.209091 ), 0.585201, 0.585201, 0, 0, Vector2( 0.524416, 0.518182 ), 0.199154, 0.199154, 0, 0, Vector2( 0.728238, 0.678409 ), 1.90303, 1.90303, 0, 0, Vector2( 0.849257, 0.945454 ), 1.10516, 1.10516, 0, 0, Vector2( 1, 1 ), 0.361844, 0.0, 1, 0 ]
+_data = [ Vector2( 0, 0 ), 0.0, 0.631294, 0, 1, Vector2( 0.33121, 0.209091 ), 0.585201, 0.585201, 0, 0, Vector2( 0.524416, 0.518182 ), 0.447425, 0.447425, 0, 0, Vector2( 0.6625, 0.618182 ), 0.418431, 0.418431, 0, 0, Vector2( 0.795833, 0.936364 ), 1.24675, 1.24675, 0, 0, Vector2( 1, 1 ), 0.311689, 0.0, 1, 0 ]
 
 [sub_resource type="SpatialMaterial" id=3]
 vertex_color_use_as_albedo = true
@@ -28,7 +28,7 @@ script = ExtResource( 2 )
 use_random_seed = false
 radius = 10.0
 max_height = 1.5
-height_step = 0.025
+height_step = 0.005
 noise_type = "fbm"
 noise_period = 0.7
 noise_octaves = 5
