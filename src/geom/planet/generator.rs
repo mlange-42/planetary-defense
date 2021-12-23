@@ -1,5 +1,6 @@
 use gdnative::api::Curve;
 use gdnative::prelude::*;
+use std::collections::HashMap;
 
 use noise::{
     BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, OpenSimplex, Perlin, RidgedMulti,
@@ -9,6 +10,30 @@ use noise::{
 use crate::geom::godot_util::{to_collision_shape, to_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
 use crate::geom::planet::data::{NodeData, NodeNeighbors, PlanetData, DIST_FACTOR};
+
+const LU_DESERT: u32 = 0;
+const LU_GLACIER: u32 = 1;
+const LU_TUNDRA: u32 = 2;
+const LU_TAIGA: u32 = 3;
+const LU_STEPPE: u32 = 4;
+const LU_TEMPERATE_FOREST: u32 = 5;
+const LU_SUBTROPICAL_FOREST: u32 = 6;
+const LU_TROPICAL_FOREST: u32 = 7;
+
+lazy_static! {
+    static ref LU_COLORS: HashMap<u32, Color> = {
+        let mut m = HashMap::new();
+        m.insert(LU_DESERT, Color::rgb(1.0, 1.0, 0.3));
+        m.insert(LU_GLACIER, Color::rgb(1.0, 1.0, 1.0));
+        m.insert(LU_TUNDRA, Color::rgb(0.0, 0.9, 0.3));
+        m.insert(LU_TAIGA, Color::rgb(0.0, 0.5, 0.3));
+        m.insert(LU_STEPPE, Color::rgb(0.5, 1.0, 0.0));
+        m.insert(LU_TEMPERATE_FOREST, Color::rgb(0.2, 0.6, 0.0));
+        m.insert(LU_SUBTROPICAL_FOREST, Color::rgb(0.0, 1.0, 0.0));
+        m.insert(LU_TROPICAL_FOREST, Color::rgb(0.0, 0.5, 0.0));
+        m
+    };
+}
 
 struct PlanetGeneratorParams {
     radius: f32,
@@ -148,8 +173,26 @@ impl PlanetGenerator {
 
                 let lat = normal.y.asin().to_degrees().abs();
                 let lat_factor = lat / 90.0;
-                let alt_factor = (elevation / h_max).max(0.0);
+                let alt_factor = (1.5 * elevation / h_max).max(0.0);
                 let temperature = 1.0 - (lat_factor + alt_factor).clamp(0.0, 1.0);
+
+                let land_use = if temperature < 0.25 {
+                    LU_GLACIER
+                } else if temperature < 0.32 {
+                    LU_TUNDRA
+                } else if cl < 0.4 {
+                    LU_DESERT
+                } else if cl < 0.45 {
+                    LU_STEPPE
+                } else if temperature < 0.5 {
+                    LU_TAIGA
+                } else if temperature < 0.75 {
+                    LU_TEMPERATE_FOREST
+                } else if temperature < 0.85 {
+                    LU_SUBTROPICAL_FOREST
+                } else {
+                    LU_TROPICAL_FOREST
+                };
 
                 NodeData {
                     position: *v,
@@ -157,6 +200,7 @@ impl PlanetGenerator {
                     is_water: elevation < 0.0,
                     temperature,
                     precipitation: cl,
+                    land_use,
                 }
             })
             .collect()
@@ -165,7 +209,7 @@ impl PlanetGenerator {
     fn generate_colors(&self, nodes: &[NodeData]) -> ColorArray {
         let mut colors = ColorArray::new();
         for node in nodes {
-            let color = Color::rgb(node.temperature, 1.0 - node.temperature, 0.0);
+            let color = LU_COLORS[&node.land_use];
             colors.push(color);
         }
 

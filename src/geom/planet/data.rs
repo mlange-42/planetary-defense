@@ -22,6 +22,8 @@ pub struct NodeData {
     pub temperature: f32,
     #[property]
     pub precipitation: f32,
+    #[property]
+    pub land_use: u32,
 }
 
 #[methods]

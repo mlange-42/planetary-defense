@@ -649,6 +649,7 @@ version = "0.1.0"
 dependencies = [
  "gdnative",
  "kdtree",
+ "lazy_static",
  "noise",
  "pathfinding",
  "rand 0.8.4",
