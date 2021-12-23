@@ -17,3 +17,4 @@ pathfinding = "3.0.5"
 rand = "0.8.4"
 noise = { version="0.7.0", optional=false }
 kdtree = "0.6.0"
+lazy_static = "1.4.0"

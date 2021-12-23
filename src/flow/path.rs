@@ -280,8 +280,6 @@ impl Graph {
             }
         }
 
-        // TODO: use for termination criterion
-
         let mut crowded = vec![false; self.commodities];
         let mut total_transported = vec![0; self.commodities];
 

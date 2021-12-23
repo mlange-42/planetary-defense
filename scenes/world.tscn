@@ -6,11 +6,13 @@
 [ext_resource path="res://scenes/camera_control.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/planet.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/materials/water.tres" type="Material" id=6]
-[ext_resource path="res://assets/materials/height_map.tres" type="Material" id=7]
 [ext_resource path="res://scenes/gui/gui.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 0 ), 0.0, 0.676126, 0, 1, Vector2( 0.309249, 0.209091 ), 0.585201, 0.585201, 0, 0, Vector2( 0.5, 0.509091 ), 0.13106, 0.13106, 0, 0, Vector2( 0.690751, 0.627273 ), 1.39798, 1.39798, 0, 0, Vector2( 0.84104, 0.918182 ), 1.10516, 1.10516, 0, 0, Vector2( 1, 1 ), 0.514711, 0.0, 1, 0 ]
+_data = [ Vector2( 0, 0 ), 0.0, 0.631294, 0, 1, Vector2( 0.33121, 0.209091 ), 0.585201, 0.585201, 0, 0, Vector2( 0.524416, 0.518182 ), 0.447425, 0.447425, 0, 0, Vector2( 0.6625, 0.618182 ), 0.418431, 0.418431, 0, 0, Vector2( 0.795833, 0.936364 ), 1.24675, 1.24675, 0, 0, Vector2( 1, 1 ), 0.311689, 0.0, 1, 0 ]
+
+[sub_resource type="SpatialMaterial" id=3]
+vertex_color_use_as_albedo = true
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true
@@ -26,13 +28,15 @@ script = ExtResource( 2 )
 use_random_seed = false
 radius = 10.0
 max_height = 1.5
-height_step = 0.05
+height_step = 0.005
 noise_type = "fbm"
-noise_period = 0.5
-noise_octaves = 4
+noise_period = 0.7
+noise_octaves = 5
 height_curve = SubResource( 1 )
+climate_noise_type = "fbm"
+climate_noise_period = 0.8
 subdivisions = 6
-land_material = ExtResource( 7 )
+land_material = SubResource( 3 )
 water_material = ExtResource( 6 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
