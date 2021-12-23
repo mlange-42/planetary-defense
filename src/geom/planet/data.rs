@@ -29,7 +29,7 @@ pub struct NodeData {
     #[property]
     pub precipitation: f32,
     #[property]
-    pub land_use: u32,
+    pub vegetation_type: u32,
 }
 
 #[methods]
@@ -202,7 +202,11 @@ impl PlanetData {
         let f = File::create(file).expect("Unable to create file");
         let mut f = BufWriter::new(f);
 
-        writeln!(f, "x;y;z;lat;elevation;temperature;precipitation;land_use").unwrap();
+        writeln!(
+            f,
+            "x;y;z;lat;elevation;temperature;precipitation;vegetation_type"
+        )
+        .unwrap();
         for node in &self.nodes {
             let lat = node.position.normalize().y.asin().to_degrees().abs();
             writeln!(
@@ -215,7 +219,7 @@ impl PlanetData {
                 node.elevation,
                 node.temperature,
                 node.precipitation,
-                node.land_use
+                node.vegetation_type
             )
             .unwrap();
         }
