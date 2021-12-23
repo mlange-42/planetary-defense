@@ -33,6 +33,29 @@ lazy_static! {
         m.insert(LU_TROPICAL_FOREST, Color::rgb(0.0, 0.5, 0.0));
         m
     };
+    static ref LU_MATRIX: Vec<Vec<u32>> = str_to_vec(
+        r#"
+    11111120000000000000
+    11111120000000000000
+    11111120000000000000
+    11111120000000000000
+    11111120000000000000
+    11111120000000000000
+    11111120000000000000
+    11111120000000000000
+    11111124444444444444
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777
+    11111123335555567777"#
+    );
 }
 
 struct PlanetGeneratorParams {
@@ -190,7 +213,13 @@ impl PlanetGenerator {
                 let alt_factor = (elevation / h_max).max(0.0);
                 let temperature = 1.0 - (lat_factor + alt_factor).clamp(0.0, 1.0);
 
-                let land_use = if temperature < 0.3 {
+                let m_index = (cl.clamp(0.0, 0.99999) * LU_MATRIX.len() as f32) as usize;
+                let t_index =
+                    (temperature.clamp(0.0, 0.99999) * LU_MATRIX[0].len() as f32) as usize;
+
+                let land_use = LU_MATRIX[m_index][t_index];
+
+                /*let land_use = if temperature < 0.3 {
                     LU_GLACIER
                 } else if temperature < 0.35 {
                     LU_TUNDRA
@@ -206,7 +235,7 @@ impl PlanetGenerator {
                     LU_SUBTROPICAL_FOREST
                 } else {
                     LU_TROPICAL_FOREST
-                };
+                };*/
 
                 NodeData {
                     position: *v,
@@ -242,5 +271,39 @@ fn create_noise(noise_type: &str, seed: u32, octaves: usize) -> Box<dyn NoiseFn<
         "super-simplex" => Box::new(SuperSimplex::new().set_seed(seed)),
         "perlin" => Box::new(Perlin::new().set_seed(seed)),
         _ => panic!("Unknown noise type {}", noise_type),
+    }
+}
+
+fn str_to_vec(text: &str) -> Vec<Vec<u32>> {
+    text.split('\n')
+        .filter_map(|row| {
+            if row.is_empty() || row == " " {
+                None
+            } else {
+                Some(
+                    row.split("")
+                        .filter_map(|c| {
+                            if c.is_empty() || c == " " {
+                                None
+                            } else {
+                                Some(c.parse().unwrap())
+                            }
+                        })
+                        .collect(),
+                )
+            }
+        })
+        .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_lu_matrix() {
+        for row in LU_MATRIX.iter() {
+            println!("{:?}", row);
+        }
     }
 }
