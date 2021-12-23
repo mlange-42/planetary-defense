@@ -44,7 +44,6 @@ func _on_planet_hovered(point: Vector3):
 
 
 func _on_planet_clicked(point: Vector3, button: int):
-	pass
 	var id = planet.planet_data.get_closest_point(point)
 	var sel_tool = gui.get_selected_tool()
 	if sel_tool == "Inspect":

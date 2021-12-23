@@ -29,7 +29,7 @@ margin_bottom = 580.0
 
 [node name="BuildButtons" type="VBoxContainer" parent="MarginControls/Controls"]
 margin_right = 60.0
-margin_bottom = 116.0
+margin_bottom = 140.0
 
 [node name="Inspect" type="Button" parent="MarginControls/Controls/BuildButtons"]
 margin_right = 60.0
@@ -40,10 +40,20 @@ text = "Inspect"
 script = ExtResource( 3 )
 tool_type = "Inspect"
 
-[node name="Town" type="Button" parent="MarginControls/Controls/BuildButtons"]
+[node name="City" type="Button" parent="MarginControls/Controls/BuildButtons"]
 margin_top = 24.0
 margin_right = 60.0
 margin_bottom = 44.0
+toggle_mode = true
+group = ExtResource( 1 )
+text = "City"
+script = ExtResource( 3 )
+tool_type = "City"
+
+[node name="Town" type="Button" parent="MarginControls/Controls/BuildButtons"]
+margin_top = 48.0
+margin_right = 60.0
+margin_bottom = 68.0
 toggle_mode = true
 group = ExtResource( 1 )
 text = "Town"
@@ -51,9 +61,9 @@ script = ExtResource( 3 )
 tool_type = "Town"
 
 [node name="Mine" type="Button" parent="MarginControls/Controls/BuildButtons"]
-margin_top = 48.0
+margin_top = 72.0
 margin_right = 60.0
-margin_bottom = 68.0
+margin_bottom = 92.0
 toggle_mode = true
 group = ExtResource( 1 )
 text = "Mine"
@@ -61,9 +71,9 @@ script = ExtResource( 3 )
 tool_type = "Mine"
 
 [node name="Factory" type="Button" parent="MarginControls/Controls/BuildButtons"]
-margin_top = 72.0
+margin_top = 96.0
 margin_right = 60.0
-margin_bottom = 92.0
+margin_bottom = 116.0
 toggle_mode = true
 group = ExtResource( 1 )
 text = "Factory"
@@ -71,9 +81,9 @@ script = ExtResource( 3 )
 tool_type = "Factory"
 
 [node name="Road" type="Button" parent="MarginControls/Controls/BuildButtons"]
-margin_top = 96.0
+margin_top = 120.0
 margin_right = 60.0
-margin_bottom = 116.0
+margin_bottom = 140.0
 toggle_mode = true
 group = ExtResource( 1 )
 text = "Road"
@@ -81,7 +91,7 @@ script = ExtResource( 3 )
 tool_type = "Road"
 
 [node name="Control" type="Control" parent="MarginControls/Controls"]
-margin_top = 120.0
+margin_top = 144.0
 margin_right = 60.0
 margin_bottom = 556.0
 size_flags_vertical = 3
@@ -93,6 +103,7 @@ margin_bottom = 580.0
 text = "Turn"
 
 [node name="InfoContainer" type="MarginContainer" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
