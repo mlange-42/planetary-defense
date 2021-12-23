@@ -1,7 +1,10 @@
 use gdnative::api::Curve;
 use gdnative::prelude::*;
 
-use noise::{BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, RidgedMulti};
+use noise::{
+    BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, OpenSimplex, Perlin, RidgedMulti,
+    SuperSimplex,
+};
 
 use crate::geom::godot_util::{to_collision_shape, to_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
@@ -99,21 +102,22 @@ impl PlanetGenerator {
     fn generate_terrain(&self, vertices: &mut [Vector3]) -> Vec<NodeData> {
         let params = self.params.as_ref().unwrap();
 
-        let noise = create_noise(
-            &params.terrain_noise_type,
-            1.0 / (params.terrain_noise_period * params.radius),
-            params.terrain_noise_octaves,
-        );
+        let noise = create_noise(&params.terrain_noise_type, params.terrain_noise_octaves);
 
         let h_max = params.terrain_max_height;
         let h_step = params.terrain_height_step;
         let curve = unsafe { &params.terrain_curve.clone().assume_unique() };
+        let scale = 1.0 / (params.terrain_noise_period * params.radius);
 
         vertices
             .iter_mut()
             .map(|v| {
                 let normal = v.normalize();
-                let n = noise.get([v.x as f64, v.y as f64, v.z as f64]);
+                let n = noise.get([
+                    (scale * v.x) as f64,
+                    (scale * v.y) as f64,
+                    (scale * v.z) as f64,
+                ]);
                 let rel_elevation = 2.0 * curve.interpolate(n / 2.0 + 0.5) - 1.0;
                 let mut elevation = rel_elevation as f32 * h_max;
                 if h_step > 0.0 {
@@ -131,33 +135,16 @@ impl PlanetGenerator {
     }
 }
 
-fn create_noise(noise_type: &str, frequency: f32, octaves: usize) -> Box<dyn NoiseFn<[f64; 3]>> {
+fn create_noise(noise_type: &str, octaves: usize) -> Box<dyn NoiseFn<[f64; 3]>> {
     match noise_type {
-        "basic" => Box::new(
-            BasicMulti::new()
-                .set_frequency(frequency as f64)
-                .set_octaves(octaves),
-        ),
-        "billow" => Box::new(
-            Billow::new()
-                .set_frequency(frequency as f64)
-                .set_octaves(octaves),
-        ),
-        "fbm" => Box::new(
-            Fbm::new()
-                .set_frequency(frequency as f64)
-                .set_octaves(octaves),
-        ),
-        "hybrid" => Box::new(
-            HybridMulti::new()
-                .set_frequency(frequency as f64)
-                .set_octaves(octaves),
-        ),
-        "ridged" => Box::new(
-            RidgedMulti::new()
-                .set_frequency(frequency as f64)
-                .set_octaves(octaves),
-        ),
+        "basic" => Box::new(BasicMulti::new().set_octaves(octaves)),
+        "billow" => Box::new(Billow::new().set_octaves(octaves)),
+        "fbm" => Box::new(Fbm::new().set_octaves(octaves)),
+        "hybrid" => Box::new(HybridMulti::new().set_octaves(octaves)),
+        "ridged" => Box::new(RidgedMulti::new().set_octaves(octaves)),
+        "open-simplex" => Box::new(OpenSimplex::new()),
+        "super-simplex" => Box::new(SuperSimplex::new()),
+        "perlin" => Box::new(Perlin::new()),
         _ => panic!("Unknown noise type {}", noise_type),
     }
 }

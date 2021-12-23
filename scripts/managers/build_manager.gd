@@ -14,6 +14,7 @@ var planet_data = null
 var parent_node: Spatial
 
 
+# warning-ignore:shadowed_variable
 func _init(net: RoadNetwork, planet_data, node: Spatial):
 	self.network = net
 	self.planet_data = planet_data

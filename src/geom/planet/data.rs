@@ -135,11 +135,7 @@ impl PlanetData {
         )
     }
 
-    fn get_successor<'s>(
-        &'s self,
-        id: usize,
-        nav_type: u32,
-    ) -> impl Iterator<Item = (usize, u32)> + 's {
+    fn get_successor(&self, id: usize, nav_type: u32) -> impl Iterator<Item = (usize, u32)> + '_ {
         let neigh = &self.neighbors[id];
         let water = &self.nodes[id].is_water;
         neigh

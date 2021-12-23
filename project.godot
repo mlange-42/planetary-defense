@@ -69,7 +69,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/nav/nav_manager.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "NodeData",
 "language": "NativeScript",
 "path": "res://scripts/native/node_data.gdns"
@@ -79,7 +79,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/planet.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "PlanetData",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"

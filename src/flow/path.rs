@@ -400,7 +400,7 @@ impl Graph {
         )
     }
 
-    fn get_successor<'s>(&'s self, id: usize) -> impl Iterator<Item = (usize, u32)> + 's {
+    fn get_successor(&self, id: usize) -> impl Iterator<Item = (usize, u32)> + '_ {
         self.out_edges[id].iter().filter_map(|edge_id| {
             let edge = &self.edges[*edge_id];
             self.calc_cost(edge).map(|c| (edge.b.0, c))

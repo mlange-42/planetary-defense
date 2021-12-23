@@ -7,7 +7,7 @@ export var random_seed: int = 0
 export var radius: float = 1.0
 export var max_height: float = 0.1
 export var height_step: float = 0.005
-export (String, "", "basic", "billow", "hybrid", "fbm", "ridged") var noise_type: String = ""
+export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") var noise_type: String = ""
 export var noise_period: float = 0.25
 export var noise_octaves: int = 3
 export var height_curve: Curve
@@ -137,16 +137,6 @@ func _create_collision(shape: ConcavePolygonShape) -> Area:
 	area.name = "Area"
 	
 	return area
-
-func _add_noise(m: Mesh):
-	var noise := OpenSimplexNoise.new()
-	noise.seed = rng.randi()
-	noise.octaves = noise_octaves
-	noise.period = noise_period * radius
-	noise.persistence = 0.5
-	
-	var height_map: HeightMap = HeightMap.new(noise, max_height, height_step)
-	height_map.create_elevation(m, height_curve, true)
 
 
 func next_turn():
