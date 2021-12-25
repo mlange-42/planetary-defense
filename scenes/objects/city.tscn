@@ -19,3 +19,21 @@ material = SubResource( 1 )
 
 [node name="Borders" type="ImmediateGeometry" parent="."]
 material_override = ExtResource( 2 )
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
+pixel_size = 0.02
+billboard = 1
+double_sided = false
+
+[node name="Viewport" type="Viewport" parent="Sprite3D"]
+size = Vector2( 120, 16 )
+transparent_bg = true
+usage = 0
+render_target_v_flip = true
+
+[node name="Label" type="Label" parent="Sprite3D/Viewport"]
+margin_right = 120.0
+margin_bottom = 16.0
+text = "Test"
+align = 1

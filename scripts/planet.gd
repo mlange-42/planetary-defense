@@ -126,8 +126,8 @@ func _redraw_roads():
 	road_debug.draw_roads(planet_data, roads, Color(0.02, 0.02, 0.02), Color.red)
 
 
-func add_facility(type: String, location: int):
-	return builder.add_facility(type, location)
+func add_facility(type: String, location: int, name: String):
+	return builder.add_facility(type, location, name)
 
 
 func clear_path():
@@ -163,6 +163,7 @@ func _create_collision(shape: ConcavePolygonShape) -> Area:
 
 
 func next_turn():
-	cities.update()
+	cities.pre_update()
 	flow.solve()
+	cities.post_update()
 	_redraw_roads()

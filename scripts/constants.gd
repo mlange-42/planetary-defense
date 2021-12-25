@@ -37,6 +37,8 @@ class Conversion:
 		to = t
 		to_amount = t_amt
 
+const CITY_GROWTH_PROB: float = 0.25
+
 const DRAW_HEIGHT_OFFSET: float = 0.02
 
 const FACILITY_SCENES = {
@@ -104,8 +106,8 @@ var LU_MAPPING = {
 	}),
 	LU_FOREST: LandUse.new(1, {
 		VEG_TEMPERATE_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 2), null, null),
-		VEG_SUBTROPICAL_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 2), null, null),
-		VEG_TROPICAL_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 2), null, null),
+		VEG_SUBTROPICAL_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 1), null, null),
+		VEG_TROPICAL_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 3), null, null),
 	}),
 	LU_FACTORY: LandUse.new(3, {
 		VEG_DESERT: _factory_lu,

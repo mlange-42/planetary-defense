@@ -29,6 +29,14 @@ func _ready():
 	update_city_info()
 
 
+func state_entered():
+	city.set_label_visible(false)
+
+
+func state_exited():
+	city.set_label_visible(true)
+
+
 func update_city_info():
 	var text = "%s\n" % city.name
 	for comm in Constants.COMM_ALL:

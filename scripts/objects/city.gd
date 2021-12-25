@@ -1,6 +1,7 @@
 extends Facility
 class_name City
 
+onready var label: Label = $Sprite3D/Viewport/Label
 onready var borders: ImmediateGeometry = $Borders
 
 var cells: Dictionary = {}
@@ -8,11 +9,17 @@ var land_use: Dictionary = {}
 var radius: int = 1
 var workers: int = 6
 
+
 func init(node: int, planet_data):
 	.init(node, planet_data)
 
 
 func on_ready(planet_data):
+	var sprite = $Sprite3D
+	
+	sprite.texture = $Sprite3D/Viewport.get_texture()
+	sprite.texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
+	
 	update_cells(planet_data)
 
 
@@ -25,8 +32,13 @@ func update_cells(planet_data):
 	update_visuals(planet_data)
 
 
-func update_visuals(planet_data):	
+func update_visuals(planet_data):
+	label.text = "%s (%d)" % [name, workers]
 	_draw_cells(planet_data)
+
+
+func set_label_visible(vis: bool):
+	$Sprite3D.visible = vis
 
 
 func _draw_cells(planet_data): 
