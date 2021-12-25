@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/gui/states/cities.gd" type="Script" id=1]
+[ext_resource path="res://scenes/gui/group_build_buttons.tres" type="ButtonGroup" id=2]
+
+[node name="CitiesControls" type="VBoxContainer"]
+margin_right = 60.0
+margin_bottom = 580.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+margin_right = 60.0
+margin_bottom = 20.0
+
+[node name="Back" type="Button" parent="Buttons"]
+margin_right = 60.0
+margin_bottom = 20.0
+toggle_mode = true
+group = ExtResource( 2 )
+text = "Back"
+
+[connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]

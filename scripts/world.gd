@@ -6,9 +6,6 @@ onready var pointer: Spatial = $MousePointer
 onready var gui: Gui = $GUI
 
 
-var start_point: int = -1
-
-
 func _ready():
 	# warning-ignore:return_value_discarded
 	mouse.connect("planet_entered", self, "_on_planet_entered")
@@ -34,37 +31,13 @@ func _on_planet_hovered(point: Vector3):
 	var node = planet.planet_data.get_node(id)
 	pointer.translation = node.position
 
-	var sel_tool = gui.get_selected_tool()
-	if sel_tool == "Road":
-		if start_point >= 0:
-			# warning-ignore:return_value_discarded
-			planet.draw_path(start_point, id)
-	else:
-		start_point = -1
+	gui.on_planet_hovered(planet, id)
 
 
 func _on_planet_clicked(point: Vector3, button: int):
 	var id = planet.planet_data.get_closest_point(point)
-	var sel_tool = gui.get_selected_tool()
-	if sel_tool == "Inspect":
-		if button == BUTTON_LEFT:
-			_show_info(id)
-		elif button == BUTTON_RIGHT:
-			_hide_info()
-	elif sel_tool == "Road":
-		if button == BUTTON_LEFT:
-			if start_point >= 0:
-				planet.add_road(start_point, id)
-				start_point = id
-				planet.clear_path()
-			else:
-				start_point = id
-		else:
-			start_point = -1
-			planet.clear_path()
-	elif sel_tool != null:
-		if button == BUTTON_LEFT:
-			planet.add_facility(sel_tool, id)
+	
+	gui.on_planet_clicked(planet, id, button)
 
 
 func _show_info(id: int):

@@ -3,7 +3,7 @@ extends Facility
 onready var borders: ImmediateGeometry = $Borders
 
 var cells: Array
-var radius: int = 5
+var radius: int = 10
 var workers: int = 1
 
 func init(node: int, planet_data):

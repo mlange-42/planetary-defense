@@ -27,7 +27,7 @@ script = ExtResource( 2 )
 [node name="Planet" parent="." instance=ExtResource( 5 )]
 use_random_seed = false
 radius = 10.0
-max_height = 1.5
+max_height = 1.0
 height_step = 0.025
 noise_type = "fbm"
 noise_period = 0.7

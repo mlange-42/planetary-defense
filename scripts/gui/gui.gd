@@ -3,23 +3,14 @@ class_name Gui
 
 signal next_turn
 
+onready var container = $MarginControls
 onready var info_container = $InfoContainer
 onready var info_panel = $InfoContainer/Panel/Text
 
-var tool_buttons: ButtonGroup
-
+var states = []
 
 func _ready():
-	tool_buttons = $MarginControls/Controls/BuildButtons/Inspect.group
-	tool_buttons.get_buttons()[0].pressed = true
-
-
-func get_selected_tool():
-	var b = tool_buttons.get_pressed_button()
-	if b == null:
-		return null
-	else:
-		return b.tool_type
+	push("default", {})
 
 
 func show_info(text: String):
@@ -30,6 +21,47 @@ func show_info(text: String):
 func hide_info():
 	info_container.visible = false
 
+
+func on_planet_hovered(planet: Planet, node: int):
+	state().on_planet_hovered(planet, node)
+
+
+func on_planet_clicked(planet: Planet, node: int, button: int):
+	state().on_planet_clicked(planet, node, button)
+
+
+func state():
+	if states.empty():
+		return null
+	
+	return states[-1]
+
+func push(new_state: String, args: Dictionary):
+	var new_scene = load("res://scenes/gui/states/%s.tscn" % new_state).instance()
+	
+	var old_state = state()
+	new_scene.init(self, args)
+	self.states.append(new_scene)
+	
+	if old_state != null:
+		container.remove_child(old_state)
+		old_state.state_exited()
+		
+	container.add_child(new_scene)
+	new_scene.state_entered()
+
+func pop():
+	if states.size() < 2:
+		return null
+	
+	var old_state = states.pop_back()
+	container.remove_child(old_state)
+	old_state.state_exited()
+	
+	var new_state = state()
+	container.add_child(new_state)
+	new_state.state_entered()
+	
 
 func _on_NextTurnButton_pressed():
 	emit_signal("next_turn")

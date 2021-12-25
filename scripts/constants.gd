@@ -23,7 +23,7 @@ class Conversion:
 const DRAW_HEIGHT_OFFSET: float = 0.02
 
 const FACILITY_SCENES = {
-	"City": "res://scenes/objects/city.tscn",
+	"city": "res://scenes/objects/city.tscn",
 }
 
 const COMM_FOOD: String = "Food"

@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/gui/group_build_buttons.tres" type="ButtonGroup" id=2]
+[ext_resource path="res://scripts/gui/states/default.gd" type="Script" id=3]
+
+[node name="DefaultControls" type="VBoxContainer"]
+margin_right = 60.0
+margin_bottom = 580.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+margin_right = 84.0
+margin_bottom = 44.0
+
+[node name="City" type="Button" parent="Buttons"]
+margin_right = 84.0
+margin_bottom = 20.0
+group = ExtResource( 2 )
+text = "Build city"
+
+[node name="Roads" type="Button" parent="Buttons"]
+margin_top = 24.0
+margin_right = 84.0
+margin_bottom = 44.0
+group = ExtResource( 2 )
+text = "Build roads"
+
+[node name="Control" type="Control" parent="."]
+margin_top = 48.0
+margin_right = 84.0
+margin_bottom = 556.0
+size_flags_vertical = 3
+
+[node name="NextTurnButton" type="Button" parent="."]
+margin_top = 560.0
+margin_right = 84.0
+margin_bottom = 580.0
+text = "Turn"
+
+[connection signal="pressed" from="Buttons/City" to="." method="_on_City_pressed"]
+[connection signal="pressed" from="Buttons/Roads" to="." method="_on_Road_pressed"]
