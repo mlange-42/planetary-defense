@@ -32,8 +32,6 @@ func update():
 			var lu = city.land_use[node]
 			var data = planet_data.get_node(node)
 			
-			print("Processing node %d (LU=%d)" % [node, lu])
-			
 			var lu_data = constants.LU_MAPPING[lu]
 			if not data.vegetation_type in lu_data.vegetations:
 				continue
@@ -46,9 +44,6 @@ func update():
 					food_available -= lu_data.workers
 				else:
 					continue
-			
-			print(" sum food req = %d" % workers_to_feed)
-			print(" sum food rem = %d" % food_available)
 			
 			if veg_data.source != null:
 				city.add_source(veg_data.source.commodity, veg_data.source.amount)

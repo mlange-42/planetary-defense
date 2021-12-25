@@ -47,6 +47,8 @@ const COMM_FOOD: String = "Food"
 const COMM_RESOURCES: String = "Resources"
 const COMM_PRODUCTS: String = "Products"
 
+const COMM_ALL = [COMM_FOOD, COMM_RESOURCES, COMM_PRODUCTS]
+
 const VEG_DESERT: int = 0
 const VEG_GLACIER: int = 1
 const VEG_TUNDRA: int = 2
@@ -56,6 +58,20 @@ const VEG_TEMPERATE_FOREST: int = 5
 const VEG_SUBTROPICAL_FOREST: int = 6
 const VEG_TROPICAL_FOREST: int = 7
 const VEG_WATER: int = 8
+
+const VEG_NAMES = {
+	VEG_DESERT: "Desert",
+	VEG_GLACIER: "Glacier",
+	VEG_TUNDRA: "Tundra",
+	VEG_TAIGA: "Taiga",
+	VEG_STEPPE: "Steppe",
+	VEG_TEMPERATE_FOREST: "Temperate forest",
+	VEG_SUBTROPICAL_FOREST: "Subtropical forest",
+	VEG_TROPICAL_FOREST: "Tropical forest",
+	VEG_WATER: "Water",
+}
+
+
 
 const LU_NONE = 0
 const LU_CROPS = 1
@@ -69,10 +85,17 @@ const LU_COLORS = {
 	LU_FACTORY: Color.red,
 }
 
+const LU_NAMES = {
+	LU_NONE: "None",
+	LU_CROPS: "Crops",
+	LU_FOREST: "Forest",
+	LU_FACTORY: "Factory",
+}
+
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(COMM_RESOURCES, 1, COMM_PRODUCTS, 1, 2))
 
 var LU_MAPPING = {
-	LU_NONE: LandUse.new(0, null),
+	#LU_NONE: LandUse.new(0, null),
 	LU_CROPS: LandUse.new(1, {
 		VEG_STEPPE: VegLandUse.new(Production.new(COMM_FOOD, 1), null, null),
 		VEG_TEMPERATE_FOREST: VegLandUse.new(Production.new(COMM_FOOD, 2), null, null),

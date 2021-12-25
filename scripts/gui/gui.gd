@@ -1,6 +1,8 @@
 extends Control
 class_name Gui
 
+onready var constants: Constants = $"/root/GameConstants"
+
 var planet: Planet
 var states = []
 
