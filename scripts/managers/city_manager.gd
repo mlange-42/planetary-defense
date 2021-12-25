@@ -23,35 +23,41 @@ func update():
 		city.sinks.clear()
 		city.conversions.clear()
 		
-		for node in city.land_use:
+		var food_available = city.flows[Constants.COMM_FOOD][1] if Constants.COMM_FOOD in city.flows else 0
+		var workers_to_feed = 0
+		
+		var keys = city.land_use.keys()
+		keys.shuffle()
+		for node in keys:
 			var lu = city.land_use[node]
 			var data = planet_data.get_node(node)
 			
-			var lu_data = constants.LU_MAPPING[lu]
+			print("Processing node %d (LU=%d)" % [node, lu])
 			
+			var lu_data = constants.LU_MAPPING[lu]
 			if not data.vegetation_type in lu_data.vegetations:
 				continue
 			
-			var veg_data = lu_data.vegetations[data.vegetation_type]
+			var veg_data: Constants.VegLandUse = lu_data.vegetations[data.vegetation_type]
+			
+			if veg_data.source == null or veg_data.source.commodity != Constants.COMM_FOOD:
+				workers_to_feed += lu_data.workers
+				if food_available >= lu_data.workers:
+					food_available -= lu_data.workers
+				else:
+					continue
+			
+			print(" sum food req = %d" % workers_to_feed)
+			print(" sum food rem = %d" % food_available)
 			
 			if veg_data.source != null:
-				if veg_data.source.commodity in city.sources:
-					city.sources[veg_data.source.commodity] += veg_data.source.amount
-				else:
-					city.sources[veg_data.source.commodity] = veg_data.source.amount
+				city.add_source(veg_data.source.commodity, veg_data.source.amount)
 			
 			if veg_data.sink != null:
-				if veg_data.sink.commodity in city.sinks:
-					city.sinks[veg_data.sink.commodity] += veg_data.sink.amount
-				else:
-					city.sinks[veg_data.sink.commodity] = veg_data.sink.amount
+				city.add_sink(veg_data.sink.commodity, veg_data.sink.amount)
 		
 			if veg_data.conversion != null:
-				if veg_data.conversion.from in city.sinks:
-					city.sinks[veg_data.conversion.from] += veg_data.conversion.max_to_amount
-				else:
-					city.sinks[veg_data.conversion.from] = veg_data.conversion.max_to_amount
-				
-				var key = [veg_data.conversion.from, veg_data.conversion.to]
-				city.conversions[key] = [veg_data.conversion.from_amount, veg_data.conversion.to_amount]
+				var c: Constants.Conversion = veg_data.conversion
+				city.add_conversion(c.from, c.from_amount, c.to, c.to_amount, c.max_from_amount)
 		
+		city.add_sink(Constants.COMM_FOOD, workers_to_feed)

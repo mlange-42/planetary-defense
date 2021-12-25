@@ -158,7 +158,7 @@ impl PlanetData {
     fn get_id_path(&self, _owner: &Reference, from: usize, to: usize, nav_type: u32) -> Vec<usize> {
         self.find_path(from, to, nav_type)
             .map(|(v, _c)| v)
-            .unwrap_or_else(|| vec![])
+            .unwrap_or_else(Vec::new)
     }
 
     #[export]
@@ -171,7 +171,7 @@ impl PlanetData {
     ) -> Vec<Vector3> {
         self.find_path(from, to, nav_type)
             .map(|(v, _c)| v.iter().map(|id| self.nodes[*id].position).collect())
-            .unwrap_or_else(|| vec![])
+            .unwrap_or_else(Vec::new)
     }
 
     fn find_path(&self, from: usize, to: usize, nav_type: u32) -> Option<(Vec<usize>, u32)> {

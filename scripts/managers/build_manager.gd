@@ -65,7 +65,12 @@ func set_land_use(city: City, node: int, land_use: int):
 		return
 	
 	if land_use == Constants.LU_NONE:
-		if city.land_use.erase(node):
+		if node in city.land_use:
+			var lut = city.land_use[node]
+			var lu: Constants.LandUse = constants.LU_MAPPING[lut]
+			city.workers += lu.workers
+			
+			city.land_use.erase(node)
 			planet_data.set_occupied(node, false)
 			city.update_visuals(planet_data)
 		return
@@ -76,11 +81,15 @@ func set_land_use(city: City, node: int, land_use: int):
 	var veg = planet_data.get_node(node).vegetation_type
 	var lu: Constants.LandUse = constants.LU_MAPPING[land_use]
 	
+	if city.workers < lu.workers:
+		return
+	
 	if not veg in lu.vegetations:
 		return
 	
 	planet_data.set_occupied(node, true)
 	city.land_use[node] = land_use
+	city.workers -= lu.workers
 	city.update_visuals(planet_data)
 	
-	print("Set land use %s (%d): %s" % [city, node, land_use])
+	print("Set land use %s (%d): %s (%d workers remaining)" % [city, node, land_use, city.workers])

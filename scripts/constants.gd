@@ -27,13 +27,13 @@ class Production:
 class Conversion:
 	var from: String
 	var from_amount: int
-	var max_to_amount: int
+	var max_from_amount: int
 	var to: String
 	var to_amount: int
 	func _init(f: String, f_amt: int, t: String, t_amt: int, max_amount: int):
 		from = f
 		from_amount = f_amt
-		max_to_amount = max_amount
+		max_from_amount = max_amount
 		to = t
 		to_amount = t_amt
 

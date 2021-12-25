@@ -99,16 +99,21 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn get_node_flows(&self, _owner: &Reference, node: usize) -> Dictionary<Unique> {
+    fn get_node_flows(&self, _owner: &Reference, node: usize) -> Option<Dictionary<Shared>> {
         let ids = self.builder.commodity_ids();
         let flows = self.builder.get_node_flows(node);
-        let dict = Dictionary::new();
 
-        for (name, id) in ids {
-            dict.insert(name, (flows.sent[*id], flows.received[*id]));
+        if let Some(flows) = flows {
+            let dict = Dictionary::new();
+
+            for (name, id) in ids {
+                dict.insert(name, (flows.sent[*id], flows.received[*id]));
+            }
+
+            Some(dict.into_shared())
+        } else {
+            None
         }
-
-        dict
     }
 }
 
@@ -625,12 +630,11 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .expect("Unable to extract flows from unsolved graph")
     }
 
-    fn get_node_flows(&self, node: T) -> &NodeData {
+    fn get_node_flows(&self, node: T) -> Option<&NodeData> {
         self.nodes
             .as_ref()
             .expect("Unable to extract node flows from unsolved graph")
             .get(&Vertex::Node(node))
-            .expect("No flow data found for node")
     }
 }
 

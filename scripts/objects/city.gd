@@ -6,7 +6,7 @@ onready var borders: ImmediateGeometry = $Borders
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
 var radius: int = 10
-var workers: int = 1
+var workers: int = 6
 
 func init(node: int, planet_data):
 	.init(node, planet_data)
