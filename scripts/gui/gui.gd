@@ -1,35 +1,51 @@
 extends Control
 class_name Gui
 
-signal next_turn
+onready var constants: Constants = $"/root/GameConstants"
 
-onready var info_container = $InfoContainer
-onready var info_panel = $InfoContainer/Panel/Text
-
-var tool_buttons: ButtonGroup
-
+var planet: Planet
+var states = []
 
 func _ready():
-	tool_buttons = $MarginControls/Controls/BuildButtons/Inspect.group
-	tool_buttons.get_buttons()[0].pressed = true
+	push("default", {})
 
 
-func get_selected_tool():
-	var b = tool_buttons.get_pressed_button()
-	if b == null:
+func on_planet_hovered(node: int):
+	state().on_planet_hovered(node)
+
+
+func on_planet_clicked(node: int, button: int):
+	state().on_planet_clicked(node, button)
+
+
+func state():
+	if states.empty():
 		return null
-	else:
-		return b.tool_type
+	
+	return states[-1]
 
+func push(new_state: String, args: Dictionary):
+	var new_scene = load("res://scenes/gui/states/%s.tscn" % new_state).instance()
+	
+	var old_state = state()
+	new_scene.init(self, args)
+	self.states.append(new_scene)
+	
+	if old_state != null:
+		self.remove_child(old_state)
+		old_state.state_exited()
+		
+	self.add_child(new_scene)
+	new_scene.state_entered()
 
-func show_info(text: String):
-	info_panel.text = text
-	info_container.visible = true
-
-
-func hide_info():
-	info_container.visible = false
-
-
-func _on_NextTurnButton_pressed():
-	emit_signal("next_turn")
+func pop():
+	if states.size() < 2:
+		return null
+	
+	var old_state = states.pop_back()
+	self.remove_child(old_state)
+	old_state.state_exited()
+	
+	var new_state = state()
+	self.add_child(new_state)
+	new_state.state_entered()

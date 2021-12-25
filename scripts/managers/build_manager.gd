@@ -2,6 +2,7 @@ class_name BuildManager
 
 const ROAD_CAPACITY = 25
 
+var constants: Constants
 
 var network: RoadNetwork
 var planet_data = null
@@ -9,7 +10,8 @@ var parent_node: Spatial
 
 
 # warning-ignore:shadowed_variable
-func _init(net: RoadNetwork, planet_data, node: Spatial):
+func _init(consts: Constants, net: RoadNetwork, planet_data, node: Spatial):
+	self.constants = consts
 	self.network = net
 	self.planet_data = planet_data
 	self.parent_node = node
@@ -38,7 +40,7 @@ func add_facility(type: String, location: int):
 	if info.is_water:
 		return
 	
-	if network.has_facility(location):
+	if network.has_facility(location) or planet_data.get_node(location).is_occupied:
 		return
 	
 	var facility: Facility = load(Constants.FACILITY_SCENES[type]).instance()
@@ -52,4 +54,42 @@ func add_facility(type: String, location: int):
 	facility.look_at(2 * info.position, Vector3.UP)
 	
 	facility.on_ready(planet_data)
+
+
+func set_land_use(city: City, node: int, land_use: int):
+	if not node in city.cells:
+		return
+	if network.is_road(node):
+		return
+	if network.has_facility(node):
+		return
 	
+	if land_use == Constants.LU_NONE:
+		if node in city.land_use:
+			var lut = city.land_use[node]
+			var lu: Constants.LandUse = constants.LU_MAPPING[lut]
+			city.workers += lu.workers
+			# warning-ignore:return_value_discarded
+			city.land_use.erase(node)
+			planet_data.set_occupied(node, false)
+			city.update_visuals(planet_data)
+		return
+	
+	if planet_data.get_node(node).is_occupied:
+		return
+	
+	var veg = planet_data.get_node(node).vegetation_type
+	var lu: Constants.LandUse = constants.LU_MAPPING[land_use]
+	
+	if city.workers < lu.workers:
+		return
+	
+	if not veg in lu.vegetations:
+		return
+	
+	planet_data.set_occupied(node, true)
+	city.land_use[node] = land_use
+	city.workers -= lu.workers
+	city.update_visuals(planet_data)
+	
+	print("Set land use %s (%d): %s (%d workers remaining)" % [city, node, land_use, city.workers])

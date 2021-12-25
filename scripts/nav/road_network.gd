@@ -44,6 +44,10 @@ func has_facility(v: int) -> bool:
 	return facilities.has(v)
 
 
+func is_road(v: int) -> bool:
+	return neighbors.has(v)
+
+
 func get_facility(v: int):
 	if not facilities.has(v):
 		return null
