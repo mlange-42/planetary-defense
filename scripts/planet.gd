@@ -40,6 +40,7 @@ var planet_data = null
 var roads: RoadNetwork
 var builder: BuildManager
 var flow: FlowManager
+var cities: CityManager
 
 func _ready():
 	
@@ -61,10 +62,13 @@ func _ready():
 	
 	var result = gen.generate()
 	
+	var consts: Constants = $"/root/GameConstants" as Constants
+	
 	self.planet_data = result[0]
 	self.roads = RoadNetwork.new()
-	self.builder = BuildManager.new(roads, planet_data, facilities)
+	self.builder = BuildManager.new(consts, roads, planet_data, facilities)
 	self.flow = FlowManager.new(roads)
+	self.cities = CityManager.new(consts, roads, planet_data)
 	
 	var ground: MeshInstance = _add_mesh(result[1], "Ground")
 	ground.material_override = land_material
@@ -159,5 +163,6 @@ func _create_collision(shape: ConcavePolygonShape) -> Area:
 
 
 func next_turn():
+	cities.update()
 	flow.solve()
 	_redraw_roads()

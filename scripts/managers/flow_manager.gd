@@ -49,7 +49,8 @@ func solve():
 	flow.solve(bidirectional, load_depencence)
 	var flows = flow.get_flows()
 	for fid in facilities:
-		facilities[fid].flows = flow.get_node_flows(fid)
+		if network.is_road(fid):
+			facilities[fid].flows = flow.get_node_flows(fid)
 	
 	network.reset_flow()
 	

@@ -1,8 +1,6 @@
 extends Control
 class_name Gui
 
-signal next_turn
-
 onready var container = $MarginControls
 onready var info_container = $InfoContainer
 onready var info_panel = $InfoContainer/Panel/Text
@@ -62,7 +60,3 @@ func pop():
 	var new_state = state()
 	container.add_child(new_state)
 	new_state.state_entered()
-	
-
-func _on_NextTurnButton_pressed():
-	emit_signal("next_turn")

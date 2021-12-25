@@ -2,6 +2,7 @@ class_name BuildManager
 
 const ROAD_CAPACITY = 25
 
+var constants: Constants
 
 var network: RoadNetwork
 var planet_data = null
@@ -9,7 +10,8 @@ var parent_node: Spatial
 
 
 # warning-ignore:shadowed_variable
-func _init(net: RoadNetwork, planet_data, node: Spatial):
+func _init(consts: Constants, net: RoadNetwork, planet_data, node: Spatial):
+	self.constants = consts
 	self.network = net
 	self.planet_data = planet_data
 	self.parent_node = node
@@ -63,15 +65,20 @@ func set_land_use(city: City, node: int, land_use: int):
 		return
 	
 	if land_use == Constants.LU_NONE:
-		if city.land_use.has(node):
+		if city.land_use.erase(node):
 			planet_data.set_occupied(node, false)
-			city.land_use.erase(node)
 			city.update_visuals(planet_data)
 		return
 	
 	if planet_data.get_node(node).is_occupied:
 		return
-		
+	
+	var veg = planet_data.get_node(node).vegetation_type
+	var lu: Constants.LandUse = constants.LU_MAPPING[land_use]
+	
+	if not veg in lu.vegetations:
+		return
+	
 	planet_data.set_occupied(node, true)
 	city.land_use[node] = land_use
 	city.update_visuals(planet_data)

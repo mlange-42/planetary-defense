@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://scripts/objects/city.gd"
 }, {
 "base": "Reference",
+"class": "CityManager",
+"language": "GDScript",
+"path": "res://scripts/managers/city_manager.gd"
+}, {
+"base": "Node",
 "class": "Constants",
 "language": "GDScript",
 "path": "res://scripts/constants.gd"
@@ -139,6 +144,7 @@ _global_script_class_icons={
 "BuildManager": "",
 "CitiesState": "",
 "City": "",
+"CityManager": "",
 "Constants": "",
 "DebugDraw": "",
 "DefaultState": "",
@@ -167,6 +173,10 @@ _global_script_class_icons={
 config/name="PlanetaryDefense"
 run/main_scene="res://scenes/world.tscn"
 config/icon="res://assets/icons/icon.png"
+
+[autoload]
+
+GameConstants="*res://scripts/constants.gd"
 
 [debug]
 

@@ -1,3 +1,3 @@
 extends Button
 
-export (int, "None", "Crops") var land_use: int
+export (int, "None", "Crops", "Forest", "Factory") var land_use: int

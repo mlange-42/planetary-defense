@@ -69,6 +69,3 @@ func _show_info(id: int):
 func _hide_info():
 	gui.hide_info()
 
-
-func _on_next_turn():
-	planet.next_turn()

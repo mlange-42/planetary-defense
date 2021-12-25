@@ -58,5 +58,3 @@ cone = true
 material = SubResource( 4 )
 
 [node name="GUI" parent="." instance=ExtResource( 8 )]
-
-[connection signal="next_turn" from="GUI" to="." method="_on_next_turn"]

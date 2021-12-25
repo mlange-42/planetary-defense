@@ -42,3 +42,4 @@ text = "Turn"
 
 [connection signal="pressed" from="Buttons/City" to="." method="_on_City_pressed"]
 [connection signal="pressed" from="Buttons/Roads" to="." method="_on_Road_pressed"]
+[connection signal="pressed" from="NextTurnButton" to="." method="_on_next_turn"]

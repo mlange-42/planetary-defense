@@ -15,3 +15,6 @@ func _on_Road_pressed():
 
 func _on_City_pressed():
 	fsm.push("cities", {})
+
+func _on_next_turn():
+	fsm.planet.next_turn()

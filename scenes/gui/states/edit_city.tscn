@@ -14,7 +14,7 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 margin_right = 60.0
-margin_bottom = 76.0
+margin_bottom = 124.0
 
 [node name="Back" type="Button" parent="Buttons"]
 margin_right = 60.0
@@ -45,5 +45,23 @@ toggle_mode = true
 text = "Crops"
 script = ExtResource( 3 )
 land_use = 1
+
+[node name="Forest" type="Button" parent="Buttons"]
+margin_top = 80.0
+margin_right = 60.0
+margin_bottom = 100.0
+toggle_mode = true
+text = "Forest"
+script = ExtResource( 3 )
+land_use = 2
+
+[node name="Factory" type="Button" parent="Buttons"]
+margin_top = 104.0
+margin_right = 60.0
+margin_bottom = 124.0
+toggle_mode = true
+text = "Factory"
+script = ExtResource( 3 )
+land_use = 3
 
 [connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]
