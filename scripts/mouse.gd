@@ -12,6 +12,8 @@ onready var raycast = $RayCast
 var camera: Camera
 
 var on_planet = false
+var is_drag = false
+var buttons_pressed = 0
 
 func _ready():
 	camera = get_viewport().get_camera()
@@ -20,10 +22,21 @@ func _ready():
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
+			buttons_pressed += 1
+		if not event.pressed:
+			buttons_pressed -= 1
+			if is_drag:
+				is_drag = false
+				return
+			
 			var point = _get_collision_point()
 			if point != null:
 				emit_signal("planet_clicked", point, event.button_index)
+	
 	elif event is InputEventMouseMotion:
+		if buttons_pressed > 0:
+			is_drag = true
+			
 		var point = _get_collision_point()
 		
 		if point == null:
