@@ -3,20 +3,23 @@
 [ext_resource path="res://scripts/gui/states/roads.gd" type="Script" id=1]
 [ext_resource path="res://scenes/gui/group_build_buttons.tres" type="ButtonGroup" id=2]
 
-[node name="RoadControls" type="VBoxContainer"]
-margin_right = 60.0
-margin_bottom = 580.0
+[node name="MarginControls" type="MarginContainer"]
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 10.0
+margin_bottom = -10.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_right = 60.0
-margin_bottom = 20.0
+margin_right = 42.0
+margin_bottom = 580.0
 
 [node name="Back" type="Button" parent="Buttons"]
-margin_right = 60.0
+margin_right = 42.0
 margin_bottom = 20.0
 toggle_mode = true
 group = ExtResource( 2 )

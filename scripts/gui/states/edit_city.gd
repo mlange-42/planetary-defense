@@ -10,7 +10,7 @@ func init(the_fsm: Gui, args: Dictionary):
 	
 	button_group = ButtonGroup.new()
 	
-	for child in $Buttons.get_children():
+	for child in $MarginControls/EditCityControls/Buttons.get_children():
 		if child is Button and child.toggle_mode:
 			child.group = button_group
 

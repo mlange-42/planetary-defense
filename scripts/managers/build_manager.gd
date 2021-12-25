@@ -69,7 +69,7 @@ func set_land_use(city: City, node: int, land_use: int):
 			var lut = city.land_use[node]
 			var lu: Constants.LandUse = constants.LU_MAPPING[lut]
 			city.workers += lu.workers
-			
+			# warning-ignore:return_value_discarded
 			city.land_use.erase(node)
 			planet_data.set_occupied(node, false)
 			city.update_visuals(planet_data)
