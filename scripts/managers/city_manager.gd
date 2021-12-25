@@ -23,8 +23,13 @@ func update():
 		city.sinks.clear()
 		city.conversions.clear()
 		
+		while city.land_use.size() * 2 > city.cells.size():
+			city.radius += 1
+			city.update_cells(planet_data)
+		
 		var food_available = city.flows[Constants.COMM_FOOD][1] if Constants.COMM_FOOD in city.flows else 0
 		var workers_to_feed = 0
+		var all_workers_supplied = true
 		
 		var keys = city.land_use.keys()
 		keys.shuffle()
@@ -43,6 +48,7 @@ func update():
 				if food_available >= lu_data.workers:
 					food_available -= lu_data.workers
 				else:
+					all_workers_supplied = false
 					continue
 			
 			if veg_data.source != null:
@@ -56,3 +62,6 @@ func update():
 				city.add_conversion(c.from, c.from_amount, c.to, c.to_amount, c.max_from_amount)
 		
 		city.add_sink(Constants.COMM_FOOD, workers_to_feed)
+		
+		if all_workers_supplied and city.workers == 0:
+			city.workers += 1

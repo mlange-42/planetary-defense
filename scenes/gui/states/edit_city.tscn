@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/gui/states/edit_city.gd" type="Script" id=1]
 [ext_resource path="res://scenes/gui/group_build_buttons.tres" type="ButtonGroup" id=2]
-[ext_resource path="res://scripts/gui/land_use_button.gd" type="Script" id=3]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -24,18 +23,18 @@ __meta__ = {
 }
 
 [node name="EditCityControls" type="VBoxContainer" parent="MarginControls"]
-margin_right = 58.0
+margin_right = 42.0
 margin_bottom = 580.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Buttons" type="VBoxContainer" parent="MarginControls/EditCityControls"]
-margin_right = 58.0
-margin_bottom = 124.0
+margin_right = 42.0
+margin_bottom = 28.0
 
 [node name="Back" type="Button" parent="MarginControls/EditCityControls/Buttons"]
-margin_right = 58.0
+margin_right = 42.0
 margin_bottom = 20.0
 toggle_mode = true
 group = ExtResource( 2 )
@@ -43,51 +42,15 @@ text = "Back"
 
 [node name="HSeparator" type="HSeparator" parent="MarginControls/EditCityControls/Buttons"]
 margin_top = 24.0
-margin_right = 58.0
+margin_right = 42.0
 margin_bottom = 28.0
-
-[node name="Clear" type="Button" parent="MarginControls/EditCityControls/Buttons"]
-margin_top = 32.0
-margin_right = 58.0
-margin_bottom = 52.0
-toggle_mode = true
-pressed = true
-text = "Clear"
-script = ExtResource( 3 )
-
-[node name="Crops" type="Button" parent="MarginControls/EditCityControls/Buttons"]
-margin_top = 56.0
-margin_right = 58.0
-margin_bottom = 76.0
-toggle_mode = true
-text = "Crops"
-script = ExtResource( 3 )
-land_use = 1
-
-[node name="Forest" type="Button" parent="MarginControls/EditCityControls/Buttons"]
-margin_top = 80.0
-margin_right = 58.0
-margin_bottom = 100.0
-toggle_mode = true
-text = "Forest"
-script = ExtResource( 3 )
-land_use = 2
-
-[node name="Factory" type="Button" parent="MarginControls/EditCityControls/Buttons"]
-margin_top = 104.0
-margin_right = 58.0
-margin_bottom = 124.0
-toggle_mode = true
-text = "Factory"
-script = ExtResource( 3 )
-land_use = 3
 
 [node name="InfoContainer" type="MarginContainer" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -260.0
+margin_left = -300.0
 margin_top = -255.0
 margin_right = -10.0
 margin_bottom = -10.0
@@ -98,12 +61,12 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="InfoContainer"]
-margin_right = 250.0
+margin_right = 290.0
 margin_bottom = 245.0
 grow_vertical = 0
 
 [node name="NodePanel" type="Panel" parent="InfoContainer/VBoxContainer"]
-margin_right = 250.0
+margin_right = 290.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -111,7 +74,7 @@ size_flags_vertical = 3
 [node name="NodeText" type="RichTextLabel" parent="InfoContainer/VBoxContainer/NodePanel"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 245.0
+margin_right = 285.0
 margin_bottom = 115.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -122,7 +85,7 @@ __meta__ = {
 
 [node name="CityPanel" type="Panel" parent="InfoContainer/VBoxContainer"]
 margin_top = 124.0
-margin_right = 250.0
+margin_right = 290.0
 margin_bottom = 245.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -130,7 +93,7 @@ size_flags_vertical = 3
 [node name="CityText" type="RichTextLabel" parent="InfoContainer/VBoxContainer/CityPanel"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 245.0
+margin_right = 285.0
 margin_bottom = 115.0
 size_flags_horizontal = 3
 size_flags_vertical = 3

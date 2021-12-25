@@ -71,31 +71,31 @@ const VEG_NAMES = {
 	VEG_WATER: "Water",
 }
 
-
-
 const LU_NONE = 0
 const LU_CROPS = 1
 const LU_FOREST = 2
 const LU_FACTORY = 3
+const LU_FISHERY = 4
 
 const LU_COLORS = {
 	LU_NONE: Color.gray,
 	LU_CROPS: Color.yellow,
 	LU_FOREST: Color.black,
 	LU_FACTORY: Color.red,
+	LU_FISHERY: Color.aqua,
 }
 
 const LU_NAMES = {
-	LU_NONE: "None",
+	LU_NONE: "Clear",
 	LU_CROPS: "Crops",
 	LU_FOREST: "Forest",
 	LU_FACTORY: "Factory",
+	LU_FISHERY: "Fishery",
 }
 
-var _factory_lu = VegLandUse.new(null, null, Conversion.new(COMM_RESOURCES, 1, COMM_PRODUCTS, 1, 2))
+var _factory_lu = VegLandUse.new(null, null, Conversion.new(COMM_RESOURCES, 1, COMM_PRODUCTS, 1, 5))
 
 var LU_MAPPING = {
-	#LU_NONE: LandUse.new(0, null),
 	LU_CROPS: LandUse.new(1, {
 		VEG_STEPPE: VegLandUse.new(Production.new(COMM_FOOD, 1), null, null),
 		VEG_TEMPERATE_FOREST: VegLandUse.new(Production.new(COMM_FOOD, 2), null, null),
@@ -115,5 +115,8 @@ var LU_MAPPING = {
 		VEG_TEMPERATE_FOREST: _factory_lu,
 		VEG_SUBTROPICAL_FOREST: _factory_lu,
 		VEG_TROPICAL_FOREST: _factory_lu,
+	}),
+	LU_FISHERY: LandUse.new(1, {
+		VEG_WATER: VegLandUse.new(Production.new(COMM_FOOD, 2), null, null),
 	}),
 }

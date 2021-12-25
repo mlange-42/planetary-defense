@@ -14,11 +14,15 @@ func init(the_fsm: Gui, args: Dictionary):
 	city_node = args["node"]
 	city = fsm.planet.roads.get_facility(city_node) as City
 	
+	var buttons: Container = $MarginControls/EditCityControls/Buttons
 	button_group = ButtonGroup.new()
-	
-	for child in $MarginControls/EditCityControls/Buttons.get_children():
-		if child is Button and child.toggle_mode:
-			child.group = button_group
+	for lu in Constants.LU_NAMES:
+		var button = LandUseButton.new()
+		button.land_use = lu
+		button.text = Constants.LU_NAMES[lu]
+		button.group = button_group
+		
+		buttons.add_child(button)
 
 
 func _ready():
@@ -26,9 +30,15 @@ func _ready():
 
 
 func update_city_info():
-	var text = ""
+	var text = "%s\n" % city.name
 	for comm in Constants.COMM_ALL:
-		text += "%-10s +%3d / -%3d\n" % [comm, city.sources.get(comm, 0), city.sinks.get(comm, 0)]
+		var flows = city.flows.get(comm, [0, 0])
+		var pot_source = 0
+		for key in city.conversions:
+			if key[1] == comm:
+				var conv = city.conversions[key]
+				pot_source += city.sinks.get(key[0], 0) * conv[1] / conv[0]
+		text += "%-10s +%d (%d) / -%d (%d)\n" % [comm, flows[0], city.sources.get(comm, 0) + pot_source, flows[1], city.sinks.get(comm, 0)]
 	text += "Free workers: %d" % city.workers
 	city_text.text = text
 

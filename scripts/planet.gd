@@ -127,7 +127,7 @@ func _redraw_roads():
 
 
 func add_facility(type: String, location: int):
-	builder.add_facility(type, location)
+	return builder.add_facility(type, location)
 
 
 func clear_path():

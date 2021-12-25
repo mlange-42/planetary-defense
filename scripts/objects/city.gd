@@ -5,7 +5,7 @@ onready var borders: ImmediateGeometry = $Borders
 
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
-var radius: int = 10
+var radius: int = 1
 var workers: int = 6
 
 func init(node: int, planet_data):
@@ -38,7 +38,7 @@ func _draw_cells(planet_data):
 	for c in cells:
 		if cells[c] == radius and not c in land_use:
 			var p = planet_data.get_position(c)
-			borders.set_color(Color.gray)
+			borders.set_color(Color.dimgray)
 			borders.add_vertex(self.to_local(p + Constants.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
 	for c in land_use:
