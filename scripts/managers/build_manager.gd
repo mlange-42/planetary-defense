@@ -38,7 +38,7 @@ func add_facility(type: String, location: int):
 	if info.is_water:
 		return
 	
-	if network.has_facility(location):
+	if network.has_facility(location) or planet_data.get_node(location).is_occupied:
 		return
 	
 	var facility: Facility = load(Constants.FACILITY_SCENES[type]).instance()

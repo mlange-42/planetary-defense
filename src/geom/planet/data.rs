@@ -25,6 +25,8 @@ pub struct NodeData {
     #[property]
     pub is_water: bool,
     #[property]
+    pub is_occupied: bool,
+    #[property]
     pub temperature: f32,
     #[property]
     pub precipitation: f32,
@@ -99,6 +101,10 @@ impl PlanetData {
     }
 
     #[export]
+    fn set_occupied(&mut self, _owner: &Reference, idx: usize, occ: bool) {
+        self.nodes[idx].is_occupied = occ;
+    }
+    #[export]
     fn get_closest_point(&self, _owner: &Reference, point: Vector3) -> Option<usize> {
         self.tree
             .nearest(&point.to_array(), 1, &squared_euclidean)
@@ -149,14 +155,10 @@ impl PlanetData {
     }
 
     #[export]
-    fn get_id_path(
-        &self,
-        _owner: &Reference,
-        from: usize,
-        to: usize,
-        nav_type: u32,
-    ) -> Option<Vec<usize>> {
-        self.find_path(from, to, nav_type).map(|(v, _c)| v)
+    fn get_id_path(&self, _owner: &Reference, from: usize, to: usize, nav_type: u32) -> Vec<usize> {
+        self.find_path(from, to, nav_type)
+            .map(|(v, _c)| v)
+            .unwrap_or_else(|| vec![])
     }
 
     #[export]
@@ -166,9 +168,10 @@ impl PlanetData {
         from: usize,
         to: usize,
         nav_type: u32,
-    ) -> Option<Vec<Vector3>> {
+    ) -> Vec<Vector3> {
         self.find_path(from, to, nav_type)
             .map(|(v, _c)| v.iter().map(|id| self.nodes[*id].position).collect())
+            .unwrap_or_else(|| vec![])
     }
 
     fn find_path(&self, from: usize, to: usize, nav_type: u32) -> Option<(Vec<usize>, u32)> {
@@ -183,13 +186,15 @@ impl PlanetData {
 
     fn get_successor(&self, id: usize, nav_type: u32) -> impl Iterator<Item = (usize, u32)> + '_ {
         let neigh = &self.neighbors[id];
-        let water = &self.nodes[id].is_water;
         neigh
             .neighbors
             .iter()
             .enumerate()
             .filter_map(move |(i, n)| {
-                if nav_type == self.NAV_ALL || (nav_type == self.NAV_WATER) == *water {
+                let target = &self.nodes[*n];
+                if !target.is_occupied
+                    && (nav_type == self.NAV_ALL || (nav_type == self.NAV_WATER) == target.is_water)
+                {
                     Some((*n, neigh.distances[i]))
                 } else {
                     None

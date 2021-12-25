@@ -7,6 +7,7 @@ onready var container = $MarginControls
 onready var info_container = $InfoContainer
 onready var info_panel = $InfoContainer/Panel/Text
 
+var planet: Planet
 var states = []
 
 func _ready():
@@ -22,12 +23,12 @@ func hide_info():
 	info_container.visible = false
 
 
-func on_planet_hovered(planet: Planet, node: int):
-	state().on_planet_hovered(planet, node)
+func on_planet_hovered(node: int):
+	state().on_planet_hovered(node)
 
 
-func on_planet_clicked(planet: Planet, node: int, button: int):
-	state().on_planet_clicked(planet, node, button)
+func on_planet_clicked(node: int, button: int):
+	state().on_planet_clicked(node, button)
 
 
 func state():

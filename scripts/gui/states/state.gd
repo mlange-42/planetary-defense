@@ -1,9 +1,10 @@
 extends Control
 class_name GuiState
 
-var fsm
+var fsm: Gui
+var planet: Planet
 
-func init(the_fsm, _args: Dictionary):
+func init(the_fsm: Gui, _args: Dictionary):
 	fsm = the_fsm
 
 func state_entered():
@@ -12,10 +13,10 @@ func state_entered():
 func state_exited():
 	pass
 
-func on_planet_hovered(_planet: Planet, _node: int):
+func on_planet_hovered(_node: int):
 	pass
 
-func on_planet_clicked(_planet: Planet, _node: int, _button: int):
+func on_planet_clicked(_node: int, _button: int):
 	pass
 
 func _unhandled_key_input(event):

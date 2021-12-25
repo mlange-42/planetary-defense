@@ -2,9 +2,9 @@ extends GuiState
 class_name DefaultState
 
 
-func on_planet_clicked(planet: Planet, node: int, button: int):
+func on_planet_clicked(node: int, button: int):
 	if button == BUTTON_LEFT:
-		var facility: Facility = planet.get_facility(node)
+		var facility: Facility = fsm.planet.get_facility(node)
 		if facility == null:
 			return
 		

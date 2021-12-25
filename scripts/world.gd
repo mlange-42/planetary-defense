@@ -7,6 +7,7 @@ onready var gui: Gui = $GUI
 
 
 func _ready():
+	gui.planet = planet
 	# warning-ignore:return_value_discarded
 	mouse.connect("planet_entered", self, "_on_planet_entered")
 	# warning-ignore:return_value_discarded
@@ -31,13 +32,13 @@ func _on_planet_hovered(point: Vector3):
 	var node = planet.planet_data.get_node(id)
 	pointer.translation = node.position
 
-	gui.on_planet_hovered(planet, id)
+	gui.on_planet_hovered(id)
 
 
 func _on_planet_clicked(point: Vector3, button: int):
 	var id = planet.planet_data.get_closest_point(point)
 	
-	gui.on_planet_clicked(planet, id, button)
+	gui.on_planet_clicked(id, button)
 
 
 func _show_info(id: int):

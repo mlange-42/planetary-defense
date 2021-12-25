@@ -104,6 +104,7 @@ func draw_path(from: int, to: int) -> bool:
 		path_debug.draw_path(path, Color.yellow)
 		return true
 	
+	path_debug.clear()
 	return false
 
 

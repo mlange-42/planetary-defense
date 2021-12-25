@@ -9,7 +9,6 @@ var workers: int = 1
 func init(node: int, planet_data):
 	.init(node, planet_data)
 	cells = planet_data.get_in_radius(node, 10)
-	
 
 func on_ready(planet_data):
 	_draw_borders(planet_data)
