@@ -46,3 +46,8 @@ const LU_PASTURE = 2
 const LU_FOREST = 3
 const LU_MINE = 4
 const LU_FACTORY = 5
+
+const LU_COLORS = {
+	LU_NONE: Color.gray,
+	LU_CROPS: Color.yellow,
+}

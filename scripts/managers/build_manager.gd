@@ -52,4 +52,28 @@ func add_facility(type: String, location: int):
 	facility.look_at(2 * info.position, Vector3.UP)
 	
 	facility.on_ready(planet_data)
+
+
+func set_land_use(city: City, node: int, land_use: int):
+	if not node in city.cells:
+		return
+	if network.is_road(node):
+		return
+	if network.has_facility(node):
+		return
 	
+	if land_use == Constants.LU_NONE:
+		if city.land_use.has(node):
+			planet_data.set_occupied(node, false)
+			city.land_use.erase(node)
+			city.update_visuals(planet_data)
+		return
+	
+	if planet_data.get_node(node).is_occupied:
+		return
+		
+	planet_data.set_occupied(node, true)
+	city.land_use[node] = land_use
+	city.update_visuals(planet_data)
+	
+	print("Set land use %s (%d): %s" % [city, node, land_use])

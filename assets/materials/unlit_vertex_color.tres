@@ -4,4 +4,4 @@
 flags_unshaded = true
 flags_use_point_size = true
 vertex_color_use_as_albedo = true
-params_point_size = 2.0
+params_point_size = 5.0

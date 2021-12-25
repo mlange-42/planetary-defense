@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/gui/states/edit_city.gd" type="Script" id=1]
 [ext_resource path="res://scenes/gui/group_build_buttons.tres" type="ButtonGroup" id=2]
+[ext_resource path="res://scripts/gui/land_use_button.gd" type="Script" id=3]
 
 [node name="EditCityControls" type="VBoxContainer"]
 margin_right = 60.0
@@ -13,7 +14,7 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 margin_right = 60.0
-margin_bottom = 20.0
+margin_bottom = 76.0
 
 [node name="Back" type="Button" parent="Buttons"]
 margin_right = 60.0
@@ -21,5 +22,28 @@ margin_bottom = 20.0
 toggle_mode = true
 group = ExtResource( 2 )
 text = "Back"
+
+[node name="HSeparator" type="HSeparator" parent="Buttons"]
+margin_top = 24.0
+margin_right = 60.0
+margin_bottom = 28.0
+
+[node name="Clear" type="Button" parent="Buttons"]
+margin_top = 32.0
+margin_right = 60.0
+margin_bottom = 52.0
+toggle_mode = true
+pressed = true
+text = "Clear"
+script = ExtResource( 3 )
+
+[node name="Crops" type="Button" parent="Buttons"]
+margin_top = 56.0
+margin_right = 60.0
+margin_bottom = 76.0
+toggle_mode = true
+text = "Crops"
+script = ExtResource( 3 )
+land_use = 1
 
 [connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]

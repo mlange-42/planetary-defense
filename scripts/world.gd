@@ -31,6 +31,7 @@ func _on_planet_hovered(point: Vector3):
 
 	var node = planet.planet_data.get_node(id)
 	pointer.translation = node.position
+	pointer.look_at(2 * node.position, Vector3.UP)
 
 	gui.on_planet_hovered(id)
 
