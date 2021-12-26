@@ -9,6 +9,8 @@ var land_use: Dictionary = {}
 var radius: int = 1
 var workers: int = 6
 
+var commodity_weights: Array = [100, 100, 100]
+var auto_assign_workers: bool = true
 
 func init(node: int, planet_data):
 	.init(node, planet_data)

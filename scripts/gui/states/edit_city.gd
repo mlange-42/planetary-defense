@@ -4,6 +4,13 @@ class_name EditCityState
 onready var city_text: RichTextLabel = $InfoContainer/VBoxContainer/CityPanel/CityText
 onready var node_text: RichTextLabel = $InfoContainer/VBoxContainer/NodePanel/NodeText
 
+onready var sliders = {
+	Constants.COMM_ALL[0]: $MarginControls/EditCityControls/PanelContainer/WeightControls/FoodSlider,
+	Constants.COMM_ALL[1]: $MarginControls/EditCityControls/PanelContainer/WeightControls/ResourcesSlider,
+	Constants.COMM_ALL[2]: $MarginControls/EditCityControls/PanelContainer/WeightControls/ProductsSlider,
+}
+onready var auto_assign: CheckBox = $MarginControls/EditCityControls/PanelContainer/WeightControls/AutoAssignCheckBox
+
 var city_node: int
 var city: City
 var button_group: ButtonGroup
@@ -30,10 +37,18 @@ func _ready():
 
 
 func state_entered():
+	auto_assign.pressed = city.auto_assign_workers
+	for i in range(city.commodity_weights.size()):
+		sliders[Constants.COMM_ALL[i]].value = city.commodity_weights[i]
+	
 	city.set_label_visible(false)
 
 
 func state_exited():
+	city.auto_assign_workers = auto_assign.pressed
+	for i in range(city.commodity_weights.size()):
+		city.commodity_weights[i] = sliders[Constants.COMM_ALL[i]].value
+	
 	city.set_label_visible(true)
 
 

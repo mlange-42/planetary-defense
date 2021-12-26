@@ -23,18 +23,19 @@ __meta__ = {
 }
 
 [node name="EditCityControls" type="VBoxContainer" parent="MarginControls"]
-margin_right = 42.0
+margin_right = 114.0
 margin_bottom = 580.0
+rect_min_size = Vector2( 100, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Buttons" type="VBoxContainer" parent="MarginControls/EditCityControls"]
-margin_right = 42.0
+margin_right = 114.0
 margin_bottom = 28.0
 
 [node name="Back" type="Button" parent="MarginControls/EditCityControls/Buttons"]
-margin_right = 42.0
+margin_right = 114.0
 margin_bottom = 20.0
 toggle_mode = true
 group = ExtResource( 2 )
@@ -42,8 +43,71 @@ text = "Back"
 
 [node name="HSeparator" type="HSeparator" parent="MarginControls/EditCityControls/Buttons"]
 margin_top = 24.0
-margin_right = 42.0
+margin_right = 114.0
 margin_bottom = 28.0
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginControls/EditCityControls"]
+margin_top = 32.0
+margin_right = 114.0
+margin_bottom = 210.0
+
+[node name="WeightControls" type="VBoxContainer" parent="MarginControls/EditCityControls/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 107.0
+margin_bottom = 171.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_right = 100.0
+margin_bottom = 14.0
+text = "Weights"
+
+[node name="AutoAssignCheckBox" type="CheckBox" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_top = 18.0
+margin_right = 100.0
+margin_bottom = 42.0
+text = "auto assign"
+
+[node name="HSeparator" type="HSeparator" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_top = 46.0
+margin_right = 100.0
+margin_bottom = 50.0
+
+[node name="Food" type="Label" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_top = 54.0
+margin_right = 100.0
+margin_bottom = 68.0
+text = "Food"
+
+[node name="FoodSlider" type="HSlider" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_top = 72.0
+margin_right = 100.0
+margin_bottom = 88.0
+
+[node name="Resources" type="Label" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_top = 92.0
+margin_right = 100.0
+margin_bottom = 106.0
+text = "Resources"
+
+[node name="ResourcesSlider" type="HSlider" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_top = 110.0
+margin_right = 100.0
+margin_bottom = 126.0
+
+[node name="Products" type="Label" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_top = 130.0
+margin_right = 100.0
+margin_bottom = 144.0
+text = "Products"
+
+[node name="ProductsSlider" type="HSlider" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]
+margin_top = 148.0
+margin_right = 100.0
+margin_bottom = 164.0
 
 [node name="InfoContainer" type="MarginContainer" parent="."]
 anchor_left = 1.0
