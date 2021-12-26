@@ -1,6 +1,8 @@
 extends GuiState
 class_name RoadsState
 
+onready var clear_button: Button = $Buttons/Clear
+
 var start_point: int = -1
 
 func _on_Back_pressed():
@@ -17,7 +19,10 @@ func on_planet_hovered(node: int):
 func on_planet_clicked(node: int, button: int):
 	if button == BUTTON_LEFT:
 		if start_point >= 0:
-			fsm.planet.add_road(start_point, node)
+			if clear_button.pressed:
+				fsm.planet.remove_road(start_point, node)
+			else:
+				fsm.planet.add_road(start_point, node)
 			start_point = node
 			fsm.planet.clear_path()
 		else:

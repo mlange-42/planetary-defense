@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scripts/gui/states/roads.gd" type="Script" id=1]
-[ext_resource path="res://scenes/gui/group_build_buttons.tres" type="ButtonGroup" id=2]
 
 [node name="MarginControls" type="MarginContainer"]
 anchor_bottom = 1.0
@@ -15,14 +14,23 @@ __meta__ = {
 }
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_right = 42.0
+margin_right = 100.0
 margin_bottom = 580.0
+rect_min_size = Vector2( 100, 0 )
 
 [node name="Back" type="Button" parent="Buttons"]
-margin_right = 42.0
+margin_right = 100.0
 margin_bottom = 20.0
+hint_tooltip = "Back to main controls"
 toggle_mode = true
-group = ExtResource( 2 )
 text = "Back"
+
+[node name="Clear" type="Button" parent="Buttons"]
+margin_top = 24.0
+margin_right = 100.0
+margin_bottom = 44.0
+hint_tooltip = "Clear roads"
+toggle_mode = true
+text = "Clear"
 
 [connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]

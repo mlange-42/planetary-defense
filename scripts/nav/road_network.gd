@@ -121,7 +121,7 @@ func _connect(v1: int, v2: int, capacity: int):
 
 
 func _disconnect(v1: int, v2: int):
-	assert(not neighbors.has(v1), "Points %d and %d are not connected" % [v1, v2])
+	assert(neighbors.has(v1), "Points %d and %d are not connected" % [v1, v2])
 	
 	var n: Array = neighbors[v1]
 	var idx = n.find(v2)

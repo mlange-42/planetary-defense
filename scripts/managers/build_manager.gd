@@ -30,6 +30,19 @@ func add_road(path: Array) -> bool:
 	return true
 
 
+func remove_road(path: Array) -> bool:
+	if path.size() == 0:
+		return false
+	
+	for i in range(path.size()-1):
+		var p1 = path[i]
+		var p2 = path[i+1]
+		if network.points_connected(p1, p2):
+			network.disconnect_points(p1, p2)
+	
+	return true
+
+
 func add_facility(type: String, location: int, name: String):
 	if not Constants.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
