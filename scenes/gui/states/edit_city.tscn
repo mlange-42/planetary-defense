@@ -142,7 +142,7 @@ margin_right = 285.0
 margin_bottom = 115.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Test"
+bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -161,7 +161,7 @@ margin_right = 285.0
 margin_bottom = 115.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Test"
+bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
