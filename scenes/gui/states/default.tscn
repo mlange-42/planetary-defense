@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://scenes/gui/group_build_buttons.tres" type="ButtonGroup" id=2]
 [ext_resource path="res://scripts/gui/states/default.gd" type="Script" id=3]
 
 [node name="MarginControls" type="MarginContainer"]
@@ -28,14 +27,14 @@ margin_bottom = 44.0
 [node name="City" type="Button" parent="DefaultControls/Buttons"]
 margin_right = 84.0
 margin_bottom = 20.0
-group = ExtResource( 2 )
+hint_tooltip = "Found a new city. Click cities to manage them."
 text = "Build city"
 
 [node name="Roads" type="Button" parent="DefaultControls/Buttons"]
 margin_top = 24.0
 margin_right = 84.0
 margin_bottom = 44.0
-group = ExtResource( 2 )
+hint_tooltip = "Build and remove  roads"
 text = "Build roads"
 
 [node name="Placeholder" type="Control" parent="DefaultControls"]
@@ -48,6 +47,7 @@ size_flags_vertical = 3
 margin_top = 560.0
 margin_right = 84.0
 margin_bottom = 580.0
+hint_tooltip = "Advance time by one turn"
 text = "Turn"
 
 [connection signal="pressed" from="DefaultControls/Buttons/City" to="." method="_on_City_pressed"]

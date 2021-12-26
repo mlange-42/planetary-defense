@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scripts/gui/states/edit_city.gd" type="Script" id=1]
-[ext_resource path="res://scenes/gui/group_build_buttons.tres" type="ButtonGroup" id=2]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -32,24 +31,19 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="MarginControls/EditCityControls"]
 margin_right = 114.0
-margin_bottom = 28.0
+margin_bottom = 20.0
 
 [node name="Back" type="Button" parent="MarginControls/EditCityControls/Buttons"]
 margin_right = 114.0
 margin_bottom = 20.0
+hint_tooltip = "Back to main controls"
 toggle_mode = true
-group = ExtResource( 2 )
 text = "Back"
 
-[node name="HSeparator" type="HSeparator" parent="MarginControls/EditCityControls/Buttons"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginControls/EditCityControls"]
 margin_top = 24.0
 margin_right = 114.0
-margin_bottom = 28.0
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginControls/EditCityControls"]
-margin_top = 32.0
-margin_right = 114.0
-margin_bottom = 210.0
+margin_bottom = 202.0
 
 [node name="WeightControls" type="VBoxContainer" parent="MarginControls/EditCityControls/PanelContainer"]
 margin_left = 7.0
@@ -69,6 +63,7 @@ text = "Weights"
 margin_top = 18.0
 margin_right = 100.0
 margin_bottom = 42.0
+hint_tooltip = "Auto-assign free workers according the weights below"
 text = "auto assign"
 
 [node name="HSeparator" type="HSeparator" parent="MarginControls/EditCityControls/PanelContainer/WeightControls"]

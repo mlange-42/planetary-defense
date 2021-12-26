@@ -118,6 +118,12 @@ func add_road(from: int, to: int):
 		_redraw_roads()
 
 
+func remove_road(from: int, to: int):
+	var path = calc_id_path(from, to)
+	if builder.remove_road(path):
+		_redraw_roads()
+
+
 func get_facility(id: int):
 	return roads.facilities.get(id)
 
