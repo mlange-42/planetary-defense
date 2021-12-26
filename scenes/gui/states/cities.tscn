@@ -15,14 +15,21 @@ __meta__ = {
 }
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_right = 42.0
+margin_right = 120.0
 margin_bottom = 580.0
 
 [node name="Back" type="Button" parent="Buttons"]
-margin_right = 42.0
+margin_right = 120.0
 margin_bottom = 20.0
 toggle_mode = true
 group = ExtResource( 2 )
 text = "Back"
+
+[node name="CityName" type="LineEdit" parent="Buttons"]
+margin_top = 24.0
+margin_right = 120.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 120, 0 )
+placeholder_text = "City name"
 
 [connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]

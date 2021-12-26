@@ -45,6 +45,7 @@ func pop():
 	var old_state = states.pop_back()
 	self.remove_child(old_state)
 	old_state.state_exited()
+	old_state.queue_free()
 	
 	var new_state = state()
 	self.add_child(new_state)

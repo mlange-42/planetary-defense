@@ -89,12 +89,17 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/ico_sphere.gdns"
 }, {
+"base": "Button",
+"class": "LandUseButton",
+"language": "GDScript",
+"path": "res://scripts/gui/land_use_button.gd"
+}, {
 "base": "Spatial",
 "class": "Mouse",
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -119,7 +124,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"
 }, {
-"base": "Reference",
+"base": "",
 "class": "PlanetGenerator",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_generator.gdns"
@@ -156,6 +161,7 @@ _global_script_class_icons={
 "GuiState": "",
 "HeightMap": "",
 "IcoSphere": "",
+"LandUseButton": "",
 "Mouse": "",
 "MultiCommodityFlow": "",
 "NavManager": "",

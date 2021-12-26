@@ -30,30 +30,32 @@ func add_road(path: Array) -> bool:
 	return true
 
 
-func add_facility(type: String, location: int):
+func add_facility(type: String, location: int, name: String):
 	if not Constants.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
-		return
+		return null
 	
 	var info = planet_data.get_node(location)
 	
 	if info.is_water:
-		return
+		return null
 	
 	if network.has_facility(location) or planet_data.get_node(location).is_occupied:
-		return
+		return null
 	
 	var facility: Facility = load(Constants.FACILITY_SCENES[type]).instance()
 	facility.init(location, planet_data)
+	
 	network.add_facility(location, facility)
 	
 	parent_node.add_child(facility)
 	
-	facility.node_id = location
+	facility.name = name
 	facility.translation = info.position
 	facility.look_at(2 * info.position, Vector3.UP)
 	
 	facility.on_ready(planet_data)
+	return facility
 
 
 func set_land_use(city: City, node: int, land_use: int):
@@ -92,4 +94,3 @@ func set_land_use(city: City, node: int, land_use: int):
 	city.workers -= lu.workers
 	city.update_visuals(planet_data)
 	
-	print("Set land use %s (%d): %s (%d workers remaining)" % [city, node, land_use, city.workers])
