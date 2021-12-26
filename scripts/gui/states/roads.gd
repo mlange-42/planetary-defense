@@ -6,6 +6,9 @@ var start_point: int = -1
 func _on_Back_pressed():
 	fsm.pop()
 
+func state_exited():
+	fsm.planet.clear_path()
+
 func on_planet_hovered(node: int):
 	if start_point >= 0:
 		# warning-ignore:return_value_discarded

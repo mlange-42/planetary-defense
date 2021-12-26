@@ -135,7 +135,10 @@ func assign_city_workers(city: City, builder: BuildManager):
 	var rel_weights = []
 	rel_weights.resize(city.commodity_weights.size())
 	for i in range(rel_weights.size()):
-		rel_weights[i] = city.commodity_weights[i] / float(sum_weights)
+		if sum_weights > 0:
+			rel_weights[i] = city.commodity_weights[i] / float(sum_weights)
+		else:
+			rel_weights[i] = 1.0 / rel_weights.size()
 	
 	var comm_map = {}
 	for i in range(Constants.COMM_ALL.size()):

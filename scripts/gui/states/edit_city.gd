@@ -61,9 +61,13 @@ func update_city_info():
 			if key[1] == comm:
 				var conv = city.conversions[key]
 				pot_source += city.sinks.get(key[0], 0) * conv[1] / conv[0]
-		text += "%-10s +%d (%d) / -%d (%d)\n" % [comm, flows[0], city.sources.get(comm, 0) + pot_source, flows[1], city.sinks.get(comm, 0)]
+		var line = "%-3s +%3d (%3d) / -%3d (%3d)\n" % \
+				[comm[0], flows[0], city.sources.get(comm, 0) + pot_source, flows[1], city.sinks.get(comm, 0)]
+		if flows[1] < city.sinks.get(comm, 0):
+			line = "[color=red]%s[/color]" % line
+		text += line
 	text += "Free workers: %d" % city.workers
-	city_text.text = text
+	city_text.bbcode_text = text
 
 
 func update_node_info(node: int):

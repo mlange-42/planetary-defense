@@ -36,6 +36,20 @@ func update_cells(planet_data):
 
 func update_visuals(planet_data):
 	label.text = "%s (%d)" % [name, workers]
+	
+	var flows_food = flows.get(Constants.COMM_FOOD, [0, 0])
+	var demand_food = sinks.get(Constants.COMM_FOOD, 0)
+	
+	var flows_prod = flows.get(Constants.COMM_PRODUCTS, [0, 0])
+	var demand_prod = sinks.get(Constants.COMM_PRODUCTS, 0)
+	
+	if flows_food[1] < demand_food or flows_prod[1] == 0:
+		label.self_modulate = Color.red
+	elif flows_prod[1] < demand_prod:
+		label.self_modulate = Color.orange
+	else:
+		label.self_modulate = Color.white
+	
 	_draw_cells(planet_data)
 
 
