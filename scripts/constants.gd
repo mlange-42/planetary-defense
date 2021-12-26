@@ -35,7 +35,8 @@ const CITY_GROWTH_PROB: float = 0.25
 const DRAW_HEIGHT_OFFSET: float = 0.02
 
 const FACILITY_SCENES = {
-	"city": "res://scenes/objects/city.tscn",
+	"City": "res://scenes/objects/city.tscn",
+	"Port": "res://scenes/objects/port.tscn",
 }
 
 const COMM_FOOD: String = "Food"
@@ -66,11 +67,11 @@ const VEG_NAMES = {
 	VEG_WATER: "Water",
 }
 
-const LU_NONE = 0
-const LU_CROPS = 1
-const LU_FOREST = 2
-const LU_FACTORY = 3
-const LU_FISHERY = 4
+const LU_NONE: int = 0
+const LU_CROPS: int = 1
+const LU_FOREST: int = 2
+const LU_FACTORY: int = 3
+const LU_FISHERY: int = 4
 
 const LU_COLORS = {
 	LU_NONE: Color.gray,
@@ -101,6 +102,13 @@ const LU_OUTPUT = {
 	LU_FOREST: COMM_RESOURCES,
 	LU_FACTORY: COMM_PRODUCTS,
 	LU_FISHERY: COMM_FOOD,
+}
+
+const LU_REQUIREMENTS = {
+	LU_CROPS: [],
+	LU_FOREST: [],
+	LU_FACTORY: [],
+	LU_FISHERY: [Port],
 }
 
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(COMM_RESOURCES, 1, COMM_PRODUCTS, 1, 5))

@@ -18,6 +18,11 @@ func init(node: int, planet_data):
 func on_ready(planet_data):
 	pass
 
+# warning-ignore:unused_argument
+# warning-ignore:unused_argument
+func can_build(planet_data, node) -> bool:
+	return false
+
 func add_source(commodity: String, amount: int):
 	if commodity in sources:
 		sources[commodity] += amount

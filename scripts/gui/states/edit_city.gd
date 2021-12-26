@@ -5,11 +5,11 @@ onready var city_text: RichTextLabel = $InfoContainer/VBoxContainer/CityPanel/Ci
 onready var node_text: RichTextLabel = $InfoContainer/VBoxContainer/NodePanel/NodeText
 
 onready var sliders = {
-	Constants.COMM_ALL[0]: $MarginControls/EditCityControls/PanelContainer/WeightControls/FoodSlider,
-	Constants.COMM_ALL[1]: $MarginControls/EditCityControls/PanelContainer/WeightControls/ResourcesSlider,
-	Constants.COMM_ALL[2]: $MarginControls/EditCityControls/PanelContainer/WeightControls/ProductsSlider,
+	Constants.COMM_ALL[0]: $Margin/EditControls/WeightPanel/WeightControls/FoodSlider,
+	Constants.COMM_ALL[1]: $Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider,
+	Constants.COMM_ALL[2]: $Margin/EditControls/WeightPanel/WeightControls/ProductsSlider,
 }
-onready var auto_assign: CheckBox = $MarginControls/EditCityControls/PanelContainer/WeightControls/AutoAssignCheckBox
+onready var auto_assign: CheckBox = $Margin/EditControls/WeightPanel/WeightControls/AutoAssignCheckBox
 
 var city_node: int
 var city: City
@@ -21,7 +21,7 @@ func init(the_fsm: Gui, args: Dictionary):
 	city_node = args["node"]
 	city = fsm.planet.roads.get_facility(city_node) as City
 	
-	var buttons: Container = $MarginControls/EditCityControls/Buttons
+	var buttons: Container = $Margin/EditControls/Buttons/LuPanel/LuButtons
 	button_group = ButtonGroup.new()
 	for lu in Constants.LU_NAMES:
 		var button = LandUseButton.new()
@@ -30,6 +30,8 @@ func init(the_fsm: Gui, args: Dictionary):
 		button.group = button_group
 		
 		buttons.add_child(button)
+	
+	$Margin/EditControls/Buttons/FacilityPanel/FacilityButtons/Port.group = button_group
 
 
 func _ready():
@@ -88,12 +90,20 @@ func update_node_info(node: int):
 	node_text.text = text.substr(0, text.length()-1)
 
 
-func get_tool():
+func get_land_use_tool():
 	var button = button_group.get_pressed_button()
-	if button == null:
+	if button == null or not button is LandUseButton:
 		return null
 	else:
 		return button.land_use
+
+
+func get_facility_tool():
+	var button = button_group.get_pressed_button()
+	if button == null or button is LandUseButton:
+		return null
+	else:
+		return button.name
 
 
 func _on_Back_pressed():
@@ -109,15 +119,19 @@ func on_planet_hovered(node: int):
 
 
 func on_planet_clicked(node: int, button: int):	
-	var curr_tool = get_tool()
-	if curr_tool == null:
-		return
-	
-	if button == BUTTON_LEFT:
-		# warning-ignore:return_value_discarded
-		fsm.planet.builder.set_land_use(city, node, curr_tool)
-	elif button == BUTTON_RIGHT:
-		# warning-ignore:return_value_discarded
-		fsm.planet.builder.set_land_use(city, node, Constants.LU_NONE)
-	
-	update_city_info()
+	var curr_tool = get_land_use_tool()
+	if curr_tool != null:
+		if button == BUTTON_LEFT:
+			# warning-ignore:return_value_discarded
+			fsm.planet.builder.set_land_use(city, node, curr_tool)
+		elif button == BUTTON_RIGHT:
+			# warning-ignore:return_value_discarded
+			fsm.planet.builder.set_land_use(city, node, Constants.LU_NONE)
+		update_city_info()
+	else:
+		curr_tool = get_facility_tool()
+		if curr_tool == null:
+			return
+		var f = fsm.planet.add_facility(curr_tool, node, curr_tool)
+		if f != null:
+			city.add_facility(node, f)

@@ -260,6 +260,7 @@ impl PlanetGenerator {
                     position: v_node,
                     elevation,
                     is_water,
+                    is_port: false,
                     is_occupied: false,
                     temperature,
                     precipitation: cl,

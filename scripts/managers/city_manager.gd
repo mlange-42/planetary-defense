@@ -161,31 +161,32 @@ func assign_city_workers(city: City, builder: BuildManager):
 		
 		var target_workers = []
 		var max_diff = 0
-		var max_index = -1
+		var best_commodity = -1
 		target_workers.resize(Constants.COMM_ALL.size())
-		for i in range(target_workers.size()):
+		for i in range(Constants.COMM_ALL.size()):
 			target_workers[i] = total_workers * rel_weights[i]
 			var diff = target_workers[i] - comm_workers[i]
 			if diff > max_diff:
 				max_diff = diff
-				max_index = i
+				best_commodity = i
 		
-		if max_index < 0:
+		if best_commodity < 0:
 			return
 		
 		var max_amount_dist = [0, 9999]
 		var max_solution = [-1, -1]
 		
 		for node in city.cells:
-			if not builder.can_set_land_use(city, node):
+			if not builder.can_set_land_use(city, node, Constants.LU_NONE):
 				continue
 			
 			var veg = planet_data.get_node(node).vegetation_type
 			var lu_options = constants.VEG_MAPPING[veg]
 			
 			for lu in lu_options:
-				if comm_map[Constants.LU_OUTPUT[lu]] == max_index \
-						and Constants.LU_WORKERS[lu] <= city.workers:
+				if comm_map[Constants.LU_OUTPUT[lu]] == best_commodity \
+						and Constants.LU_WORKERS[lu] <= city.workers \
+						and city.has_landuse_requirements(lu):
 					var opt: Constants.VegLandUse = lu_options[lu]
 					var amount = opt.source.amount if opt.source != null else 0
 					

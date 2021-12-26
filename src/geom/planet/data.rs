@@ -25,6 +25,8 @@ pub struct NodeData {
     #[property]
     pub is_water: bool,
     #[property]
+    pub is_port: bool,
+    #[property]
     pub is_occupied: bool,
     #[property]
     pub temperature: f32,
@@ -96,6 +98,11 @@ impl PlanetData {
     }
 
     #[export]
+    fn get_neighbors(&self, _owner: &Reference, idx: usize) -> &[usize] {
+        &self.neighbors[idx].neighbors
+    }
+
+    #[export]
     fn get_node(&self, _owner: &Reference, idx: usize) -> &NodeData {
         &self.nodes[idx]
     }
@@ -104,6 +111,12 @@ impl PlanetData {
     fn set_occupied(&mut self, _owner: &Reference, idx: usize, occ: bool) {
         self.nodes[idx].is_occupied = occ;
     }
+
+    #[export]
+    fn set_port(&mut self, _owner: &Reference, idx: usize, port: bool) {
+        self.nodes[idx].is_port = port;
+    }
+
     #[export]
     fn get_closest_point(&self, _owner: &Reference, point: Vector3) -> Option<usize> {
         self.tree
@@ -186,6 +199,7 @@ impl PlanetData {
 
     fn get_successor(&self, id: usize, nav_type: u32) -> impl Iterator<Item = (usize, u32)> + '_ {
         let neigh = &self.neighbors[id];
+        let source = &self.nodes[id];
         neigh
             .neighbors
             .iter()
@@ -193,7 +207,11 @@ impl PlanetData {
             .filter_map(move |(i, n)| {
                 let target = &self.nodes[*n];
                 if !target.is_occupied
-                    && (nav_type == self.NAV_ALL || (nav_type == self.NAV_WATER) == target.is_water)
+                    && (nav_type == self.NAV_ALL
+                        || (nav_type == self.NAV_WATER) == target.is_water
+                        || (nav_type == self.NAV_LAND
+                            && ((target.is_port && !source.is_water)
+                                || (source.is_port && !target.is_water))))
                 {
                     Some((*n, neigh.distances[i]))
                 } else {
