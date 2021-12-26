@@ -58,39 +58,48 @@ func add_facility(type: String, location: int, name: String):
 	return facility
 
 
-func set_land_use(city: City, node: int, land_use: int):
+func can_set_land_use(city: City, node: int):
+	return node in city.cells \
+			and not network.is_road(node) \
+			and not network.has_facility(node) \
+			and not planet_data.get_node(node).is_occupied
+
+
+func set_land_use(city: City, node: int, land_use: int) -> bool:
 	if not node in city.cells:
-		return
+		return false
 	if network.is_road(node):
-		return
+		return false
 	if network.has_facility(node):
-		return
+		return false
 	
 	if land_use == Constants.LU_NONE:
 		if node in city.land_use:
 			var lut = city.land_use[node]
-			var lu: Constants.LandUse = constants.LU_MAPPING[lut]
-			city.workers += lu.workers
+			city.workers += Constants.LU_WORKERS[lut]
 			# warning-ignore:return_value_discarded
 			city.land_use.erase(node)
 			planet_data.set_occupied(node, false)
 			city.update_visuals(planet_data)
-		return
+			return true
+		else:
+			return false
 	
 	if planet_data.get_node(node).is_occupied:
-		return
+		return false
 	
 	var veg = planet_data.get_node(node).vegetation_type
-	var lu: Constants.LandUse = constants.LU_MAPPING[land_use]
+	var lu: Dictionary = constants.LU_MAPPING[land_use]
 	
-	if city.workers < lu.workers:
-		return
+	if city.workers < Constants.LU_WORKERS[land_use]:
+		return false
 	
-	if not veg in lu.vegetations:
-		return
+	if not veg in lu:
+		return false
 	
 	planet_data.set_occupied(node, true)
 	city.land_use[node] = land_use
-	city.workers -= lu.workers
+	city.workers -= Constants.LU_WORKERS[land_use]
 	city.update_visuals(planet_data)
 	
+	return true

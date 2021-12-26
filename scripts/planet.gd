@@ -166,4 +166,5 @@ func next_turn():
 	cities.pre_update()
 	flow.solve()
 	cities.post_update()
+	cities.assign_workers(builder)
 	_redraw_roads()
