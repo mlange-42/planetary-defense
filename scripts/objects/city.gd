@@ -12,6 +12,7 @@ var workers: int = 6
 var commodity_weights: Array = [100, 100, 100]
 var auto_assign_workers: bool = true
 
+
 func init(node: int, planet_data):
 	.init(node, planet_data)
 
@@ -23,6 +24,10 @@ func on_ready(planet_data):
 	sprite.texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
 	
 	update_cells(planet_data)
+
+
+func can_build(planet_data, node) -> bool:
+	return not planet_data.get_node(node).is_water
 
 
 func update_cells(planet_data):

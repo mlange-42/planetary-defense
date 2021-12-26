@@ -35,7 +35,8 @@ const CITY_GROWTH_PROB: float = 0.25
 const DRAW_HEIGHT_OFFSET: float = 0.02
 
 const FACILITY_SCENES = {
-	"city": "res://scenes/objects/city.tscn",
+	"City": "res://scenes/objects/city.tscn",
+	"Port": "res://scenes/objects/port.tscn",
 }
 
 const COMM_FOOD: String = "Food"

@@ -87,19 +87,19 @@ func _ready():
 
 
 func calc_point_path(from: int, to: int) -> Array:
-	if planet_data.has_point(from, planet_data.NAV_LAND) and planet_data.has_point(to, planet_data.NAV_LAND):
-		var path = planet_data.get_point_path(from, to, planet_data.NAV_LAND)
-		return path
+	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
+				else planet_data.NAV_LAND
 	
-	return []
+	var path = planet_data.get_point_path(from, to, mode)
+	return path
 
 
 func calc_id_path(from: int, to: int) -> Array:
-	if planet_data.has_point(from, planet_data.NAV_LAND) and planet_data.has_point(to, planet_data.NAV_LAND):
-		var path = planet_data.get_id_path(from, to, planet_data.NAV_LAND)
-		return path
+	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
+				else planet_data.NAV_LAND
 	
-	return []
+	var path = planet_data.get_id_path(from, to, mode)
+	return path
 
 
 func draw_path(from: int, to: int) -> bool:

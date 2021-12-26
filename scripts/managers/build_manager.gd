@@ -50,13 +50,14 @@ func add_facility(type: String, location: int, name: String):
 	
 	var info = planet_data.get_node(location)
 	
-	if info.is_water:
-		return null
-	
 	if network.has_facility(location) or planet_data.get_node(location).is_occupied:
 		return null
 	
 	var facility: Facility = load(Constants.FACILITY_SCENES[type]).instance()
+	if not facility.can_build(planet_data, location):
+		facility.queue_free()
+		return null
+	
 	facility.init(location, planet_data)
 	
 	network.add_facility(location, facility)
