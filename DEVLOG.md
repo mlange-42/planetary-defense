@@ -1,5 +1,86 @@
 # Development Log
 
+## 2021/12/27 -- City-centric Economy implemented
+
+Over the past days, I implemented the plan from the previous entry.
+
+### Planet generation
+
+* Ported the complete planet generator to Rust
+* Extended the planet generator to create precipitation using noise
+* Derive temperature from latitude and altitude
+* Derive vegetation zones (see below) from temperature and precipitation
+
+```
+    Precipitation
+     ^             .- Tundra         .- Subtropical Forest
+1.0  |-----------+-+-----+---------+-+-------+
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |           | |Taiga|Temperate| | Trop. |
+     |           | |     | Forest  | |Forest |
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |  Glacier  | |     |         | |       |
+     |           | |-----+---------+-+-------+.- Steppe
+0.4  |           | |-------------------------+
+     |           | |                         |
+     |           | |                         |
+     |           | |                         |
+     |           | |          Desert         |
+     |           | |                         |
+     |           | |                         |
+     |           | |                         |
+0.0  +-----------+-+-----+---------+---------+--->
+    0.0         0.3     0.5       0.75      1.0
+                    Temperature
+```
+
+### Commodities, vegetation and land use types
+
+Land use is restricted to city surroundings, and to certain vegetation types.
+Land use types have a certain worker requirement per tile, and output amounts may vary between vegetation types
+
+Commodities:
+
+* Food (F)
+* Resources (R)
+* Products (R)
+
+Vegetation:
+
+* VEG_DESERT
+* VEG_GLACIER
+* VEG_TUNDRA
+* VEG_TAIGA
+* VEG_STEPPE
+* VEG_TEMPERATE_FOREST
+* VEG_SUBTROPICAL_FOREST
+* VEG_TROPICAL_FOREST
+* VEG_WATER
+
+Land use:
+
+* LU_CROPS (1 worker)
+* LU_FOREST (1 worker)
+* LU_FACTORY (3 workers)
+* LU_FISHERY (1 worker)
+
+|           | Crops | Forest | Fishery | Factory |
+|-----------|-------|--------|---------|---------|
+| Desert    |       |        |         |  5R->5P |
+| Glacier   |       |        |         |         |
+| Tundra    |       |        |         |  5R->5P |
+| Taiga     |       |     1R |         |  5R->5P |
+| Steppe    |    1F |        |         |  5R->5P |
+| Temp. f.  |    2F |     2R |         |  5R->5P |
+| Subtr. f. |    2F |     1R |         |  5R->5P |
+| Trop. f   |    1F |     3R |         |  5R->5P |
+| Water     |       |        |      2F |  5R->5P |
+
 ## 2021/12/20 -- City-centric Economy
 
 The next iteration will be to try an economy where everything is tied to cities/settlements.
