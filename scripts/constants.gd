@@ -67,11 +67,11 @@ const VEG_NAMES = {
 	VEG_WATER: "Water",
 }
 
-const LU_NONE = 0
-const LU_CROPS = 1
-const LU_FOREST = 2
-const LU_FACTORY = 3
-const LU_FISHERY = 4
+const LU_NONE: int = 0
+const LU_CROPS: int = 1
+const LU_FOREST: int = 2
+const LU_FACTORY: int = 3
+const LU_FISHERY: int = 4
 
 const LU_COLORS = {
 	LU_NONE: Color.gray,
