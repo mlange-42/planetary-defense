@@ -132,4 +132,6 @@ func on_planet_clicked(node: int, button: int):
 		curr_tool = get_facility_tool()
 		if curr_tool == null:
 			return
-		fsm.planet.add_facility(curr_tool, node, curr_tool)
+		var f = fsm.planet.add_facility(curr_tool, node, curr_tool)
+		if f != null:
+			city.add_facility(node, f)

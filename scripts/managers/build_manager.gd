@@ -71,22 +71,19 @@ func add_facility(type: String, location: int, name: String):
 	facility.on_ready(planet_data)
 	return facility
 
-
-func can_set_land_use(city: City, node: int):
-	return node in city.cells \
+# Use land_use = Constants.LU_NONE to ignore specific requirements
+func can_set_land_use(city: City, node: int, land_use: int):
+	if node in city.cells \
 			and not network.is_road(node) \
 			and not network.has_facility(node) \
-			and not planet_data.get_node(node).is_occupied
+			and not planet_data.get_node(node).is_occupied:
+		
+		return land_use == Constants.LU_NONE or city.has_landuse_requirements(land_use)
+	else:
+		return false
 
 
 func set_land_use(city: City, node: int, land_use: int) -> bool:
-	if not node in city.cells:
-		return false
-	if network.is_road(node):
-		return false
-	if network.has_facility(node):
-		return false
-	
 	if land_use == Constants.LU_NONE:
 		if node in city.land_use:
 			var lut = city.land_use[node]
@@ -99,7 +96,7 @@ func set_land_use(city: City, node: int, land_use: int) -> bool:
 		else:
 			return false
 	
-	if planet_data.get_node(node).is_occupied:
+	if not can_set_land_use(city, node, land_use):
 		return false
 	
 	var veg = planet_data.get_node(node).vegetation_type

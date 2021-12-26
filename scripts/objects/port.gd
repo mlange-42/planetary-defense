@@ -6,7 +6,6 @@ func init(node: int, planet_data):
 	.init(node, planet_data)
 	
 	planet_data.set_port(node, true)
-	print(planet_data.get_node(node).is_port)
 
 
 func can_build(planet_data, node) -> bool:

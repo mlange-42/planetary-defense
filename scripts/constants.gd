@@ -104,6 +104,13 @@ const LU_OUTPUT = {
 	LU_FISHERY: COMM_FOOD,
 }
 
+const LU_REQUIREMENTS = {
+	LU_CROPS: [],
+	LU_FOREST: [],
+	LU_FACTORY: [],
+	LU_FISHERY: [Port],
+}
+
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(COMM_RESOURCES, 1, COMM_PRODUCTS, 1, 5))
 
 var LU_MAPPING = {

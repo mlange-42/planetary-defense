@@ -6,6 +6,7 @@ onready var borders: ImmediateGeometry = $Borders
 
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
+var facilities: Dictionary = {}
 var radius: int = 1
 var workers: int = 6
 
@@ -30,6 +31,19 @@ func can_build(planet_data, node) -> bool:
 	return not planet_data.get_node(node).is_water
 
 
+func has_landuse_requirements(lu: int) -> bool:
+	for req in Constants.LU_REQUIREMENTS[lu]:
+		var found = false
+		for n in facilities:
+			if facilities[n] is req:
+				found = true
+				break
+		
+		if not found:
+			return false
+	
+	return true
+
 func update_cells(planet_data):
 	cells.clear()
 	var temp_cells = planet_data.get_in_radius(node_id, radius)
@@ -37,6 +51,10 @@ func update_cells(planet_data):
 		cells[c[0]] = c[1]
 	
 	update_visuals(planet_data)
+
+
+func add_facility(node: int, facility: Facility):
+	facilities[node] = facility
 
 
 func update_visuals(planet_data):
