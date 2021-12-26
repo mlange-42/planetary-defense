@@ -113,6 +113,7 @@ var LU_MAPPING = {
 		VEG_TROPICAL_FOREST: VegLandUse.new(Production.new(COMM_FOOD, 1), null, null),
 	},
 	LU_FOREST: {
+		VEG_TAIGA: VegLandUse.new(Production.new(COMM_RESOURCES, 1), null, null),
 		VEG_TEMPERATE_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 2), null, null),
 		VEG_SUBTROPICAL_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 1), null, null),
 		VEG_TROPICAL_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 3), null, null),
