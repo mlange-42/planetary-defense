@@ -1,13 +1,6 @@
 extends Node
 class_name Constants
 
-class LandUse:
-	var workers: int
-	var vegetations
-	func _init(w: int, veg):
-		workers = w
-		vegetations = veg
-
 class VegLandUse:
 	var source
 	var sink
@@ -95,21 +88,36 @@ const LU_NAMES = {
 	LU_FISHERY: "Fishery",
 }
 
+const LU_WORKERS = {
+	LU_NONE: 0,
+	LU_CROPS: 1,
+	LU_FOREST: 1,
+	LU_FACTORY: 3,
+	LU_FISHERY: 1,
+}
+
+const LU_OUTPUT = {
+	LU_CROPS: COMM_FOOD,
+	LU_FOREST: COMM_RESOURCES,
+	LU_FACTORY: COMM_PRODUCTS,
+	LU_FISHERY: COMM_FOOD,
+}
+
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(COMM_RESOURCES, 1, COMM_PRODUCTS, 1, 5))
 
 var LU_MAPPING = {
-	LU_CROPS: LandUse.new(1, {
+	LU_CROPS: {
 		VEG_STEPPE: VegLandUse.new(Production.new(COMM_FOOD, 1), null, null),
 		VEG_TEMPERATE_FOREST: VegLandUse.new(Production.new(COMM_FOOD, 2), null, null),
 		VEG_SUBTROPICAL_FOREST: VegLandUse.new(Production.new(COMM_FOOD, 2), null, null),
 		VEG_TROPICAL_FOREST: VegLandUse.new(Production.new(COMM_FOOD, 1), null, null),
-	}),
-	LU_FOREST: LandUse.new(1, {
+	},
+	LU_FOREST: {
 		VEG_TEMPERATE_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 2), null, null),
 		VEG_SUBTROPICAL_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 1), null, null),
 		VEG_TROPICAL_FOREST: VegLandUse.new(Production.new(COMM_RESOURCES, 3), null, null),
-	}),
-	LU_FACTORY: LandUse.new(3, {
+	},
+	LU_FACTORY: {
 		VEG_DESERT: _factory_lu,
 		VEG_TUNDRA: _factory_lu,
 		VEG_TAIGA: _factory_lu,
@@ -117,8 +125,21 @@ var LU_MAPPING = {
 		VEG_TEMPERATE_FOREST: _factory_lu,
 		VEG_SUBTROPICAL_FOREST: _factory_lu,
 		VEG_TROPICAL_FOREST: _factory_lu,
-	}),
-	LU_FISHERY: LandUse.new(1, {
+	},
+	LU_FISHERY: {
 		VEG_WATER: VegLandUse.new(Production.new(COMM_FOOD, 2), null, null),
-	}),
+	},
 }
+
+var VEG_MAPPING = remap(LU_MAPPING)
+
+func remap(map: Dictionary) -> Dictionary:
+	var res = {}
+	for k1 in map:
+		var map2 = map[k1]
+		for k2 in map2:
+			if not k2 in res:
+				res[k2] = {}
+			res[k2][k1] = map2[k2]
+	
+	return res
