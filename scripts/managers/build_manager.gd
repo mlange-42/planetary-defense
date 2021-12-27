@@ -48,8 +48,6 @@ func add_facility(type: String, location: int, name: String):
 		print("WARNING: no scene resource found for %s" % type)
 		return null
 	
-	var info = planet_data.get_node(location)
-	
 	if network.has_facility(location) or planet_data.get_node(location).is_occupied:
 		return null
 	
@@ -60,16 +58,24 @@ func add_facility(type: String, location: int, name: String):
 	
 	facility.init(location, planet_data)
 	
-	network.add_facility(location, facility)
+	return add_facility_scene(facility, name)
+
+
+func add_facility_scene(facility: Facility, name: String):
+	network.add_facility(facility.node_id, facility)
 	
 	parent_node.add_child(facility)
 	
+	var info = planet_data.get_node(facility.node_id)
 	facility.name = name
 	facility.translation = info.position
 	facility.look_at(2 * info.position, Vector3.UP)
 	
 	facility.on_ready(planet_data)
+	
 	return facility
+	
+
 
 # Use land_use = Constants.LU_NONE to ignore specific requirements
 func can_set_land_use(city: City, node: int, land_use: int):

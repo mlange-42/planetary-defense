@@ -1,9 +1,13 @@
 class_name FileUtil
 
 
-static func save_path_exists(name: String) -> bool:
-	return File.new().file_exists(save_path(name))
+const PLANET_EXTENSION = "planet"
+const GAME_EXTENSION = "game"
 
 
-static func save_path(name: String) -> String:
-	return "%s/%s.csv" % [OS.get_user_data_dir(), name]
+static func save_path_exists(name: String, ext: String) -> bool:
+	return File.new().file_exists(save_path(name, ext))
+
+
+static func save_path(name: String, ext: String) -> String:
+	return "%s/%s.%s" % [OS.get_user_data_dir(), name,ext]

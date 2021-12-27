@@ -27,6 +27,41 @@ func on_ready(planet_data):
 	update_cells(planet_data)
 
 
+func save() -> Dictionary:
+	var lu = []
+	
+	for node in land_use:
+		lu.append([node, land_use[node]])
+	
+	var dict = {
+		"type": "City",
+		"name": name,
+		"node_id": node_id,
+		"radius": radius,
+		"workers": workers,
+		"commodity_weights": commodity_weights,
+		"auto_assign_workers": auto_assign_workers,
+		"land_use": lu,
+	}
+	
+	return dict
+
+
+func read(dict: Dictionary):
+	name = dict["name"]
+	node_id = dict["node_id"] as int
+	radius = dict["radius"] as int
+	workers = dict["workers"] as int
+	auto_assign_workers = dict["auto_assign_workers"] as bool
+	
+	var weigths = dict["commodity_weights"]
+	for i in range(weigths.size()):
+		commodity_weights[i] = weigths[i] as int
+	
+	for lu in dict["land_use"]:
+		land_use[lu[0] as int] = lu[1] as int
+
+
 func can_build(planet_data, node) -> bool:
 	return not planet_data.get_node(node).is_water
 

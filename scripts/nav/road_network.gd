@@ -21,6 +21,43 @@ func _init():
 	pass
 
 
+func save() -> Dictionary:
+	var dict = {}
+	
+	var neigh = []
+	for n in neighbors:
+		neigh.append([n, neighbors[n]])
+	
+	dict["neighbors"] = neigh
+	
+	var capacity = []
+	for edge in edges:
+		capacity.append([edge[0], edge[1], edges[edge].capacity])
+	
+	dict["capacity"] = capacity
+	
+	return dict
+
+
+func read(dict: Dictionary):
+	var neigh = dict["neighbors"]
+	self.neighbors = {}
+	for n in neigh:
+		var nn = n[1]
+		var arr = []
+		for node in nn:
+			arr.append(node as int)
+		
+		self.neighbors[n[0] as int] = arr
+	
+	var capacity = dict["capacity"]
+	for edge in capacity:
+		var v1 = edge[0] as int
+		var v2 = edge[1] as int
+		var cap = edge[2] as int
+		edges[[v1, v2]] = Edge.new(v1, v2, cap)
+
+
 func connect_points(v1: int, v2: int, capacity: int):
 	_connect(v1, v2, capacity)
 	_connect(v2, v1, capacity)

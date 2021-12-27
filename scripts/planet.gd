@@ -45,8 +45,8 @@ var flow: FlowManager
 var cities: CityManager
 
 func _ready():
-	var planet_file = FileUtil.save_path(save_name)
-	var load_planet = FileUtil.save_path_exists(save_name)
+	var planet_file = FileUtil.save_path(save_name, FileUtil.PLANET_EXTENSION)
+	var load_planet = FileUtil.save_path_exists(save_name, FileUtil.PLANET_EXTENSION)
 	
 	if use_random_seed:
 		rng.seed = random_seed
@@ -66,13 +66,7 @@ func _ready():
 	
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	
-	var consts: Constants = $"/root/GameConstants" as Constants
-	
 	self.planet_data = result[0]
-	self.roads = RoadNetwork.new()
-	self.builder = BuildManager.new(consts, roads, planet_data, facilities)
-	self.flow = FlowManager.new(roads)
-	self.cities = CityManager.new(consts, roads, planet_data)
 	
 	var ground: MeshInstance = _add_mesh(result[1], "Ground")
 	ground.material_override = land_material
@@ -86,9 +80,77 @@ func _ready():
 	if not smooth:
 		GeoUtil.split_unsmooth(ground.mesh)
 	
-	if not load_planet:
-		self.planet_data.to_csv(planet_file)
+	if load_planet and FileUtil.save_path_exists(save_name, FileUtil.GAME_EXTENSION):
+		load_game()
+	else:
+		var consts: Constants = $"/root/GameConstants" as Constants
+		self.roads = RoadNetwork.new()
+		self.builder = BuildManager.new(consts, roads, planet_data, facilities)
+		self.flow = FlowManager.new(roads)
+		self.cities = CityManager.new(consts, roads, planet_data)
+		
+		if not load_planet:
+			self.planet_data.to_csv(planet_file)
+
+
+func save_game():
+	var file = File.new()
+	if file.open(FileUtil.save_path(save_name, FileUtil.GAME_EXTENSION), File.WRITE) != 0:
+		print("Error opening file")
+		return
 	
+	var roads_json = to_json(roads.save())
+	file.store_line(roads_json)
+	
+	for node in roads.facilities:
+		var facility = roads.facilities[node]
+		
+		var city_json = to_json(facility.save())
+		file.store_line(city_json)
+	
+	file.close()
+
+
+func load_game():	
+	var file := File.new()
+	if file.open(FileUtil.save_path(save_name, FileUtil.GAME_EXTENSION), File.READ) != 0:
+		print("Error opening file")
+		return
+	
+	var roads_json = file.get_line()
+	self.roads = RoadNetwork.new()
+	self.roads.read(parse_json(roads_json))
+	
+	var consts: Constants = $"/root/GameConstants" as Constants
+	self.builder = BuildManager.new(consts, roads, planet_data, facilities)
+	self.flow = FlowManager.new(roads)
+	self.cities = CityManager.new(consts, roads, planet_data)
+	
+	while not file.eof_reached():
+		var line: String = file.get_line()
+		
+		if line.empty():
+			continue
+		
+		var fac_json = parse_json(line)
+		var facility: Facility = load(Constants.FACILITY_SCENES[fac_json["type"]]).instance()
+		facility.init(fac_json["node_id"] as int, planet_data)
+		facility.read(fac_json)
+		
+		builder.add_facility_scene(facility, facility.name)
+		
+		if facility is City:
+			for node in facility.land_use:
+				planet_data.set_occupied(node, true)
+	
+	for node in roads.facilities:
+		var facility = roads.facilities[node]
+		if facility.city_node_id >= 0:
+			roads.facilities[facility.city_node_id].add_facility(node, facility)
+	
+	file.close()
+	
+	_redraw_roads()
 
 
 func calc_point_path(from: int, to: int) -> Array:
