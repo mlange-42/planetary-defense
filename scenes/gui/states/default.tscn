@@ -40,8 +40,14 @@ text = "Build roads"
 [node name="Placeholder" type="Control" parent="DefaultControls"]
 margin_top = 48.0
 margin_right = 84.0
-margin_bottom = 556.0
+margin_bottom = 532.0
 size_flags_vertical = 3
+
+[node name="SaveButton" type="Button" parent="DefaultControls"]
+margin_top = 536.0
+margin_right = 84.0
+margin_bottom = 556.0
+text = "Save"
 
 [node name="NextTurnButton" type="Button" parent="DefaultControls"]
 margin_top = 560.0
@@ -52,4 +58,5 @@ text = "Turn"
 
 [connection signal="pressed" from="DefaultControls/Buttons/City" to="." method="_on_City_pressed"]
 [connection signal="pressed" from="DefaultControls/Buttons/Roads" to="." method="_on_Road_pressed"]
+[connection signal="pressed" from="DefaultControls/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="DefaultControls/NextTurnButton" to="." method="_on_next_turn"]

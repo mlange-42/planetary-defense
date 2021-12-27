@@ -45,8 +45,8 @@ var flow: FlowManager
 var cities: CityManager
 
 func _ready():
-	var planet_file = FileUtil.save_path(save_name)
-	var load_planet = FileUtil.save_path_exists(save_name)
+	var planet_file = FileUtil.save_path(save_name, "csv")
+	var load_planet = FileUtil.save_path_exists(save_name, "csv")
 	
 	if use_random_seed:
 		rng.seed = random_seed
@@ -88,7 +88,37 @@ func _ready():
 	
 	if not load_planet:
 		self.planet_data.to_csv(planet_file)
+	else:
+		load_game()
+
+
+func save_game():
+	var file = File.new()
+	if file.open(FileUtil.save_path(save_name, "game"), File.WRITE) != 0:
+		print("Error opening file")
+		return
 	
+	var roads_json = to_json(roads.save())
+	file.store_line(roads_json)
+	
+	file.close()
+
+
+func load_game():
+	if not FileUtil.save_path_exists(save_name, "game"):
+		return
+	
+	var file = File.new()
+	if file.open(FileUtil.save_path(save_name, "game"), File.READ) != 0:
+		print("Error opening file")
+		return
+	
+	var roads_json = file.get_line()
+	self.roads = RoadNetwork.new()
+	self.roads.read(parse_json(roads_json))
+	file.close()
+	
+	_redraw_roads()
 
 
 func calc_point_path(from: int, to: int) -> Array:

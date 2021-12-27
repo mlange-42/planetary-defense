@@ -19,3 +19,6 @@ func _on_City_pressed():
 
 func _on_next_turn():
 	fsm.planet.next_turn()
+
+func _on_SaveButton_pressed():
+	fsm.planet.save_game()
