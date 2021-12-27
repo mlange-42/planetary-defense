@@ -1,6 +1,8 @@
 extends Spatial
 class_name Facility
 
+var city_node_id: int = -1
+
 var facility_id: int
 var node_id: int
 

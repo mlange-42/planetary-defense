@@ -1,11 +1,26 @@
 extends Facility
 class_name Port
 
-
 func init(node: int, planet_data):
 	.init(node, planet_data)
 	
 	planet_data.set_port(node, true)
+
+
+func save() -> Dictionary:
+	var dict = {
+		"type": "Port",
+		"name": name,
+		"node_id": node_id,
+		"city_node_id": city_node_id,
+	}
+	return dict
+
+
+func read(dict: Dictionary):
+	name = dict["name"]
+	node_id = dict["node_id"] as int
+	city_node_id = dict["city_node_id"] as int
 
 
 func can_build(planet_data, node) -> bool:
