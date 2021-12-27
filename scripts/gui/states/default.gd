@@ -8,7 +8,8 @@ func on_planet_clicked(node: int, button: int):
 		if facility == null:
 			return
 		
-		fsm.push("edit_city", {"node": node})
+		if facility is City:
+			fsm.push("edit_city", {"node": node})
 
 func _on_Road_pressed():
 	fsm.push("roads", {})
