@@ -42,6 +42,10 @@ func save() -> Dictionary:
 		"commodity_weights": commodity_weights,
 		"auto_assign_workers": auto_assign_workers,
 		"land_use": lu,
+		"sources": sources,
+		"sinks": sinks,
+		"conversions": conversions,
+		"flows": flows,
 	}
 	
 	return dict
@@ -60,6 +64,24 @@ func read(dict: Dictionary):
 	
 	for lu in dict["land_use"]:
 		land_use[lu[0] as int] = lu[1] as int
+	
+	var fl = dict["flows"]
+	for comm in fl:
+		var f = fl[comm]
+		flows[comm] = [f[0] as int, f[1] as int]
+		
+	var so = dict["sources"]
+	for comm in so:
+		sources[comm] = so[comm] as int
+		
+	var si = dict["sinks"]
+	for comm in si:
+		sinks[comm] = si[comm] as int
+		
+	var co = dict["conversions"]
+	for comm in co:
+		var c = co[comm]
+		conversions[comm] = [c[0] as int, c[1] as int]
 
 
 func can_build(planet_data, node) -> bool:
