@@ -1,5 +1,133 @@
 # Development Log
 
+## 2021/12/27 -- City-centric Economy implemented
+
+Over the past days, I implemented the plan from the previous entry.
+
+![Screenshot](https://user-images.githubusercontent.com/44003176/147424375-ce1bc029-68b8-47c7-9ea0-794029d98ae3.png)
+
+### Planet generation
+
+* Ported the complete planet generator to Rust
+* Extended the planet generator to create precipitation using noise
+* Derive temperature from latitude and altitude
+* Derive vegetation zones (see below) from temperature and precipitation
+
+```
+    Precipitation
+     ^             .- Tundra         .- Subtropical Forest
+1.0  |-----------+-+-----+---------+-+-------+
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |           | |Taiga|Temperate| | Trop. |
+     |           | |     | Forest  | |Forest |
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |           | |     |         | |       |
+     |  Glacier  | |     |         | |       |
+     |           | |-----+---------+-+-------+.- Steppe
+0.4  |           | |-------------------------+
+     |           | |                         |
+     |           | |                         |
+     |           | |                         |
+     |           | |          Desert         |
+     |           | |                         |
+     |           | |                         |
+     |           | |                         |
+0.0  +-----------+-+-----+---------+---------+--->
+    0.0         0.3     0.5       0.75      1.0
+                    Temperature
+```
+*Water is every tile with elevation < 0*
+
+### Commodities, vegetation and land use types
+
+Land use is restricted to city surroundings, and to certain vegetation types.
+Land use types have a certain worker requirement per tile, and output amounts may vary between vegetation types
+
+Commodities:
+
+* Food (F)
+* Resources (R)
+* Products (R)
+
+Vegetation:
+
+* VEG_DESERT
+* VEG_GLACIER
+* VEG_TUNDRA
+* VEG_TAIGA
+* VEG_STEPPE
+* VEG_TEMPERATE_FOREST
+* VEG_SUBTROPICAL_FOREST
+* VEG_TROPICAL_FOREST
+* VEG_WATER
+
+Land use:
+
+* LU_CROPS (1 worker)
+* LU_FOREST (1 worker)
+* LU_FACTORY (3 workers)
+* LU_FISHERY (1 worker)
+
+|           | Crops | Forest | Fishery | Factory |
+|-----------|-------|--------|---------|---------|
+| Desert    |       |        |         |  5R->5P |
+| Glacier   |       |        |         |         |
+| Tundra    |       |        |         |  5R->5P |
+| Taiga     |       |     1R |         |  5R->5P |
+| Steppe    |    1F |        |         |  5R->5P |
+| Temp. f.  |    2F |     2R |         |  5R->5P |
+| Subtr. f. |    2F |     1R |         |  5R->5P |
+| Trop. f   |    1F |     3R |         |  5R->5P |
+| Water     |       |        |     2F* |  5R->5P |
+
+*\* port required in the city*
+
+### Cities
+
+Cities are now the primary game entity. Everything else (except roads) is associated to a particular city.
+
+Each city has an associated area of variable radius (areas may overlap!).
+Within this area, land us types can be assigned according the city's available workers and vegetation type restrictions.
+Further, facilities can be placed in this area (currently only ports).
+
+Each worker that does not produce food requires one unit of food per turn.
+Workers are processed by random tile order, and only those for which sufficient food was supplied will produce anything.
+
+Each two workers "want" one unit of products per turn.
+If all workers were supplied with food, a new free worker spawns with a probability proportional to the share of products requirement satisfied.
+
+Each city can automatically assign workers to new land use.
+Distribution of workers is governed by commodity weights that can be adjusted by the user foreach city individually.
+So e.g., the user can set that 50% of the workers should produce food, 20% should produce resources, etc.
+
+When more the 50% of the city's area is used, the city radius increases by one tile.
+
+### Ports
+
+Ports allow "roads" to interface between land and water.
+
+```
+Water  |---- Road
+ ~   ~ | ~   ~
+   ~  (#)--- Port
+=======|======= Coast
+       |
+       |---- Road
+Land
+```
+
+Further, ports allow for fishery as land use of the city.
+
+### GUI Finite State Machine
+
+Each GUI state (like editing roads, founding, or editing cities) now is a state in an FSM, and has its complete own GUI and behaviour.
+
+This way, editing of cities (assigning land use and weights) is nicely isolated from the remaining UI.
+
 ## 2021/12/20 -- City-centric Economy
 
 The next iteration will be to try an economy where everything is tied to cities/settlements.
@@ -157,5 +285,7 @@ Implementation is still unclear. Should it be a diffusive process, or should the
 ## 2021/12/12 -- Procedural Planet
 
 Ported a Blender geometry nodes setup for generating procedural planets to Godot. Originally, just wanted to test new features of just released Blender 3.0.
+
+![Screenshot](https://user-images.githubusercontent.com/44003176/146467231-0b694c98-a1d1-4d66-bc19-7e2f6cce6d61.png)
 
 the subdivided ico sphere lends itself perfectly to a game played on a spherical, (almost) hexagonal grid.

@@ -4,7 +4,7 @@
 
 A game about planetary colonization and defense, with a focus on infrastructure and transport.
 
-![Screenshot](https://user-images.githubusercontent.com/44003176/146467231-0b694c98-a1d1-4d66-bc19-7e2f6cce6d61.png)
+![Screenshot](https://user-images.githubusercontent.com/44003176/147424375-ce1bc029-68b8-47c7-9ea0-794029d98ae3.png)
 
 Made with [Godot](https://godotengine.org/) and :crab: [Rust](https://rust-lang.org).
 
