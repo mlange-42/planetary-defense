@@ -61,6 +61,7 @@ func _ready():
 		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed)
 	
 	var result = gen.generate()
+	#var result = gen.from_csv("%s/planet.csv" % OS.get_user_data_dir())
 	
 	var consts: Constants = $"/root/GameConstants" as Constants
 	
@@ -82,7 +83,7 @@ func _ready():
 	if not smooth:
 		GeoUtil.split_unsmooth(ground.mesh)
 	
-	# self.planet_data.to_csv("planet.csv")
+	#self.planet_data.to_csv("%s/planet.csv" % OS.get_user_data_dir())
 	
 
 

@@ -9,6 +9,7 @@ use noise::{
 use crate::geom::godot_util::{to_collision_shape, to_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
 use crate::geom::planet::data::{NodeData, NodeNeighbors, PlanetData, DIST_FACTOR};
+use crate::geom::planet::serialize::from_csv;
 
 #[allow(dead_code)]
 const VEG_DESERT: u32 = 0;
@@ -131,6 +132,22 @@ impl PlanetGenerator {
     }
 
     #[export]
+    fn from_csv(&self, _owner: &Reference, path: String) -> VariantArray<Unique> {
+        let data = from_csv(&path).unwrap();
+        let colors = self.generate_colors(&data.nodes);
+
+        let mesh = to_mesh(&data.vertices, &data.faces, Some(colors));
+        let shape = to_collision_shape(&data.vertices, &data.faces);
+
+        let arr = VariantArray::new();
+        arr.push(data.emplace());
+        arr.push(mesh);
+        arr.push(shape);
+
+        arr
+    }
+
+    #[export]
     fn generate(&self, _owner: &Reference) -> VariantArray<Unique> {
         let params = self.params.as_ref().unwrap();
 
@@ -159,10 +176,10 @@ impl PlanetGenerator {
 
         let colors = self.generate_colors(&nodes);
 
-        let data = PlanetData::new(nodes, neighbors);
+        let data = PlanetData::new(nodes, vertices, neighbors, faces);
 
-        let mesh = to_mesh(&vertices, &faces, Some(colors));
-        let shape = to_collision_shape(&vertices, &faces);
+        let mesh = to_mesh(&data.vertices, &data.faces, Some(colors));
+        let shape = to_collision_shape(&data.vertices, &data.faces);
 
         let arr = VariantArray::new();
         arr.push(data.emplace());
