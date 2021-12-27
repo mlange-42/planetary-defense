@@ -30,11 +30,12 @@ func save() -> Dictionary:
 	
 	dict["neighbors"] = neigh
 	
-	var capacity = []
+	var edge_data = []
 	for edge in edges:
-		capacity.append([edge[0], edge[1], edges[edge].capacity])
+		var e = edges[edge]
+		edge_data.append([edge[0], edge[1], e.capacity, e.flow])
 	
-	dict["capacity"] = capacity
+	dict["edge_data"] = edge_data
 	
 	return dict
 
@@ -50,12 +51,16 @@ func read(dict: Dictionary):
 		
 		self.neighbors[n[0] as int] = arr
 	
-	var capacity = dict["capacity"]
+	var capacity = dict["edge_data"]
 	for edge in capacity:
 		var v1 = edge[0] as int
 		var v2 = edge[1] as int
 		var cap = edge[2] as int
-		edges[[v1, v2]] = Edge.new(v1, v2, cap)
+		var fl = edge[3] as int
+		
+		var e = Edge.new(v1, v2, cap)
+		e.flow = fl
+		edges[[v1, v2]] = e
 
 
 func connect_points(v1: int, v2: int, capacity: int):
