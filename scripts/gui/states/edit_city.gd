@@ -143,7 +143,14 @@ func on_planet_hovered(node: int):
 	update_node_info(node)
 
 
-func on_planet_clicked(node: int, button: int):	
+func on_planet_clicked(node: int, button: int):
+	if button == BUTTON_LEFT:
+		var facility: Facility = fsm.planet.get_facility(node)
+		if facility != null and facility is City and facility != city:
+			fsm.pop()
+			fsm.push("edit_city", {"node": node})
+			return
+	
 	var curr_tool = get_land_use_tool()
 	if curr_tool != null:
 		if button == BUTTON_LEFT:
@@ -155,9 +162,8 @@ func on_planet_clicked(node: int, button: int):
 		update_city_info()
 	else:
 		curr_tool = get_facility_tool()
-		if curr_tool == null:
-			return
-		var f = fsm.planet.add_facility(curr_tool, node, curr_tool)
-		if f != null:
-			f.city_node_id = city.node_id
-			city.add_facility(node, f)
+		if curr_tool != null:
+			var f = fsm.planet.add_facility(curr_tool, node, curr_tool)
+			if f != null:
+				f.city_node_id = city.node_id
+				city.add_facility(node, f)
