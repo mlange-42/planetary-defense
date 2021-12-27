@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/gui/states/edit_city.gd" type="Script" id=1]
 
-[node name="Control" type="Control"]
+[node name="EditCity" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -82,13 +82,13 @@ text = "Port"
 [node name="WeightPanel" type="PanelContainer" parent="Margin/EditControls"]
 margin_top = 112.0
 margin_right = 114.0
-margin_bottom = 290.0
+margin_bottom = 308.0
 
 [node name="WeightControls" type="VBoxContainer" parent="Margin/EditControls/WeightPanel"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 107.0
-margin_bottom = 171.0
+margin_bottom = 189.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -142,6 +142,12 @@ text = "Products"
 margin_top = 148.0
 margin_right = 100.0
 margin_bottom = 164.0
+
+[node name="WeightsDisplay" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
+margin_top = 168.0
+margin_right = 100.0
+margin_bottom = 182.0
+align = 1
 
 [node name="InfoContainer" type="MarginContainer" parent="."]
 anchor_left = 1.0
@@ -200,3 +206,6 @@ __meta__ = {
 }
 
 [connection signal="pressed" from="Margin/EditControls/Buttons/Back" to="." method="_on_Back_pressed"]
+[connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/FoodSlider" to="." method="_on_weights_changed"]
+[connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider" to="." method="_on_weights_changed"]
+[connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ProductsSlider" to="." method="_on_weights_changed"]

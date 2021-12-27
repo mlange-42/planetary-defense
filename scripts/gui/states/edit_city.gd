@@ -10,6 +10,7 @@ onready var sliders = {
 	Constants.COMM_ALL[2]: $Margin/EditControls/WeightPanel/WeightControls/ProductsSlider,
 }
 onready var auto_assign: CheckBox = $Margin/EditControls/WeightPanel/WeightControls/AutoAssignCheckBox
+onready var weights_display: Label = $Margin/EditControls/WeightPanel/WeightControls/WeightsDisplay
 
 var city_node: int
 var city: City
@@ -35,7 +36,7 @@ func init(the_fsm: Gui, args: Dictionary):
 
 
 func _ready():
-	update_city_info()
+	pass
 
 
 func state_entered():
@@ -43,6 +44,8 @@ func state_entered():
 	for i in range(city.commodity_weights.size()):
 		sliders[Constants.COMM_ALL[i]].value = city.commodity_weights[i]
 	
+	update_city_info()
+	update_weights_display()
 	city.set_label_visible(false)
 
 
@@ -90,6 +93,24 @@ func update_node_info(node: int):
 	node_text.text = text.substr(0, text.length()-1)
 
 
+func update_weights_display():
+	var sum = 0
+	var values = []
+	for comm in sliders:
+		var v = sliders[comm].value
+		values.append(v)
+		sum += v
+	
+	var text = ""
+	for i in range(values.size()):
+		var v = round(100 * ((values[i] / sum) if sum > 0 else (1.0 / values.size())))
+		text += "%d%%" % v
+		if i < values.size()-1:
+			text += "/"
+	
+	weights_display.text = text
+
+
 func get_land_use_tool():
 	var button = button_group.get_pressed_button()
 	if button == null or not button is LandUseButton:
@@ -104,6 +125,10 @@ func get_facility_tool():
 		return null
 	else:
 		return button.name
+
+
+func _on_weights_changed(_value: float):
+	update_weights_display()
 
 
 func _on_Back_pressed():
