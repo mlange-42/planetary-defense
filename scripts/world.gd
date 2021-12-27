@@ -1,9 +1,15 @@
 extends Spatial
 
+export (String) var save_name = "default"
+
 onready var planet: Planet = $Planet
 onready var mouse: Mouse = $Mouse
 onready var pointer: Spatial = $MousePointer
 onready var gui: Gui = $GUI
+
+
+func _enter_tree():
+	$Planet.save_name = save_name
 
 
 func _ready():

@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/gui/main_menu.gd" type="Script" id=1]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Controls" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -80.0
+margin_top = -24.0
+margin_right = 80.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 160, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="Controls"]
+margin_right = 160.0
+margin_bottom = 24.0
+hint_tooltip = "Name for a new or existing planet"
+focus_next = NodePath("../OkButton")
+placeholder_text = "Planet name"
+
+[node name="OkButton" type="Button" parent="Controls"]
+margin_top = 28.0
+margin_right = 160.0
+margin_bottom = 48.0
+focus_previous = NodePath("../LineEdit")
+text = "Ok"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ErrorLabel" type="Label" parent="Controls"]
+margin_top = 52.0
+margin_right = 160.0
+margin_bottom = 66.0
+align = 1
+autowrap = true
+
+[node name="ProgressLabel" type="Label" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -60.0
+margin_top = -7.0
+margin_right = 60.0
+margin_bottom = 7.0
+rect_min_size = Vector2( 120, 0 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="text_entered" from="Controls/LineEdit" to="." method="text_entered"]
+[connection signal="pressed" from="Controls/OkButton" to="." method="_on_OkButton_pressed"]

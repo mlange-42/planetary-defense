@@ -140,9 +140,9 @@ var LU_MAPPING = {
 	},
 }
 
-var VEG_MAPPING = remap(LU_MAPPING)
+var VEG_MAPPING = _remap(LU_MAPPING)
 
-func remap(map: Dictionary) -> Dictionary:
+func _remap(map: Dictionary) -> Dictionary:
 	var res = {}
 	for k1 in map:
 		var map2 = map[k1]

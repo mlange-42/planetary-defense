@@ -13,8 +13,11 @@ crate-type = ["cdylib"]
 
 [dependencies]
 gdnative = "0.9.3"
+euclid = { version="0.22.6", optional=false }
 pathfinding = "3.0.5"
 rand = "0.8.4"
-noise = { version="0.7.0", optional=false }
-kdtree = "0.6.0"
+noise = { version="0.7.0", features = [], optional=false }
+kdtree = { version = "0.6.0", features = [], optional=false }
 lazy_static = "1.4.0"
+serde = { version = "1.0", features = ["derive"], optional=false }
+csv = "1.1.6"

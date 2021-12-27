@@ -2,6 +2,8 @@ extends Spatial
 
 class_name Planet
 
+var save_name: String = "default"
+
 export var use_random_seed: bool = true
 export var random_seed: int = 0
 export var radius: float = 1.0
@@ -43,6 +45,8 @@ var flow: FlowManager
 var cities: CityManager
 
 func _ready():
+	var planet_file = FileUtil.save_path(save_name)
+	var load_planet = FileUtil.save_path_exists(save_name)
 	
 	if use_random_seed:
 		rng.seed = random_seed
@@ -60,7 +64,7 @@ func _ready():
 		noise_type, noise_period, noise_octaves, noise_seed, height_curve,
 		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed)
 	
-	var result = gen.generate()
+	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	
 	var consts: Constants = $"/root/GameConstants" as Constants
 	
@@ -82,7 +86,8 @@ func _ready():
 	if not smooth:
 		GeoUtil.split_unsmooth(ground.mesh)
 	
-	# self.planet_data.to_csv("planet.csv")
+	if not load_planet:
+		self.planet_data.to_csv(planet_file)
 	
 
 

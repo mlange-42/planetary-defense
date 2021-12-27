@@ -1,12 +1,12 @@
 use std::collections::HashSet;
-use std::{
-    fs::File,
-    io::{BufWriter, Write},
-};
+use std::marker::PhantomData;
 
+use crate::geom::planet::serialize::to_csv;
+use euclid::UnknownUnit;
 use gdnative::prelude::*;
 use kdtree::{distance::squared_euclidean, KdTree};
 use pathfinding::directed::astar::astar;
+use serde::{Deserialize, Serialize};
 
 pub const DIST_FACTOR: u32 = 1_000_000;
 
@@ -14,19 +14,32 @@ const NAV_ALL: u32 = 0;
 const NAV_LAND: u32 = 1;
 const NAV_WATER: u32 = 2;
 
-#[derive(NativeClass, ToVariant, Clone, Default)]
+#[derive(Serialize, Deserialize)]
+#[serde(remote = "Vector3")]
+struct Vector3Def {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    #[serde(skip)]
+    pub _unit: PhantomData<UnknownUnit>,
+}
+
+#[derive(NativeClass, ToVariant, Clone, Default, Serialize, Deserialize)]
 #[no_constructor]
 #[inherit(Reference)]
 pub struct NodeData {
     #[property]
+    #[serde(with = "Vector3Def")]
     pub position: Vector3,
     #[property]
     pub elevation: f32,
     #[property]
     pub is_water: bool,
     #[property]
+    #[serde(skip)]
     pub is_port: bool,
     #[property]
+    #[serde(skip)]
     pub is_occupied: bool,
     #[property]
     pub temperature: f32,
@@ -42,7 +55,7 @@ impl NodeData {
     fn _init(&mut self, _owner: &Reference) {}
 }
 
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct NodeNeighbors {
     pub neighbors: Vec<usize>,
     pub distances: Vec<u32>,
@@ -54,7 +67,9 @@ pub struct NodeNeighbors {
 #[allow(non_snake_case)]
 pub struct PlanetData {
     pub nodes: Vec<NodeData>,
+    pub vertices: Vec<Vector3>,
     pub neighbors: Vec<NodeNeighbors>,
+    pub faces: Vec<(usize, usize, usize)>,
     tree: KdTree<f32, usize, [f32; 3]>,
 
     #[property]
@@ -66,14 +81,21 @@ pub struct PlanetData {
 }
 
 impl PlanetData {
-    pub fn new(nodes: Vec<NodeData>, neighbors: Vec<NodeNeighbors>) -> Self {
+    pub fn new(
+        nodes: Vec<NodeData>,
+        vertices: Vec<Vector3>,
+        neighbors: Vec<NodeNeighbors>,
+        faces: Vec<(usize, usize, usize)>,
+    ) -> Self {
         let mut tree = KdTree::with_capacity(3, nodes.len());
         for (i, node) in nodes.iter().enumerate() {
             tree.add(node.position.to_array(), i).unwrap();
         }
         Self {
             nodes,
+            vertices,
             neighbors,
+            faces,
             tree,
             NAV_ALL,
             NAV_LAND,
@@ -221,31 +243,8 @@ impl PlanetData {
     }
 
     #[export]
-    pub fn to_csv(&self, _owner: &Reference, file: String) {
-        let f = File::create(file).expect("Unable to create file");
-        let mut f = BufWriter::new(f);
-
-        writeln!(
-            f,
-            "x;y;z;lat;elevation;temperature;precipitation;vegetation_type"
-        )
-        .unwrap();
-        for node in &self.nodes {
-            let lat = node.position.normalize().y.asin().to_degrees().abs();
-            writeln!(
-                f,
-                "{};{};{};{};{};{};{};{}",
-                node.position.x,
-                node.position.y,
-                node.position.z,
-                lat,
-                node.elevation,
-                node.temperature,
-                node.precipitation,
-                node.vegetation_type
-            )
-            .unwrap();
-        }
+    fn to_csv(&self, _owner: &Reference, path: String) {
+        to_csv(self, &path).unwrap()
     }
 }
 
@@ -256,6 +255,8 @@ mod tests {
     #[test]
     fn test_get_in_radius() {
         let nodes = vec![NodeData::default(); 4];
+        let vertices = vec![Vector3::default(); 4];
+        let faces: Vec<(usize, usize, usize)> = Vec::new();
 
         let neighbors = vec![
             NodeNeighbors {
@@ -275,7 +276,7 @@ mod tests {
                 distances: vec![1],
             },
         ];
-        let data = PlanetData::new(nodes, neighbors);
+        let data = PlanetData::new(nodes, vertices, neighbors, faces);
 
         assert_eq!(data.get_nodes_in_radius(0, 0), [(0, 0)]);
         assert_eq!(data.get_nodes_in_radius(0, 1), [(0, 0), (1, 1)]);
