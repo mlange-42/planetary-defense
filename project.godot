@@ -69,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/managers/flow_manager.gd"
 }, {
+"base": "GuiState",
+"class": "FlowsState",
+"language": "GDScript",
+"path": "res://scripts/gui/states/flows.gd"
+}, {
 "base": "Reference",
 "class": "GeoUtil",
 "language": "GDScript",
@@ -167,6 +172,7 @@ _global_script_class_icons={
 "Facility": "",
 "FileUtil": "",
 "FlowManager": "",
+"FlowsState": "",
 "GeoUtil": "",
 "Gui": "",
 "GuiState": "",

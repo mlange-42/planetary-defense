@@ -17,6 +17,8 @@ var neighbors: Dictionary = {}
 var edges: Dictionary = {}
 var facilities: Dictionary = {}
 
+var pair_flows: Dictionary = {}
+
 func _init():
 	pass
 

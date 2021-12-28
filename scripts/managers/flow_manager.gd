@@ -73,5 +73,5 @@ func solve():
 		
 		i += 1
 	
-	print(flow.get_pair_flows())
+	network.pair_flows = flow.get_pair_flows()
 	

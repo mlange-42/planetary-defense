@@ -22,7 +22,7 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="DefaultControls"]
 margin_right = 84.0
-margin_bottom = 44.0
+margin_bottom = 68.0
 
 [node name="City" type="Button" parent="DefaultControls/Buttons"]
 margin_right = 84.0
@@ -37,8 +37,15 @@ margin_bottom = 44.0
 hint_tooltip = "Build and remove  roads"
 text = "Build roads"
 
-[node name="Placeholder" type="Control" parent="DefaultControls"]
+[node name="Flows" type="Button" parent="DefaultControls/Buttons"]
 margin_top = 48.0
+margin_right = 84.0
+margin_bottom = 68.0
+hint_tooltip = "Build and remove  roads"
+text = "View flows"
+
+[node name="Placeholder" type="Control" parent="DefaultControls"]
+margin_top = 72.0
 margin_right = 84.0
 margin_bottom = 532.0
 size_flags_vertical = 3
@@ -58,5 +65,6 @@ text = "Turn"
 
 [connection signal="pressed" from="DefaultControls/Buttons/City" to="." method="_on_City_pressed"]
 [connection signal="pressed" from="DefaultControls/Buttons/Roads" to="." method="_on_Road_pressed"]
+[connection signal="pressed" from="DefaultControls/Buttons/Flows" to="." method="_on_Flows_pressed"]
 [connection signal="pressed" from="DefaultControls/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="DefaultControls/NextTurnButton" to="." method="_on_next_turn"]

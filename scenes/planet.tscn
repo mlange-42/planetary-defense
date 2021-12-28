@@ -18,3 +18,8 @@ script = ExtResource( 2 )
 material_override = ExtResource( 3 )
 cast_shadow = 0
 script = ExtResource( 2 )
+
+[node name="FlowsDebug" type="ImmediateGeometry" parent="."]
+material_override = ExtResource( 3 )
+cast_shadow = 0
+script = ExtResource( 2 )
