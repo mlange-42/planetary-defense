@@ -64,7 +64,7 @@ func draw_flows(planet_data, flows: Dictionary, commodity: String, color1: Color
 	if max_flow == 0:
 		return
 	
-	begin(Mesh.PRIMITIVE_LINES)
+	begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	for edge in flows:
 		if edge[0] == edge[1]:
@@ -109,16 +109,26 @@ func _draw_arc(p1: Vector3, p2: Vector3):
 		var vert = rad * (n1 * s1 + n2 * s2) / d
 		
 		if prev_vert != null:
+			var x_off = road_width * (vert - prev_vert).cross(vert).normalized()
+			
+			
 			add_vertex(prev_vert)
 			add_vertex(vert)
-		
-		if i == segments / 2:
-			var y_off = 0.15 * (vert - prev_vert).normalized()
-			var x_off = 0.15 * (vert - prev_vert).cross(vert).normalized()
-			add_vertex(vert - y_off + x_off)
-			add_vertex(vert)
-			add_vertex(vert - y_off - x_off)
-			add_vertex(vert)
+			add_vertex(vert + x_off)
+			
+			add_vertex(vert + x_off)
+			add_vertex(prev_vert + x_off)
+			add_vertex(prev_vert)
+			
+			if i == segments / 2:
+				var y_off = 4 * road_width * (vert - prev_vert).normalized()
+				add_vertex(vert - y_off + 3 * x_off)
+				add_vertex(vert - y_off + x_off)
+				add_vertex(vert + x_off)
+				
+				add_vertex(vert - y_off)
+				add_vertex(vert - y_off - 2 * x_off)
+				add_vertex(vert)
 			
 			
 		prev_vert = vert
