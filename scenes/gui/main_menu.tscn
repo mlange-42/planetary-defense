@@ -16,9 +16,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -80.0
-margin_top = -24.0
+margin_top = -51.5
 margin_right = 80.0
-margin_bottom = 24.0
+margin_bottom = 51.5
 rect_min_size = Vector2( 160, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -28,23 +28,45 @@ __meta__ = {
 margin_right = 160.0
 margin_bottom = 24.0
 hint_tooltip = "Name for a new or existing planet"
-focus_next = NodePath("../OkButton")
+focus_next = NodePath("../GenerateButton")
 placeholder_text = "Planet name"
 
-[node name="OkButton" type="Button" parent="Controls"]
+[node name="GenerateButton" type="Button" parent="Controls"]
 margin_top = 28.0
 margin_right = 160.0
 margin_bottom = 48.0
 focus_previous = NodePath("../LineEdit")
-text = "Ok"
+text = "Generate planet"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="Controls"]
+margin_top = 52.0
+margin_right = 160.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="ItemList" type="ItemList" parent="Controls"]
+margin_top = 66.0
+margin_right = 160.0
+margin_bottom = 176.0
+rect_min_size = Vector2( 0, 110 )
+
+[node name="LoadButton" type="Button" parent="Controls"]
+margin_top = 180.0
+margin_right = 160.0
+margin_bottom = 200.0
+focus_previous = NodePath("../LineEdit")
+text = "Load game"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ErrorLabel" type="Label" parent="Controls"]
-margin_top = 52.0
+margin_top = 204.0
 margin_right = 160.0
-margin_bottom = 66.0
+margin_bottom = 218.0
 align = 1
 autowrap = true
 
@@ -65,4 +87,5 @@ __meta__ = {
 }
 
 [connection signal="text_entered" from="Controls/LineEdit" to="." method="text_entered"]
-[connection signal="pressed" from="Controls/OkButton" to="." method="_on_OkButton_pressed"]
+[connection signal="pressed" from="Controls/GenerateButton" to="." method="_on_GenerateButton_pressed"]
+[connection signal="pressed" from="Controls/LoadButton" to="." method="_on_LoadButton_pressed"]
