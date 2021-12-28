@@ -4,6 +4,8 @@
 
 A game about planetary colonization and defense, with a focus on infrastructure and transport.
 
+**[Download binaries](https://github.com/mlange-42/planetary-defense/releases)** for Linux and Windows.
+
 ![Screenshot](https://user-images.githubusercontent.com/44003176/147424375-ce1bc029-68b8-47c7-9ea0-794029d98ae3.png)
 
 Made with [Godot](https://godotengine.org/) and :crab: [Rust](https://rust-lang.org).

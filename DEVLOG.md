@@ -1,5 +1,10 @@
 # Development Log
 
+## 2021/12/28 -- Save/load games, binary releases
+
+* Implemented saving and loading of games (and the bare planet)
+* Set up binary releases for Linux and Windows (MacOS requires some more work, see #36)
+
 ## 2021/12/27 -- City-centric Economy implemented
 
 Over the past days, I implemented the plan from the previous entry.
