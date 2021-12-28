@@ -2,8 +2,8 @@ extends Spatial
 
 
 export var planet_radius: float = 10.0
-export var horizontal_sensitivity: float = 0.00015
-export var vertical_sensitivity: float = 0.00015
+export var horizontal_sensitivity: float = 0.002
+export var vertical_sensitivity: float = 0.002
 export var zoom_increment: float = 1.0
 export var lerp_speed: float = 10
 
@@ -31,7 +31,7 @@ func _unhandled_input(event) -> void:
 		elif event.button_index == BUTTON_WHEEL_DOWN:
 			zoom_target = clamp(zoom_target - zoom_increment, planet_radius + 2, planet_radius * 4)
 	
-	var sens = camera.translation.z
+	var sens = (camera.translation.z - planet_radius) / float(planet_radius)
 	
 	if dragging and event is InputEventMouseMotion:
 		rotation_y_target += -event.relative.x * sens * horizontal_sensitivity
