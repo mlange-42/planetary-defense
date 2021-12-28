@@ -1,9 +1,8 @@
-name: "release"
+name: Release
 
 on:
-  push
-#release:
-#  types: [ created ]
+  release:
+    types: [ created ]
 
 env:
   GODOT_VERSION: 3.4
@@ -61,6 +60,12 @@ jobs:
         with:
           type: 'zip'
           filename: 'PlanetaryDefense-windows.zip'
-          path: 'build/PlanetaryDefense-windows'
-      - name: Inspect Results
-        run: ls
+          directory: 'build'
+          path: 'PlanetaryDefense-windows'
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/PlanetaryDefense-windows.zip
+          asset_name: PlanetaryDefense-${{ env.RELEASE_VERSION }}-windows.zip
+          tag: ${{ github.ref }}
