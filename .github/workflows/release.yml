@@ -2,7 +2,7 @@ name: "release"
 
 on:
   push
-  #release:
+#release:
 #  types: [ created ]
 
 env:
@@ -56,3 +56,11 @@ jobs:
         run: |
           mkdir -v -p build/$EXPORT_NAME-windows
           godot -v --export "Windows Desktop" build/$EXPORT_NAME-windows/$EXPORT_NAME.exe
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          filename: 'PlanetaryDefense-windows.zip'
+          path: 'build/PlanetaryDefense-windows'
+      - name: Inspect Results
+        run: ls
