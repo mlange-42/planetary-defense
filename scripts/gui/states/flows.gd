@@ -7,6 +7,8 @@ onready var comm_list: ItemList = $Buttons/Commodities
 func _ready():
 	for comm in Constants.COMM_ALL:
 		comm_list.add_item(comm)
+	
+	comm_list.select(0)
 
 
 func on_planet_clicked(node: int, button: int):
