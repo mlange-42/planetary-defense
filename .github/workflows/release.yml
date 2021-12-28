@@ -7,8 +7,70 @@ on:
 env:
   GODOT_VERSION: 3.4
   EXPORT_NAME: PlanetaryDefense
+  TARGET_LINUX: x86_64-unknown-linux-gnu
+  TARGET_WINDOWS: x86_64-pc-windows-gnu
 
 jobs:
+  export-linux:
+    name: Linux Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:3.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Get tag
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        shell: bash
+      - name: Install build-essentials
+        run: |
+          apt-get update -y
+          apt-get -y install build-essential
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "13.0"
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          target: ${{ env.TARGET_LINUX }}
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Rust Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --lib --target ${{ env.TARGET_LINUX }}
+      - name: Move Build Output
+        run: |
+          mkdir -p target/release
+          cp target/${TARGET_LINUX}/release/libplanetary_defense.so target/release/
+      - name: Setup Godot
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      - name: Godot Linux Build
+        run: |
+          mkdir -v -p build/$EXPORT_NAME-linux
+          godot -v --export "Linux/X11" build/$EXPORT_NAME-linux/$EXPORT_NAME
+      - name: Archive Release
+        uses: thedoctor0/zip-release@master
+        with:
+          type: 'zip'
+          filename: 'PlanetaryDefense-linux.zip'
+          directory: 'build'
+          path: 'PlanetaryDefense-linux'
+      - name: Upload Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/PlanetaryDefense-linux.zip
+          asset_name: PlanetaryDefense-${{ env.RELEASE_VERSION }}-linux.zip
+          tag: ${{ github.ref }}
+
   export-windows:
     name: Windows Export
     runs-on: ubuntu-latest
@@ -34,7 +96,7 @@ jobs:
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
-          target: x86_64-pc-windows-gnu
+          target: ${{ env.TARGET_WINDOWS }}
           profile: minimal
           toolchain: stable
           override: true
@@ -42,11 +104,11 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --release --lib --target x86_64-pc-windows-gnu
+          args: --release --lib --target ${{ env.TARGET_WINDOWS }}
       - name: Move Build Output
         run: |
           mkdir -p target/release
-          cp target/x86_64-pc-windows-gnu/release/planetary_defense.dll target/release/
+          cp target/${TARGET_WINDOWS}/release/planetary_defense.dll target/release/
       - name: Setup Godot
         run: |
           mkdir -v -p ~/.local/share/godot/templates
@@ -62,7 +124,7 @@ jobs:
           filename: 'PlanetaryDefense-windows.zip'
           directory: 'build'
           path: 'PlanetaryDefense-windows'
-      - name: Upload binaries to release
+      - name: Upload Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
