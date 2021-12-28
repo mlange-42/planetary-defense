@@ -6,14 +6,17 @@ var constants: Constants
 
 var network: RoadNetwork
 var planet_data = null
+var taxes: TaxManager
 var parent_node: Spatial
 
 
 # warning-ignore:shadowed_variable
-func _init(consts: Constants, net: RoadNetwork, planet_data, node: Spatial):
+# warning-ignore:shadowed_variable
+func _init(consts: Constants, net: RoadNetwork, planet_data, taxes: TaxManager, node: Spatial):
 	self.constants = consts
 	self.network = net
 	self.planet_data = planet_data
+	self.taxes = taxes
 	self.parent_node = node
 
 
@@ -21,11 +24,19 @@ func add_road(path: Array) -> bool:
 	if path.size() == 0:
 		return false
 	
+	var sum_cost = 0
+	
 	for i in range(path.size()-1):
+		if taxes.budget < sum_cost + Constants.ROAD_COSTS:
+			break
+		
 		var p1 = path[i]
 		var p2 = path[i+1]
 		if not network.points_connected(p1, p2):
 			network.connect_points(p1, p2, ROAD_CAPACITY)
+			sum_cost += Constants.ROAD_COSTS
+	
+	taxes.budget -= sum_cost
 	
 	return true
 
@@ -51,12 +62,18 @@ func add_facility(type: String, location: int, name: String):
 	if network.has_facility(location) or planet_data.get_node(location).is_occupied:
 		return null
 	
+	var costs = Constants.FACILITY_COSTS[type]
+	if costs > taxes.budget:
+		return
+	
 	var facility: Facility = load(Constants.FACILITY_SCENES[type]).instance()
 	if not facility.can_build(planet_data, location):
 		facility.queue_free()
 		return null
 	
 	facility.init(location, planet_data)
+	
+	taxes.budget -= costs
 	
 	return add_facility_scene(facility, name)
 

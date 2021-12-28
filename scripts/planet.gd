@@ -89,16 +89,20 @@ func _ready():
 	else:
 		var consts: Constants = $"/root/GameConstants" as Constants
 		self.roads = RoadNetwork.new()
-		self.builder = BuildManager.new(consts, roads, planet_data, facilities)
+		self.taxes = TaxManager.new()
+		self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, roads, planet_data)
-		self.taxes = TaxManager.new()
 		
 		if not load_planet:
 			self.planet_data.to_csv(planet_file)
 
 
 func init():
+	emit_budget()
+
+
+func emit_budget():
 	emit_signal("budget_changed", taxes.budget, taxes.taxes, taxes.maintenance)
 
 
@@ -110,6 +114,9 @@ func save_game():
 	
 	var roads_json = to_json(roads.save())
 	file.store_line(roads_json)
+	
+	var taxes_json = to_json(taxes.save())
+	file.store_line(taxes_json)
 	
 	for node in roads.facilities:
 		var facility = roads.facilities[node]
@@ -126,15 +133,19 @@ func load_game():
 		print("Error opening file")
 		return
 	
+	var consts: Constants = $"/root/GameConstants" as Constants
+	
 	var roads_json = file.get_line()
 	self.roads = RoadNetwork.new()
 	self.roads.read(parse_json(roads_json))
 	
-	var consts: Constants = $"/root/GameConstants" as Constants
-	self.builder = BuildManager.new(consts, roads, planet_data, facilities)
+	var taxes_json = file.get_line()
+	self.taxes = TaxManager.new()
+	self.taxes.read(parse_json(taxes_json))
+	
+	self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
 	self.flow = FlowManager.new(roads)
 	self.cities = CityManager.new(consts, roads, planet_data)
-	self.taxes = TaxManager.new()
 	
 	while not file.eof_reached():
 		var line: String = file.get_line()
@@ -193,6 +204,7 @@ func add_road(from: int, to: int):
 	var path = calc_id_path(from, to)
 	if builder.add_road(path):
 		_redraw_roads()
+		emit_budget()
 
 
 func remove_road(from: int, to: int):
@@ -214,7 +226,10 @@ func draw_flows(commodity: String):
 
 
 func add_facility(type: String, location: int, name: String):
-	return builder.add_facility(type, location, name)
+	var fac = builder.add_facility(type, location, name)
+	if fac != null:
+		emit_budget()
+	return fac
 
 
 func clear_path():
@@ -259,7 +274,9 @@ func next_turn():
 	cities.post_update()
 	cities.assign_workers(builder)
 	
+	taxes.reset()
 	taxes.earn_taxes(flow.total_flows)
+	taxes.pay_road_maintenenace(roads.edges.size())
 	
 	_redraw_roads()
 	

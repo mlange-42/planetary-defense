@@ -7,8 +7,8 @@ onready var borders: ImmediateGeometry = $Borders
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
 var facilities: Dictionary = {}
-var radius: int = 1
-var workers: int = 6
+var radius: int = 2
+var workers: int = Constants.INITIAL_CITY_POP
 
 var commodity_weights: Array = [100, 100, 100]
 var auto_assign_workers: bool = true
@@ -100,6 +100,7 @@ func has_landuse_requirements(lu: int) -> bool:
 			return false
 	
 	return true
+
 
 func update_cells(planet_data):
 	cells.clear()

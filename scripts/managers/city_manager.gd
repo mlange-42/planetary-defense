@@ -105,10 +105,13 @@ func post_update():
 					break
 		
 		var products_available = city.flows[Constants.COMM_PRODUCTS][1] if Constants.COMM_PRODUCTS in city.flows else 0
-		var share_satisfied = clamp(products_available / float(total_workers / 2), 0, 1)
+		var share_satisfied = clamp(products_available / float(max(total_workers / 2, 1)), 0, 1)
 		
 		if all_workers_supplied:
 			print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
+			if total_workers <= Constants.NO_PRODUCTS_CITY_POP:
+				share_satisfied = 1.0
+			
 			if randf() < Constants.CITY_GROWTH_PROB * share_satisfied:
 				city.workers += 1
 				city.update_visuals(planet_data)
