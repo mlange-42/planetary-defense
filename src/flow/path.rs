@@ -1,6 +1,7 @@
 use rand::prelude::*;
-use std::collections::btree_map::Entry;
-use std::collections::BTreeMap;
+use std::collections::btree_map::Entry as BEntry;
+use std::collections::hash_map::Entry;
+use std::collections::{BTreeMap, HashMap};
 use std::fmt::Debug;
 use std::iter;
 
@@ -11,6 +12,10 @@ use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
 
 type GodotFlows = Vec<(isize, isize, u32, u32)>;
+
+#[derive(Eq, PartialEq, ToVariant)]
+pub struct NodePair(isize, isize);
+impl ToVariantEq for NodePair {}
 
 #[derive(NativeClass)]
 #[inherit(Reference)]
@@ -114,6 +119,23 @@ impl MultiCommodityFlow {
         } else {
             None
         }
+    }
+
+    #[export]
+    fn get_pair_flows(&self, _owner: &Reference) -> Dictionary<Shared> {
+        let flows = self.builder.get_pair_flows();
+
+        let dict = Dictionary::new();
+
+        for ((p1, p2), flows) in flows.iter() {
+            let fl = Dictionary::new();
+            for (comm, flow) in flows {
+                fl.insert(comm, flow);
+            }
+            dict.insert(NodePair(vertex_to_id(p1), vertex_to_id(p2)), fl);
+        }
+
+        dict.into_shared()
     }
 }
 
@@ -239,6 +261,7 @@ struct Graph {
     nodes: Vec<NodeData>,
     edges: Vec<Edge>,
     out_edges: Vec<Vec<usize>>,
+    pair_flows: HashMap<(usize, usize), Vec<u32>>,
 }
 
 impl Graph {
@@ -270,6 +293,7 @@ impl Graph {
             nodes,
             edges: Vec::new(),
             out_edges,
+            pair_flows: Default::default(),
         }
     }
 
@@ -349,8 +373,21 @@ impl Graph {
         self.nodes[path[path.len() - 1]].supply[commodity] += amount as i32;
 
         if path.len() > 2 {
-            self.nodes[path[1]].sent[commodity] += amount as i32;
-            self.nodes[path[path.len() - 2]].received[commodity] += amount as i32;
+            let p1 = path[1];
+            let p2 = path[path.len() - 2];
+            self.nodes[p1].sent[commodity] += amount as i32;
+            self.nodes[p2].received[commodity] += amount as i32;
+
+            match self.pair_flows.entry((p1, p2)) {
+                Entry::Occupied(mut e) => {
+                    e.get_mut()[commodity] += amount;
+                }
+                Entry::Vacant(e) => {
+                    let mut vec = vec![0; self.commodities];
+                    vec[commodity] = amount;
+                    e.insert(vec);
+                }
+            }
         }
 
         // Converters
@@ -423,12 +460,14 @@ impl Graph {
 
 type EdgeList<T, U> = Vec<(Vertex<T, U>, Vertex<T, U>, Capacity, Cost)>;
 type Converter<U> = (U, u32, U, u32);
+type PairFlows<T, U> = BTreeMap<(Vertex<T, U>, Vertex<T, U>), Vec<(U, u32)>>;
 
 #[allow(dead_code)]
 pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
     edge_list: EdgeList<T, U>,
     converters: Vec<(Vertex<T, U>, Converter<U>)>,
     flows: Option<Vec<Flow<T, U>>>,
+    pair_flows: Option<PairFlows<T, U>>,
     nodes: Option<BTreeMap<Vertex<T, U>, NodeData>>,
     commodity_ids: Option<BTreeMap<U, usize>>,
 }
@@ -440,6 +479,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             edge_list: Vec::new(),
             converters: Default::default(),
             flows: None,
+            pair_flows: None,
             nodes: None,
             commodity_ids: None,
         }
@@ -505,21 +545,21 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .iter()
             .flat_map(move |&(ref a, ref b, _, _)| iter::once(a).chain(iter::once(b)))
         {
-            if let Entry::Vacant(e) = index_mapper.entry(vertex) {
+            if let BEntry::Vacant(e) = index_mapper.entry(vertex) {
                 e.insert(next_id);
                 node_mapper.insert(next_id, vertex);
                 next_id += 1;
             }
 
             if let Vertex::Source(comm) = vertex {
-                if let Entry::Vacant(e) = commodity_mapper.entry(comm) {
+                if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
                     commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
             }
             if let Vertex::Sink(comm) = vertex {
-                if let Entry::Vacant(e) = commodity_mapper.entry(comm) {
+                if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
                     commodities.push(comm.clone());
                     next_comm_id += 1;
@@ -535,12 +575,12 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             load_dependence,
         );
 
-        for comm in commodities.into_iter() {
+        for comm in commodities.iter() {
             let comm_id = commodity_mapper[&comm];
             if let Some(source) = index_mapper.get(&Vertex::Source(comm.clone())) {
                 g.nodes[*source].is_source = Some(comm_id);
             }
-            if let Some(sink) = index_mapper.get(&Vertex::Sink(comm)) {
+            if let Some(sink) = index_mapper.get(&Vertex::Sink(comm.clone())) {
                 g.nodes[*sink].is_sink = Some(comm_id);
             }
         }
@@ -601,6 +641,20 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             })
             .collect();
 
+        let pair_flows: PairFlows<T, U> = g
+            .pair_flows
+            .iter()
+            .map(|((p1, p2), flow)| {
+                (
+                    (node_mapper[p1].clone(), node_mapper[p2].clone()),
+                    flow.iter()
+                        .enumerate()
+                        .map(|(comm, value)| (commodities[comm].clone(), *value))
+                        .collect(),
+                )
+            })
+            .collect();
+
         let nodes: BTreeMap<_, _> = g
             .nodes
             .into_iter()
@@ -609,6 +663,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .collect();
 
         self.flows = Some(flows);
+        self.pair_flows = Some(pair_flows);
         self.nodes = Some(nodes);
         self.commodity_ids = Some(
             commodity_mapper
@@ -628,6 +683,12 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         self.flows
             .as_ref()
             .expect("Unable to extract flows from unsolved graph")
+    }
+
+    fn get_pair_flows(&self) -> &PairFlows<T, U> {
+        self.pair_flows
+            .as_ref()
+            .expect("Unable to extract pair flows from unsolved graph")
     }
 
     fn get_node_flows(&self, node: T) -> Option<&NodeData> {

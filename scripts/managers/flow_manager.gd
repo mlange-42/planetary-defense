@@ -73,3 +73,5 @@ func solve():
 		
 		i += 1
 	
+	network.pair_flows = flow.get_pair_flows()
+	
