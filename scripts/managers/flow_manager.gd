@@ -73,3 +73,5 @@ func solve():
 		
 		i += 1
 	
+	print(flow.get_pair_flows())
+	
