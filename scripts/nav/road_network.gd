@@ -193,3 +193,6 @@ func _disconnect(v1: int, v2: int):
 	
 	n.remove(idx)
 	assert(edges.erase([v1, v2]), "Points %d and %d have no edge to remove" % [v1, v2])
+	
+	if n.empty():
+		assert(neighbors.erase(v1), "Points %d and %d are not connected" % [v1, v2])
