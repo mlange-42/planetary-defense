@@ -59,16 +59,16 @@ jobs:
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
-          type: 'zip'
-          filename: 'PlanetaryDefense-linux.zip'
+          type: 'tar'
+          filename: 'PlanetaryDefense-linux.tar.gz'
           directory: 'build'
           path: 'PlanetaryDefense-linux'
       - name: Upload Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/PlanetaryDefense-linux.zip
-          asset_name: PlanetaryDefense-${{ env.RELEASE_VERSION }}-linux.zip
+          file: build/PlanetaryDefense-linux.tar.gz
+          asset_name: PlanetaryDefense-${{ env.RELEASE_VERSION }}-linux.tar.gz
           tag: ${{ github.ref }}
 
   export-windows:
