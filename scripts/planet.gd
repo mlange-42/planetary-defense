@@ -2,6 +2,8 @@ extends Spatial
 
 class_name Planet
 
+signal budget_changed(budget, taxes, maintenance)
+
 var save_name: String = "default"
 
 export var use_random_seed: bool = true
@@ -44,6 +46,7 @@ var roads: RoadNetwork
 var builder: BuildManager
 var flow: FlowManager
 var cities: CityManager
+var taxes: TaxManager
 
 func _ready():
 	var planet_file = FileUtil.save_path(save_name, FileUtil.PLANET_EXTENSION)
@@ -89,9 +92,14 @@ func _ready():
 		self.builder = BuildManager.new(consts, roads, planet_data, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, roads, planet_data)
+		self.taxes = TaxManager.new()
 		
 		if not load_planet:
 			self.planet_data.to_csv(planet_file)
+
+
+func init():
+	emit_signal("budget_changed", taxes.budget, taxes.taxes, taxes.maintenance)
 
 
 func save_game():
@@ -126,6 +134,7 @@ func load_game():
 	self.builder = BuildManager.new(consts, roads, planet_data, facilities)
 	self.flow = FlowManager.new(roads)
 	self.cities = CityManager.new(consts, roads, planet_data)
+	self.taxes = TaxManager.new()
 	
 	while not file.eof_reached():
 		var line: String = file.get_line()
@@ -249,4 +258,9 @@ func next_turn():
 	flow.solve()
 	cities.post_update()
 	cities.assign_workers(builder)
+	
+	taxes.earn_taxes(flow.total_flows)
+	
 	_redraw_roads()
+	
+	emit_signal("budget_changed", taxes.budget, taxes.taxes, taxes.maintenance)

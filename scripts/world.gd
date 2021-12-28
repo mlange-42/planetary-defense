@@ -22,6 +22,10 @@ func _ready():
 	mouse.connect("planet_hovered", self, "_on_planet_hovered")
 	# warning-ignore:return_value_discarded
 	mouse.connect("planet_clicked", self, "_on_planet_clicked")
+	# warning-ignore:return_value_discarded
+	planet.connect("budget_changed", self, "_on_budget_changed")
+	
+	planet.init()
 
 
 func _on_planet_entered(_point: Vector3):
@@ -75,3 +79,6 @@ func _show_info(id: int):
 func _hide_info():
 	gui.hide_info()
 
+
+func _on_budget_changed(budget: int, taxes: int, maintenance: int):
+	gui.set_budget_taxes_maintenance([budget, taxes, maintenance])

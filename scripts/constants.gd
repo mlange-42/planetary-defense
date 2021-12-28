@@ -45,6 +45,12 @@ const COMM_PRODUCTS: String = "Products"
 
 const COMM_ALL = [COMM_FOOD, COMM_RESOURCES, COMM_PRODUCTS]
 
+const COMM_TAX_RATES = {
+	COMM_FOOD: 1,
+	COMM_RESOURCES: 1,
+	COMM_PRODUCTS: 1,
+}
+
 const VEG_DESERT: int = 0
 const VEG_GLACIER: int = 1
 const VEG_TUNDRA: int = 2
