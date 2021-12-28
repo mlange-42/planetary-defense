@@ -29,6 +29,7 @@ text = "Back"
 margin_top = 24.0
 margin_right = 100.0
 margin_bottom = 33.0
+hint_tooltip = "Select commodity to view flow"
 auto_height = true
 
 [connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]
