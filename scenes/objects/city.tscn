@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/objects/city.gd" type="Script" id=1]
 [ext_resource path="res://assets/materials/unlit_vertex_color.tres" type="Material" id=2]
+[ext_resource path="res://assets/fonts/consolas_large.tres" type="DynamicFont" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.67451, 0, 0, 1 )
@@ -22,18 +23,22 @@ material_override = ExtResource( 2 )
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
-pixel_size = 0.02
+pixel_size = 0.005
 billboard = 1
 double_sided = false
 
 [node name="Viewport" type="Viewport" parent="Sprite3D"]
-size = Vector2( 120, 16 )
+size = Vector2( 360, 60 )
 transparent_bg = true
 usage = 0
 render_target_v_flip = true
 
 [node name="Label" type="Label" parent="Sprite3D/Viewport"]
-margin_right = 120.0
-margin_bottom = 16.0
+margin_right = 360.0
+margin_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 3 )
 text = "Test"
 align = 1
+valign = 1
