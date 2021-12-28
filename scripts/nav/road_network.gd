@@ -39,6 +39,16 @@ func save() -> Dictionary:
 	
 	dict["edge_data"] = edge_data
 	
+	var pair_data = []
+	for edge in pair_flows:
+		var flows = pair_flows[edge]
+		var entry = []
+		for comm in flows:
+			entry.append([comm, flows[comm]])
+		pair_data.append([edge, entry])
+	
+	dict["pair_flows"] = pair_data
+	
 	return dict
 
 
@@ -63,6 +73,16 @@ func read(dict: Dictionary):
 		var e = Edge.new(v1, v2, cap)
 		e.flow = fl
 		edges[[v1, v2]] = e
+	
+	var p_flows = dict["pair_flows"]
+	for e in p_flows:
+		var edge = e[0]
+		var flows = e[1]
+		var edge_dict = {}
+		for comm in flows:
+			edge_dict[comm[0]] = comm[1] as int
+		
+		pair_flows[[edge[0] as int, edge[1] as int]] = edge_dict
 
 
 func connect_points(v1: int, v2: int, capacity: int):
