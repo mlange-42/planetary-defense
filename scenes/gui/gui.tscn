@@ -24,57 +24,75 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_right = 188.0
+margin_right = 224.0
 margin_bottom = 20.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer"]
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 184.0
+margin_right = 220.0
 margin_bottom = 18.0
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_right = 16.0
-margin_bottom = 16.0
-text = "B:"
-
-[node name="BudgetLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 20.0
-margin_right = 52.0
-margin_bottom = 16.0
-text = "1000"
-
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 56.0
-margin_right = 60.0
-margin_bottom = 16.0
-
 [node name="Label2" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 64.0
-margin_right = 80.0
+margin_right = 8.0
 margin_bottom = 16.0
-text = "T:"
+text = "+"
+valign = 1
 
 [node name="TaxesLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 84.0
-margin_right = 116.0
+margin_left = 12.0
+margin_right = 44.0
 margin_bottom = 16.0
 text = "1000"
+valign = 1
 
 [node name="VSeparator2" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 120.0
-margin_right = 124.0
+margin_left = 48.0
+margin_right = 52.0
 margin_bottom = 16.0
 
 [node name="Label3" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 128.0
-margin_right = 144.0
+margin_left = 56.0
+margin_right = 64.0
 margin_bottom = 16.0
-text = "M:"
+text = "-"
+valign = 1
 
 [node name="MaintenenaceLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 148.0
-margin_right = 180.0
+margin_left = 68.0
+margin_right = 100.0
 margin_bottom = 16.0
 text = "1000"
+valign = 1
+
+[node name="VSeparator3" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_left = 104.0
+margin_right = 108.0
+margin_bottom = 16.0
+
+[node name="Label4" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_left = 112.0
+margin_right = 128.0
+margin_bottom = 16.0
+text = "->"
+valign = 1
+
+[node name="NetLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_left = 132.0
+margin_right = 172.0
+margin_bottom = 16.0
+text = "+1000"
+valign = 1
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_left = 176.0
+margin_right = 180.0
+margin_bottom = 16.0
+
+[node name="BudgetLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_left = 184.0
+margin_right = 216.0
+margin_bottom = 16.0
+text = "1000"
+valign = 1

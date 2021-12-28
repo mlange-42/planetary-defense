@@ -33,7 +33,7 @@ class Conversion:
 const CITY_GROWTH_PROB: float = 0.333
 const DRAW_HEIGHT_OFFSET: float = 0.02
 
-const INITIAL_BUDGET = 200
+const INITIAL_BUDGET = 250
 const INITIAL_CITY_POP = 1
 const NO_PRODUCTS_CITY_POP = 3
 

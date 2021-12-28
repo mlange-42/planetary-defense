@@ -6,6 +6,7 @@ onready var constants: Constants = $"/root/GameConstants"
 onready var budget_label = $MarginContainer/PanelContainer/HBoxContainer/BudgetLabel
 onready var taxes_label = $MarginContainer/PanelContainer/HBoxContainer/TaxesLabel
 onready var maintenance_label = $MarginContainer/PanelContainer/HBoxContainer/MaintenenaceLabel
+onready var net_label = $MarginContainer/PanelContainer/HBoxContainer/NetLabel
 
 var planet: Planet
 var states = []
@@ -26,6 +27,7 @@ func set_budget_taxes_maintenance(values: Array):
 	budget_label.text = str(values[0])
 	taxes_label.text = str(values[1])
 	maintenance_label.text = str(values[2])
+	net_label.text = "%+d" % (values[1] - values[2])
 
 
 func state():
