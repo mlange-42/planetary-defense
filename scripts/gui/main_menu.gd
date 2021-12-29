@@ -2,6 +2,7 @@ extends Control
 
 
 onready var controls: Control = $Controls
+onready var load_button = $Controls/HBoxContainer/LoadContainer/LoadButton
 onready var name_edit: LineEdit = $Controls/HBoxContainer/GenerateContainer/LineEdit
 onready var error_label: Label = $Controls/MarginContainer/ErrorLabel
 onready var progress: Label = $ProgressLabel
@@ -21,8 +22,7 @@ func _ready():
 	files = list_saved_games("user://")
 	
 	if files.empty():
-		file_list.visible = false
-		$Controls/LoadButton.visible = false
+		load_button.disabled = true
 	else:
 		for file in files:
 			file_list.add_item(file)
