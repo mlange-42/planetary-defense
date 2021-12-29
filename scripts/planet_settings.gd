@@ -7,12 +7,14 @@ const HEIGHT_CURVES = {
 
 const PRECIPITATION_CURVES = {
 	"humid": preload("res://assets/params/humid_precipitation_curve.tres"),
-	"default": preload("res://assets/params/linear_curve.tres"),
+	"normal": preload("res://assets/params/linear_curve.tres"),
 	"arid": preload("res://assets/params/arid_precipitation_curve.tres"),
 }
 
 const TEMPERATURE_CURVES = {
-	"default": preload("res://assets/params/linear_curve.tres"),
+	"cold": preload("res://assets/params/low_temperature_curve.tres"),
+	"normal": preload("res://assets/params/linear_curve.tres"),
+	"warm": preload("res://assets/params/high_temperature_curve.tres"),
 }
 
 const PLANET_SIZES = {

@@ -19,8 +19,8 @@ export var noise_octaves: int = 5
 export var noise_seed: int = -1
 
 export var height_curve: Curve = PlanetSettings.HEIGHT_CURVES["default"]
-export var temperature_curve: Curve = PlanetSettings.TEMPERATURE_CURVES["default"]
-export var precipitation_curve: Curve = PlanetSettings.PRECIPITATION_CURVES["default"]
+export var temperature_curve: Curve = PlanetSettings.TEMPERATURE_CURVES["normal"]
+export var precipitation_curve: Curve = PlanetSettings.PRECIPITATION_CURVES["normal"]
 
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
 		var climate_noise_type: String = "fbm"

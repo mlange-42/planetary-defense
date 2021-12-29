@@ -8,6 +8,7 @@ onready var progress: Label = $ProgressLabel
 
 onready var file_list: ItemList = $Controls/HBoxContainer/LoadContainer/ItemList
 onready var size_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/PlanetSizes
+onready var temperature_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/Temperatures
 onready var humidity_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/Humidities
 
 var files: Array
@@ -27,6 +28,10 @@ func _ready():
 	for key in PlanetSettings.PLANET_SIZES:
 		size_list.add_item(key)
 	size_list.select(2)
+	
+	for key in PlanetSettings.TEMPERATURE_CURVES:
+		temperature_list.add_item(key)
+	temperature_list.select(1)
 	
 	for key in PlanetSettings.PRECIPITATION_CURVES:
 		humidity_list.add_item(key)
@@ -68,6 +73,7 @@ func change_scene(name: String):
 	var root = get_tree().root
 	
 	var size = size_list.get_item_text(int(max(size_list.selected, 0)))
+	var temperature = temperature_list.get_item_text(int(max(temperature_list.selected, 0)))
 	var humidity = humidity_list.get_item_text(int(max(humidity_list.selected, 0)))
 	
 	var world = load("res://scenes/world.tscn").instance()
@@ -75,6 +81,7 @@ func change_scene(name: String):
 		PlanetSettings.PLANET_SIZES[size],
 		{
 			"precipitation_curve": PlanetSettings.PRECIPITATION_CURVES[humidity],
+			"temperature_curve": PlanetSettings.TEMPERATURE_CURVES[temperature],
 		}
 	]
 	world.save_name = name
