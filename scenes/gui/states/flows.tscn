@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/gui/states/flows.gd" type="Script" id=1]
+
+[sub_resource type="Gradient" id=1]
+colors = PoolColorArray( 1, 1, 1, 1, 0.63, 0.13, 0.94, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+width = 512
 
 [node name="InspectFlows" type="MarginContainer"]
 anchor_bottom = 1.0
@@ -32,5 +39,86 @@ margin_bottom = 33.0
 hint_tooltip = "Select commodity to view flow"
 auto_height = true
 
+[node name="PanelContainer" type="PanelContainer" parent="Buttons"]
+margin_top = 37.0
+margin_right = 100.0
+margin_bottom = 179.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 93.0
+margin_bottom = 135.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_right = 86.0
+margin_bottom = 20.0
+
+[node name="MaxColorButton" type="ColorPickerButton" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_right = 30.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 30, 0 )
+focus_mode = 0
+enabled_focus_mode = 0
+flat = true
+edit_alpha = false
+
+[node name="MaxLabel" type="Label" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 34.0
+margin_top = 3.0
+margin_right = 86.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "100"
+align = 1
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 86.0
+margin_bottom = 104.0
+
+[node name="Control" type="Control" parent="Buttons/PanelContainer/VBoxContainer/AspectRatioContainer"]
+margin_left = 3.0
+margin_right = 83.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 80, 80 )
+
+[node name="TextureRect" type="TextureRect" parent="Buttons/PanelContainer/VBoxContainer/AspectRatioContainer/Control"]
+margin_right = 80.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 0, 80 )
+rect_rotation = -90.0
+rect_pivot_offset = Vector2( 40, 40 )
+texture = SubResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 108.0
+margin_right = 86.0
+margin_bottom = 128.0
+
+[node name="MinColorButton" type="ColorPickerButton" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 30.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 30, 0 )
+focus_mode = 0
+enabled_focus_mode = 0
+flat = true
+edit_alpha = false
+
+[node name="MinLabel" type="Label" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 34.0
+margin_top = 3.0
+margin_right = 86.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "0"
+align = 1
+
 [connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]
 [connection signal="item_selected" from="Buttons/Commodities" to="." method="_on_Commodities_item_selected"]
+[connection signal="color_changed" from="Buttons/PanelContainer/VBoxContainer/HBoxContainer/MaxColorButton" to="." method="_on_gradient_color_changed"]
+[connection signal="color_changed" from="Buttons/PanelContainer/VBoxContainer/HBoxContainer2/MinColorButton" to="." method="_on_gradient_color_changed"]

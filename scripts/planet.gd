@@ -38,7 +38,7 @@ onready var facilities: Spatial = $Facilities
 
 onready var road_debug: DebugDraw = $RoadDebug
 onready var path_debug: DebugDraw = $PathDebug
-onready var flows_debug: DebugDraw = $FlowsDebug
+onready var flows_graphs: FlowGraphs = $FlowsGraphs
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var planet_data = null
@@ -221,8 +221,9 @@ func _redraw_roads():
 	road_debug.draw_roads(planet_data, roads, Color(0.02, 0.02, 0.02), Color.red)
 
 
-func draw_flows(commodity: String):
-	flows_debug.draw_flows(planet_data, roads.pair_flows, commodity, Color.white, Color.purple)
+func draw_flows(commodity: String, color1: Color, color2: Color) -> int:
+	flows_graphs.set_colors(color1, color2)
+	return flows_graphs.draw_flows(planet_data, roads.pair_flows, commodity)
 
 
 func add_facility(type: String, location: int, name: String):
@@ -237,7 +238,7 @@ func clear_path():
 
 
 func clear_flows():
-	flows_debug.clear_all()
+	flows_graphs.clear_all()
 
 
 func _add_mesh(mesh: Mesh, name: String) -> GeometryInstance:

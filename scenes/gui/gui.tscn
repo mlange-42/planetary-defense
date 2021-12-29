@@ -24,14 +24,14 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_right = 224.0
+margin_right = 304.0
 margin_bottom = 20.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer"]
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 220.0
+margin_right = 300.0
 margin_bottom = 18.0
 
 [node name="Label2" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
@@ -44,6 +44,8 @@ valign = 1
 margin_left = 12.0
 margin_right = 44.0
 margin_bottom = 16.0
+hint_tooltip = "Tax income"
+mouse_filter = 0
 text = "1000"
 valign = 1
 
@@ -61,38 +63,44 @@ valign = 1
 
 [node name="MaintenenaceLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
 margin_left = 68.0
-margin_right = 100.0
+margin_right = 180.0
 margin_bottom = 16.0
-text = "1000"
+hint_tooltip = "Maintenance (roads + transport)"
+mouse_filter = 0
+text = "1000 (500+500)"
 valign = 1
 
 [node name="VSeparator3" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 104.0
-margin_right = 108.0
+margin_left = 184.0
+margin_right = 188.0
 margin_bottom = 16.0
 
 [node name="Label4" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 112.0
-margin_right = 128.0
+margin_left = 192.0
+margin_right = 208.0
 margin_bottom = 16.0
 text = "->"
 valign = 1
 
 [node name="NetLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 132.0
-margin_right = 172.0
+margin_left = 212.0
+margin_right = 252.0
 margin_bottom = 16.0
+hint_tooltip = "Resulting income"
+mouse_filter = 0
 text = "+1000"
 valign = 1
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 176.0
-margin_right = 180.0
+margin_left = 256.0
+margin_right = 260.0
 margin_bottom = 16.0
 
 [node name="BudgetLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 184.0
-margin_right = 216.0
+margin_left = 264.0
+margin_right = 296.0
 margin_bottom = 16.0
+hint_tooltip = "Current budget"
+mouse_filter = 0
 text = "1000"
 valign = 1

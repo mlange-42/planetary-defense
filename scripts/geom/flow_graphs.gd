@@ -1,53 +1,27 @@
 extends ImmediateGeometry
-class_name DebugDraw
+class_name FlowGraphs
 
-export var road_width: float = 0.05
+export var flow_width: float = 0.05
 
+var low_color: Color = Color.white
+var high_color: Color = Color.purple
 
 func clear_all():
 	clear()
 
 
-func draw_path(points: Array, color: Color):
+func set_colors(c1: Color, c2: Color):
+	low_color = c1
+	high_color = c2
+
+
+func get_colors():
+	return [low_color, high_color]
+
+
+func draw_flows(planet_data, flows: Dictionary, commodity: String) -> int:
 	clear()
-	begin(Mesh.PRIMITIVE_LINE_STRIP)
 	
-	set_color(color)
-	
-	for p in points:
-		add_vertex(p + 2 * Constants.DRAW_HEIGHT_OFFSET * p.normalized())
-	
-	end()
-
-
-func draw_roads(planet_data, roads: RoadNetwork, color1: Color, color2: Color):
-	clear()
-	begin(Mesh.PRIMITIVE_TRIANGLES)
-	
-	for node1 in roads.neighbors:
-		var n = roads.neighbors[node1]
-		var p1 = planet_data.get_position(node1)
-		for node2 in n:
-			var edge = roads.edges[[node1, node2]]
-			var p2 = planet_data.get_position(node2)
-			var x_off = (p2 - p1).cross(p1).normalized() * road_width
-			var y_off = (p2 - p1).normalized() * (0.5 * road_width)
-			var h_off = Constants.DRAW_HEIGHT_OFFSET * p1.normalized()
-			
-			set_color(color1.linear_interpolate(color2, edge.flow/float(edge.capacity)))
-			add_vertex(p1 + h_off - y_off)
-			add_vertex(p2 + h_off + y_off)
-			add_vertex(p2 + h_off + y_off + x_off)
-			
-			add_vertex(p2 + h_off + y_off + x_off)
-			add_vertex(p1 + h_off - y_off + x_off)
-			add_vertex(p1 + h_off - y_off)
-	
-	end()
-
-
-func draw_flows(planet_data, flows: Dictionary, commodity: String, color1: Color, color2: Color) -> int:
-	clear()
 	
 	var max_flow: int = 0
 	
@@ -77,7 +51,7 @@ func draw_flows(planet_data, flows: Dictionary, commodity: String, color1: Color
 		if f == 0:
 			continue
 		
-		set_color(color1.linear_interpolate(color2, f / float(max_flow)))
+		set_color(low_color.linear_interpolate(high_color, f / float(max_flow)))
 		
 		var p1 = planet_data.get_node(edge[0]).position
 		var p2 = planet_data.get_node(edge[1]).position
@@ -112,7 +86,7 @@ func _draw_arc(p1: Vector3, p2: Vector3):
 		var vert = rad * (n1 * s1 + n2 * s2) / d
 		
 		if prev_vert != null:
-			var x_off = road_width * (vert - prev_vert).cross(vert).normalized()
+			var x_off = flow_width * (vert - prev_vert).cross(vert).normalized()
 			
 			
 			add_vertex(prev_vert)
@@ -124,7 +98,7 @@ func _draw_arc(p1: Vector3, p2: Vector3):
 			add_vertex(prev_vert)
 			
 			if i == segments / 2:
-				var y_off = 4 * road_width * (vert - prev_vert).normalized()
+				var y_off = 4 * flow_width * (vert - prev_vert).normalized()
 				add_vertex(vert - y_off + 3 * x_off)
 				add_vertex(vert - y_off + x_off)
 				add_vertex(vert + x_off)

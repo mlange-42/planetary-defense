@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/util/file_util.gd"
 }, {
+"base": "ImmediateGeometry",
+"class": "FlowGraphs",
+"language": "GDScript",
+"path": "res://scripts/geom/flow_graphs.gd"
+}, {
 "base": "Reference",
 "class": "FlowManager",
 "language": "GDScript",
@@ -176,6 +181,7 @@ _global_script_class_icons={
 "EditCityState": "",
 "Facility": "",
 "FileUtil": "",
+"FlowGraphs": "",
 "FlowManager": "",
 "FlowsState": "",
 "GeoUtil": "",
