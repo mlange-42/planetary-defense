@@ -6,39 +6,39 @@ signal budget_changed(taxes)
 
 var save_name: String = "default"
 
-export var use_random_seed: bool = true
+export var use_random_seed: bool = false
 export var random_seed: int = 0
-export var radius: float = 1.0
+export var radius: float = 10.0
 
-export var max_height: float = 0.1
-export var height_step: float = 0.05
+export var max_height: float = 1.0
+export var height_step: float = 0.025
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
-		var noise_type: String = ""
-export var noise_period: float = 0.5
-export var noise_octaves: int = 4
+		var noise_type: String = "fbm"
+export var noise_period: float = 0.7
+export var noise_octaves: int = 5
 export var noise_seed: int = -1
 
-export var height_curve: Curve
+export var height_curve: Curve = PlanetSettings.HEIGHT_CURVES["default"]
 
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
-		var climate_noise_type: String = ""
-export var climate_noise_period: float = 0.5
+		var climate_noise_type: String = "fbm"
+export var climate_noise_period: float = 0.8
 export var climate_noise_octaves: int = 3
 export var climate_noise_seed: int = -1
 
-export (int, 0, 6) var subdivisions: int = 5
-export (int, 2, 48) var water_rings: int = 24
-export (int, 4, 96) var water_segments: int = 48
+export (int, 0, 7) var subdivisions: int = 6
+export (int, 2, 48) var water_rings: int = 48
+export (int, 4, 96) var water_segments: int = 96
 export var smooth: bool = false
 
-export var land_material: Material
-export var water_material: Material
+export var land_material: Material = preload("res://assets/materials/land.tres")
+export var water_material: Material = preload("res://assets/materials/water.tres")
 
-onready var facilities: Spatial = $Facilities
+onready var facilities: Spatial
 
-onready var road_debug: DebugDraw = $RoadDebug
-onready var path_debug: DebugDraw = $PathDebug
-onready var flows_graphs: FlowGraphs = $FlowsGraphs
+onready var road_debug: DebugDraw
+onready var path_debug: DebugDraw
+onready var flows_graphs: FlowGraphs
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var planet_data = null
@@ -48,7 +48,30 @@ var flow: FlowManager
 var cities: CityManager
 var taxes: TaxManager
 
+# Array of Dictionaries to override parameters
+func _init(params: Array):
+	for par in params:
+		for key in par:
+			self.set(key, par[key])
+
 func _ready():
+	var material = preload("res://assets/materials/unlit_vertex_color.tres")
+	
+	facilities = Spatial.new()
+	add_child(facilities)
+	
+	road_debug = DebugDraw.new()
+	road_debug.material_override = material
+	add_child(road_debug)
+	
+	path_debug = DebugDraw.new()
+	path_debug.material_override = material
+	add_child(path_debug)
+	
+	flows_graphs = FlowGraphs.new()
+	flows_graphs.material_override = material
+	add_child(flows_graphs)
+	
 	var planet_file = FileUtil.save_path(save_name, FileUtil.PLANET_EXTENSION)
 	var load_planet = FileUtil.save_path_exists(save_name, FileUtil.PLANET_EXTENSION)
 	
@@ -255,7 +278,7 @@ func _add_node(node: GeometryInstance, name: String) -> GeometryInstance:
 
 
 func _create_water() -> Mesh:
-	var sphere = UvSphere.new(water_rings, water_segments, radius + 0.95 * height_step)
+	var sphere = UvSphere.new(water_rings, water_segments, radius + 0.8 * height_step)
 	return sphere.create()
 
 

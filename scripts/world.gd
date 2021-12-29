@@ -2,18 +2,26 @@ extends Spatial
 
 export (String) var save_name = "default"
 
-onready var planet: Planet = $Planet
+onready var planet: Planet
 onready var mouse: Mouse = $Mouse
 onready var pointer: Spatial = $MousePointer
 onready var gui: Gui = $GUI
+onready var cam_control: CameraControl = $CameraControl
 
+# Array of Dictionaries to override parameters
+var planet_params = []
 
-func _enter_tree():
-	$Planet.save_name = save_name
+func _init():
+	pass
 
 
 func _ready():
+	planet = Planet.new(planet_params)
+	planet.save_name = save_name
+	add_child(planet)
+	
 	gui.planet = planet
+	cam_control.planet_radius = planet.radius
 	# warning-ignore:return_value_discarded
 	mouse.connect("planet_entered", self, "_on_planet_entered")
 	# warning-ignore:return_value_discarded

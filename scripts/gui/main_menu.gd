@@ -2,11 +2,12 @@ extends Control
 
 
 onready var controls: Control = $Controls
-onready var name_edit: LineEdit = $Controls/LineEdit
-onready var error_label: Label = $Controls/ErrorLabel
+onready var name_edit: LineEdit = $Controls/HBoxContainer/GenerateContainer/LineEdit
+onready var error_label: Label = $Controls/MarginContainer/ErrorLabel
 onready var progress: Label = $ProgressLabel
 
-onready var file_list: ItemList = $Controls/ItemList
+onready var file_list: ItemList = $Controls/HBoxContainer/LoadContainer/ItemList
+onready var size_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/PlanetSizes
 
 var files: Array
 
@@ -21,6 +22,10 @@ func _ready():
 	else:
 		for file in files:
 			file_list.add_item(file)
+	
+	for key in PlanetSettings.PLANET_SIZES:
+		size_list.add_item(key)
+	size_list.select(2)
 
 
 func _on_GenerateButton_pressed():
@@ -57,7 +62,10 @@ func change_scene(name: String):
 	
 	var root = get_tree().root
 	
+	var size = size_list.get_item_text(int(max(size_list.selected, 0)))
+	
 	var world = load("res://scenes/world.tscn").instance()
+	world.planet_params = [PlanetSettings.PLANET_SIZES[size]]
 	world.save_name = name
 	
 	root.remove_child(self)

@@ -10,66 +10,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Controls" type="VBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -80.0
-margin_top = -51.5
-margin_right = 80.0
-margin_bottom = 51.5
-rect_min_size = Vector2( 160, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LineEdit" type="LineEdit" parent="Controls"]
-margin_right = 160.0
-margin_bottom = 24.0
-hint_tooltip = "Name for a new or existing planet"
-focus_next = NodePath("../GenerateButton")
-placeholder_text = "Planet name"
-
-[node name="GenerateButton" type="Button" parent="Controls"]
-margin_top = 28.0
-margin_right = 160.0
-margin_bottom = 48.0
-focus_previous = NodePath("../LineEdit")
-text = "Generate planet"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Control" type="Control" parent="Controls"]
-margin_top = 52.0
-margin_right = 160.0
-margin_bottom = 62.0
-rect_min_size = Vector2( 0, 10 )
-
-[node name="ItemList" type="ItemList" parent="Controls"]
-margin_top = 66.0
-margin_right = 160.0
-margin_bottom = 176.0
-rect_min_size = Vector2( 0, 110 )
-
-[node name="LoadButton" type="Button" parent="Controls"]
-margin_top = 180.0
-margin_right = 160.0
-margin_bottom = 200.0
-focus_previous = NodePath("../LineEdit")
-text = "Load game"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ErrorLabel" type="Label" parent="Controls"]
-margin_top = 204.0
-margin_right = 160.0
-margin_bottom = 218.0
-align = 1
-autowrap = true
-
 [node name="ProgressLabel" type="Label" parent="."]
 visible = false
 anchor_left = 0.5
@@ -86,6 +26,109 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="text_entered" from="Controls/LineEdit" to="." method="text_entered"]
-[connection signal="pressed" from="Controls/GenerateButton" to="." method="_on_GenerateButton_pressed"]
-[connection signal="pressed" from="Controls/LoadButton" to="." method="_on_LoadButton_pressed"]
+[node name="Controls" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Controls"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -142.0
+margin_top = -77.0
+margin_right = 142.0
+margin_bottom = 77.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GenerateContainer" type="VBoxContainer" parent="Controls/HBoxContainer"]
+margin_right = 140.0
+margin_bottom = 154.0
+rect_min_size = Vector2( 140, 0 )
+
+[node name="Label" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_right = 140.0
+margin_bottom = 14.0
+text = "Planet size"
+
+[node name="PlanetSizes" type="OptionButton" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_top = 18.0
+margin_right = 140.0
+margin_bottom = 38.0
+text = "Planet size"
+
+[node name="Label2" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_top = 42.0
+margin_right = 140.0
+margin_bottom = 56.0
+text = "Planet name"
+
+[node name="LineEdit" type="LineEdit" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_top = 60.0
+margin_right = 140.0
+margin_bottom = 84.0
+hint_tooltip = "Name for a new or existing planet"
+focus_next = NodePath("../GenerateButton")
+placeholder_text = "Planet name"
+
+[node name="GenerateButton" type="Button" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_top = 88.0
+margin_right = 140.0
+margin_bottom = 108.0
+focus_previous = NodePath("../LineEdit")
+text = "Generate planet"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="Controls/HBoxContainer"]
+margin_left = 144.0
+margin_right = 168.0
+margin_bottom = 154.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="LoadContainer" type="VBoxContainer" parent="Controls/HBoxContainer"]
+margin_left = 172.0
+margin_right = 312.0
+margin_bottom = 154.0
+rect_min_size = Vector2( 140, 0 )
+
+[node name="ItemList" type="ItemList" parent="Controls/HBoxContainer/LoadContainer"]
+margin_right = 140.0
+margin_bottom = 130.0
+rect_min_size = Vector2( 0, 130 )
+
+[node name="LoadButton" type="Button" parent="Controls/HBoxContainer/LoadContainer"]
+margin_top = 134.0
+margin_right = 140.0
+margin_bottom = 154.0
+focus_previous = NodePath("../../GenerateContainer/LineEdit")
+text = "Load game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Controls"]
+anchor_right = 1.0
+margin_top = 10.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ErrorLabel" type="Label" parent="Controls/MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 14.0
+align = 1
+autowrap = true
+
+[connection signal="text_entered" from="Controls/HBoxContainer/GenerateContainer/LineEdit" to="." method="text_entered"]
+[connection signal="pressed" from="Controls/HBoxContainer/GenerateContainer/GenerateButton" to="." method="_on_GenerateButton_pressed"]
+[connection signal="pressed" from="Controls/HBoxContainer/LoadContainer/LoadButton" to="." method="_on_LoadButton_pressed"]
