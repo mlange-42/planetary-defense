@@ -16,6 +16,8 @@ func _init():
 
 
 func _ready():
+	randomize()
+	
 	planet = Planet.new(planet_params)
 	planet.save_name = save_name
 	add_child(planet)
