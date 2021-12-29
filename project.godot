@@ -164,6 +164,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/port.gd"
 }, {
+"base": "Control",
+"class": "ProductionInfo",
+"language": "GDScript",
+"path": "res://scripts/gui/states/flows/production_info.gd"
+}, {
 "base": "Reference",
 "class": "RoadNetwork",
 "language": "GDScript",
@@ -216,6 +221,7 @@ _global_script_class_icons={
 "PlanetGenerator": "",
 "PlanetSettings": "",
 "Port": "",
+"ProductionInfo": "",
 "RoadNetwork": "",
 "RoadsState": "",
 "TaxManager": "",

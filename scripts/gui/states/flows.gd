@@ -2,14 +2,23 @@ extends GuiState
 class_name FlowsState
 
 onready var comm_list: ItemList = $Buttons/Commodities
-onready var max_label: Label = $Buttons/PanelContainer/VBoxContainer/HBoxContainer/MaxLabel
-onready var gradient_tex: TextureRect = $Buttons/PanelContainer/VBoxContainer/AspectRatioContainer/Control/TextureRect
+onready var max_label: Label = $Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxLabel
+onready var gradient_tex: TextureRect = $Buttons/LegendContainer/VBoxContainer/AspectRatioContainer/Control/TextureRect
 
-onready var min_color_button: ColorPickerButton = $Buttons/PanelContainer/VBoxContainer/HBoxContainer2/MinColorButton
-onready var max_color_button: ColorPickerButton = $Buttons/PanelContainer/VBoxContainer/HBoxContainer/MaxColorButton
+onready var min_color_button: ColorPickerButton = $Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton
+onready var max_color_button: ColorPickerButton = $Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton
+
+onready var prod_container = $Buttons/ProductionPanel/ProductionContainer
+
+var infos = {}
 
 func _ready():
 	for comm in Constants.COMM_ALL:
+		var info: ProductionInfo = preload("res://scenes/gui/states/flows/production_info.tscn").instance()
+		info.set_commodity(comm)
+		infos[comm] = info
+		prod_container.add_child(info)
+		
 		comm_list.add_item(comm)
 	
 	comm_list.select(0)
@@ -41,6 +50,13 @@ func on_planet_clicked(node: int, button: int):
 func state_entered():
 	if comm_list.is_anything_selected():
 		update_flows(comm_list.get_selected_items()[0])
+	
+	print(fsm.planet.roads.total_sinks)
+	
+	for comm in fsm.planet.flow.total_flows:
+		var info = infos[comm]
+		var f = fsm.planet.flow.total_flows[comm]
+		info.set_values(fsm.planet.roads.total_sources.get(comm, 0), f, fsm.planet.roads.total_sinks.get(comm, 0))
 
 
 func state_exited():

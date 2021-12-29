@@ -68,7 +68,7 @@ func solve():
 	var i = 0
 	for edge in flows:
 		# TODO: check - was < 1 before, not sure why. < 0 should be sink or source
-		if edge[0] < 0 or edge[1] < 0:
+		if edge[0] < 0 or edge[1] < 0 or edge[0] == edge[1]:
 			continue
 		
 		var path_cap = edges[i]
@@ -88,4 +88,6 @@ func solve():
 			total_flows[comm] += edge_flow[comm]
 	
 	network.pair_flows = pair_flows
+	network.total_sources = flow.get_total_sources()
+	network.total_sinks = flow.get_total_sinks()
 	
