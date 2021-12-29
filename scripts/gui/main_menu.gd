@@ -2,12 +2,17 @@ extends Control
 
 
 onready var controls: Control = $Controls
+onready var load_button = $Controls/HBoxContainer/LoadContainer/LoadButton
 onready var name_edit: LineEdit = $Controls/HBoxContainer/GenerateContainer/LineEdit
 onready var error_label: Label = $Controls/MarginContainer/ErrorLabel
 onready var progress: Label = $ProgressLabel
 
 onready var file_list: ItemList = $Controls/HBoxContainer/LoadContainer/ItemList
+
 onready var size_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/PlanetSizes
+onready var profile_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/Profiles
+onready var temperature_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/Temperatures
+onready var humidity_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/Humidities
 
 var files: Array
 
@@ -17,8 +22,7 @@ func _ready():
 	files = list_saved_games("user://")
 	
 	if files.empty():
-		file_list.visible = false
-		$Controls/LoadButton.visible = false
+		load_button.disabled = true
 	else:
 		for file in files:
 			file_list.add_item(file)
@@ -26,6 +30,18 @@ func _ready():
 	for key in PlanetSettings.PLANET_SIZES:
 		size_list.add_item(key)
 	size_list.select(2)
+	
+	for key in PlanetSettings.HEIGHT_CURVES:
+		profile_list.add_item(key)
+	profile_list.select(1)
+	
+	for key in PlanetSettings.TEMPERATURE_CURVES:
+		temperature_list.add_item(key)
+	temperature_list.select(1)
+	
+	for key in PlanetSettings.PRECIPITATION_CURVES:
+		humidity_list.add_item(key)
+	humidity_list.select(1)
 
 
 func _on_GenerateButton_pressed():
@@ -63,9 +79,19 @@ func change_scene(name: String):
 	var root = get_tree().root
 	
 	var size = size_list.get_item_text(int(max(size_list.selected, 0)))
+	var profile = profile_list.get_item_text(int(max(profile_list.selected, 0)))
+	var temperature = temperature_list.get_item_text(int(max(temperature_list.selected, 0)))
+	var humidity = humidity_list.get_item_text(int(max(humidity_list.selected, 0)))
 	
 	var world = load("res://scenes/world.tscn").instance()
-	world.planet_params = [PlanetSettings.PLANET_SIZES[size]]
+	world.planet_params = [
+		PlanetSettings.PLANET_SIZES[size],
+		{
+			"height_curve": PlanetSettings.HEIGHT_CURVES[profile],
+			"precipitation_curve": PlanetSettings.PRECIPITATION_CURVES[humidity],
+			"temperature_curve": PlanetSettings.TEMPERATURE_CURVES[temperature],
+		}
+	]
 	world.save_name = name
 	
 	root.remove_child(self)

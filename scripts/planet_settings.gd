@@ -2,7 +2,21 @@ class_name PlanetSettings
 
 
 const HEIGHT_CURVES = {
-	"default": preload("res://assets/params/default_height_curve.tres")
+	"continental": preload("res://assets/params/height_curve_continental.tres"),
+	"normal": preload("res://assets/params/height_curve_default.tres"),
+	"oceanic": preload("res://assets/params/height_curve_oceanic.tres"),
+}
+
+const PRECIPITATION_CURVES = {
+	"humid": preload("res://assets/params/precipitation_curve_humid.tres"),
+	"normal": preload("res://assets/params/linear_curve.tres"),
+	"arid": preload("res://assets/params/precipitation_curve_arid.tres"),
+}
+
+const TEMPERATURE_CURVES = {
+	"cold": preload("res://assets/params/temperature_curve_low.tres"),
+	"normal": preload("res://assets/params/linear_curve.tres"),
+	"warm": preload("res://assets/params/temperature_curve_high.tres"),
 }
 
 const PLANET_SIZES = {

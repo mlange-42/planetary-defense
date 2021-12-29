@@ -8,7 +8,9 @@ use noise::{
 
 use crate::geom::godot_util::{to_collision_shape, to_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
-use crate::geom::planet::data::{NodeData, NodeNeighbors, PlanetData, DIST_FACTOR};
+use crate::geom::planet::data::{
+    NodeData, NodeNeighbors, PlanetData, PlanetProperties, DIST_FACTOR,
+};
 use crate::geom::planet::serialize::from_csv;
 
 #[allow(dead_code)]
@@ -81,6 +83,8 @@ struct PlanetGeneratorParams {
     climate_noise_period: f32,
     climate_noise_octaves: usize,
     climate_noise_seed: u32,
+    temperature_curve: Ref<Curve>,
+    precipitation_curve: Ref<Curve>,
 }
 
 #[derive(NativeClass)]
@@ -113,6 +117,8 @@ impl PlanetGenerator {
         climate_noise_period: f32,
         climate_noise_octaves: usize,
         climate_noise_seed: u32,
+        temperature_curve: Ref<Curve>,
+        precipitation_curve: Ref<Curve>,
     ) {
         self.params = Some(PlanetGeneratorParams {
             radius,
@@ -128,6 +134,8 @@ impl PlanetGenerator {
             climate_noise_period,
             climate_noise_octaves,
             climate_noise_seed,
+            temperature_curve,
+            precipitation_curve,
         })
     }
 
@@ -176,7 +184,12 @@ impl PlanetGenerator {
 
         let colors = self.generate_colors(&nodes);
 
-        let data = PlanetData::new(nodes, vertices, neighbors, faces);
+        let props = PlanetProperties {
+            radius: self.params.as_ref().unwrap().radius,
+            max_elevation: self.params.as_ref().unwrap().terrain_max_height,
+        };
+
+        let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
         let mesh = to_mesh(&data.vertices, &data.faces, Some(colors));
         let shape = to_collision_shape(&data.vertices, &data.faces);
@@ -205,7 +218,9 @@ impl PlanetGenerator {
 
         let h_max = params.terrain_max_height;
         let h_step = params.terrain_height_step;
-        let curve = unsafe { &params.terrain_curve.clone().assume_unique() };
+        let height_curve = unsafe { &params.terrain_curve.clone().assume_unique() };
+        let temperature_curve = unsafe { &params.temperature_curve.clone().assume_unique() };
+        let precipitation_curve = unsafe { &params.precipitation_curve.clone().assume_unique() };
 
         let scale = 1.0 / (params.terrain_noise_period * params.radius);
         let climate_scale = 1.0 / (params.climate_noise_period * params.radius);
@@ -219,14 +234,16 @@ impl PlanetGenerator {
                     (scale * v.y) as f64,
                     (scale * v.z) as f64,
                 ]);
-                let cl = climate_noise.get([
-                    (climate_scale * v.x) as f64,
-                    (climate_scale * v.y) as f64,
-                    (climate_scale * v.z) as f64,
-                ]) as f32
-                    / 2.0
-                    + 0.5;
-                let rel_elevation = 2.0 * curve.interpolate(el / 2.0 + 0.5) - 1.0;
+                let rel_elevation = 2.0 * height_curve.interpolate(el / 2.0 + 0.5) - 1.0;
+
+                let precipitation = precipitation_curve.interpolate(
+                    climate_noise.get([
+                        (climate_scale * v.x) as f64,
+                        (climate_scale * v.y) as f64,
+                        (climate_scale * v.z) as f64,
+                    ]) / 2.0
+                        + 0.5,
+                ) as f32;
 
                 let mut elevation = rel_elevation as f32 * h_max;
                 stepify(&mut elevation, h_step, true);
@@ -243,9 +260,12 @@ impl PlanetGenerator {
                 let lat = normal.y.asin().to_degrees().abs();
                 let lat_factor = lat / 90.0;
                 let alt_factor = (elevation / h_max).max(0.0);
-                let temperature = 1.0 - (lat_factor + alt_factor).clamp(0.0, 1.0);
+                let temperature = temperature_curve
+                    .interpolate(1.0 - (lat_factor + alt_factor).clamp(0.0, 1.0) as f64)
+                    as f32;
 
-                let m_index = (cl.clamp(0.0, 0.99999) * VEG_MATRIX.len() as f32) as usize;
+                let m_index =
+                    (precipitation.clamp(0.0, 0.99999) * VEG_MATRIX.len() as f32) as usize;
                 let t_index =
                     (temperature.clamp(0.0, 0.99999) * VEG_MATRIX[0].len() as f32) as usize;
 
@@ -280,7 +300,7 @@ impl PlanetGenerator {
                     is_port: false,
                     is_occupied: false,
                     temperature,
-                    precipitation: cl,
+                    precipitation,
                     vegetation_type: land_use,
                 }
             })

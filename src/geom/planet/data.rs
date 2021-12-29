@@ -61,11 +61,18 @@ pub struct NodeNeighbors {
     pub distances: Vec<u32>,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct PlanetProperties {
+    pub radius: f32,
+    pub max_elevation: f32,
+}
+
 #[derive(NativeClass)]
 #[no_constructor]
 #[inherit(Reference)]
 #[allow(non_snake_case)]
 pub struct PlanetData {
+    pub properties: PlanetProperties,
     pub nodes: Vec<NodeData>,
     pub vertices: Vec<Vector3>,
     pub neighbors: Vec<NodeNeighbors>,
@@ -82,6 +89,7 @@ pub struct PlanetData {
 
 impl PlanetData {
     pub fn new(
+        properties: PlanetProperties,
         nodes: Vec<NodeData>,
         vertices: Vec<Vector3>,
         neighbors: Vec<NodeNeighbors>,
@@ -92,6 +100,7 @@ impl PlanetData {
             tree.add(node.position.to_array(), i).unwrap();
         }
         Self {
+            properties,
             nodes,
             vertices,
             neighbors,
@@ -108,6 +117,11 @@ impl PlanetData {
 impl PlanetData {
     #[export]
     fn _init(&mut self, _owner: &Reference) {}
+
+    #[export]
+    fn get_radius(&self, _owner: &Reference) -> f32 {
+        self.properties.radius
+    }
 
     #[export]
     fn get_node_count(&self, _owner: &Reference) -> usize {
@@ -276,7 +290,13 @@ mod tests {
                 distances: vec![1],
             },
         ];
-        let data = PlanetData::new(nodes, vertices, neighbors, faces);
+
+        let props = PlanetProperties {
+            radius: 1.0,
+            max_elevation: 0.1,
+        };
+
+        let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
         assert_eq!(data.get_nodes_in_radius(0, 0), [(0, 0)]);
         assert_eq!(data.get_nodes_in_radius(0, 1), [(0, 0), (1, 1)]);

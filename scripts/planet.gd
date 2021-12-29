@@ -18,7 +18,9 @@ export var noise_period: float = 0.7
 export var noise_octaves: int = 5
 export var noise_seed: int = -1
 
-export var height_curve: Curve = PlanetSettings.HEIGHT_CURVES["default"]
+export var height_curve: Curve = PlanetSettings.HEIGHT_CURVES["normal"]
+export var temperature_curve: Curve = PlanetSettings.TEMPERATURE_CURVES["normal"]
+export var precipitation_curve: Curve = PlanetSettings.PRECIPITATION_CURVES["normal"]
 
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
 		var climate_noise_type: String = "fbm"
@@ -89,11 +91,13 @@ func _ready():
 	gen.initialize(
 		radius, subdivisions, max_height, height_step, 
 		noise_type, noise_period, noise_octaves, noise_seed, height_curve,
-		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed)
+		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed,
+		temperature_curve, precipitation_curve)
 	
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	
 	self.planet_data = result[0]
+	radius = self.planet_data.get_radius()
 	
 	var ground: MeshInstance = _add_mesh(result[1], "Ground")
 	ground.material_override = land_material
@@ -119,6 +123,7 @@ func _ready():
 		
 		if not load_planet:
 			self.planet_data.to_csv(planet_file)
+	
 
 
 func init():
@@ -150,7 +155,7 @@ func save_game():
 	file.close()
 
 
-func load_game():	
+func load_game():
 	var file := File.new()
 	if file.open(FileUtil.save_path(save_name, FileUtil.GAME_EXTENSION), File.READ) != 0:
 		print("Error opening file")
