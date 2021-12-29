@@ -17,12 +17,13 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 10.0
 margin_bottom = -10.0
+rect_min_size = Vector2( 120, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="EditControls" type="VBoxContainer" parent="Margin"]
-margin_right = 114.0
+margin_right = 120.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 100, 0 )
 __meta__ = {
@@ -30,11 +31,11 @@ __meta__ = {
 }
 
 [node name="Buttons" type="VBoxContainer" parent="Margin/EditControls"]
-margin_right = 114.0
+margin_right = 120.0
 margin_bottom = 108.0
 
 [node name="Back" type="Button" parent="Margin/EditControls/Buttons"]
-margin_right = 114.0
+margin_right = 120.0
 margin_bottom = 20.0
 hint_tooltip = "Back to main controls"
 toggle_mode = true
@@ -42,110 +43,110 @@ text = "Back"
 
 [node name="LuPanel" type="PanelContainer" parent="Margin/EditControls/Buttons"]
 margin_top = 24.0
-margin_right = 114.0
+margin_right = 120.0
 margin_bottom = 52.0
 
 [node name="LuButtons" type="VBoxContainer" parent="Margin/EditControls/Buttons/LuPanel"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 107.0
+margin_right = 113.0
 margin_bottom = 21.0
 
 [node name="Label" type="Label" parent="Margin/EditControls/Buttons/LuPanel/LuButtons"]
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 14.0
 text = "Land use"
 
 [node name="FacilityPanel" type="PanelContainer" parent="Margin/EditControls/Buttons"]
 margin_top = 56.0
-margin_right = 114.0
+margin_right = 120.0
 margin_bottom = 108.0
 
 [node name="FacilityButtons" type="VBoxContainer" parent="Margin/EditControls/Buttons/FacilityPanel"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 107.0
+margin_right = 113.0
 margin_bottom = 45.0
 
 [node name="Facilities" type="Label" parent="Margin/EditControls/Buttons/FacilityPanel/FacilityButtons"]
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 14.0
 text = "Facilities"
 
 [node name="Port" type="Button" parent="Margin/EditControls/Buttons/FacilityPanel/FacilityButtons"]
 margin_top = 18.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 38.0
 toggle_mode = true
 text = "Port"
 
 [node name="WeightPanel" type="PanelContainer" parent="Margin/EditControls"]
 margin_top = 112.0
-margin_right = 114.0
+margin_right = 120.0
 margin_bottom = 308.0
 
 [node name="WeightControls" type="VBoxContainer" parent="Margin/EditControls/WeightPanel"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 107.0
+margin_right = 113.0
 margin_bottom = 189.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 14.0
 text = "Weights"
 
 [node name="AutoAssignCheckBox" type="CheckBox" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 18.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 42.0
 hint_tooltip = "Auto-assign free workers according the weights below"
 text = "auto assign"
 
 [node name="HSeparator" type="HSeparator" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 46.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 50.0
 
 [node name="Food" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 54.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 68.0
 text = "Food"
 
 [node name="FoodSlider" type="HSlider" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 72.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 88.0
 
 [node name="Resources" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 92.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 106.0
 text = "Resources"
 
 [node name="ResourcesSlider" type="HSlider" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 110.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 126.0
 
 [node name="Products" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 130.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 144.0
 text = "Products"
 
 [node name="ProductsSlider" type="HSlider" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 148.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 164.0
 
 [node name="WeightsDisplay" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
 margin_top = 168.0
-margin_right = 100.0
+margin_right = 106.0
 margin_bottom = 182.0
 align = 1
 
