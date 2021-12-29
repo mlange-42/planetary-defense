@@ -221,8 +221,8 @@ func _redraw_roads():
 	road_debug.draw_roads(planet_data, roads, Color(0.02, 0.02, 0.02), Color.red)
 
 
-func draw_flows(commodity: String):
-	flows_debug.draw_flows(planet_data, roads.pair_flows, commodity, Color.white, Color.purple)
+func draw_flows(commodity: String, color1: Color, color2: Color) -> int:
+	return flows_debug.draw_flows(planet_data, roads.pair_flows, commodity, color1, color2)
 
 
 func add_facility(type: String, location: int, name: String):

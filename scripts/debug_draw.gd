@@ -46,7 +46,7 @@ func draw_roads(planet_data, roads: RoadNetwork, color1: Color, color2: Color):
 	end()
 
 
-func draw_flows(planet_data, flows: Dictionary, commodity: String, color1: Color, color2: Color):
+func draw_flows(planet_data, flows: Dictionary, commodity: String, color1: Color, color2: Color) -> int:
 	clear()
 	
 	var max_flow: int = 0
@@ -62,7 +62,7 @@ func draw_flows(planet_data, flows: Dictionary, commodity: String, color1: Color
 			max_flow = f
 	
 	if max_flow == 0:
-		return
+		return 0
 	
 	begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -85,6 +85,9 @@ func draw_flows(planet_data, flows: Dictionary, commodity: String, color1: Color
 		_draw_arc(p1, p2)
 	
 	end()
+	
+	return max_flow
+
 
 func _draw_arc(p1: Vector3, p2: Vector3):
 	var rad1 = p1.length()
