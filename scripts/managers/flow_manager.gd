@@ -8,12 +8,19 @@ var sink_cost: int = 25
 var load_depencence: float = 0.25
 var bidirectional: bool = false
 
-
 var network: RoadNetwork
 var flow = MultiCommodityFlow.new()
 
+var total_flows: Dictionary = {}
+
 func _init(net: RoadNetwork):
 	self.network = net
+
+
+func clear():
+	network.reset_flow()
+	for comm in Constants.COMM_ALL:
+		total_flows[comm] = 0
 
 func solve():
 	flow.reset()
@@ -55,12 +62,13 @@ func solve():
 		else:
 			facilities[fid].flows = f
 	
-	network.reset_flow()
+	self.clear()
 	
 	var flows = flow.get_flows()
 	var i = 0
 	for edge in flows:
-		if edge[0] < 1 or edge[1] < 1:
+		# TODO: check - was < 1 before, not sure why. < 0 should be sink or source
+		if edge[0] < 0 or edge[1] < 0:
 			continue
 		
 		var path_cap = edges[i]
@@ -73,5 +81,11 @@ func solve():
 		
 		i += 1
 	
-	network.pair_flows = flow.get_pair_flows()
+	var pair_flows = flow.get_pair_flows()
+	for edge in pair_flows:
+		var edge_flow = pair_flows[edge]
+		for comm in edge_flow:
+			total_flows[comm] += edge_flow[comm]
+	
+	network.pair_flows = pair_flows
 	

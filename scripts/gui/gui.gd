@@ -3,6 +3,11 @@ class_name Gui
 
 onready var constants: Constants = $"/root/GameConstants"
 
+onready var budget_label = $MarginContainer/PanelContainer/HBoxContainer/BudgetLabel
+onready var taxes_label = $MarginContainer/PanelContainer/HBoxContainer/TaxesLabel
+onready var maintenance_label = $MarginContainer/PanelContainer/HBoxContainer/MaintenenaceLabel
+onready var net_label = $MarginContainer/PanelContainer/HBoxContainer/NetLabel
+
 var planet: Planet
 var states = []
 
@@ -18,11 +23,19 @@ func on_planet_clicked(node: int, button: int):
 	state().on_planet_clicked(node, button)
 
 
+func set_budget_taxes_maintenance(taxes: TaxManager):
+	budget_label.text = str(taxes.budget)
+	taxes_label.text = str(taxes.taxes)
+	maintenance_label.text = "%d (%d+%d)" % [taxes.maintenance, taxes.maintenance_roads, taxes.maintenance_transport]
+	net_label.text = "%+d" % (taxes.taxes - taxes.maintenance)
+
+
 func state():
 	if states.empty():
 		return null
 	
 	return states[-1]
+
 
 func push(new_state: String, args: Dictionary):
 	var new_scene = load("res://scenes/gui/states/%s.tscn" % new_state).instance()
@@ -37,6 +50,7 @@ func push(new_state: String, args: Dictionary):
 		
 	self.add_child(new_scene)
 	new_scene.state_entered()
+
 
 func pop():
 	if states.size() < 2:

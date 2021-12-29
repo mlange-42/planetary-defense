@@ -30,13 +30,25 @@ class Conversion:
 		to = t
 		to_amount = t_amt
 
-const CITY_GROWTH_PROB: float = 0.25
-
+const CITY_GROWTH_PROB: float = 0.333
 const DRAW_HEIGHT_OFFSET: float = 0.02
+
+const INITIAL_BUDGET = 250
+const INITIAL_CITY_POP = 1
+const NO_PRODUCTS_CITY_POP = 3
+
+const ROAD_COSTS: int = 5
+const ROAD_MAINTENANCE_100: int = 50
+const TRANSPORT_COST_100: int = 2
 
 const FACILITY_SCENES = {
 	"City": "res://scenes/objects/city.tscn",
 	"Port": "res://scenes/objects/port.tscn",
+}
+
+const FACILITY_COSTS = {
+	"City": 100,
+	"Port": 50,
 }
 
 const COMM_FOOD: String = "Food"
@@ -44,6 +56,12 @@ const COMM_RESOURCES: String = "Resources"
 const COMM_PRODUCTS: String = "Products"
 
 const COMM_ALL = [COMM_FOOD, COMM_RESOURCES, COMM_PRODUCTS]
+
+const COMM_TAX_RATES = {
+	COMM_FOOD: 1,
+	COMM_RESOURCES: 1,
+	COMM_PRODUCTS: 1,
+}
 
 const VEG_DESERT: int = 0
 const VEG_GLACIER: int = 1
