@@ -3,6 +3,7 @@ use std::collections::btree_map::Entry as BEntry;
 use std::collections::hash_map::Entry;
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Debug;
+use std::hash::Hash;
 use std::iter;
 
 use pathfinding::directed::dijkstra::dijkstra;
@@ -11,7 +12,7 @@ use gdnative::api::Reference;
 use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
 
-type GodotFlows = Vec<(isize, isize, u32, u32)>;
+type GodotFlows = Vec<(isize, isize, u32, u32, u32)>;
 
 #[derive(Eq, PartialEq, ToVariant)]
 pub struct NodePair(isize, isize);
@@ -137,6 +138,32 @@ impl MultiCommodityFlow {
 
         dict.into_shared()
     }
+
+    #[export]
+    fn get_total_sources(&self, _owner: &Reference) -> Dictionary<Shared> {
+        let sources = self.builder.get_total_sources();
+
+        let dict = Dictionary::new();
+
+        for (comm, amount) in sources.iter() {
+            dict.insert(comm, amount);
+        }
+
+        dict.into_shared()
+    }
+
+    #[export]
+    fn get_total_sinks(&self, _owner: &Reference) -> Dictionary<Shared> {
+        let sinks = self.builder.get_total_sinks();
+
+        let dict = Dictionary::new();
+
+        for (comm, amount) in sinks.iter() {
+            dict.insert(comm, amount);
+        }
+
+        dict.into_shared()
+    }
 }
 
 fn to_godot_flows(flows: &[Flow<usize, String>]) -> GodotFlows {
@@ -148,6 +175,7 @@ fn to_godot_flows(flows: &[Flow<usize, String>]) -> GodotFlows {
                 vertex_to_id(&flow.b),
                 flow.amount,
                 flow.cost as u32,
+                flow.capacity as u32,
             )
         })
         .collect::<Vec<_>>()
@@ -252,6 +280,7 @@ pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
     pub b: Vertex<T, U>,
     pub amount: u32,
     pub cost: i32,
+    pub capacity: i32,
 }
 
 struct Graph {
@@ -470,6 +499,8 @@ pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
     pair_flows: Option<PairFlows<T, U>>,
     nodes: Option<BTreeMap<Vertex<T, U>, NodeData>>,
     commodity_ids: Option<BTreeMap<U, usize>>,
+    total_source: Option<BTreeMap<U, u32>>,
+    total_sink: Option<BTreeMap<U, u32>>,
 }
 
 #[allow(dead_code)]
@@ -482,6 +513,8 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             pair_flows: None,
             nodes: None,
             commodity_ids: None,
+            total_source: None,
+            total_sink: None,
         }
     }
 
@@ -630,14 +663,28 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         g.solve();
 
+        let mut total_sources: BTreeMap<_, _> = commodities.iter().map(|c| (c, 0_u32)).collect();
+        let mut total_sinks: BTreeMap<_, _> = commodities.iter().map(|c| (c, 0_u32)).collect();
+
         let flows: Vec<_> = g
             .edges
             .iter()
-            .map(|e| Flow {
-                a: node_mapper[&e.a.0].clone(),
-                b: node_mapper[&e.b.0].clone(),
-                amount: e.data.flow as u32,
-                cost: e.data.cost,
+            .map(|e| {
+                let a = node_mapper[&e.a.0];
+                let b = node_mapper[&e.b.0];
+                if let Vertex::Source(comm) = a {
+                    *total_sources.entry(comm).or_default() += e.data.capacity as u32;
+                }
+                if let Vertex::Sink(comm) = b {
+                    *total_sinks.entry(comm).or_default() += e.data.capacity as u32;
+                }
+                Flow {
+                    a: a.clone(),
+                    b: b.clone(),
+                    amount: e.data.flow as u32,
+                    cost: e.data.cost,
+                    capacity: e.data.capacity,
+                }
             })
             .collect();
 
@@ -664,6 +711,18 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         self.flows = Some(flows);
         self.pair_flows = Some(pair_flows);
+        self.total_source = Some(
+            total_sources
+                .iter()
+                .map(|(k, v)| ((*k).clone(), *v))
+                .collect(),
+        );
+        self.total_sink = Some(
+            total_sinks
+                .iter()
+                .map(|(k, v)| ((*k).clone(), *v))
+                .collect(),
+        );
         self.nodes = Some(nodes);
         self.commodity_ids = Some(
             commodity_mapper
@@ -696,6 +755,18 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .as_ref()
             .expect("Unable to extract node flows from unsolved graph")
             .get(&Vertex::Node(node))
+    }
+
+    fn get_total_sources(&self) -> &BTreeMap<U, u32> {
+        self.total_source
+            .as_ref()
+            .expect("Unable to extract sources from unsolved graph")
+    }
+
+    fn get_total_sinks(&self) -> &BTreeMap<U, u32> {
+        self.total_sink
+            .as_ref()
+            .expect("Unable to extract sources from unsolved graph")
     }
 }
 

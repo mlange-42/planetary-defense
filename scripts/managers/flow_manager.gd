@@ -11,16 +11,12 @@ var bidirectional: bool = false
 var network: RoadNetwork
 var flow = MultiCommodityFlow.new()
 
-var total_flows: Dictionary = {}
-
 func _init(net: RoadNetwork):
 	self.network = net
 
 
 func clear():
 	network.reset_flow()
-	for comm in Constants.COMM_ALL:
-		total_flows[comm] = 0
 
 func solve():
 	flow.reset()
@@ -68,7 +64,7 @@ func solve():
 	var i = 0
 	for edge in flows:
 		# TODO: check - was < 1 before, not sure why. < 0 should be sink or source
-		if edge[0] < 0 or edge[1] < 0:
+		if edge[0] < 0 or edge[1] < 0 or edge[0] == edge[1]:
 			continue
 		
 		var path_cap = edges[i]
@@ -81,6 +77,10 @@ func solve():
 		
 		i += 1
 	
+	var total_flows: Dictionary = {}
+	for comm in Constants.COMM_ALL:
+		total_flows[comm] = 0
+	
 	var pair_flows = flow.get_pair_flows()
 	for edge in pair_flows:
 		var edge_flow = pair_flows[edge]
@@ -88,4 +88,7 @@ func solve():
 			total_flows[comm] += edge_flow[comm]
 	
 	network.pair_flows = pair_flows
+	network.total_flows = total_flows
+	network.total_sources = flow.get_total_sources()
+	network.total_sinks = flow.get_total_sinks()
 	

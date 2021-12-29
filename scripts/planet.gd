@@ -303,7 +303,7 @@ func next_turn():
 	cities.post_update()
 	cities.assign_workers(builder)
 	
-	taxes.earn_taxes(flow.total_flows)
+	taxes.earn_taxes(roads.total_flows)
 	taxes.road_transport_costs(roads.edges)
 	
 	_redraw_roads()
