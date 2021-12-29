@@ -24,6 +24,8 @@ func _ready():
 	
 	gui.planet = planet
 	cam_control.planet_radius = planet.radius
+	cam_control.init()
+	
 	# warning-ignore:return_value_discarded
 	mouse.connect("planet_entered", self, "_on_planet_entered")
 	# warning-ignore:return_value_discarded
