@@ -6,6 +6,11 @@ onready var planet: Planet = $Planet
 onready var mouse: Mouse = $Mouse
 onready var pointer: Spatial = $MousePointer
 onready var gui: Gui = $GUI
+onready var cam_control: CameraControl = $CameraControl
+
+
+func _init():
+	pass
 
 
 func _enter_tree():
@@ -14,6 +19,7 @@ func _enter_tree():
 
 func _ready():
 	gui.planet = planet
+	cam_control.planet_radius = planet.radius
 	# warning-ignore:return_value_discarded
 	mouse.connect("planet_entered", self, "_on_planet_entered")
 	# warning-ignore:return_value_discarded

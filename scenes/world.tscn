@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scripts/world.gd" type="Script" id=2]
@@ -8,9 +8,6 @@
 [ext_resource path="res://assets/materials/water.tres" type="Material" id=6]
 [ext_resource path="res://assets/materials/unlit_vertex_color.tres" type="Material" id=7]
 [ext_resource path="res://scenes/gui/gui.tscn" type="PackedScene" id=8]
-
-[sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 0 ), 0.0, 0.631294, 0, 1, Vector2( 0.33121, 0.209091 ), 0.585201, 0.585201, 0, 0, Vector2( 0.524416, 0.518182 ), 0.447425, 0.447425, 0, 0, Vector2( 0.6625, 0.618182 ), 0.418431, 0.418431, 0, 0, Vector2( 0.795833, 0.936364 ), 1.24675, 1.24675, 0, 0, Vector2( 1, 1 ), 0.311689, 0.0, 1, 0 ]
 
 [sub_resource type="SpatialMaterial" id=3]
 vertex_color_use_as_albedo = true
@@ -23,17 +20,6 @@ script = ExtResource( 2 )
 [node name="CameraControl" parent="." instance=ExtResource( 4 )]
 
 [node name="Planet" parent="." instance=ExtResource( 5 )]
-use_random_seed = false
-radius = 10.0
-max_height = 1.0
-height_step = 0.025
-noise_type = "fbm"
-noise_period = 0.7
-noise_octaves = 5
-height_curve = SubResource( 1 )
-climate_noise_type = "fbm"
-climate_noise_period = 0.8
-subdivisions = 6
 land_material = SubResource( 3 )
 water_material = ExtResource( 6 )
 

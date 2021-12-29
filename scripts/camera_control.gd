@@ -1,5 +1,5 @@
 extends Spatial
-
+class_name CameraControl
 
 export var planet_radius: float = 10.0
 export var horizontal_sensitivity: float = 0.002

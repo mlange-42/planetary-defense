@@ -6,27 +6,27 @@ signal budget_changed(taxes)
 
 var save_name: String = "default"
 
-export var use_random_seed: bool = true
+export var use_random_seed: bool = false
 export var random_seed: int = 0
-export var radius: float = 1.0
+export var radius: float = 10.0
 
-export var max_height: float = 0.1
-export var height_step: float = 0.05
+export var max_height: float = 1.0
+export var height_step: float = 0.025
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
-		var noise_type: String = ""
-export var noise_period: float = 0.5
-export var noise_octaves: int = 4
+		var noise_type: String = "fbm"
+export var noise_period: float = 0.7
+export var noise_octaves: int = 5
 export var noise_seed: int = -1
 
-export var height_curve: Curve
+export var height_curve: Curve = preload("res://assets/params/default_height_curve.tres")
 
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
-		var climate_noise_type: String = ""
-export var climate_noise_period: float = 0.5
+		var climate_noise_type: String = "fbm"
+export var climate_noise_period: float = 0.8
 export var climate_noise_octaves: int = 3
 export var climate_noise_seed: int = -1
 
-export (int, 0, 6) var subdivisions: int = 5
+export (int, 0, 7) var subdivisions: int = 6
 export (int, 2, 48) var water_rings: int = 24
 export (int, 4, 96) var water_segments: int = 48
 export var smooth: bool = false
@@ -47,6 +47,9 @@ var builder: BuildManager
 var flow: FlowManager
 var cities: CityManager
 var taxes: TaxManager
+
+func _init():
+	pass
 
 func _ready():
 	var planet_file = FileUtil.save_path(save_name, FileUtil.PLANET_EXTENSION)
