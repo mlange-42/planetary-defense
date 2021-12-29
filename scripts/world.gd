@@ -80,5 +80,5 @@ func _hide_info():
 	gui.hide_info()
 
 
-func _on_budget_changed(budget: int, taxes: int, maintenance: int):
-	gui.set_budget_taxes_maintenance([budget, taxes, maintenance])
+func _on_budget_changed(taxes: TaxManager):
+	gui.set_budget_taxes_maintenance(taxes)

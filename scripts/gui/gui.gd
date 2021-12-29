@@ -23,11 +23,11 @@ func on_planet_clicked(node: int, button: int):
 	state().on_planet_clicked(node, button)
 
 
-func set_budget_taxes_maintenance(values: Array):
-	budget_label.text = str(values[0])
-	taxes_label.text = str(values[1])
-	maintenance_label.text = str(values[2])
-	net_label.text = "%+d" % (values[1] - values[2])
+func set_budget_taxes_maintenance(taxes: TaxManager):
+	budget_label.text = str(taxes.budget)
+	taxes_label.text = str(taxes.taxes)
+	maintenance_label.text = "%d (%d+%d)" % [taxes.maintenance, taxes.maintenance_roads, taxes.maintenance_transport]
+	net_label.text = "%+d" % (taxes.taxes - taxes.maintenance)
 
 
 func state():

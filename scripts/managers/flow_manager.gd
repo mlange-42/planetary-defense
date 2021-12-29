@@ -67,7 +67,8 @@ func solve():
 	var flows = flow.get_flows()
 	var i = 0
 	for edge in flows:
-		if edge[0] < 1 or edge[1] < 1:
+		# TODO: check - was < 1 before, not sure why. < 0 should be sink or source
+		if edge[0] < 0 or edge[1] < 0:
 			continue
 		
 		var path_cap = edges[i]

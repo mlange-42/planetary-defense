@@ -38,7 +38,8 @@ const INITIAL_CITY_POP = 1
 const NO_PRODUCTS_CITY_POP = 3
 
 const ROAD_COSTS: int = 5
-const ROAD_MAINTENANCE_10: int = 5
+const ROAD_MAINTENANCE_100: int = 50
+const TRANSPORT_COST_100: int = 2
 
 const FACILITY_SCENES = {
 	"City": "res://scenes/objects/city.tscn",

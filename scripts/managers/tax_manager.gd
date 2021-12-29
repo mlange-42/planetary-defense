@@ -3,11 +3,9 @@ class_name TaxManager
 var budget: int = Constants.INITIAL_BUDGET
 var taxes: int = 0
 var maintenance: int = 0
+var maintenance_roads: int = 0
+var maintenance_transport: int = 0
 
-
-func reset():
-	taxes = 0
-	maintenance = 0
 
 func earn_taxes(total_flows: Dictionary):
 	var total = 0
@@ -17,9 +15,18 @@ func earn_taxes(total_flows: Dictionary):
 	taxes = total
 	budget += total
 
-func pay_road_maintenenace(num_edges: int):
+
+func road_transport_costs(edges: Dictionary):
 	# warning-ignore:integer_division
-	maintenance = int(ceil((num_edges / 2) * Constants.ROAD_MAINTENANCE_10 / 10.0))
+	maintenance_roads = int(ceil((edges.size() / 2) * Constants.ROAD_MAINTENANCE_100 / 100.0))
+	
+	var total = 0
+	for nn in edges:
+		total += edges[nn].flow
+	
+	maintenance_transport = int(ceil(total * Constants.ROAD_MAINTENANCE_100 / 100.0))
+	
+	maintenance = maintenance_roads + maintenance_transport
 	budget -= maintenance
 
 
@@ -28,6 +35,8 @@ func save() -> Dictionary:
 		"budget": budget,
 		"taxes": taxes,
 		"maintenance": maintenance,
+		"maintenance_roads": maintenance_roads,
+		"maintenance_transport": maintenance_transport,
 	}
 
 
@@ -35,3 +44,5 @@ func read(dict: Dictionary):
 	budget = dict["budget"] as int
 	taxes = dict["taxes"] as int
 	maintenance = dict["maintenance"] as int
+	maintenance_roads = dict["maintenance_roads"] as int
+	maintenance_transport = dict["maintenance_transport"] as int

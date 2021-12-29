@@ -2,7 +2,7 @@ extends Spatial
 
 class_name Planet
 
-signal budget_changed(budget, taxes, maintenance)
+signal budget_changed(taxes)
 
 var save_name: String = "default"
 
@@ -103,7 +103,7 @@ func init():
 
 
 func emit_budget():
-	emit_signal("budget_changed", taxes.budget, taxes.taxes, taxes.maintenance)
+	emit_signal("budget_changed", taxes)
 
 
 func save_game():
@@ -274,10 +274,9 @@ func next_turn():
 	cities.post_update()
 	cities.assign_workers(builder)
 	
-	taxes.reset()
 	taxes.earn_taxes(flow.total_flows)
-	taxes.pay_road_maintenenace(roads.edges.size())
+	taxes.road_transport_costs(roads.edges)
 	
 	_redraw_roads()
 	
-	emit_signal("budget_changed", taxes.budget, taxes.taxes, taxes.maintenance)
+	emit_budget()
