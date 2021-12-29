@@ -18,13 +18,13 @@ func earn_taxes(total_flows: Dictionary):
 
 func road_transport_costs(edges: Dictionary):
 	# warning-ignore:integer_division
-	maintenance_roads = int(ceil((edges.size() / 2) * Constants.ROAD_MAINTENANCE_100 / 100.0))
+	maintenance_roads = int(ceil((edges.size() / 2) * Constants.ROAD_MAINTENANCE_1000 / 1000.0))
 	
 	var total = 0
 	for nn in edges:
 		total += edges[nn].flow
 	
-	maintenance_transport = int(ceil(total * Constants.ROAD_MAINTENANCE_100 / 100.0))
+	maintenance_transport = int(ceil(total * Constants.ROAD_MAINTENANCE_1000 / 1000.0))
 	
 	maintenance = maintenance_roads + maintenance_transport
 	budget -= maintenance

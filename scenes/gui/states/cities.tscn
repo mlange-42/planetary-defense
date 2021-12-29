@@ -14,22 +14,34 @@ __meta__ = {
 }
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_right = 120.0
+margin_right = 148.0
 margin_bottom = 580.0
 
 [node name="Back" type="Button" parent="Buttons"]
-margin_right = 120.0
+margin_right = 148.0
 margin_bottom = 20.0
 hint_tooltip = "Back to main controls"
 toggle_mode = true
 text = "Back"
 
-[node name="CityName" type="LineEdit" parent="Buttons"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Buttons"]
 margin_top = 24.0
-margin_right = 120.0
+margin_right = 148.0
 margin_bottom = 48.0
+
+[node name="CityName" type="LineEdit" parent="Buttons/HBoxContainer"]
+margin_right = 120.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 120, 0 )
 hint_tooltip = "Name for the new city (required)"
 placeholder_text = "City name"
 
+[node name="RandomNameButton" type="Button" parent="Buttons/HBoxContainer"]
+margin_left = 124.0
+margin_right = 148.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 24, 0 )
+hint_tooltip = "New random name"
+
 [connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="Buttons/HBoxContainer/RandomNameButton" to="." method="set_random_name"]

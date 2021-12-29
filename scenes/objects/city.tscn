@@ -28,13 +28,13 @@ billboard = 1
 double_sided = false
 
 [node name="Viewport" type="Viewport" parent="Sprite3D"]
-size = Vector2( 360, 60 )
+size = Vector2( 500, 60 )
 transparent_bg = true
 usage = 0
 render_target_v_flip = true
 
 [node name="Label" type="Label" parent="Sprite3D/Viewport"]
-margin_right = 360.0
+margin_right = 500.0
 margin_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
