@@ -58,6 +58,7 @@ func change_scene(name: String):
 	var root = get_tree().root
 	
 	var world = load("res://scenes/world.tscn").instance()
+	world.planet_params = [PlanetSettings.PLANET_SIZES["small"]]
 	world.save_name = name
 	
 	root.remove_child(self)

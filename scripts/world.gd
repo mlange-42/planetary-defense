@@ -8,13 +8,15 @@ onready var pointer: Spatial = $MousePointer
 onready var gui: Gui = $GUI
 onready var cam_control: CameraControl = $CameraControl
 
+# Array of Dictionaries to override parameters
+var planet_params = []
 
 func _init():
 	pass
 
 
 func _ready():
-	planet = Planet.new({})
+	planet = Planet.new(planet_params)
 	planet.save_name = save_name
 	add_child(planet)
 	

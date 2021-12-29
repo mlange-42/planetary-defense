@@ -27,8 +27,8 @@ export var climate_noise_octaves: int = 3
 export var climate_noise_seed: int = -1
 
 export (int, 0, 7) var subdivisions: int = 6
-export (int, 2, 48) var water_rings: int = 24
-export (int, 4, 96) var water_segments: int = 48
+export (int, 2, 48) var water_rings: int = 48
+export (int, 4, 96) var water_segments: int = 96
 export var smooth: bool = false
 
 export var land_material: Material = preload("res://assets/materials/land.tres")
@@ -48,8 +48,11 @@ var flow: FlowManager
 var cities: CityManager
 var taxes: TaxManager
 
-func _init(params: Dictionary):
-	pass
+# Array of Dictionaries to override parameters
+func _init(params: Array):
+	for par in params:
+		for key in par:
+			self.set(key, par[key])
 
 func _ready():
 	var material = preload("res://assets/materials/unlit_vertex_color.tres")
@@ -275,7 +278,7 @@ func _add_node(node: GeometryInstance, name: String) -> GeometryInstance:
 
 
 func _create_water() -> Mesh:
-	var sphere = UvSphere.new(water_rings, water_segments, radius + 0.95 * height_step)
+	var sphere = UvSphere.new(water_rings, water_segments, radius + 0.8 * height_step)
 	return sphere.create()
 
 
