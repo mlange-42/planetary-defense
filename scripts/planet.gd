@@ -18,7 +18,7 @@ export var noise_period: float = 0.7
 export var noise_octaves: int = 5
 export var noise_seed: int = -1
 
-export var height_curve: Curve = preload("res://assets/params/default_height_curve.tres")
+export var height_curve: Curve = PlanetSettings.HEIGHT_CURVES["default"]
 
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
 		var climate_noise_type: String = "fbm"
