@@ -2,7 +2,7 @@ extends Spatial
 
 export (String) var save_name = "default"
 
-onready var planet: Planet = $Planet
+onready var planet: Planet
 onready var mouse: Mouse = $Mouse
 onready var pointer: Spatial = $MousePointer
 onready var gui: Gui = $GUI
@@ -13,11 +13,11 @@ func _init():
 	pass
 
 
-func _enter_tree():
-	$Planet.save_name = save_name
-
-
 func _ready():
+	planet = Planet.new({})
+	planet.save_name = save_name
+	add_child(planet)
+	
 	gui.planet = planet
 	cam_control.planet_radius = planet.radius
 	# warning-ignore:return_value_discarded

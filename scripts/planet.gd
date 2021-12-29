@@ -31,14 +31,14 @@ export (int, 2, 48) var water_rings: int = 24
 export (int, 4, 96) var water_segments: int = 48
 export var smooth: bool = false
 
-export var land_material: Material
-export var water_material: Material
+export var land_material: Material = preload("res://assets/materials/land.tres")
+export var water_material: Material = preload("res://assets/materials/water.tres")
 
-onready var facilities: Spatial = $Facilities
+onready var facilities: Spatial
 
-onready var road_debug: DebugDraw = $RoadDebug
-onready var path_debug: DebugDraw = $PathDebug
-onready var flows_graphs: FlowGraphs = $FlowsGraphs
+onready var road_debug: DebugDraw
+onready var path_debug: DebugDraw
+onready var flows_graphs: FlowGraphs
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var planet_data = null
@@ -48,10 +48,27 @@ var flow: FlowManager
 var cities: CityManager
 var taxes: TaxManager
 
-func _init():
+func _init(params: Dictionary):
 	pass
 
 func _ready():
+	var material = preload("res://assets/materials/unlit_vertex_color.tres")
+	
+	facilities = Spatial.new()
+	add_child(facilities)
+	
+	road_debug = DebugDraw.new()
+	road_debug.material_override = material
+	add_child(road_debug)
+	
+	path_debug = DebugDraw.new()
+	path_debug.material_override = material
+	add_child(path_debug)
+	
+	flows_graphs = FlowGraphs.new()
+	flows_graphs.material_override = material
+	add_child(flows_graphs)
+	
 	var planet_file = FileUtil.save_path(save_name, FileUtil.PLANET_EXTENSION)
 	var load_planet = FileUtil.save_path_exists(save_name, FileUtil.PLANET_EXTENSION)
 	

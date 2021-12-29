@@ -1,16 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/default_env.tres" type="Environment" id=1]
 [ext_resource path="res://scripts/world.gd" type="Script" id=2]
 [ext_resource path="res://scenes/mouse.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/camera_control.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/planet.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/materials/water.tres" type="Material" id=6]
 [ext_resource path="res://assets/materials/unlit_vertex_color.tres" type="Material" id=7]
 [ext_resource path="res://scenes/gui/gui.tscn" type="PackedScene" id=8]
-
-[sub_resource type="SpatialMaterial" id=3]
-vertex_color_use_as_albedo = true
 
 [node name="World" type="Spatial"]
 script = ExtResource( 2 )
@@ -18,10 +13,6 @@ script = ExtResource( 2 )
 [node name="Mouse" parent="." instance=ExtResource( 3 )]
 
 [node name="CameraControl" parent="." instance=ExtResource( 4 )]
-
-[node name="Planet" parent="." instance=ExtResource( 5 )]
-land_material = SubResource( 3 )
-water_material = ExtResource( 6 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 1 )
