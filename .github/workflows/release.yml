@@ -5,7 +5,7 @@ on:
     types: [ created ]
 
 env:
-  GODOT_VERSION: 3.4
+  GODOT_VERSION: 3.4.2
   EXPORT_NAME: PlanetaryDefense
   TARGET_LINUX: x86_64-unknown-linux-gnu
   TARGET_WINDOWS: x86_64-pc-windows-gnu
@@ -15,7 +15,7 @@ jobs:
     name: Linux Export
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:3.4
+      image: barichello/godot-ci:3.4.2
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -75,7 +75,7 @@ jobs:
     name: Windows Export
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:3.4
+      image: barichello/godot-ci:3.4.2
     steps:
       - name: Checkout
         uses: actions/checkout@v2
