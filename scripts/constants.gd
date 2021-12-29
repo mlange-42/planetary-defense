@@ -33,13 +33,13 @@ class Conversion:
 const CITY_GROWTH_PROB: float = 0.333
 const DRAW_HEIGHT_OFFSET: float = 0.02
 
-const INITIAL_BUDGET = 250
+const INITIAL_BUDGET = 350
 const INITIAL_CITY_POP = 1
 const NO_PRODUCTS_CITY_POP = 3
 
 const ROAD_COSTS: int = 5
-const ROAD_MAINTENANCE_100: int = 50
-const TRANSPORT_COST_100: int = 2
+const ROAD_MAINTENANCE_1000: int = 500
+const TRANSPORT_COST_1000: int = 50
 
 const FACILITY_SCENES = {
 	"City": "res://scenes/objects/city.tscn",
