@@ -51,11 +51,9 @@ func state_entered():
 	if comm_list.is_anything_selected():
 		update_flows(comm_list.get_selected_items()[0])
 	
-	print(fsm.planet.roads.total_sinks)
-	
-	for comm in fsm.planet.flow.total_flows:
+	for comm in Constants.COMM_ALL:
 		var info = infos[comm]
-		var f = fsm.planet.flow.total_flows[comm]
+		var f = fsm.planet.roads.total_flows.get(comm, 0)
 		info.set_values(fsm.planet.roads.total_sources.get(comm, 0), f, fsm.planet.roads.total_sinks.get(comm, 0))
 
 

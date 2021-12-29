@@ -17,6 +17,7 @@ var neighbors: Dictionary = {}
 var edges: Dictionary = {}
 var facilities: Dictionary = {}
 
+var total_flows: Dictionary = {}
 var pair_flows: Dictionary = {}
 var total_sources: Dictionary = {}
 var total_sinks: Dictionary = {}
@@ -50,6 +51,7 @@ func save() -> Dictionary:
 		pair_data.append([edge, entry])
 	
 	dict["pair_flows"] = pair_data
+	dict["total_flows"] = total_flows
 	dict["total_sources"] = total_sources
 	dict["total_sinks"] = total_sinks
 	
@@ -88,6 +90,10 @@ func read(dict: Dictionary):
 		
 		pair_flows[[edge[0] as int, edge[1] as int]] = edge_dict
 	
+	var t_flows = dict["total_flows"]
+	for comm in t_flows:
+		total_flows[comm] = t_flows[comm] as int
+		
 	var t_sources = dict["total_sources"]
 	for comm in t_sources:
 		total_sources[comm] = t_sources[comm] as int
@@ -153,6 +159,9 @@ func get_edges():
 func reset_flow():
 	for edge in edges.values():
 		edge.flow = 0
+	
+	for comm in Constants.COMM_ALL:
+		total_flows[comm] = 0
 
 
 func _trace_edge(node: int, neighbor: int) -> Array:
