@@ -24,7 +24,7 @@ func road_transport_costs(edges: Dictionary):
 	for nn in edges:
 		total += edges[nn].flow
 	
-	maintenance_transport = int(ceil(total * Constants.ROAD_MAINTENANCE_1000 / 1000.0))
+	maintenance_transport = int(ceil(total * Constants.TRANSPORT_COST_1000 / 1000.0))
 	
 	maintenance = maintenance_roads + maintenance_transport
 	budget -= maintenance
