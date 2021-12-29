@@ -19,6 +19,8 @@ export var noise_octaves: int = 5
 export var noise_seed: int = -1
 
 export var height_curve: Curve = PlanetSettings.HEIGHT_CURVES["default"]
+export var temperature_curve: Curve = PlanetSettings.TEMPERATURE_CURVES["default"]
+export var precipitation_curve: Curve = PlanetSettings.PRECIPITATION_CURVES["default"]
 
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
 		var climate_noise_type: String = "fbm"
@@ -89,7 +91,8 @@ func _ready():
 	gen.initialize(
 		radius, subdivisions, max_height, height_step, 
 		noise_type, noise_period, noise_octaves, noise_seed, height_curve,
-		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed)
+		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed,
+		temperature_curve, precipitation_curve)
 	
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	

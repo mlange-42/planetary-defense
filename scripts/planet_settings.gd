@@ -5,6 +5,16 @@ const HEIGHT_CURVES = {
 	"default": preload("res://assets/params/default_height_curve.tres")
 }
 
+const PRECIPITATION_CURVES = {
+	"humid": preload("res://assets/params/humid_precipitation_curve.tres"),
+	"default": preload("res://assets/params/linear_curve.tres"),
+	"arid": preload("res://assets/params/arid_precipitation_curve.tres"),
+}
+
+const TEMPERATURE_CURVES = {
+	"default": preload("res://assets/params/linear_curve.tres"),
+}
+
 const PLANET_SIZES = {
 	"tiny": {
 		"radius": 2.5,

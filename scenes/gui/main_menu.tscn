@@ -64,24 +64,36 @@ margin_right = 140.0
 margin_bottom = 38.0
 text = "Planet size"
 
-[node name="Label2" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
+[node name="Humidity" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
 margin_top = 42.0
 margin_right = 140.0
 margin_bottom = 56.0
+text = "Humidity"
+
+[node name="Humidities" type="OptionButton" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_top = 60.0
+margin_right = 140.0
+margin_bottom = 80.0
+text = "Humidity"
+
+[node name="Label2" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_top = 84.0
+margin_right = 140.0
+margin_bottom = 98.0
 text = "Planet name"
 
 [node name="LineEdit" type="LineEdit" parent="Controls/HBoxContainer/GenerateContainer"]
-margin_top = 60.0
+margin_top = 102.0
 margin_right = 140.0
-margin_bottom = 84.0
+margin_bottom = 126.0
 hint_tooltip = "Name for a new or existing planet"
 focus_next = NodePath("../GenerateButton")
 placeholder_text = "Planet name"
 
 [node name="GenerateButton" type="Button" parent="Controls/HBoxContainer/GenerateContainer"]
-margin_top = 88.0
+margin_top = 130.0
 margin_right = 140.0
-margin_bottom = 108.0
+margin_bottom = 150.0
 focus_previous = NodePath("../LineEdit")
 text = "Generate planet"
 __meta__ = {
