@@ -8,18 +8,19 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 10.0
 margin_bottom = -10.0
+rect_min_size = Vector2( 120, 0 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_right = 100.0
+margin_right = 120.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 100, 0 )
 
 [node name="Back" type="Button" parent="Buttons"]
-margin_right = 100.0
+margin_right = 120.0
 margin_bottom = 20.0
 hint_tooltip = "Back to main controls"
 toggle_mode = true
@@ -27,7 +28,7 @@ text = "Back"
 
 [node name="Clear" type="Button" parent="Buttons"]
 margin_top = 24.0
-margin_right = 100.0
+margin_right = 120.0
 margin_bottom = 44.0
 hint_tooltip = "Clear roads"
 toggle_mode = true

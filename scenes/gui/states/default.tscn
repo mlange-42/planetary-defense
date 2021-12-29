@@ -8,57 +8,58 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 10.0
 margin_bottom = -10.0
+rect_min_size = Vector2( 120, 0 )
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="DefaultControls" type="VBoxContainer" parent="."]
-margin_right = 84.0
+margin_right = 120.0
 margin_bottom = 580.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Buttons" type="VBoxContainer" parent="DefaultControls"]
-margin_right = 84.0
+margin_right = 120.0
 margin_bottom = 68.0
 
 [node name="City" type="Button" parent="DefaultControls/Buttons"]
-margin_right = 84.0
+margin_right = 120.0
 margin_bottom = 20.0
 hint_tooltip = "Found a new city. Click cities to manage them."
 text = "Build city"
 
 [node name="Roads" type="Button" parent="DefaultControls/Buttons"]
 margin_top = 24.0
-margin_right = 84.0
+margin_right = 120.0
 margin_bottom = 44.0
 hint_tooltip = "Build and remove roads"
 text = "Build roads"
 
 [node name="Flows" type="Button" parent="DefaultControls/Buttons"]
 margin_top = 48.0
-margin_right = 84.0
+margin_right = 120.0
 margin_bottom = 68.0
 hint_tooltip = "Inspect flows"
 text = "View flows"
 
 [node name="Placeholder" type="Control" parent="DefaultControls"]
 margin_top = 72.0
-margin_right = 84.0
+margin_right = 120.0
 margin_bottom = 532.0
 size_flags_vertical = 3
 
 [node name="SaveButton" type="Button" parent="DefaultControls"]
 margin_top = 536.0
-margin_right = 84.0
+margin_right = 120.0
 margin_bottom = 556.0
 text = "Save"
 
 [node name="NextTurnButton" type="Button" parent="DefaultControls"]
 margin_top = 560.0
-margin_right = 84.0
+margin_right = 120.0
 margin_bottom = 580.0
 hint_tooltip = "Advance time by one turn"
 text = "Turn"

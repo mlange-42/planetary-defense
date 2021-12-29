@@ -22,7 +22,7 @@ var min_height: float
 var max_height: float
 
 
-func _ready():
+func init():
 	arm2.translation.z = planet_radius
 	
 	min_height = 1.2
