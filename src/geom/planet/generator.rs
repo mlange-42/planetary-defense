@@ -8,7 +8,9 @@ use noise::{
 
 use crate::geom::godot_util::{to_collision_shape, to_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
-use crate::geom::planet::data::{NodeData, NodeNeighbors, PlanetData, DIST_FACTOR};
+use crate::geom::planet::data::{
+    NodeData, NodeNeighbors, PlanetData, PlanetProperties, DIST_FACTOR,
+};
 use crate::geom::planet::serialize::from_csv;
 
 #[allow(dead_code)]
@@ -182,7 +184,12 @@ impl PlanetGenerator {
 
         let colors = self.generate_colors(&nodes);
 
-        let data = PlanetData::new(nodes, vertices, neighbors, faces);
+        let props = PlanetProperties {
+            radius: self.params.as_ref().unwrap().radius,
+            max_elevation: self.params.as_ref().unwrap().terrain_max_height,
+        };
+
+        let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
         let mesh = to_mesh(&data.vertices, &data.faces, Some(colors));
         let shape = to_collision_shape(&data.vertices, &data.faces);

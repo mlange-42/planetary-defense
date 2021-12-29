@@ -97,6 +97,7 @@ func _ready():
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	
 	self.planet_data = result[0]
+	radius = self.planet_data.get_radius()
 	
 	var ground: MeshInstance = _add_mesh(result[1], "Ground")
 	ground.material_override = land_material
@@ -122,6 +123,7 @@ func _ready():
 		
 		if not load_planet:
 			self.planet_data.to_csv(planet_file)
+	
 
 
 func init():
@@ -153,7 +155,7 @@ func save_game():
 	file.close()
 
 
-func load_game():	
+func load_game():
 	var file := File.new()
 	if file.open(FileUtil.save_path(save_name, FileUtil.GAME_EXTENSION), File.READ) != 0:
 		print("Error opening file")
