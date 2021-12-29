@@ -50,7 +50,7 @@ __meta__ = {
 
 [node name="GenerateContainer" type="VBoxContainer" parent="Controls/HBoxContainer"]
 margin_right = 140.0
-margin_bottom = 192.0
+margin_bottom = 234.0
 rect_min_size = Vector2( 140, 0 )
 
 [node name="Label" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
@@ -64,48 +64,60 @@ margin_right = 140.0
 margin_bottom = 38.0
 text = "Planet size"
 
-[node name="Temperature" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
+[node name="Profile" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
 margin_top = 42.0
 margin_right = 140.0
 margin_bottom = 56.0
-text = "Temperature"
+text = "Profile"
 
-[node name="Temperatures" type="OptionButton" parent="Controls/HBoxContainer/GenerateContainer"]
+[node name="Profiles" type="OptionButton" parent="Controls/HBoxContainer/GenerateContainer"]
 margin_top = 60.0
 margin_right = 140.0
 margin_bottom = 80.0
-text = "Temperature"
+text = "Profile"
 
-[node name="Humidity" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
+[node name="Temperature" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
 margin_top = 84.0
 margin_right = 140.0
 margin_bottom = 98.0
-text = "Humidity"
+text = "Temperature"
 
-[node name="Humidities" type="OptionButton" parent="Controls/HBoxContainer/GenerateContainer"]
+[node name="Temperatures" type="OptionButton" parent="Controls/HBoxContainer/GenerateContainer"]
 margin_top = 102.0
 margin_right = 140.0
 margin_bottom = 122.0
-text = "Humidity"
+text = "Temperature"
 
-[node name="Label2" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
+[node name="Humidity" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
 margin_top = 126.0
 margin_right = 140.0
 margin_bottom = 140.0
+text = "Humidity"
+
+[node name="Humidities" type="OptionButton" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_top = 144.0
+margin_right = 140.0
+margin_bottom = 164.0
+text = "Humidity"
+
+[node name="Label2" type="Label" parent="Controls/HBoxContainer/GenerateContainer"]
+margin_top = 168.0
+margin_right = 140.0
+margin_bottom = 182.0
 text = "Planet name"
 
 [node name="LineEdit" type="LineEdit" parent="Controls/HBoxContainer/GenerateContainer"]
-margin_top = 144.0
+margin_top = 186.0
 margin_right = 140.0
-margin_bottom = 168.0
+margin_bottom = 210.0
 hint_tooltip = "Name for a new or existing planet"
 focus_next = NodePath("../GenerateButton")
 placeholder_text = "Planet name"
 
 [node name="GenerateButton" type="Button" parent="Controls/HBoxContainer/GenerateContainer"]
-margin_top = 172.0
+margin_top = 214.0
 margin_right = 140.0
-margin_bottom = 192.0
+margin_bottom = 234.0
 focus_previous = NodePath("../LineEdit")
 text = "Generate planet"
 __meta__ = {
@@ -115,24 +127,24 @@ __meta__ = {
 [node name="VSeparator" type="VSeparator" parent="Controls/HBoxContainer"]
 margin_left = 144.0
 margin_right = 168.0
-margin_bottom = 192.0
+margin_bottom = 234.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="LoadContainer" type="VBoxContainer" parent="Controls/HBoxContainer"]
 margin_left = 172.0
 margin_right = 312.0
-margin_bottom = 192.0
+margin_bottom = 234.0
 rect_min_size = Vector2( 140, 0 )
 
 [node name="ItemList" type="ItemList" parent="Controls/HBoxContainer/LoadContainer"]
 margin_right = 140.0
-margin_bottom = 130.0
-rect_min_size = Vector2( 0, 130 )
+margin_bottom = 210.0
+size_flags_vertical = 3
 
 [node name="LoadButton" type="Button" parent="Controls/HBoxContainer/LoadContainer"]
-margin_top = 134.0
+margin_top = 214.0
 margin_right = 140.0
-margin_bottom = 154.0
+margin_bottom = 234.0
 focus_previous = NodePath("../../GenerateContainer/LineEdit")
 text = "Load game"
 __meta__ = {

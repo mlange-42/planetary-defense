@@ -18,7 +18,7 @@ export var noise_period: float = 0.7
 export var noise_octaves: int = 5
 export var noise_seed: int = -1
 
-export var height_curve: Curve = PlanetSettings.HEIGHT_CURVES["default"]
+export var height_curve: Curve = PlanetSettings.HEIGHT_CURVES["normal"]
 export var temperature_curve: Curve = PlanetSettings.TEMPERATURE_CURVES["normal"]
 export var precipitation_curve: Curve = PlanetSettings.PRECIPITATION_CURVES["normal"]
 
