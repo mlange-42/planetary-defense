@@ -27,7 +27,7 @@ func on_planet_clicked(node: int, button: int):
 			fsm.planet.clear_path()
 		else:
 			start_point = node
-	else:
+	elif button == BUTTON_RIGHT:
 		start_point = -1
 		fsm.planet.clear_path()
 
