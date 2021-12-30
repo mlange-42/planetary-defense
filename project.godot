@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "AStar",
-"class": "AStarNavigation",
-"language": "GDScript",
-"path": "res://scripts/nav/navigation.gd"
-}, {
 "base": "Reference",
 "class": "BuildManager",
 "language": "GDScript",
@@ -134,11 +129,6 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
 }, {
-"base": "Reference",
-"class": "NavManager",
-"language": "GDScript",
-"path": "res://scripts/nav/nav_manager.gd"
-}, {
 "base": "",
 "class": "NodeData",
 "language": "NativeScript",
@@ -177,7 +167,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "RoadNetwork",
 "language": "GDScript",
-"path": "res://scripts/nav/road_network.gd"
+"path": "res://scripts/managers/road_network.gd"
 }, {
 "base": "GuiState",
 "class": "RoadsState",
@@ -195,7 +185,6 @@ _global_script_classes=[ {
 "path": "res://scripts/geom/uv_sphere.gd"
 } ]
 _global_script_class_icons={
-"AStarNavigation": "",
 "BuildManager": "",
 "CameraControl": "",
 "CitiesState": "",
@@ -220,7 +209,6 @@ _global_script_class_icons={
 "LandUseButton": "",
 "Mouse": "",
 "MultiCommodityFlow": "",
-"NavManager": "",
 "NodeData": "",
 "Planet": "",
 "PlanetData": "",
