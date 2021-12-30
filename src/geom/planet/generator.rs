@@ -85,6 +85,8 @@ struct PlanetGeneratorParams {
     climate_noise_seed: u32,
     temperature_curve: Ref<Curve>,
     precipitation_curve: Ref<Curve>,
+    atlas_size: u32,
+    atlas_margins: f32,
 }
 
 #[derive(NativeClass)]
@@ -119,6 +121,8 @@ impl PlanetGenerator {
         climate_noise_seed: u32,
         temperature_curve: Ref<Curve>,
         precipitation_curve: Ref<Curve>,
+        atlas_size: u32,
+        atlas_margins: f32,
     ) {
         self.params = Some(PlanetGeneratorParams {
             radius,
@@ -136,15 +140,30 @@ impl PlanetGenerator {
             climate_noise_seed,
             temperature_curve,
             precipitation_curve,
+            atlas_size,
+            atlas_margins,
         })
     }
 
     #[export]
     fn from_csv(&self, _owner: &Reference, path: String) -> VariantArray<Unique> {
+        let par = self.params.as_ref().unwrap();
+
         let data = from_csv(&path).unwrap();
         let colors = self.generate_colors(&data.nodes);
 
-        let mesh = to_sub_mesh(&data.vertices, &data.faces, Some(colors));
+        let mesh = to_sub_mesh(
+            &data
+                .nodes
+                .iter()
+                .map(|n| n.vegetation_type)
+                .collect::<Vec<_>>(),
+            &data.vertices,
+            &data.faces,
+            Some(colors),
+            par.atlas_size,
+            par.atlas_margins,
+        );
         let shape = to_collision_shape(&data.nodes, &data.faces);
 
         let arr = VariantArray::new();
@@ -191,7 +210,18 @@ impl PlanetGenerator {
 
         let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
-        let mesh = to_sub_mesh(&data.vertices, &data.faces, Some(colors));
+        let mesh = to_sub_mesh(
+            &data
+                .nodes
+                .iter()
+                .map(|n| n.vegetation_type)
+                .collect::<Vec<_>>(),
+            &data.vertices,
+            &data.faces,
+            Some(colors),
+            params.atlas_size,
+            params.atlas_margins,
+        );
         let shape = to_collision_shape(&data.nodes, &data.faces);
 
         let arr = VariantArray::new();
