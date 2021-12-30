@@ -2,6 +2,7 @@ extends Facility
 class_name City
 
 onready var label: CityLabel = $Pole/Sprite3D/Viewport/Label
+onready var pole: Spatial = $Pole
 onready var borders: ImmediateGeometry = $Borders
 
 var cells: Dictionary = {}
@@ -137,7 +138,7 @@ func update_visuals(planet_data):
 
 
 func set_label_visible(vis: bool):
-	$Pole.visible = vis
+	pole.visible = vis
 
 
 func _draw_cells(planet_data): 

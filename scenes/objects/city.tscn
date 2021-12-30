@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/objects/city.gd" type="Script" id=1]
 [ext_resource path="res://assets/materials/unlit_vertex_color.tres" type="Material" id=2]
@@ -9,6 +9,13 @@ albedo_color = Color( 0.67451, 0, 0, 1 )
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.329412, 0.243137, 0.0941176, 1 )
+
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="NoiseTexture" id=4]
+width = 128
+height = 128
+noise = SubResource( 3 )
 
 [node name="City" type="Spatial"]
 script = ExtResource( 1 )
@@ -37,6 +44,7 @@ offset = Vector2( 0, -30 )
 pixel_size = 0.004
 billboard = 1
 double_sided = false
+texture = SubResource( 4 )
 
 [node name="Viewport" type="Viewport" parent="Pole/Sprite3D"]
 size = Vector2( 500, 60 )
