@@ -21,6 +21,8 @@ func _ready():
 		
 		comm_list.add_item(comm)
 	
+	comm_list.add_item("(total)")
+	
 	comm_list.select(0)
 	
 	set_colors(Color.white, Color.purple)
@@ -70,7 +72,7 @@ func _on_Commodities_item_selected(index: int):
 
 
 func update_flows(index: int):
-	var comm: String = Constants.COMM_ALL[index]
+	var comm: String = "" if index >= Constants.COMM_ALL.size() else Constants.COMM_ALL[index]
 	var grad: Gradient = gradient_tex.texture.gradient
 	
 	var max_value: int = fsm.planet.draw_flows(comm, grad.colors[0], grad.colors[-1])

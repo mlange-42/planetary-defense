@@ -21,17 +21,21 @@ func get_colors():
 
 func draw_flows(planet_data, flows: Dictionary, commodity: String) -> int:
 	clear()
-	
-	
+	print("Draw: %s %s" % [commodity, commodity.empty()])
 	var max_flow: int = 0
 	
 	for edge in flows:
 		if edge[0] == edge[1]:
 			continue
 		var edge_flow = flows[edge]
-		if not commodity in edge_flow:
-			continue
-		var f = edge_flow[commodity]
+		var f: int = 0
+		if commodity.empty():
+			for comm in edge_flow:
+				f += edge_flow[comm]
+		else:
+			if not commodity in edge_flow:
+				continue
+			f = edge_flow[commodity]
 		if f > max_flow:
 			max_flow = f
 	
@@ -45,9 +49,15 @@ func draw_flows(planet_data, flows: Dictionary, commodity: String) -> int:
 			continue
 		
 		var edge_flow = flows[edge]
-		if not commodity in edge_flow:
-			continue
-		var f = edge_flow[commodity]
+		var f: int = 0
+		if commodity.empty():
+			for comm in edge_flow:
+				f += edge_flow[comm]
+		else:
+			if not commodity in edge_flow:
+				continue
+			f = edge_flow[commodity]
+		
 		if f == 0:
 			continue
 		
