@@ -31,7 +31,7 @@ export var climate_noise_seed: int = -1
 export (int, 0, 7) var subdivisions: int = 6
 export (int, 2, 48) var water_rings: int = 48
 export (int, 4, 96) var water_segments: int = 96
-export var smooth: bool = false
+export var smooth: bool = true
 
 export var land_material: Material = preload("res://assets/materials/land.tres")
 export var water_material: Material = preload("res://assets/materials/water.tres")
