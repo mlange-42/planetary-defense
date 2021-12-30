@@ -30,6 +30,7 @@ pub fn to_sub_mesh(
     faces: &[(usize, usize, usize)],
     cols: Option<ColorArray>,
     atlas_size: u32,
+    atlas_margins: f32,
 ) -> Ref<ArrayMesh, Unique> {
     let uv_scale = 1.0 / atlas_size as f32;
 
@@ -52,7 +53,7 @@ pub fn to_sub_mesh(
         verts.push(*vert);
         let (x, y) = to_tile(*tex);
         uvs.push(Vector2::new(
-            x as f32 * uv_scale,
+            x as f32 * uv_scale + atlas_margins,
             (y as f32 + 0.5) * uv_scale,
         ));
 
@@ -87,12 +88,13 @@ pub fn to_sub_mesh(
             indices.push(start_index + 2 * i as i32);
 
             uvs.push(Vector2::new(
-                (x as f32 + 1.0) * uv_scale,
-                (y + 1) as f32 * uv_scale,
+                (x + 1) as f32 * uv_scale - atlas_margins,
+                y as f32 * uv_scale + atlas_margins,
             ));
+
             uvs.push(Vector2::new(
-                (x as f32 + 1.0) * uv_scale,
-                y as f32 * uv_scale,
+                (x + 1) as f32 * uv_scale - atlas_margins,
+                (y + 1) as f32 * uv_scale - atlas_margins,
             ));
         }
 

@@ -86,6 +86,7 @@ struct PlanetGeneratorParams {
     temperature_curve: Ref<Curve>,
     precipitation_curve: Ref<Curve>,
     atlas_size: u32,
+    atlas_margins: f32,
 }
 
 #[derive(NativeClass)]
@@ -121,6 +122,7 @@ impl PlanetGenerator {
         temperature_curve: Ref<Curve>,
         precipitation_curve: Ref<Curve>,
         atlas_size: u32,
+        atlas_margins: f32,
     ) {
         self.params = Some(PlanetGeneratorParams {
             radius,
@@ -139,11 +141,14 @@ impl PlanetGenerator {
             temperature_curve,
             precipitation_curve,
             atlas_size,
+            atlas_margins,
         })
     }
 
     #[export]
     fn from_csv(&self, _owner: &Reference, path: String) -> VariantArray<Unique> {
+        let par = self.params.as_ref().unwrap();
+
         let data = from_csv(&path).unwrap();
         let colors = self.generate_colors(&data.nodes);
 
@@ -156,7 +161,8 @@ impl PlanetGenerator {
             &data.vertices,
             &data.faces,
             Some(colors),
-            self.params.as_ref().unwrap().atlas_size,
+            par.atlas_size,
+            par.atlas_margins,
         );
         let shape = to_collision_shape(&data.nodes, &data.faces);
 
@@ -214,6 +220,7 @@ impl PlanetGenerator {
             &data.faces,
             Some(colors),
             params.atlas_size,
+            params.atlas_margins,
         );
         let shape = to_collision_shape(&data.nodes, &data.faces);
 
