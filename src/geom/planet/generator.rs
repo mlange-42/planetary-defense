@@ -6,7 +6,7 @@ use noise::{
     Seedable, SuperSimplex,
 };
 
-use crate::geom::godot_util::{to_collision_shape, to_mesh};
+use crate::geom::godot_util::{to_collision_shape, to_sub_mesh};
 use crate::geom::ico_sphere::IcoSphereGenerator;
 use crate::geom::planet::data::{
     NodeData, NodeNeighbors, PlanetData, PlanetProperties, DIST_FACTOR,
@@ -144,7 +144,7 @@ impl PlanetGenerator {
         let data = from_csv(&path).unwrap();
         let colors = self.generate_colors(&data.nodes);
 
-        let mesh = to_mesh(&data.vertices, &data.faces, Some(colors));
+        let mesh = to_sub_mesh(&data.vertices, &data.faces, Some(colors));
         let shape = to_collision_shape(&data.nodes, &data.faces);
 
         let arr = VariantArray::new();
@@ -191,7 +191,7 @@ impl PlanetGenerator {
 
         let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
-        let mesh = to_mesh(&data.vertices, &data.faces, Some(colors));
+        let mesh = to_sub_mesh(&data.vertices, &data.faces, Some(colors));
         let shape = to_collision_shape(&data.nodes, &data.faces);
 
         let arr = VariantArray::new();
