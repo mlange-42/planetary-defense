@@ -161,9 +161,10 @@ func on_planet_clicked(node: int, button: int):
 			fsm.planet.builder.set_land_use(city, node, Constants.LU_NONE)
 		update_city_info()
 	else:
-		curr_tool = get_facility_tool()
-		if curr_tool != null:
-			var f = fsm.planet.add_facility(curr_tool, node, curr_tool)
-			if f != null:
-				f.city_node_id = city.node_id
-				city.add_facility(node, f)
+		if button == BUTTON_LEFT:
+			curr_tool = get_facility_tool()
+			if curr_tool != null:
+				var f = fsm.planet.add_facility(curr_tool, node, curr_tool)
+				if f != null:
+					f.city_node_id = city.node_id
+					city.add_facility(node, f)
