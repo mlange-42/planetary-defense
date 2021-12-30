@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/vegetation.svg-b74bedd8c829bb50c34479081a80545f.s3tc.stex"
-path.etc2="res://.import/vegetation.svg-b74bedd8c829bb50c34479081a80545f.etc2.stex"
+path.s3tc="res://.import/vegetation_corners.svg-de6db6edc6b806b8b9ff54db1b8b0fb2.s3tc.stex"
+path.etc2="res://.import/vegetation_corners.svg-de6db6edc6b806b8b9ff54db1b8b0fb2.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/vegetation.svg"
-dest_files=[ "res://.import/vegetation.svg-b74bedd8c829bb50c34479081a80545f.s3tc.stex", "res://.import/vegetation.svg-b74bedd8c829bb50c34479081a80545f.etc2.stex" ]
+source_file="res://assets/textures/vegetation_corners.svg"
+dest_files=[ "res://.import/vegetation_corners.svg-de6db6edc6b806b8b9ff54db1b8b0fb2.s3tc.stex", "res://.import/vegetation_corners.svg-de6db6edc6b806b8b9ff54db1b8b0fb2.etc2.stex" ]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=2
+flags/repeat=true
 flags/filter=true
 flags/mipmaps=true
 flags/anisotropic=true
