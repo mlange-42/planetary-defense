@@ -1,7 +1,7 @@
 extends Facility
 class_name City
 
-onready var label: Label = $Sprite3D/Viewport/Label
+onready var label: CityLabel = $Sprite3D/Viewport/Label
 onready var borders: ImmediateGeometry = $Borders
 
 var cells: Dictionary = {}
@@ -116,7 +116,7 @@ func add_facility(node: int, facility: Facility):
 
 
 func update_visuals(planet_data):
-	label.text = "%s (%d)" % [name, workers]
+	label.set_text("%s (%d)" % [name, workers])
 	
 	var flows_food = flows.get(Constants.COMM_FOOD, [0, 0])
 	var demand_food = sinks.get(Constants.COMM_FOOD, 0)

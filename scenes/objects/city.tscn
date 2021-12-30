@@ -1,11 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/objects/city.gd" type="Script" id=1]
 [ext_resource path="res://assets/materials/unlit_vertex_color.tres" type="Material" id=2]
-[ext_resource path="res://assets/fonts/consolas_large.tres" type="DynamicFont" id=3]
+[ext_resource path="res://scenes/objects/city_label.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.67451, 0, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.329412, 0.243137, 0.0941176, 1 )
 
 [node name="City" type="Spatial"]
 script = ExtResource( 1 )
@@ -18,27 +21,31 @@ sides = 6
 smooth_faces = false
 material = SubResource( 1 )
 
+[node name="Pole" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.35 )
+width = 0.015
+height = 0.015
+depth = 0.7
+material = SubResource( 2 )
+
 [node name="Borders" type="ImmediateGeometry" parent="."]
 material_override = ExtResource( 2 )
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2 )
-pixel_size = 0.005
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7 )
+cast_shadow = 0
+lod_min_distance = 2.0
+centered = false
+offset = Vector2( 0, -30 )
+pixel_size = 0.004
 billboard = 1
 double_sided = false
 
 [node name="Viewport" type="Viewport" parent="Sprite3D"]
 size = Vector2( 500, 60 )
 transparent_bg = true
+hdr = false
 usage = 0
 render_target_v_flip = true
 
-[node name="Label" type="Label" parent="Sprite3D/Viewport"]
-margin_right = 500.0
-margin_bottom = 60.0
-grow_horizontal = 2
-grow_vertical = 2
-custom_fonts/font = ExtResource( 3 )
-text = "Test"
-align = 1
-valign = 1
+[node name="Label" parent="Sprite3D/Viewport" instance=ExtResource( 3 )]
