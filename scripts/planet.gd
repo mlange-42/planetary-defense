@@ -32,8 +32,9 @@ export (int, 0, 7) var subdivisions: int = 6
 export (int, 2, 48) var water_rings: int = 48
 export (int, 4, 96) var water_segments: int = 96
 export var smooth: bool = true
+export var atlas_size: int = 4
 
-export var land_material: Material = preload("res://assets/materials/land.tres")
+export var land_material: Material = preload("res://assets/materials/vegetation.tres")
 export var water_material: Material = preload("res://assets/materials/water.tres")
 
 onready var facilities: Spatial
@@ -92,7 +93,7 @@ func _ready():
 		radius, subdivisions, max_height, height_step, 
 		noise_type, noise_period, noise_octaves, noise_seed, height_curve,
 		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed,
-		temperature_curve, precipitation_curve)
+		temperature_curve, precipitation_curve, atlas_size)
 	
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	

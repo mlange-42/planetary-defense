@@ -25,13 +25,20 @@ pub fn to_collision_shape(
 }
 
 pub fn to_sub_mesh(
+    tex_index: &[u32],
     vertices: &[Vector3],
     faces: &[(usize, usize, usize)],
     cols: Option<ColorArray>,
+    atlas_size: u32,
 ) -> Ref<ArrayMesh, Unique> {
+    let uv_scale = 1.0 / atlas_size as f32;
+
+    let to_tile = |tp: u32| (tp % atlas_size, tp / atlas_size);
+
     let mut verts = Vector3Array::new();
     let mut indices = Int32Array::new();
     let mut colors = ColorArray::new();
+    let mut uvs = Vector2Array::new();
 
     let mut vert_faces = vec![vec![]; vertices.len()];
 
@@ -41,8 +48,13 @@ pub fn to_sub_mesh(
         vert_faces[face.2].push(i);
     }
 
-    for (v, vert) in vertices.iter().enumerate() {
+    for (v, (vert, tex)) in vertices.iter().zip(tex_index).enumerate() {
         verts.push(*vert);
+        let (x, y) = to_tile(*tex);
+        uvs.push(Vector2::new(
+            x as f32 * uv_scale,
+            (y as f32 + 0.5) * uv_scale,
+        ));
 
         let p0 = face_centroid(faces[vert_faces[v][0]], vertices);
 
@@ -66,19 +78,29 @@ pub fn to_sub_mesh(
         let count = outer.len() as i32;
 
         for i in 0..count {
+            verts.push(outer[i as usize].0);
+            verts.push(outer[(i + 1) as usize % count as usize].0);
+
             indices.push(start_index - 1);
-            indices.push(start_index + (i as i32 + 1) % count);
-            indices.push(start_index + i as i32);
+
+            indices.push(start_index + (2 * i as i32 + 1) % (2 * count));
+            indices.push(start_index + 2 * i as i32);
+
+            uvs.push(Vector2::new(
+                (x as f32 + 1.0) * uv_scale,
+                (y + 1) as f32 * uv_scale,
+            ));
+            uvs.push(Vector2::new(
+                (x as f32 + 1.0) * uv_scale,
+                y as f32 * uv_scale,
+            ));
         }
 
         if let Some(cols) = &cols {
-            for _ in 0..(outer.len() + 1) {
-                colors.push(cols.get(v as i32));
+            let col = cols.get(v as i32);
+            for _ in 0..(2 * outer.len() + 1) {
+                colors.push(col);
             }
-        }
-
-        for (vert, _) in outer.into_iter() {
-            verts.push(vert);
         }
     }
 
@@ -93,6 +115,7 @@ pub fn to_sub_mesh(
     arr.set(Mesh::ARRAY_INDEX as i32, indices);
     arr.set(Mesh::ARRAY_VERTEX as i32, verts);
     arr.set(Mesh::ARRAY_NORMAL as i32, normals);
+    arr.set(Mesh::ARRAY_TEX_UV as i32, uvs);
 
     if let Some(_cols) = &cols {
         arr.set(Mesh::ARRAY_COLOR as i32, colors);
