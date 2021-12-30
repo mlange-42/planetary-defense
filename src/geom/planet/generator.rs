@@ -145,7 +145,7 @@ impl PlanetGenerator {
         let colors = self.generate_colors(&data.nodes);
 
         let mesh = to_mesh(&data.vertices, &data.faces, Some(colors));
-        let shape = to_collision_shape(&data.vertices, &data.faces);
+        let shape = to_collision_shape(&data.nodes, &data.faces);
 
         let arr = VariantArray::new();
         arr.push(data.emplace());
@@ -192,7 +192,7 @@ impl PlanetGenerator {
         let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
         let mesh = to_mesh(&data.vertices, &data.faces, Some(colors));
-        let shape = to_collision_shape(&data.vertices, &data.faces);
+        let shape = to_collision_shape(&data.nodes, &data.faces);
 
         let arr = VariantArray::new();
         arr.push(data.emplace());

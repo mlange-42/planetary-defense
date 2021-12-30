@@ -3,17 +3,18 @@ use gdnative::core_types::{Int32Array, Vector3Array};
 use gdnative::prelude::*;
 
 use crate::geom::util::calc_normals;
+use crate::NodeData;
 
 pub fn to_collision_shape(
-    vertices: &[Vector3],
+    nodes: &[NodeData],
     faces: &[(usize, usize, usize)],
 ) -> Ref<ConcavePolygonShape, Unique> {
     let mut coll_faces = Vector3Array::new();
 
     for face in faces {
-        coll_faces.push(vertices[face.0]);
-        coll_faces.push(vertices[face.1]);
-        coll_faces.push(vertices[face.2]);
+        coll_faces.push(nodes[face.0].position);
+        coll_faces.push(nodes[face.1].position);
+        coll_faces.push(nodes[face.2].position);
     }
 
     let shape = ConcavePolygonShape::new();
