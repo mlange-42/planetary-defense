@@ -1,7 +1,8 @@
 extends Facility
 class_name City
 
-onready var label: Label = $Sprite3D/Viewport/Label
+onready var label: CityLabel = $Pole/Sprite3D/Viewport/Label
+onready var pole: Spatial = $Pole
 onready var borders: ImmediateGeometry = $Borders
 
 var cells: Dictionary = {}
@@ -19,9 +20,9 @@ func init(node: int, planet_data):
 
 
 func on_ready(planet_data):
-	var sprite = $Sprite3D
+	var sprite = $Pole/Sprite3D
 	
-	sprite.texture = $Sprite3D/Viewport.get_texture()
+	sprite.texture = $Pole/Sprite3D/Viewport.get_texture()
 	sprite.texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
 	
 	update_cells(planet_data)
@@ -116,7 +117,7 @@ func add_facility(node: int, facility: Facility):
 
 
 func update_visuals(planet_data):
-	label.text = "%s (%d)" % [name, workers]
+	label.set_text("%s (%d)" % [name, workers])
 	
 	var flows_food = flows.get(Constants.COMM_FOOD, [0, 0])
 	var demand_food = sinks.get(Constants.COMM_FOOD, 0)
@@ -124,10 +125,12 @@ func update_visuals(planet_data):
 	var flows_prod = flows.get(Constants.COMM_PRODUCTS, [0, 0])
 	var demand_prod = sinks.get(Constants.COMM_PRODUCTS, 0)
 	
-	if flows_food[1] < demand_food or flows_prod[1] == 0:
+	if flows_food[1] < demand_food:
 		label.self_modulate = Color.red
+	elif flows_prod[1] == 0:
+		label.self_modulate = Color.orangered
 	elif flows_prod[1] < demand_prod:
-		label.self_modulate = Color.orange
+		label.self_modulate = Color.yellow
 	else:
 		label.self_modulate = Color.white
 	
@@ -135,7 +138,7 @@ func update_visuals(planet_data):
 
 
 func set_label_visible(vis: bool):
-	$Sprite3D.visible = vis
+	pole.visible = vis
 
 
 func _draw_cells(planet_data): 

@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/city.gd"
 }, {
+"base": "Control",
+"class": "CityLabel",
+"language": "GDScript",
+"path": "res://scripts/objects/city_label.gd"
+}, {
 "base": "Reference",
 "class": "CityManager",
 "language": "GDScript",
@@ -195,6 +200,7 @@ _global_script_class_icons={
 "CameraControl": "",
 "CitiesState": "",
 "City": "",
+"CityLabel": "",
 "CityManager": "",
 "CityNames": "",
 "Constants": "",
@@ -248,6 +254,7 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+2d/snapping/use_gpu_pixel_snap=true
 quality/shadows/filter_mode=2
 environment/default_clear_color=Color( 0, 0, 0, 1 )
 quality/filters/msaa=2
