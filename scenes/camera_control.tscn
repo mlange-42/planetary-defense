@@ -22,5 +22,5 @@ directional_shadow_max_distance = 50.0
 [node name="Camera" type="Camera" parent="Arm/Arm2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 36.4352 )
 current = true
-fov = 47.8358
+fov = 50.0
 near = 0.5
