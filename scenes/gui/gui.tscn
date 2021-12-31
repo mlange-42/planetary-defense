@@ -104,3 +104,36 @@ hint_tooltip = "Current budget"
 mouse_filter = 0
 text = "1000"
 valign = 1
+
+[node name="ErrorContainer" type="MarginContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -20.0
+margin_top = -24.0
+margin_right = 20.0
+margin_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ErrorPanel" type="PanelContainer" parent="ErrorContainer"]
+margin_right = 40.0
+margin_bottom = 20.0
+custom_styles/panel = ExtResource( 3 )
+
+[node name="ErrorLabel" type="Label" parent="ErrorContainer/ErrorPanel"]
+self_modulate = Color( 1, 0.823529, 0.588235, 1 )
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 36.0
+margin_bottom = 18.0
+text = "Test"
+
+[node name="ErrorTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[connection signal="timeout" from="ErrorTimer" to="." method="_on_ErrorTimer_timeout"]

@@ -8,10 +8,15 @@ onready var taxes_label = $MarginContainer/PanelContainer/HBoxContainer/TaxesLab
 onready var maintenance_label = $MarginContainer/PanelContainer/HBoxContainer/MaintenenaceLabel
 onready var net_label = $MarginContainer/PanelContainer/HBoxContainer/NetLabel
 
+onready var error_container = $ErrorContainer
+onready var error_label = find_node("ErrorLabel")
+onready var error_timer = find_node("ErrorTimer")
+
 var planet: Planet
 var states = []
 
 func _ready():
+	error_container.visible = false
 	push("default", {})
 
 
@@ -74,3 +79,13 @@ func _notification(what):
 
 func save_game():
 	planet.save_game()
+
+
+func show_message(message: String):
+	error_label.text = message
+	error_container.visible = true
+	error_timer.start()
+
+
+func _on_ErrorTimer_timeout():
+	error_container.visible = false

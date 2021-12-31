@@ -261,10 +261,10 @@ func draw_flows(commodity: String, color1: Color, color2: Color) -> int:
 
 
 func add_facility(type: String, location: int, name: String):
-	var fac = builder.add_facility(type, location, name)
-	if fac != null:
+	var fac_err = builder.add_facility(type, location, name)
+	if fac_err[0] != null:
 		emit_budget()
-	return fac
+	return fac_err
 
 
 func clear_path():
