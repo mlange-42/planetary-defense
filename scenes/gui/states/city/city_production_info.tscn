@@ -1,0 +1,87 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/gui/states/city/city_production_info.gd" type="Script" id=1]
+
+[node name="CityProdInfo" type="HBoxContainer"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CommLabel" type="Label" parent="."]
+margin_right = 66.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Resources"
+
+[node name="VSeparator" type="VSeparator" parent="."]
+margin_left = 70.0
+margin_right = 74.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PotProduction" type="Label" parent="."]
+margin_left = 78.0
+margin_right = 102.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 24, 0 )
+hint_tooltip = "Potential production"
+mouse_filter = 0
+text = "25"
+align = 2
+
+[node name="VSeparator2" type="VSeparator" parent="."]
+margin_left = 106.0
+margin_right = 110.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Production" type="Label" parent="."]
+margin_left = 114.0
+margin_right = 138.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 24, 0 )
+hint_tooltip = "Actual production"
+mouse_filter = 0
+text = "15"
+align = 2
+
+[node name="VSeparator3" type="VSeparator" parent="."]
+margin_left = 142.0
+margin_right = 146.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Consumption" type="Label" parent="."]
+margin_left = 150.0
+margin_right = 174.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 24, 0 )
+hint_tooltip = "Actual consumption"
+mouse_filter = 0
+text = "36"
+align = 2
+
+[node name="VSeparator4" type="VSeparator" parent="."]
+margin_left = 178.0
+margin_right = 182.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PotConsumption" type="Label" parent="."]
+margin_left = 186.0
+margin_right = 210.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 24, 0 )
+hint_tooltip = "Potential consumption / demand"
+mouse_filter = 0
+text = "36"
+align = 2

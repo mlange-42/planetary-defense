@@ -1,7 +1,7 @@
 extends GuiState
 class_name EditCityState
 
-onready var city_text: RichTextLabel = $InfoContainer/VBoxContainer/CityPanel/CityText
+onready var city_text: RichTextLabel = find_node("CityText")
 onready var node_text: RichTextLabel = $InfoContainer/VBoxContainer/NodePanel/NodeText
 
 onready var sliders = {
@@ -12,10 +12,13 @@ onready var sliders = {
 onready var auto_assign: CheckBox = $Margin/EditControls/WeightPanel/WeightControls/AutoAssignCheckBox
 onready var weights_display: Label = $Margin/EditControls/WeightPanel/WeightControls/WeightsDisplay
 
+onready var container: Container = find_node("CityInfoContainer")
+
 var city_node: int
 var city: City
 var button_group: ButtonGroup
 
+var infos = {}
 
 func init(the_fsm: Gui, args: Dictionary):
 	.init(the_fsm, args)
@@ -41,11 +44,14 @@ func init(the_fsm: Gui, args: Dictionary):
 			button.group = button_group
 			
 			fac_buttons.add_child(button)
-	
 
 
 func _ready():
-	pass
+	for comm in Constants.COMM_ALL:
+		var info: CityProductionInfo = preload("res://scenes/gui/states/city/city_production_info.tscn").instance()
+		info.set_commodity(comm)
+		infos[comm] = info
+		container.add_child(info)
 
 
 func state_entered():
@@ -67,7 +73,8 @@ func state_exited():
 
 
 func update_city_info():
-	var text = "%s\n" % city.name
+	city_text.text = "%s\n Free workers: %d" % [city.name, city.workers]
+	
 	for comm in Constants.COMM_ALL:
 		var flows = city.flows.get(comm, [0, 0])
 		var pot_source = 0
@@ -75,13 +82,8 @@ func update_city_info():
 			if key[1] == comm:
 				var conv = city.conversions[key]
 				pot_source += city.sinks.get(key[0], 0) * conv[1] / conv[0]
-		var line = "%-3s +%3d (%3d) / -%3d (%3d)\n" % \
-				[comm[0], flows[0], city.sources.get(comm, 0) + pot_source, flows[1], city.sinks.get(comm, 0)]
-		if flows[1] < city.sinks.get(comm, 0):
-			line = "[color=red]%s[/color]" % line
-		text += line
-	text += "Free workers: %d" % city.workers
-	city_text.bbcode_text = text
+		
+		infos[comm].set_values(city.sources.get(comm, 0) + pot_source, flows[0], flows[1], city.sinks.get(comm, 0))
 
 
 func update_node_info(node: int):
