@@ -30,6 +30,10 @@ class Conversion:
 		to = t
 		to_amount = t_amt
 
+
+const SAVEGAME_DIR = "save"
+const CONFIG_DIR = "config"
+
 const CITY_GROWTH_PROB: float = 0.333
 const DRAW_HEIGHT_OFFSET: float = 0.02
 

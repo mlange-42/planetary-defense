@@ -2,24 +2,34 @@ extends Control
 
 
 onready var controls: Control = $Controls
-onready var load_button = $Controls/HBoxContainer/LoadContainer/LoadButton
-onready var name_edit: LineEdit = $Controls/HBoxContainer/GenerateContainer/LineEdit
-onready var error_label: Label = $Controls/MarginContainer/ErrorLabel
+onready var load_button = find_node("LoadButton")
+onready var name_edit: LineEdit = find_node("LineEdit")
+onready var error_label: Label = find_node("ErrorLabel")
 onready var progress: Label = $ProgressLabel
 
-onready var file_list: ItemList = $Controls/HBoxContainer/LoadContainer/ItemList
+onready var file_list: ItemList = find_node("FileList")
 
-onready var size_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/PlanetSizes
-onready var profile_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/Profiles
-onready var temperature_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/Temperatures
-onready var humidity_list: OptionButton = $Controls/HBoxContainer/GenerateContainer/Humidities
+onready var size_list: OptionButton = find_node("PlanetSizes")
+onready var profile_list: OptionButton = find_node("Profiles")
+onready var temperature_list: OptionButton = find_node("Temperatures")
+onready var humidity_list: OptionButton = find_node("Humidities")
+
+onready var options: GameOptions = find_node("Options")
 
 var files: Array
+
+var graphics_settings: Dictionary = {}
+
+
+func _init():
+	load_options()
+	OS.window_fullscreen = graphics_settings.get("fullscreen", false)
+
 
 func _ready():
 	name_edit.grab_focus()
 	
-	files = list_saved_games("user://")
+	files = list_saved_games()
 	
 	if files.empty():
 		load_button.disabled = true
@@ -54,6 +64,21 @@ func _on_LoadButton_pressed():
 		text_entered(file)
 	else:
 		error_label.text = "Please select a saved game!"
+
+
+func _on_QuitButton_pressed():
+	get_tree().quit()
+
+
+func _on_OptionsButton_pressed():
+	options.set_options(graphics_settings)
+	options.visible = true
+
+
+func _on_options_confirmed():
+	save_options()
+	OS.window_fullscreen = graphics_settings.get("fullscreen", false)
+	options.visible = false
 
 
 func text_entered(text: String):
@@ -100,7 +125,9 @@ func change_scene(name: String):
 	root.add_child(world)
 
 
-func list_saved_games(path: String):
+func list_saved_games():
+	var path: String = "user://%s" % Constants.SAVEGAME_DIR
+	
 	var game_files = []
 	var dir = Directory.new()
 	dir.open(path)
@@ -117,3 +144,25 @@ func list_saved_games(path: String):
 	
 	dir.list_dir_end()
 	return game_files
+
+
+func save_options():
+	var config = ConfigFile.new()
+	config.set_value("Graphics", "settings", graphics_settings)
+	
+	FileUtil.create_user_dir(Constants.CONFIG_DIR)
+	
+	config.save("user://%s/options.cfg" % Constants.CONFIG_DIR)
+
+
+func load_options():
+	var config = ConfigFile.new()
+	var err = config.load("user://%s/options.cfg" % Constants.CONFIG_DIR)
+	
+	if err == OK:
+		graphics_settings = config.get_value("Graphics", "settings")
+	else:
+		graphics_settings = {
+			"fullscreen": false
+		}
+		save_options()

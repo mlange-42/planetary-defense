@@ -124,6 +124,7 @@ func _ready():
 		self.cities = CityManager.new(consts, roads, planet_data)
 		
 		if not load_planet:
+			FileUtil.create_user_dir(Constants.SAVEGAME_DIR)
 			self.planet_data.to_csv(planet_file)
 	
 
@@ -137,7 +138,10 @@ func emit_budget():
 
 
 func save_game():
+	FileUtil.create_user_dir(Constants.SAVEGAME_DIR)
+	
 	var file = File.new()
+	
 	if file.open(FileUtil.save_path(save_name, FileUtil.GAME_EXTENSION), File.WRITE) != 0:
 		print("Error opening file")
 		return
