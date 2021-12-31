@@ -16,6 +16,8 @@ func _init():
 
 
 func _ready():
+	get_tree().set_auto_accept_quit(false)
+	
 	randomize()
 	
 	planet = Planet.new(planet_params)
@@ -36,6 +38,9 @@ func _ready():
 	mouse.connect("planet_clicked", self, "_on_planet_clicked")
 	# warning-ignore:return_value_discarded
 	planet.connect("budget_changed", self, "_on_budget_changed")
+	
+	# warning-ignore:return_value_discarded
+	$QuitDialog.connect("quit_confirmed", self, "_on_quit_confirmed")
 	
 	planet.init()
 
@@ -94,3 +99,18 @@ func _hide_info():
 
 func _on_budget_changed(taxes: TaxManager):
 	gui.set_budget_taxes_maintenance(taxes)
+
+
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		if $QuitDialog.visible:
+			pass
+		else:
+			$QuitDialog.visible = true
+
+
+func _on_quit_confirmed(save: bool):
+	if save:
+		planet.save_game()
+	
+	get_tree().quit()
