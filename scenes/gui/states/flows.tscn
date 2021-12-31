@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/gui/states/flows.gd" type="Script" id=1]
+[ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 1, 1, 1, 1, 0.63, 0.13, 0.94, 1 )
@@ -26,24 +27,20 @@ margin_right = 120.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 100, 0 )
 
-[node name="Back" type="Button" parent="Buttons"]
-margin_right = 120.0
-margin_bottom = 20.0
-hint_tooltip = "Back to main controls"
-toggle_mode = true
-text = "Back"
+[node name="StateControl" parent="Buttons" instance=ExtResource( 2 )]
+text = "Flows"
 
 [node name="Commodities" type="ItemList" parent="Buttons"]
-margin_top = 24.0
+margin_top = 38.0
 margin_right = 120.0
-margin_bottom = 33.0
+margin_bottom = 47.0
 hint_tooltip = "Select commodity to view flow"
 auto_height = true
 
 [node name="LegendContainer" type="PanelContainer" parent="Buttons"]
-margin_top = 37.0
+margin_top = 51.0
 margin_right = 120.0
-margin_bottom = 199.0
+margin_bottom = 213.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/LegendContainer"]
 margin_left = 7.0
@@ -120,9 +117,9 @@ text = "0"
 align = 1
 
 [node name="ProductionPanel" type="PanelContainer" parent="Buttons"]
-margin_top = 203.0
+margin_top = 217.0
 margin_right = 120.0
-margin_bottom = 217.0
+margin_bottom = 231.0
 
 [node name="ProductionContainer" type="VBoxContainer" parent="Buttons/ProductionPanel"]
 margin_left = 7.0
@@ -130,7 +127,7 @@ margin_top = 7.0
 margin_right = 113.0
 margin_bottom = 7.0
 
-[connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]
+[connection signal="back_pressed" from="Buttons/StateControl" to="." method="_on_Back_pressed"]
 [connection signal="item_selected" from="Buttons/Commodities" to="." method="_on_Commodities_item_selected"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton" to="." method="_on_gradient_color_changed"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton" to="." method="_on_gradient_color_changed"]
