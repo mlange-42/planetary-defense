@@ -1,6 +1,101 @@
 # Development Log
 
+## 2021/12/30 -- Finances, tiles, information
+
+[ba9e56d]
+
+Introduced finances, several features to visualize what is going on, and tile map-like textures.
+
+What's new:
+
+* Introduced finances: taxes, budget, build and maintainance costs
+* Visualization of flows and (potential) production/consumption
+* Configurable planet generation: size, amount of water, humidity, temperature
+* Tile texture on planet, with new geometry generation
+
+![Screenshot](https://user-images.githubusercontent.com/44003176/147794302-35d259bf-3b86-4913-ae50-d8ca0b22ed0e.png)
+
+*Screenshot showing the end-to-end flow visualization*
+
+### Finances
+
+Each turn, taxes flow into the budget, calculated `t * total production`. `t` is currently 1.0.
+
+Build costs:
+
+* City: 100
+* Port: 50
+* Road: 5 per tile
+
+Maintenance costs:
+* Road: 0.5 per tile
+* Transport: 0.05 per tile and unit
+
+### Visualization
+
+The player can now much better judge what is going on.
+End-to-end flows between cities can be visualized per commodity.
+Further, Potential production and consumption, as well as actual production, are shown in the flows view.
+
+Generally, this allows the player to find out about needs for production, as well as the reasons for traffic flows.
+
+### Planet generation settings
+
+When generating a planet, the player can configure size, height profile and climate variables.
+Settings are realized through pre-defined interpolation curves.
+
+### Tiles and geometry
+
+Before, the geometry resembled the navigation mesh 1:1 (except sea level...).
+This allows for color transitions between nodes, but not for tile-like texturing.
+
+Geometry/mesh generation was changed to create hexagonal (and 12 pentagonal) areas around nodes.
+
+The below ASCII art shows the old geometry (`*`), with the nodes of the new geometry denoted by `+`.
+
+```
+        *-----------*
+       / \         / \
+      /   \   +   /   \
+     /     \     /     \
+    /   +   \   /   +   \
+   /         \ /         \
+  *-----------+-----------*
+   \         / \         /
+    \   +   /   \   +   /
+     \     /     \     /
+      \   /   +   \   /
+       \ /         \ /
+        *-----------*
+```
+
+Each of the new triangles is UV-mapped to a texture atlas.
+
+```
++-----+---
+|  ,-'| ,-
+|*    |*
+|  `-.| `-
++-----+---
+|     |
+```
+
+### Further changes
+
+* Camera tilt depending on height
+* Automatic city names
+* Enhanced city labels
+* Collision shape now follows sea level instead of ocean floor
+* Several UI tweaks
+
+### Bug fixes
+
+* Block flag was not removed when removing roads ([#41])
+* Do not build port on right-click [#56]
+
 ## 2021/12/28 -- Save/load games, binary releases
+
+[v0.1.0]
 
 * Implemented saving and loading of games (and the bare planet)
 * Set up binary releases for Linux and Windows (MacOS requires some more work, see #36)
