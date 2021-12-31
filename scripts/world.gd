@@ -39,9 +39,6 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	planet.connect("budget_changed", self, "_on_budget_changed")
 	
-	# warning-ignore:return_value_discarded
-	$QuitDialog.connect("quit_confirmed", self, "_on_quit_confirmed")
-	
 	planet.init()
 
 
@@ -99,18 +96,3 @@ func _hide_info():
 
 func _on_budget_changed(taxes: TaxManager):
 	gui.set_budget_taxes_maintenance(taxes)
-
-
-func _notification(what):
-	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-		if $QuitDialog.visible:
-			pass
-		else:
-			$QuitDialog.visible = true
-
-
-func _on_quit_confirmed(save: bool):
-	if save:
-		planet.save_game()
-	
-	get_tree().quit()

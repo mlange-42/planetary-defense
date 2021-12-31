@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/default.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
 [ext_resource path="res://assets/styles/stylebox_flat.stylebox" type="StyleBox" id=3]
+[ext_resource path="res://scenes/gui/quit_dialog.tscn" type="PackedScene" id=5]
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
@@ -104,3 +105,6 @@ hint_tooltip = "Current budget"
 mouse_filter = 0
 text = "1000"
 valign = 1
+
+[node name="QuitDialog" parent="." instance=ExtResource( 5 )]
+visible = false

@@ -13,6 +13,10 @@ var states = []
 
 func _ready():
 	push("default", {})
+	
+	# warning-ignore:return_value_discarded
+	$QuitDialog.connect("quit_confirmed", self, "_on_quit_confirmed")
+	
 
 
 func on_planet_hovered(node: int):
@@ -47,8 +51,9 @@ func push(new_state: String, args: Dictionary):
 	if old_state != null:
 		self.remove_child(old_state)
 		old_state.state_exited()
-		
+	
 	self.add_child(new_scene)
+	self.move_child(new_scene, 0)
 	new_scene.state_entered()
 
 
@@ -63,4 +68,24 @@ func pop():
 	
 	var new_state = state()
 	self.add_child(new_state)
+	self.move_child(new_state, 0)
 	new_state.state_entered()
+
+
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		if $QuitDialog.visible:
+			pass
+		else:
+			$QuitDialog.visible = true
+
+
+func _on_quit_confirmed(save: bool):
+	if save:
+		planet.save_game()
+	
+	get_tree().quit()
+
+
+func save_game():
+	planet.save_game()
