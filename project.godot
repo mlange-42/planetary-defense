@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/gui/states/game_menu.gd"
 }, {
+"base": "Control",
+"class": "GameOptions",
+"language": "GDScript",
+"path": "res://scripts/gui/options.gd"
+}, {
 "base": "Reference",
 "class": "GeoUtil",
 "language": "GDScript",
@@ -129,7 +134,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -149,7 +154,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"
 }, {
-"base": "",
+"base": "Reference",
 "class": "PlanetGenerator",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_generator.gdns"
@@ -212,6 +217,7 @@ _global_script_class_icons={
 "FlowManager": "",
 "FlowsState": "",
 "GameMenuState": "",
+"GameOptions": "",
 "GeoUtil": "",
 "Gui": "",
 "GuiState": "",
@@ -247,6 +253,10 @@ GameConstants="*res://scripts/constants.gd"
 [debug]
 
 settings/stdout/verbose_stdout=true
+
+[display]
+
+window/dpi/allow_hidpi=true
 
 [physics]
 

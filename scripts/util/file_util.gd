@@ -10,4 +10,11 @@ static func save_path_exists(name: String, ext: String) -> bool:
 
 
 static func save_path(name: String, ext: String) -> String:
-	return "%s/%s.%s" % [OS.get_user_data_dir(), name,ext]
+	return "%s/%s/%s.%s" % [OS.get_user_data_dir(), Constants.SAVEGAME_DIR, name,ext]
+
+
+static func create_user_dir(directory: String):
+	var dir = Directory.new()
+	dir.open("user://")
+	dir.make_dir(directory)
+	
