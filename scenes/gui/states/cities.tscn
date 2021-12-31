@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/gui/states/cities.gd" type="Script" id=1]
+[ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
 
 [node name="BuildCities" type="MarginContainer"]
 anchor_bottom = 1.0
@@ -18,17 +19,13 @@ __meta__ = {
 margin_right = 120.0
 margin_bottom = 580.0
 
-[node name="Back" type="Button" parent="Buttons"]
-margin_right = 120.0
-margin_bottom = 20.0
-hint_tooltip = "Back to main controls"
-toggle_mode = true
-text = "Back"
+[node name="StateControl" parent="Buttons" instance=ExtResource( 2 )]
+text = "Build city"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Buttons"]
-margin_top = 24.0
+margin_top = 38.0
 margin_right = 120.0
-margin_bottom = 48.0
+margin_bottom = 62.0
 
 [node name="CityName" type="LineEdit" parent="Buttons/HBoxContainer"]
 margin_right = 96.0
@@ -45,5 +42,5 @@ rect_min_size = Vector2( 20, 0 )
 hint_tooltip = "Random name"
 text = "R"
 
-[connection signal="pressed" from="Buttons/Back" to="." method="_on_Back_pressed"]
+[connection signal="back_pressed" from="Buttons/StateControl" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Buttons/HBoxContainer/RandomNameButton" to="." method="set_random_name"]
