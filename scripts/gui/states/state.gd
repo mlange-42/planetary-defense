@@ -2,7 +2,6 @@ extends Control
 class_name GuiState
 
 var fsm: Gui
-var planet: Planet
 
 func init(the_fsm: Gui, _args: Dictionary):
 	fsm = the_fsm
