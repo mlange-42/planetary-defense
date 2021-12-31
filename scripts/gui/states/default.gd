@@ -11,6 +11,9 @@ func on_planet_clicked(node: int, button: int):
 		if facility is City:
 			fsm.push("edit_city", {"node": node})
 
+func _on_MainMenuButton_pressed():
+	fsm.push("game_menu", {})
+
 func _on_Road_pressed():
 	fsm.push("roads", {})
 
@@ -22,7 +25,3 @@ func _on_City_pressed():
 
 func _on_next_turn():
 	fsm.planet.next_turn()
-
-func _on_SaveButton_pressed():
-	fsm.planet.save_game()
-

@@ -16,6 +16,8 @@ func _init():
 
 
 func _ready():
+	get_tree().set_auto_accept_quit(false)
+	
 	randomize()
 	
 	planet = Planet.new(planet_params)

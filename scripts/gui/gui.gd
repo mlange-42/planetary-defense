@@ -47,7 +47,7 @@ func push(new_state: String, args: Dictionary):
 	if old_state != null:
 		self.remove_child(old_state)
 		old_state.state_exited()
-		
+	
 	self.add_child(new_scene)
 	new_scene.state_entered()
 
@@ -64,3 +64,13 @@ func pop():
 	var new_state = state()
 	self.add_child(new_state)
 	new_state.state_entered()
+
+
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		if state().get_class() != "QuitDialog":
+			call_deferred("push", "quit_dialog", {})
+
+
+func save_game():
+	planet.save_game()

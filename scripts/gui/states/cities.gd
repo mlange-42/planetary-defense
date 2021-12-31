@@ -8,6 +8,7 @@ onready var name_edit = $Buttons/HBoxContainer/CityName
 
 func _ready():
 	set_random_name()
+	name_edit.grab_focus()
 
 
 func set_random_name():
