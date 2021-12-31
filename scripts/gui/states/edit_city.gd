@@ -74,7 +74,6 @@ func state_exited():
 
 func update_city_info():
 	city_text.text = "%s\n Free workers: %d" % [city.name, city.workers]
-	
 	for comm in Constants.COMM_ALL:
 		var flows = city.flows.get(comm, [0, 0])
 		var pot_source = 0

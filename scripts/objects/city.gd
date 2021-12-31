@@ -35,6 +35,11 @@ func save() -> Dictionary:
 	for node in land_use:
 		lu.append([node, land_use[node]])
 	
+	var conv = []
+	for key in conversions:
+		var c = conversions[key]
+		conv.append([key, c])
+	
 	var dict = {
 		"type": type,
 		"name": name,
@@ -46,7 +51,7 @@ func save() -> Dictionary:
 		"land_use": lu,
 		"sources": sources,
 		"sinks": sinks,
-		"conversions": conversions,
+		"conversions": conv,
 		"flows": flows,
 	}
 	
@@ -82,8 +87,8 @@ func read(dict: Dictionary):
 		
 	var co = dict["conversions"]
 	for comm in co:
-		var c = co[comm]
-		conversions[comm] = [c[0] as int, c[1] as int]
+		var c = comm[1]
+		conversions[comm[0]] = [c[0] as int, c[1] as int]
 
 
 func can_build(planet_data, node) -> bool:
