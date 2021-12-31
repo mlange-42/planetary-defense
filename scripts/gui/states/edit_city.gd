@@ -25,14 +25,23 @@ func init(the_fsm: Gui, args: Dictionary):
 	var buttons: Container = $Margin/EditControls/Buttons/LuPanel/LuButtons
 	button_group = ButtonGroup.new()
 	for lu in Constants.LU_NAMES:
-		var button = LandUseButton.new()
+		var button := LandUseButton.new()
 		button.land_use = lu
 		button.text = Constants.LU_NAMES[lu]
 		button.group = button_group
 		
 		buttons.add_child(button)
 	
-	$Margin/EditControls/Buttons/FacilityPanel/FacilityButtons/Port.group = button_group
+	var fac_buttons: Container = $Margin/EditControls/Buttons/FacilityPanel/FacilityButtons
+	for fac in Constants.FACILITY_IN_CITY:
+		if Constants.FACILITY_IN_CITY[fac]:
+			var button := FacilityButton.new()
+			button.facility = fac
+			button.text = fac
+			button.group = button_group
+			
+			fac_buttons.add_child(button)
+	
 
 
 func _ready():
@@ -121,10 +130,10 @@ func get_land_use_tool():
 
 func get_facility_tool():
 	var button = button_group.get_pressed_button()
-	if button == null or button is LandUseButton:
+	if button == null or not button is FacilityButton:
 		return null
 	else:
-		return button.name
+		return button.facility
 
 
 func _on_weights_changed(_value: float):

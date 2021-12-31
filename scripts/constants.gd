@@ -45,14 +45,28 @@ const ROAD_COSTS: int = 5
 const ROAD_MAINTENANCE_1000: int = 500
 const TRANSPORT_COST_1000: int = 50
 
+
+const FAC_CITY: String = "City"
+const FAC_PORT: String = "Port"
+
 const FACILITY_SCENES = {
-	"City": "res://scenes/objects/city.tscn",
-	"Port": "res://scenes/objects/port.tscn",
+	FAC_CITY: "res://scenes/objects/city.tscn",
+	FAC_PORT: "res://scenes/objects/port.tscn",
+}
+
+const FACILITY_INFO = {
+	FAC_CITY: "A city",
+	FAC_PORT: "Required for sea transport and fishery",
 }
 
 const FACILITY_COSTS = {
-	"City": 100,
-	"Port": 50,
+	FAC_CITY: 100,
+	FAC_PORT: 50,
+}
+
+const FACILITY_IN_CITY = {
+	FAC_CITY: false,
+	FAC_PORT: true,
 }
 
 const COMM_FOOD: String = "Food"
@@ -127,10 +141,19 @@ const LU_OUTPUT = {
 }
 
 const LU_REQUIREMENTS = {
+	LU_NONE: [],
 	LU_CROPS: [],
 	LU_FOREST: [],
 	LU_FACTORY: [],
-	LU_FISHERY: [Port],
+	LU_FISHERY: [FAC_PORT],
+}
+
+const LU_INFO = {
+	LU_NONE: "Clear land use.",
+	LU_CROPS: "Grow crops to harvest food.",
+	LU_FOREST: "Grow crops to harvest resources.",
+	LU_FACTORY: "Transforms resources into products.",
+	LU_FISHERY: "Fishes for food.",
 }
 
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(COMM_RESOURCES, 1, COMM_PRODUCTS, 1, 5))

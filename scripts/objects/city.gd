@@ -17,6 +17,7 @@ var auto_assign_workers: bool = true
 
 func init(node: int, planet_data):
 	.init(node, planet_data)
+	type = Constants.FAC_CITY
 
 
 func on_ready(planet_data):
@@ -35,7 +36,7 @@ func save() -> Dictionary:
 		lu.append([node, land_use[node]])
 	
 	var dict = {
-		"type": "City",
+		"type": type,
 		"name": name,
 		"node_id": node_id,
 		"radius": radius,
@@ -93,7 +94,7 @@ func has_landuse_requirements(lu: int) -> bool:
 	for req in Constants.LU_REQUIREMENTS[lu]:
 		var found = false
 		for n in facilities:
-			if facilities[n] is req:
+			if facilities[n].type == req:
 				found = true
 				break
 		

@@ -22,5 +22,5 @@ func _on_Back_pressed():
 func on_planet_clicked(node: int, button: int):
 	if button == BUTTON_LEFT:
 		if not name_edit.text.empty():
-			if fsm.planet.add_facility("City", node, name_edit.text) != null:
+			if fsm.planet.add_facility(Constants.FAC_CITY, node, name_edit.text) != null:
 				fsm.pop()
