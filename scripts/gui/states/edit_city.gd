@@ -99,9 +99,10 @@ func update_city_info():
 
 func update_node_info(node: int):
 	if node < 0:
-		node_text.text = ""
+		node_text.bbcode_text = ""
 		return
-		
+	
+	var lu_here = city.land_use.get(node, 0)
 	var veg = fsm.planet.planet_data.get_node(node).vegetation_type
 	var res_here = fsm.planet.resources.resources.get(node, null)
 	
@@ -113,7 +114,10 @@ func update_node_info(node: int):
 		if veg in lu:
 			var prod: LandUse.VegLandUse = lu[veg]
 			var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
-			text += " %-10s%s\n" % [LandUse.LU_NAMES[lut], prod_string]
+			var line = " %-10s%s" % [LandUse.LU_NAMES[lut], prod_string]
+			if lut == lu_here:
+				line = "[u]%s[/u]" % line
+			text += line + "\n"
 	
 	if res_here != null:
 		var res_id = res_here[0]
@@ -122,9 +126,12 @@ func update_node_info(node: int):
 			if res_here[0] in res:
 				var prod: LandUse.VegLandUse = res[res_id]
 				var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
-				text += " %-10s%s\n" % [LandUse.LU_NAMES[lut], prod_string]
+				var line = " %-10s%s" % [LandUse.LU_NAMES[lut], prod_string]
+				if lut == lu_here:
+					line = "[u]%s[/u]" % line
+				text += line + "\n"
 	
-	node_text.text = text.substr(0, text.length()-1)
+	node_text.bbcode_text = text.substr(0, text.length()-1)
 
 
 func update_weights_display():
