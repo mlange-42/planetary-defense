@@ -14,6 +14,9 @@ func on_planet_clicked(node: int, button: int):
 func _on_MainMenuButton_pressed():
 	fsm.push("game_menu", {})
 
+func _on_SettingsButton_pressed():
+	fsm.push("settings", {})
+
 func _on_Road_pressed():
 	fsm.push("roads", {})
 

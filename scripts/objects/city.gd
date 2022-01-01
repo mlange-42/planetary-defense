@@ -3,7 +3,7 @@ class_name City
 
 onready var label: CityLabel = $Pole/Sprite3D/Viewport/Label
 onready var pole: Spatial = $Pole
-onready var borders: ImmediateGeometry = $Borders
+onready var land_use_mesh: ImmediateGeometry = $LandUse
 
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
@@ -148,20 +148,20 @@ func set_label_visible(vis: bool):
 
 
 func _draw_cells(planet_data): 
-	borders.clear()
-	borders.begin(Mesh.PRIMITIVE_POINTS)
+	land_use_mesh.clear()
+	land_use_mesh.begin(Mesh.PRIMITIVE_POINTS)
 	
-	borders.set_color(Color.white)
+	land_use_mesh.set_color(Color.white)
 	
 	for c in cells:
 		if cells[c] == radius and not c in land_use:
 			var p = planet_data.get_position(c)
-			borders.set_color(Color.dimgray)
-			borders.add_vertex(self.to_local(p + Constants.DRAW_HEIGHT_OFFSET * p.normalized()))
+			land_use_mesh.set_color(Color.dimgray)
+			land_use_mesh.add_vertex(self.to_local(p + Constants.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
 	for c in land_use:
 		var p = planet_data.get_position(c)
-		borders.set_color(Constants.LU_COLORS[land_use[c]])
-		borders.add_vertex(self.to_local(p + 2 * Constants.DRAW_HEIGHT_OFFSET * p.normalized()))
+		land_use_mesh.set_color(Constants.LU_COLORS[land_use[c]])
+		land_use_mesh.add_vertex(self.to_local(p + 2 * Constants.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
-	borders.end()
+	land_use_mesh.end()

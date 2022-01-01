@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/gui/states/default.gd" type="Script" id=3]
 
@@ -8,6 +8,13 @@ scancode = 77
 
 [sub_resource type="ShortCut" id=8]
 shortcut = SubResource( 7 )
+
+[sub_resource type="InputEventKey" id=11]
+pressed = true
+scancode = 83
+
+[sub_resource type="ShortCut" id=12]
+shortcut = SubResource( 11 )
 
 [sub_resource type="InputEventKey" id=1]
 pressed = true
@@ -60,51 +67,60 @@ __meta__ = {
 
 [node name="PanelContainer" type="PanelContainer" parent="DefaultControls"]
 margin_right = 120.0
-margin_bottom = 114.0
+margin_bottom = 138.0
 
 [node name="Buttons" type="VBoxContainer" parent="DefaultControls/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 113.0
-margin_bottom = 107.0
+margin_bottom = 131.0
 
 [node name="MainMenuButton" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
 margin_right = 106.0
 margin_bottom = 20.0
+hint_tooltip = "Save, quit, etc"
 shortcut = SubResource( 8 )
 text = "Main menu"
 
-[node name="HSeparator" type="HSeparator" parent="DefaultControls/PanelContainer/Buttons"]
+[node name="SettingsButton" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
 margin_top = 24.0
 margin_right = 106.0
-margin_bottom = 28.0
+margin_bottom = 44.0
+hint_tooltip = "Graphics and visibility settings"
+shortcut = SubResource( 12 )
+text = "Settings"
 
-[node name="City" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
-margin_top = 32.0
+[node name="HSeparator" type="HSeparator" parent="DefaultControls/PanelContainer/Buttons"]
+margin_top = 48.0
 margin_right = 106.0
 margin_bottom = 52.0
+
+[node name="City" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
+margin_top = 56.0
+margin_right = 106.0
+margin_bottom = 76.0
 hint_tooltip = "Found a new city. Click cities to manage them."
 shortcut = SubResource( 2 )
 text = "Build city"
 
 [node name="Roads" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
-margin_top = 56.0
+margin_top = 80.0
 margin_right = 106.0
-margin_bottom = 76.0
+margin_bottom = 100.0
 hint_tooltip = "Build and remove roads"
 shortcut = SubResource( 4 )
 text = "Build roads"
 
 [node name="Flows" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
-margin_top = 80.0
+margin_top = 104.0
 margin_right = 106.0
-margin_bottom = 100.0
+margin_bottom = 124.0
 hint_tooltip = "Inspect flows"
 shortcut = SubResource( 6 )
 text = "View flows"
 
 [node name="Placeholder" type="Control" parent="DefaultControls"]
-margin_top = 118.0
+margin_top = 142.0
 margin_right = 120.0
 margin_bottom = 556.0
 size_flags_vertical = 3
@@ -118,6 +134,7 @@ shortcut = SubResource( 10 )
 text = "Turn"
 
 [connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
+[connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/SettingsButton" to="." method="_on_SettingsButton_pressed"]
 [connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/City" to="." method="_on_City_pressed"]
 [connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/Roads" to="." method="_on_Road_pressed"]
 [connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/Flows" to="." method="_on_Flows_pressed"]
