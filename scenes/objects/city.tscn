@@ -30,6 +30,7 @@ material = SubResource( 1 )
 
 [node name="Pole" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4 )
+layers = 2
 width = 0.015
 height = 0.015
 depth = 0.8
@@ -37,6 +38,7 @@ material = SubResource( 2 )
 
 [node name="Sprite3D" type="Sprite3D" parent="Pole"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4 )
+layers = 2
 cast_shadow = 0
 lod_min_distance = 2.0
 centered = false
@@ -55,5 +57,6 @@ render_target_v_flip = true
 
 [node name="Label" parent="Pole/Sprite3D/Viewport" instance=ExtResource( 3 )]
 
-[node name="Borders" type="ImmediateGeometry" parent="."]
+[node name="LandUse" type="ImmediateGeometry" parent="."]
+layers = 4
 material_override = ExtResource( 2 )

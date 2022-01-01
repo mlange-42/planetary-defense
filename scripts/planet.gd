@@ -66,6 +66,8 @@ func _ready():
 	
 	road_debug = DebugDraw.new()
 	road_debug.material_override = material
+	road_debug.set_layer_mask_bit(Constants.LAYER_BASE, false)
+	road_debug.set_layer_mask_bit(Constants.LAYER_ROADS, true)
 	add_child(road_debug)
 	
 	path_debug = DebugDraw.new()

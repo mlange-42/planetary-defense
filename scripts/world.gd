@@ -36,6 +36,7 @@ func _ready():
 	mouse.connect("planet_hovered", self, "_on_planet_hovered")
 	# warning-ignore:return_value_discarded
 	mouse.connect("planet_clicked", self, "_on_planet_clicked")
+	
 	# warning-ignore:return_value_discarded
 	planet.connect("budget_changed", self, "_on_budget_changed")
 	

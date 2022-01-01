@@ -58,3 +58,12 @@ func _process(delta):
 	rotation.y = lerp(rotation.y, rotation_y_target, lerp_speed * delta)
 	arm.rotation.x = lerp(arm.rotation.x, rotation_x_target, lerp_speed * delta)
 	arm2.rotation.x = deg2rad(angle)
+
+
+func get_cull_mask(layer: int) -> bool:
+	return camera.get_cull_mask_bit(layer)
+
+
+func set_cull_mask(layer: int, enable: bool):
+	camera.set_cull_mask_bit(layer, enable)
+

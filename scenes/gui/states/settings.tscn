@@ -1,0 +1,131 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://scripts/gui/states/settings.gd" type="Script" id=1]
+[ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
+
+[sub_resource type="InputEventKey" id=5]
+pressed = true
+scancode = 67
+
+[sub_resource type="ShortCut" id=2]
+shortcut = SubResource( 5 )
+
+[sub_resource type="InputEventKey" id=1]
+pressed = true
+scancode = 76
+
+[sub_resource type="ShortCut" id=4]
+shortcut = SubResource( 1 )
+
+[sub_resource type="InputEventKey" id=6]
+pressed = true
+scancode = 82
+
+[sub_resource type="ShortCut" id=7]
+shortcut = SubResource( 6 )
+
+[sub_resource type="InputEventKey" id=8]
+pressed = true
+scancode = 65
+
+[sub_resource type="ShortCut" id=9]
+shortcut = SubResource( 8 )
+
+[sub_resource type="InputEventKey" id=10]
+control = true
+command = true
+pressed = true
+scancode = 65
+
+[sub_resource type="ShortCut" id=11]
+shortcut = SubResource( 10 )
+
+[node name="Settings" type="MarginContainer"]
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 10.0
+margin_bottom = -10.0
+rect_min_size = Vector2( 120, 0 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+margin_right = 120.0
+margin_bottom = 580.0
+rect_min_size = Vector2( 100, 0 )
+
+[node name="StateControl" parent="Buttons" instance=ExtResource( 2 )]
+text = "Settings"
+
+[node name="PanelContainer" type="PanelContainer" parent="Buttons"]
+margin_top = 38.0
+margin_right = 120.0
+margin_bottom = 174.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 113.0
+margin_bottom = 129.0
+
+[node name="Label" type="Label" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_right = 106.0
+margin_bottom = 14.0
+text = "Visibility"
+
+[node name="CityLabels" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 106.0
+margin_bottom = 42.0
+shortcut = SubResource( 2 )
+text = "City labels"
+
+[node name="LandUse" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 46.0
+margin_right = 106.0
+margin_bottom = 70.0
+shortcut = SubResource( 4 )
+text = "Land use"
+
+[node name="Roads" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 74.0
+margin_right = 106.0
+margin_bottom = 98.0
+shortcut = SubResource( 7 )
+text = "Roads"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 102.0
+margin_right = 106.0
+margin_bottom = 122.0
+
+[node name="Control" type="Control" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_right = 61.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="EnableAllButton" type="Button" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 65.0
+margin_right = 85.0
+margin_bottom = 20.0
+hint_tooltip = "Enable all"
+shortcut = SubResource( 9 )
+text = "+"
+
+[node name="DisableAllButton" type="Button" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 89.0
+margin_right = 106.0
+margin_bottom = 20.0
+hint_tooltip = "Disable all"
+shortcut = SubResource( 11 )
+text = "-"
+
+[connection signal="back_pressed" from="Buttons/StateControl" to="." method="_on_Back_pressed"]
+[connection signal="toggled" from="Buttons/PanelContainer/VBoxContainer/CityLabels" to="." method="_on_visibility_changed"]
+[connection signal="toggled" from="Buttons/PanelContainer/VBoxContainer/LandUse" to="." method="_on_visibility_changed"]
+[connection signal="toggled" from="Buttons/PanelContainer/VBoxContainer/Roads" to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="Buttons/PanelContainer/VBoxContainer/HBoxContainer/EnableAllButton" to="." method="_on_EnableAllButton_pressed"]
+[connection signal="pressed" from="Buttons/PanelContainer/VBoxContainer/HBoxContainer/DisableAllButton" to="." method="_on_DisableAllButton_pressed"]
