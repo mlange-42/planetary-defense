@@ -1,6 +1,43 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/gui/states/default.gd" type="Script" id=3]
+
+[sub_resource type="InputEventKey" id=7]
+pressed = true
+scancode = 77
+
+[sub_resource type="ShortCut" id=8]
+shortcut = SubResource( 7 )
+
+[sub_resource type="InputEventKey" id=1]
+pressed = true
+scancode = 67
+
+[sub_resource type="ShortCut" id=2]
+shortcut = SubResource( 1 )
+
+[sub_resource type="InputEventKey" id=3]
+pressed = true
+scancode = 82
+
+[sub_resource type="ShortCut" id=4]
+shortcut = SubResource( 3 )
+
+[sub_resource type="InputEventKey" id=5]
+pressed = true
+scancode = 70
+
+[sub_resource type="ShortCut" id=6]
+shortcut = SubResource( 5 )
+
+[sub_resource type="InputEventKey" id=9]
+control = true
+command = true
+pressed = true
+scancode = 84
+
+[sub_resource type="ShortCut" id=10]
+shortcut = SubResource( 9 )
 
 [node name="Default" type="MarginContainer"]
 anchor_bottom = 1.0
@@ -34,6 +71,7 @@ margin_bottom = 107.0
 [node name="MainMenuButton" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
 margin_right = 106.0
 margin_bottom = 20.0
+shortcut = SubResource( 8 )
 text = "Main menu"
 
 [node name="HSeparator" type="HSeparator" parent="DefaultControls/PanelContainer/Buttons"]
@@ -46,6 +84,7 @@ margin_top = 32.0
 margin_right = 106.0
 margin_bottom = 52.0
 hint_tooltip = "Found a new city. Click cities to manage them."
+shortcut = SubResource( 2 )
 text = "Build city"
 
 [node name="Roads" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
@@ -53,6 +92,7 @@ margin_top = 56.0
 margin_right = 106.0
 margin_bottom = 76.0
 hint_tooltip = "Build and remove roads"
+shortcut = SubResource( 4 )
 text = "Build roads"
 
 [node name="Flows" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
@@ -60,6 +100,7 @@ margin_top = 80.0
 margin_right = 106.0
 margin_bottom = 100.0
 hint_tooltip = "Inspect flows"
+shortcut = SubResource( 6 )
 text = "View flows"
 
 [node name="Placeholder" type="Control" parent="DefaultControls"]
@@ -73,6 +114,7 @@ margin_top = 560.0
 margin_right = 120.0
 margin_bottom = 580.0
 hint_tooltip = "Advance time by one turn"
+shortcut = SubResource( 10 )
 text = "Turn"
 
 [connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]

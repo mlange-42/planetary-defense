@@ -26,6 +26,6 @@ func on_planet_clicked(node: int, button: int):
 			if fac_err[0] != null:
 				fsm.pop()
 			else:
-				fsm.show_message(fac_err[1])
+				fsm.show_message(fac_err[1], Constants.MESSAGE_ERROR)
 		else:
-			fsm.show_message("No city name given!")
+			fsm.show_message("No city name given!", Constants.MESSAGE_ERROR)

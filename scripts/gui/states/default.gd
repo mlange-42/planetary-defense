@@ -25,3 +25,4 @@ func _on_City_pressed():
 
 func _on_next_turn():
 	fsm.planet.next_turn()
+	fsm.show_message("Next turn", Constants.MESSAGE_INFO)
