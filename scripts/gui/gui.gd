@@ -1,7 +1,7 @@
 extends Control
 class_name Gui
 
-onready var constants: Constants = $"/root/GameConstants"
+onready var constants: LandUse = $"/root/VegetationLandUse"
 
 onready var budget_label = $MarginContainer/PanelContainer/HBoxContainer/BudgetLabel
 onready var taxes_label = $MarginContainer/PanelContainer/HBoxContainer/TaxesLabel
@@ -87,13 +87,13 @@ func _notification(what):
 
 func save_game():
 	planet.save_game()
-	show_message("Saved game", Constants.MESSAGE_INFO)
+	show_message("Saved game", Consts.MESSAGE_INFO)
 
 
 func show_message(message: String, message_level: int):
 	match message_level:
-		Constants.MESSAGE_INFO: error_label.self_modulate = Color.white
-		Constants.MESSAGE_WARNING: error_label.self_modulate = Color.yellow
+		Consts.MESSAGE_INFO: error_label.self_modulate = Color.white
+		Consts.MESSAGE_WARNING: error_label.self_modulate = Color.yellow
 		_: error_label.self_modulate = Color.orange
 	
 	error_label.text = message

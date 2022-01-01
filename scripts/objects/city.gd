@@ -9,7 +9,7 @@ var cells: Dictionary = {}
 var land_use: Dictionary = {}
 var facilities: Dictionary = {}
 var radius: int = 2
-var workers: int = Constants.INITIAL_CITY_POP
+var workers: int = Consts.INITIAL_CITY_POP
 
 var commodity_weights: Array = [100, 100, 100]
 var auto_assign_workers: bool = true
@@ -17,7 +17,7 @@ var auto_assign_workers: bool = true
 
 func init(node: int, planet_data):
 	.init(node, planet_data)
-	type = Constants.FAC_CITY
+	type = Facilities.FAC_CITY
 
 
 func on_ready(planet_data):
@@ -96,7 +96,7 @@ func can_build(planet_data, node) -> bool:
 
 
 func has_landuse_requirements(lu: int) -> bool:
-	for req in Constants.LU_REQUIREMENTS[lu]:
+	for req in LandUse.LU_REQUIREMENTS[lu]:
 		var found = false
 		for n in facilities:
 			if facilities[n].type == req:
@@ -125,11 +125,11 @@ func add_facility(node: int, facility: Facility):
 func update_visuals(planet_data):
 	label.set_text("%s (%d)" % [name, workers])
 	
-	var flows_food = flows.get(Constants.COMM_FOOD, [0, 0])
-	var demand_food = sinks.get(Constants.COMM_FOOD, 0)
+	var flows_food = flows.get(Commodities.COMM_FOOD, [0, 0])
+	var demand_food = sinks.get(Commodities.COMM_FOOD, 0)
 	
-	var flows_prod = flows.get(Constants.COMM_PRODUCTS, [0, 0])
-	var demand_prod = sinks.get(Constants.COMM_PRODUCTS, 0)
+	var flows_prod = flows.get(Commodities.COMM_PRODUCTS, [0, 0])
+	var demand_prod = sinks.get(Commodities.COMM_PRODUCTS, 0)
 	
 	if flows_food[1] < demand_food:
 		label.self_modulate = Color.red
@@ -157,11 +157,11 @@ func _draw_cells(planet_data):
 		if cells[c] == radius and not c in land_use:
 			var p = planet_data.get_position(c)
 			land_use_mesh.set_color(Color.dimgray)
-			land_use_mesh.add_vertex(self.to_local(p + Constants.DRAW_HEIGHT_OFFSET * p.normalized()))
+			land_use_mesh.add_vertex(self.to_local(p + Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
 	for c in land_use:
 		var p = planet_data.get_position(c)
-		land_use_mesh.set_color(Constants.LU_COLORS[land_use[c]])
-		land_use_mesh.add_vertex(self.to_local(p + 2 * Constants.DRAW_HEIGHT_OFFSET * p.normalized()))
+		land_use_mesh.set_color(LandUse.LU_COLORS[land_use[c]])
+		land_use_mesh.add_vertex(self.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
 	land_use_mesh.end()

@@ -22,10 +22,10 @@ func _on_Back_pressed():
 func on_planet_clicked(node: int, button: int):
 	if button == BUTTON_LEFT:
 		if not name_edit.text.empty():
-			var fac_err = fsm.planet.add_facility(Constants.FAC_CITY, node, name_edit.text)
+			var fac_err = fsm.planet.add_facility(Facilities.FAC_CITY, node, name_edit.text)
 			if fac_err[0] != null:
 				fsm.pop()
 			else:
-				fsm.show_message(fac_err[1], Constants.MESSAGE_ERROR)
+				fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
 		else:
-			fsm.show_message("No city name given!", Constants.MESSAGE_ERROR)
+			fsm.show_message("No city name given!", Consts.MESSAGE_ERROR)

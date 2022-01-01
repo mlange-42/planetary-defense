@@ -66,8 +66,8 @@ func _ready():
 	
 	road_debug = DebugDraw.new()
 	road_debug.material_override = material
-	road_debug.set_layer_mask_bit(Constants.LAYER_BASE, false)
-	road_debug.set_layer_mask_bit(Constants.LAYER_ROADS, true)
+	road_debug.set_layer_mask_bit(Consts.LAYER_BASE, false)
+	road_debug.set_layer_mask_bit(Consts.LAYER_ROADS, true)
 	add_child(road_debug)
 	
 	path_debug = DebugDraw.new()
@@ -118,7 +118,7 @@ func _ready():
 	if load_planet and FileUtil.save_path_exists(save_name, FileUtil.GAME_EXTENSION):
 		load_game()
 	else:
-		var consts: Constants = $"/root/GameConstants" as Constants
+		var consts: LandUse = $"/root/VegetationLandUse" as LandUse
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
 		self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
@@ -126,7 +126,7 @@ func _ready():
 		self.cities = CityManager.new(consts, roads, planet_data)
 		
 		if not load_planet:
-			FileUtil.create_user_dir(Constants.SAVEGAME_DIR)
+			FileUtil.create_user_dir(Consts.SAVEGAME_DIR)
 			self.planet_data.to_csv(planet_file)
 	
 
@@ -140,7 +140,7 @@ func emit_budget():
 
 
 func save_game():
-	FileUtil.create_user_dir(Constants.SAVEGAME_DIR)
+	FileUtil.create_user_dir(Consts.SAVEGAME_DIR)
 	
 	var file = File.new()
 	
@@ -169,7 +169,7 @@ func load_game():
 		print("Error opening file")
 		return
 	
-	var consts: Constants = $"/root/GameConstants" as Constants
+	var consts: LandUse = $"/root/VegetationLandUse" as LandUse
 	
 	var roads_json = file.get_line()
 	self.roads = RoadNetwork.new()
@@ -190,7 +190,7 @@ func load_game():
 			continue
 		
 		var fac_json = parse_json(line)
-		var facility: Facility = load(Constants.FACILITY_SCENES[fac_json["type"]]).instance()
+		var facility: Facility = load(Facilities.FACILITY_SCENES[fac_json["type"]]).instance()
 		facility.init(fac_json["node_id"] as int, planet_data)
 		facility.read(fac_json)
 		

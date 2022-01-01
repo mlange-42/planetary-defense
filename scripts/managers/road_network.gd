@@ -160,7 +160,7 @@ func reset_flow():
 	for edge in edges.values():
 		edge.flow = 0
 	
-	for comm in Constants.COMM_ALL:
+	for comm in Commodities.COMM_ALL:
 		total_flows[comm] = 0
 
 

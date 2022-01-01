@@ -1,11 +1,11 @@
 class_name CityManager
 
-var constants: Constants
+var constants: LandUse
 var network: RoadNetwork
 var planet_data = null
 
 # warning-ignore:shadowed_variable
-func _init(consts: Constants, net: RoadNetwork, planet_data):
+func _init(consts: LandUse, net: RoadNetwork, planet_data):
 	self.constants = consts
 	self.network = net
 	self.planet_data = planet_data
@@ -23,7 +23,7 @@ func pre_update():
 		city.sinks.clear()
 		city.conversions.clear()
 		
-		var food_available = city.flows[Constants.COMM_FOOD][1] if Constants.COMM_FOOD in city.flows else 0
+		var food_available = city.flows[Commodities.COMM_FOOD][1] if Commodities.COMM_FOOD in city.flows else 0
 		food_available -= city.workers
 		
 		var workers_to_feed = city.workers
@@ -39,11 +39,11 @@ func pre_update():
 			if not data.vegetation_type in lu_data:
 				continue
 			
-			var workers = Constants.LU_WORKERS[lu]
+			var workers = LandUse.LU_WORKERS[lu]
 			products_required += workers
 			
-			var veg_data: Constants.VegLandUse = lu_data[data.vegetation_type]
-			if veg_data.source == null or veg_data.source.commodity != Constants.COMM_FOOD:
+			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type]
+			if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
 				workers_to_feed += workers
 				if food_available >= workers:
 					food_available -= workers
@@ -57,11 +57,11 @@ func pre_update():
 				city.add_sink(veg_data.sink.commodity, veg_data.sink.amount)
 		
 			if veg_data.conversion != null:
-				var c: Constants.Conversion = veg_data.conversion
+				var c: LandUse.Conversion = veg_data.conversion
 				city.add_conversion(c.from, c.from_amount, c.to, c.to_amount, c.max_from_amount)
 		
-		city.add_sink(Constants.COMM_FOOD, workers_to_feed)
-		city.add_sink(Constants.COMM_PRODUCTS, products_required / 2)
+		city.add_sink(Commodities.COMM_FOOD, workers_to_feed)
+		city.add_sink(Commodities.COMM_PRODUCTS, products_required / 2)
 
 
 func post_update():
@@ -78,7 +78,7 @@ func post_update():
 			city.radius += 1
 			city.update_cells(planet_data)
 		
-		var food_available = city.flows[Constants.COMM_FOOD][1] if Constants.COMM_FOOD in city.flows else 0
+		var food_available = city.flows[Commodities.COMM_FOOD][1] if Commodities.COMM_FOOD in city.flows else 0
 		food_available -= city.workers
 		
 		var total_workers = city.workers
@@ -93,26 +93,26 @@ func post_update():
 			if not data.vegetation_type in lu_data:
 				continue
 			
-			var workers = Constants.LU_WORKERS[lu]
+			var workers = LandUse.LU_WORKERS[lu]
 			total_workers += workers
 			
-			var veg_data: Constants.VegLandUse = lu_data[data.vegetation_type]
-			if veg_data.source == null or veg_data.source.commodity != Constants.COMM_FOOD:
+			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type]
+			if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
 				if food_available >= workers:
 					food_available -= workers
 				else:
 					all_workers_supplied = false
 					break
 		
-		var products_available = city.flows[Constants.COMM_PRODUCTS][1] if Constants.COMM_PRODUCTS in city.flows else 0
+		var products_available = city.flows[Commodities.COMM_PRODUCTS][1] if Commodities.COMM_PRODUCTS in city.flows else 0
 		var share_satisfied = clamp(products_available / float(max(total_workers / 2, 1)), 0, 1)
 		
 		if all_workers_supplied:
 			print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
-			if total_workers <= Constants.NO_PRODUCTS_CITY_POP:
+			if total_workers <= Consts.NO_PRODUCTS_CITY_POP:
 				share_satisfied = 1.0
 			
-			if randf() < Constants.CITY_GROWTH_PROB * share_satisfied:
+			if randf() < Consts.CITY_GROWTH_PROB * share_satisfied:
 				city.workers += 1
 				city.update_visuals(planet_data)
 
@@ -144,20 +144,20 @@ func assign_city_workers(city: City, builder: BuildManager):
 			rel_weights[i] = 1.0 / rel_weights.size()
 	
 	var comm_map = {}
-	for i in range(Constants.COMM_ALL.size()):
-		comm_map[Constants.COMM_ALL[i]] = i
+	for i in range(Commodities.COMM_ALL.size()):
+		comm_map[Commodities.COMM_ALL[i]] = i
 	
 	while city.workers > 0:
 		var total_workers = city.workers
 		var comm_workers = []
-		comm_workers.resize(Constants.COMM_ALL.size())
+		comm_workers.resize(Commodities.COMM_ALL.size())
 		for i in range(comm_workers.size()):
 			comm_workers[i] = 0
 		
 		for node in city.land_use:
 			var lu: int = city.land_use[node]
-			var workers: int = Constants.LU_WORKERS[lu]
-			var comm: String = Constants.LU_OUTPUT[lu]
+			var workers: int = LandUse.LU_WORKERS[lu]
+			var comm: String = LandUse.LU_OUTPUT[lu]
 			var comm_id: int = comm_map[comm]
 			comm_workers[comm_id] += workers
 			total_workers += workers
@@ -165,8 +165,8 @@ func assign_city_workers(city: City, builder: BuildManager):
 		var target_workers = []
 		var max_diff = 0
 		var best_commodity = -1
-		target_workers.resize(Constants.COMM_ALL.size())
-		for i in range(Constants.COMM_ALL.size()):
+		target_workers.resize(Commodities.COMM_ALL.size())
+		for i in range(Commodities.COMM_ALL.size()):
 			target_workers[i] = total_workers * rel_weights[i]
 			var diff = target_workers[i] - comm_workers[i]
 			if diff > max_diff:
@@ -180,17 +180,17 @@ func assign_city_workers(city: City, builder: BuildManager):
 		var max_solution = [-1, -1]
 		
 		for node in city.cells:
-			if not builder.can_set_land_use(city, node, Constants.LU_NONE)[0]:
+			if not builder.can_set_land_use(city, node, LandUse.LU_NONE)[0]:
 				continue
 			
 			var veg = planet_data.get_node(node).vegetation_type
 			var lu_options = constants.VEG_MAPPING[veg]
 			
 			for lu in lu_options:
-				if comm_map[Constants.LU_OUTPUT[lu]] == best_commodity \
-						and Constants.LU_WORKERS[lu] <= city.workers \
+				if comm_map[LandUse.LU_OUTPUT[lu]] == best_commodity \
+						and LandUse.LU_WORKERS[lu] <= city.workers \
 						and city.has_landuse_requirements(lu):
-					var opt: Constants.VegLandUse = lu_options[lu]
+					var opt: LandUse.VegLandUse = lu_options[lu]
 					var amount = opt.source.amount if opt.source != null else 0
 					
 					var dist = city.cells[node]

@@ -4,7 +4,7 @@ class_name Port
 func init(node: int, planet_data):
 	.init(node, planet_data)
 	
-	type = Constants.FAC_PORT
+	type = Facilities.FAC_PORT
 	planet_data.set_port(node, true)
 
 

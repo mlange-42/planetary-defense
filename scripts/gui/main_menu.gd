@@ -126,7 +126,7 @@ func change_scene(name: String):
 
 
 func list_saved_games():
-	var path: String = "user://%s" % Constants.SAVEGAME_DIR
+	var path: String = "user://%s" % Consts.SAVEGAME_DIR
 	
 	var game_files = []
 	var dir = Directory.new()
@@ -150,14 +150,14 @@ func save_options():
 	var config = ConfigFile.new()
 	config.set_value("Graphics", "settings", graphics_settings)
 	
-	FileUtil.create_user_dir(Constants.CONFIG_DIR)
+	FileUtil.create_user_dir(Consts.CONFIG_DIR)
 	
-	config.save("user://%s/options.cfg" % Constants.CONFIG_DIR)
+	config.save("user://%s/options.cfg" % Consts.CONFIG_DIR)
 
 
 func load_options():
 	var config = ConfigFile.new()
-	var err = config.load("user://%s/options.cfg" % Constants.CONFIG_DIR)
+	var err = config.load("user://%s/options.cfg" % Consts.CONFIG_DIR)
 	
 	if err == OK:
 		graphics_settings = config.get_value("Graphics", "settings")

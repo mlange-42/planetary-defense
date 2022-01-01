@@ -2,7 +2,7 @@ class_name BuildManager
 
 const ROAD_CAPACITY = 25
 
-var constants: Constants
+var constants: LandUse
 
 var network: RoadNetwork
 var planet_data = null
@@ -12,7 +12,7 @@ var parent_node: Spatial
 
 # warning-ignore:shadowed_variable
 # warning-ignore:shadowed_variable
-func _init(consts: Constants, net: RoadNetwork, planet_data, taxes: TaxManager, node: Spatial):
+func _init(consts: LandUse, net: RoadNetwork, planet_data, taxes: TaxManager, node: Spatial):
 	self.constants = consts
 	self.network = net
 	self.planet_data = planet_data
@@ -27,14 +27,14 @@ func add_road(path: Array) -> bool:
 	var sum_cost = 0
 	
 	for i in range(path.size()-1):
-		if taxes.budget < sum_cost + Constants.ROAD_COSTS:
+		if taxes.budget < sum_cost + Consts.ROAD_COSTS:
 			break
 		
 		var p1 = path[i]
 		var p2 = path[i+1]
 		if not network.points_connected(p1, p2):
 			network.connect_points(p1, p2, ROAD_CAPACITY)
-			sum_cost += Constants.ROAD_COSTS
+			sum_cost += Consts.ROAD_COSTS
 	
 	taxes.budget -= sum_cost
 	
@@ -55,18 +55,18 @@ func remove_road(path: Array) -> bool:
 
 
 func add_facility(type: String, location: int, name: String):
-	if not Constants.FACILITY_SCENES.has(type):
+	if not Facilities.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
 		return [null, "WARNING: no scene resource found for %s" % type]
 	
 	if network.has_facility(location) or planet_data.get_node(location).is_occupied:
 		return [null, "Location already occupied"]
 	
-	var costs = Constants.FACILITY_COSTS[type]
+	var costs = Facilities.FACILITY_COSTS[type]
 	if costs > taxes.budget:
 		return [null, "Not enough money (requires %d)" % costs]
 	
-	var facility: Facility = load(Constants.FACILITY_SCENES[type]).instance()
+	var facility: Facility = load(Facilities.FACILITY_SCENES[type]).instance()
 	if not facility.can_build(planet_data, location):
 		facility.queue_free()
 		return [null, "Can't build this facility here"]
@@ -94,30 +94,30 @@ func add_facility_scene(facility: Facility, name: String):
 	
 
 
-# Use land_use = Constants.LU_NONE to ignore specific requirements
+# Use land_use = LandUse.LU_NONE to ignore specific requirements
 func can_set_land_use(city: City, node: int, land_use: int):
 	if node in city.cells \
 			and not network.is_road(node) \
 			and not network.has_facility(node) \
 			and not planet_data.get_node(node).is_occupied:
 		
-		if land_use == Constants.LU_NONE:
+		if land_use == LandUse.LU_NONE:
 			return [true, null]
 		
 		var req = city.has_landuse_requirements(land_use)
 		if req:
 			return [true, null]
 		else:
-			return [false, "Requirements not met: %s" % Constants.LU_REQUIREMENTS[land_use]]
+			return [false, "Requirements not met: %s" % LandUse.LU_REQUIREMENTS[land_use]]
 	else:
 		return [false, "Land is already occupied"]
 
 
 func set_land_use(city: City, node: int, land_use: int):
-	if land_use == Constants.LU_NONE:
+	if land_use == LandUse.LU_NONE:
 		if node in city.land_use:
 			var lut = city.land_use[node]
-			city.workers += Constants.LU_WORKERS[lut]
+			city.workers += LandUse.LU_WORKERS[lut]
 			# warning-ignore:return_value_discarded
 			city.land_use.erase(node)
 			planet_data.set_occupied(node, false)
@@ -133,15 +133,15 @@ func set_land_use(city: City, node: int, land_use: int):
 	var veg = planet_data.get_node(node).vegetation_type
 	var lu: Dictionary = constants.LU_MAPPING[land_use]
 	
-	if city.workers < Constants.LU_WORKERS[land_use]:
-		return "Not enough workers (requires %d)" % Constants.LU_WORKERS[land_use]
+	if city.workers < LandUse.LU_WORKERS[land_use]:
+		return "Not enough workers (requires %d)" % LandUse.LU_WORKERS[land_use]
 	
 	if not veg in lu:
-		return "Vegetation type %s can't be used for %s" % [Constants.VEG_NAMES[veg], Constants.LU_NAMES[land_use]]
+		return "Vegetation type %s can't be used for %s" % [LandUse.VEG_NAMES[veg], LandUse.LU_NAMES[land_use]]
 	
 	planet_data.set_occupied(node, true)
 	city.land_use[node] = land_use
-	city.workers -= Constants.LU_WORKERS[land_use]
+	city.workers -= LandUse.LU_WORKERS[land_use]
 	city.update_visuals(planet_data)
 	
 	return null

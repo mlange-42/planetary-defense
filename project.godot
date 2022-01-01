@@ -49,10 +49,15 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/gui/states/city/city_production_info.gd"
 }, {
-"base": "Node",
-"class": "Constants",
+"base": "Reference",
+"class": "Commodities",
 "language": "GDScript",
-"path": "res://scripts/constants.gd"
+"path": "res://scripts/constants/commodities.gd"
+}, {
+"base": "Reference",
+"class": "Consts",
+"language": "GDScript",
+"path": "res://scripts/constants/consts.gd"
 }, {
 "base": "ImmediateGeometry",
 "class": "DebugDraw",
@@ -68,6 +73,11 @@ _global_script_classes=[ {
 "class": "EditCityState",
 "language": "GDScript",
 "path": "res://scripts/gui/states/edit_city.gd"
+}, {
+"base": "Reference",
+"class": "Facilities",
+"language": "GDScript",
+"path": "res://scripts/constants/facilities.gd"
 }, {
 "base": "Spatial",
 "class": "Facility",
@@ -133,6 +143,11 @@ _global_script_classes=[ {
 "class": "IcoSphere",
 "language": "NativeScript",
 "path": "res://scripts/native/ico_sphere.gdns"
+}, {
+"base": "Node",
+"class": "LandUse",
+"language": "GDScript",
+"path": "res://scripts/constants/land_use.gd"
 }, {
 "base": "Button",
 "class": "LandUseButton",
@@ -223,10 +238,12 @@ _global_script_class_icons={
 "CityManager": "",
 "CityNames": "",
 "CityProductionInfo": "",
-"Constants": "",
+"Commodities": "",
+"Consts": "",
 "DebugDraw": "",
 "DefaultState": "",
 "EditCityState": "",
+"Facilities": "",
 "Facility": "",
 "FacilityButton": "",
 "FileUtil": "",
@@ -240,6 +257,7 @@ _global_script_class_icons={
 "GuiState": "",
 "HeightMap": "",
 "IcoSphere": "",
+"LandUse": "",
 "LandUseButton": "",
 "Mouse": "",
 "MultiCommodityFlow": "",
@@ -267,7 +285,7 @@ config/windows_native_icon="res://assets/icons/icon.ico"
 
 [autoload]
 
-GameConstants="*res://scripts/constants.gd"
+VegetationLandUse="*res://scripts/constants/land_use.gd"
 
 [debug]
 
