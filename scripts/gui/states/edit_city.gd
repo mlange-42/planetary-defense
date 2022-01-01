@@ -122,7 +122,7 @@ func update_node_info(node: int):
 			if res_here[0] in res:
 				var prod: LandUse.VegLandUse = res[res_id]
 				var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
-				text += " %-10s%s\n" % [Resource.RES_NAMES[res_id], prod_string]
+				text += " %-10s%s\n" % [Resources.RES_NAMES[res_id], prod_string]
 	
 	node_text.text = text.substr(0, text.length()-1)
 

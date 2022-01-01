@@ -42,6 +42,7 @@ onready var facilities: Spatial
 
 onready var road_debug: DebugDraw
 onready var path_debug: DebugDraw
+onready var resource_debug: DebugDraw
 onready var flows_graphs: FlowGraphs
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -74,6 +75,10 @@ func _ready():
 	path_debug = DebugDraw.new()
 	path_debug.material_override = material
 	add_child(path_debug)
+	
+	resource_debug = DebugDraw.new()
+	resource_debug.material_override = material
+	add_child(resource_debug)
 	
 	flows_graphs = FlowGraphs.new()
 	flows_graphs.material_override = material
@@ -126,6 +131,9 @@ func _ready():
 		self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, roads, planet_data)
+		
+		self.resources.generate_resources()
+		_redraw_resources()
 		
 		if not load_planet:
 			FileUtil.create_user_dir(Consts.SAVEGAME_DIR)
@@ -217,6 +225,7 @@ func load_game():
 	file.close()
 	
 	_redraw_roads()
+	_redraw_resources()
 
 
 func calc_point_path(from: int, to: int) -> Array:
@@ -264,6 +273,10 @@ func get_facility(id: int):
 
 func _redraw_roads():
 	road_debug.draw_roads(planet_data, roads, Color(0.02, 0.02, 0.02), Color.red)
+
+
+func _redraw_resources():
+	resource_debug.draw_resources(planet_data, resources)
 
 
 func draw_flows(commodity: String, color1: Color, color2: Color) -> int:

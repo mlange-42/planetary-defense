@@ -25,6 +25,26 @@ const VEG_NAMES = {
 }
 
 
+const VEG_RESOURCES = {
+	Resources.RES_METAL: {
+		VEG_DESERT: {
+			"probability": 0.001,
+			"radius": 1,
+			"amount": 1000,
+			"elevation": [0.0, 1.0],
+		}
+	},
+	Resources.RES_OIL: {
+		VEG_DESERT: {
+			"probability": 0.0001,
+			"radius": 3,
+			"amount": 250,
+			"elevation": [0.0, 0.1],
+		}
+	},
+}
+
+
 const LU_NONE: int = 0
 const LU_CROPS: int = 1
 const LU_FOREST: int = 2

@@ -124,6 +124,11 @@ impl PlanetData {
     }
 
     #[export]
+    fn get_max_elevation(&self, _owner: &Reference) -> f32 {
+        self.properties.max_elevation
+    }
+
+    #[export]
     fn get_node_count(&self, _owner: &Reference) -> usize {
         self.nodes.len()
     }
