@@ -1,44 +1,12 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/gui/states/settings.gd" type="Script" id=1]
 [ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
-
-[sub_resource type="InputEventKey" id=5]
-pressed = true
-scancode = 67
-
-[sub_resource type="ShortCut" id=2]
-shortcut = SubResource( 5 )
-
-[sub_resource type="InputEventKey" id=1]
-pressed = true
-scancode = 76
-
-[sub_resource type="ShortCut" id=4]
-shortcut = SubResource( 1 )
-
-[sub_resource type="InputEventKey" id=6]
-pressed = true
-scancode = 82
-
-[sub_resource type="ShortCut" id=7]
-shortcut = SubResource( 6 )
-
-[sub_resource type="InputEventKey" id=8]
-pressed = true
-scancode = 65
-
-[sub_resource type="ShortCut" id=9]
-shortcut = SubResource( 8 )
-
-[sub_resource type="InputEventKey" id=10]
-control = true
-command = true
-pressed = true
-scancode = 65
-
-[sub_resource type="ShortCut" id=11]
-shortcut = SubResource( 10 )
+[ext_resource path="res://assets/shortkeys/c.tres" type="ShortCut" id=3]
+[ext_resource path="res://assets/shortkeys/l.tres" type="ShortCut" id=4]
+[ext_resource path="res://assets/shortkeys/r.tres" type="ShortCut" id=5]
+[ext_resource path="res://assets/shortkeys/a.tres" type="ShortCut" id=6]
+[ext_resource path="res://assets/shortkeys/ctrl_a.tres" type="ShortCut" id=7]
 
 [node name="Settings" type="MarginContainer"]
 anchor_bottom = 1.0
@@ -80,21 +48,21 @@ text = "Visibility"
 margin_top = 18.0
 margin_right = 106.0
 margin_bottom = 42.0
-shortcut = SubResource( 2 )
+shortcut = ExtResource( 3 )
 text = "City labels"
 
 [node name="LandUse" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
 margin_top = 46.0
 margin_right = 106.0
 margin_bottom = 70.0
-shortcut = SubResource( 4 )
+shortcut = ExtResource( 4 )
 text = "Land use"
 
 [node name="Roads" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
 margin_top = 74.0
 margin_right = 106.0
 margin_bottom = 98.0
-shortcut = SubResource( 7 )
+shortcut = ExtResource( 5 )
 text = "Roads"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Buttons/PanelContainer/VBoxContainer"]
@@ -112,7 +80,7 @@ margin_left = 65.0
 margin_right = 85.0
 margin_bottom = 20.0
 hint_tooltip = "Enable all"
-shortcut = SubResource( 9 )
+shortcut = ExtResource( 6 )
 text = "+"
 
 [node name="DisableAllButton" type="Button" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
@@ -120,7 +88,7 @@ margin_left = 89.0
 margin_right = 106.0
 margin_bottom = 20.0
 hint_tooltip = "Disable all"
-shortcut = SubResource( 11 )
+shortcut = ExtResource( 7 )
 text = "-"
 
 [connection signal="back_pressed" from="Buttons/StateControl" to="." method="_on_Back_pressed"]

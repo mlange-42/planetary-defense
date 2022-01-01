@@ -1,41 +1,11 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://assets/shortkeys/m.tres" type="ShortCut" id=1]
+[ext_resource path="res://assets/shortkeys/s.tres" type="ShortCut" id=2]
 [ext_resource path="res://scripts/gui/states/default.gd" type="Script" id=3]
-
-[sub_resource type="InputEventKey" id=7]
-pressed = true
-scancode = 77
-
-[sub_resource type="ShortCut" id=8]
-shortcut = SubResource( 7 )
-
-[sub_resource type="InputEventKey" id=11]
-pressed = true
-scancode = 83
-
-[sub_resource type="ShortCut" id=12]
-shortcut = SubResource( 11 )
-
-[sub_resource type="InputEventKey" id=1]
-pressed = true
-scancode = 67
-
-[sub_resource type="ShortCut" id=2]
-shortcut = SubResource( 1 )
-
-[sub_resource type="InputEventKey" id=3]
-pressed = true
-scancode = 82
-
-[sub_resource type="ShortCut" id=4]
-shortcut = SubResource( 3 )
-
-[sub_resource type="InputEventKey" id=5]
-pressed = true
-scancode = 70
-
-[sub_resource type="ShortCut" id=6]
-shortcut = SubResource( 5 )
+[ext_resource path="res://assets/shortkeys/c.tres" type="ShortCut" id=4]
+[ext_resource path="res://assets/shortkeys/r.tres" type="ShortCut" id=5]
+[ext_resource path="res://assets/shortkeys/f.tres" type="ShortCut" id=6]
 
 [sub_resource type="InputEventKey" id=9]
 control = true
@@ -79,7 +49,7 @@ margin_bottom = 131.0
 margin_right = 106.0
 margin_bottom = 20.0
 hint_tooltip = "Save, quit, etc"
-shortcut = SubResource( 8 )
+shortcut = ExtResource( 1 )
 text = "Main menu"
 
 [node name="SettingsButton" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
@@ -87,7 +57,7 @@ margin_top = 24.0
 margin_right = 106.0
 margin_bottom = 44.0
 hint_tooltip = "Graphics and visibility settings"
-shortcut = SubResource( 12 )
+shortcut = ExtResource( 2 )
 text = "Settings"
 
 [node name="HSeparator" type="HSeparator" parent="DefaultControls/PanelContainer/Buttons"]
@@ -100,7 +70,7 @@ margin_top = 56.0
 margin_right = 106.0
 margin_bottom = 76.0
 hint_tooltip = "Found a new city. Click cities to manage them."
-shortcut = SubResource( 2 )
+shortcut = ExtResource( 4 )
 text = "Build city"
 
 [node name="Roads" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
@@ -108,7 +78,7 @@ margin_top = 80.0
 margin_right = 106.0
 margin_bottom = 100.0
 hint_tooltip = "Build and remove roads"
-shortcut = SubResource( 4 )
+shortcut = ExtResource( 5 )
 text = "Build roads"
 
 [node name="Flows" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
@@ -116,7 +86,7 @@ margin_top = 104.0
 margin_right = 106.0
 margin_bottom = 124.0
 hint_tooltip = "Inspect flows"
-shortcut = SubResource( 6 )
+shortcut = ExtResource( 6 )
 text = "View flows"
 
 [node name="Placeholder" type="Control" parent="DefaultControls"]
