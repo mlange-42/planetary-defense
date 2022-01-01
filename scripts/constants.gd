@@ -30,6 +30,9 @@ class Conversion:
 		to = t
 		to_amount = t_amt
 
+const MESSAGE_INFO: int = 0
+const MESSAGE_WARNING: int = 1
+const MESSAGE_ERROR: int = 2
 
 const SAVEGAME_DIR = "save"
 const CONFIG_DIR = "config"

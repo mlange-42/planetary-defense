@@ -179,12 +179,12 @@ func on_planet_clicked(node: int, button: int):
 			# warning-ignore:return_value_discarded
 			var err = fsm.planet.builder.set_land_use(city, node, curr_tool)
 			if err != null:
-				fsm.show_message(err)
+				fsm.show_message(err, Constants.MESSAGE_ERROR)
 		elif button == BUTTON_RIGHT:
 			# warning-ignore:return_value_discarded
 			var err = fsm.planet.builder.set_land_use(city, node, Constants.LU_NONE)
 			if err != null:
-				fsm.show_message(err)
+				fsm.show_message(err, Constants.MESSAGE_ERROR)
 		update_city_info()
 	else:
 		if button == BUTTON_LEFT:
@@ -195,4 +195,4 @@ func on_planet_clicked(node: int, button: int):
 					fac_err[0].city_node_id = city.node_id
 					city.add_facility(node, fac_err[0])
 				else:
-					fsm.show_message(fac_err[1])
+					fsm.show_message(fac_err[1], Constants.MESSAGE_ERROR)

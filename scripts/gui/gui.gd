@@ -87,10 +87,15 @@ func _notification(what):
 
 func save_game():
 	planet.save_game()
-	show_message("Saved game")
+	show_message("Saved game", Constants.MESSAGE_INFO)
 
 
-func show_message(message: String):
+func show_message(message: String, message_level: int):
+	match message_level:
+		Constants.MESSAGE_INFO: error_label.self_modulate = Color.white
+		Constants.MESSAGE_WARNING: error_label.self_modulate = Color.yellow
+		_: error_label.self_modulate = Color.orange
+	
 	error_label.text = message
 	error_container.visible = true
 	error_timer.start()
