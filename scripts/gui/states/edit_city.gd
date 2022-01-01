@@ -117,12 +117,12 @@ func update_node_info(node: int):
 	
 	if res_here != null:
 		var res_id = res_here[0]
-		for r in fsm.constants.LU_RESOURCES:
-			var res: Dictionary = fsm.constants.LU_RESOURCES[r]
+		for lut in fsm.constants.LU_RESOURCES:
+			var res: Dictionary = fsm.constants.LU_RESOURCES[lut]
 			if res_here[0] in res:
 				var prod: LandUse.VegLandUse = res[res_id]
 				var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
-				text += " %-10s%s\n" % [Resources.RES_NAMES[res_id], prod_string]
+				text += " %-10s%s\n" % [LandUse.LU_NAMES[lut], prod_string]
 	
 	node_text.text = text.substr(0, text.length()-1)
 

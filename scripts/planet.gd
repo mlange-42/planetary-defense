@@ -78,6 +78,8 @@ func _ready():
 	
 	resource_debug = DebugDraw.new()
 	resource_debug.material_override = material
+	resource_debug.set_layer_mask_bit(Consts.LAYER_BASE, false)
+	resource_debug.set_layer_mask_bit(Consts.LAYER_RESOURCES, true)
 	add_child(resource_debug)
 	
 	flows_graphs = FlowGraphs.new()

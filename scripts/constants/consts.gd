@@ -23,3 +23,4 @@ const LAYER_BASE: int = 0
 const LAYER_LABELS: int = 1
 const LAYER_LAND_USE: int = 2
 const LAYER_ROADS: int = 3
+const LAYER_RESOURCES: int = 4

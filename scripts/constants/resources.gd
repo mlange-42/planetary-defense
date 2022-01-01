@@ -9,6 +9,6 @@ const RES_NAMES = {
 }
 
 const RES_COLORS = {
-	RES_METAL: Color.coral,
+	RES_METAL: Color.darkorange,
 	RES_OIL: Color.black,
 }

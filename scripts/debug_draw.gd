@@ -48,16 +48,21 @@ func draw_roads(planet_data, roads: RoadNetwork, color1: Color, color2: Color):
 
 func draw_resources(planet_data, resources: ResourceManager):
 	clear()
-	begin(Mesh.PRIMITIVE_LINES)
+	begin(Mesh.PRIMITIVE_POINTS)
 	
 	for node in resources.resources:
 		var res = resources.resources[node]
 		var pos: Vector3 = planet_data.get_node(node).position
-		var col = Resources.RES_COLORS[res[0]]
-		var norm = pos.normalized()
 		
-		set_color(col)
-		add_vertex(pos)
-		add_vertex(pos + 0.2 * norm)
+		_draw_resource(pos, res[0])
 	
 	end()
+
+
+func _draw_resource(pos: Vector3, type: int):
+	var col = Resources.RES_COLORS[type]
+	var norm = pos.normalized()
+	
+	set_color(col)
+	#add_vertex(pos)
+	add_vertex(pos + 3 * Consts.DRAW_HEIGHT_OFFSET * norm)
