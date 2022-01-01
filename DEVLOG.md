@@ -1,5 +1,31 @@
 # Development Log
 
+## 2022/01/01 -- Usability improvements
+
+[v0.2.0]
+
+Worked on improving accessibility through more information provided to the player.
+
+Given the new major features finances and flow visualization, as well as the improved accessibility, it is time for release v.0.2.0.
+
+### GUI improvements
+
+* Add keyboard shortcuts for all buttons
+* Tooltips with description, cost and requirements for everything that can be built (except cities)
+* Information about reason on failed operations (e.g. not enough money)
+* In-game settings for visibility of city labels, land use and roads
+* Rework save/quit menu, add quit conformation
+* Fullscreen option in main menu
+* Rework city production panel (incl. tooltips)
+
+### Further changes
+
+* Slightly increased camera FOV to keep horizon in sight
+
+### Bug fixes
+
+* Fix saving city resource conversion (breaks save-game compatibility)
+
 ## 2021/12/30 -- Finances, tiles, information
 
 [ba9e56d]
