@@ -20,6 +20,14 @@ func _ready():
 	push("default", {})
 
 
+func _unhandled_key_input(event: InputEventKey):
+	if event.pressed:
+		if event.scancode == KEY_S and event.control:
+			save_game()
+		elif event.scancode == KEY_Q and event.control:
+			get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
+
+
 func on_planet_hovered(node: int):
 	state().on_planet_hovered(node)
 
@@ -79,6 +87,7 @@ func _notification(what):
 
 func save_game():
 	planet.save_game()
+	show_message("Saved game")
 
 
 func show_message(message: String):
