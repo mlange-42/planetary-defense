@@ -33,7 +33,7 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="Margin/EditControls"]
 margin_right = 120.0
-margin_bottom = 122.0
+margin_bottom = 98.0
 
 [node name="StateControl" parent="Margin/EditControls/Buttons" instance=ExtResource( 2 )]
 text = "Manage city"
@@ -57,30 +57,23 @@ text = "Land use"
 [node name="FacilityPanel" type="PanelContainer" parent="Margin/EditControls/Buttons"]
 margin_top = 70.0
 margin_right = 120.0
-margin_bottom = 122.0
+margin_bottom = 98.0
 
 [node name="FacilityButtons" type="VBoxContainer" parent="Margin/EditControls/Buttons/FacilityPanel"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 113.0
-margin_bottom = 45.0
+margin_bottom = 21.0
 
 [node name="Facilities" type="Label" parent="Margin/EditControls/Buttons/FacilityPanel/FacilityButtons"]
 margin_right = 106.0
 margin_bottom = 14.0
 text = "Facilities"
 
-[node name="Port" type="Button" parent="Margin/EditControls/Buttons/FacilityPanel/FacilityButtons"]
-margin_top = 18.0
-margin_right = 106.0
-margin_bottom = 38.0
-toggle_mode = true
-text = "Port"
-
 [node name="WeightPanel" type="PanelContainer" parent="Margin/EditControls"]
-margin_top = 126.0
+margin_top = 102.0
 margin_right = 120.0
-margin_bottom = 322.0
+margin_bottom = 298.0
 
 [node name="WeightControls" type="VBoxContainer" parent="Margin/EditControls/WeightPanel"]
 margin_left = 7.0
@@ -153,7 +146,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -244.0
-margin_top = -192.0
+margin_top = -127.0
 margin_right = -10.0
 margin_bottom = -10.0
 grow_horizontal = 0
@@ -164,7 +157,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="InfoContainer"]
 margin_right = 244.0
-margin_bottom = 197.0
+margin_bottom = 127.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -188,17 +181,20 @@ __meta__ = {
 [node name="CityPanel" type="PanelContainer" parent="InfoContainer/VBoxContainer"]
 margin_top = 98.0
 margin_right = 244.0
-margin_bottom = 197.0
+margin_bottom = 127.0
 
-[node name="CityText" type="RichTextLabel" parent="InfoContainer/VBoxContainer/CityPanel"]
+[node name="CityInfoContainer" type="VBoxContainer" parent="InfoContainer/VBoxContainer/CityPanel"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 237.0
-margin_bottom = 92.0
-rect_min_size = Vector2( 230, 85 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-bbcode_enabled = true
+margin_bottom = 22.0
+
+[node name="CityText" type="RichTextLabel" parent="InfoContainer/VBoxContainer/CityPanel/CityInfoContainer"]
+margin_right = 230.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 0, 12 )
+text = "Name"
+fit_content_height = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -180,7 +180,7 @@ func assign_city_workers(city: City, builder: BuildManager):
 		var max_solution = [-1, -1]
 		
 		for node in city.cells:
-			if not builder.can_set_land_use(city, node, Constants.LU_NONE):
+			if not builder.can_set_land_use(city, node, Constants.LU_NONE)[0]:
 				continue
 			
 			var veg = planet_data.get_node(node).vegetation_type
@@ -201,7 +201,7 @@ func assign_city_workers(city: City, builder: BuildManager):
 			
 		if max_solution[0] < 0:
 			break
-		if not builder.set_land_use(city, max_solution[0], max_solution[1]):
+		if builder.set_land_use(city, max_solution[0], max_solution[1]) != null:
 			print("Warning: unable to auto-assign land use")
 			break
 	

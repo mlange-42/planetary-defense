@@ -44,6 +44,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/city_names.gd"
 }, {
+"base": "Control",
+"class": "CityProductionInfo",
+"language": "GDScript",
+"path": "res://scripts/gui/states/city/city_production_info.gd"
+}, {
 "base": "Node",
 "class": "Constants",
 "language": "GDScript",
@@ -68,6 +73,11 @@ _global_script_classes=[ {
 "class": "Facility",
 "language": "GDScript",
 "path": "res://scripts/objects/facility.gd"
+}, {
+"base": "Button",
+"class": "FacilityButton",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/facility_button.gd"
 }, {
 "base": "Reference",
 "class": "FileUtil",
@@ -127,7 +137,7 @@ _global_script_classes=[ {
 "base": "Button",
 "class": "LandUseButton",
 "language": "GDScript",
-"path": "res://scripts/gui/land_use_button.gd"
+"path": "res://scripts/gui/controls/land_use_button.gd"
 }, {
 "base": "Spatial",
 "class": "Mouse",
@@ -207,11 +217,13 @@ _global_script_class_icons={
 "CityLabel": "",
 "CityManager": "",
 "CityNames": "",
+"CityProductionInfo": "",
 "Constants": "",
 "DebugDraw": "",
 "DefaultState": "",
 "EditCityState": "",
 "Facility": "",
+"FacilityButton": "",
 "FileUtil": "",
 "FlowGraphs": "",
 "FlowManager": "",

@@ -4,12 +4,13 @@ class_name Port
 func init(node: int, planet_data):
 	.init(node, planet_data)
 	
+	type = Constants.FAC_PORT
 	planet_data.set_port(node, true)
 
 
 func save() -> Dictionary:
 	var dict = {
-		"type": "Port",
+		"type": type,
 		"name": name,
 		"node_id": node_id,
 		"city_node_id": city_node_id,

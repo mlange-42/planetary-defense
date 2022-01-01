@@ -3,6 +3,8 @@ class_name Facility
 
 var city_node_id: int = -1
 
+var type: String
+
 var facility_id: int
 var node_id: int
 

@@ -57,25 +57,25 @@ func remove_road(path: Array) -> bool:
 func add_facility(type: String, location: int, name: String):
 	if not Constants.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
-		return null
+		return [null, "WARNING: no scene resource found for %s" % type]
 	
 	if network.has_facility(location) or planet_data.get_node(location).is_occupied:
-		return null
+		return [null, "Location already occupied"]
 	
 	var costs = Constants.FACILITY_COSTS[type]
 	if costs > taxes.budget:
-		return
+		return [null, "Not enough money (requires %d)" % costs]
 	
 	var facility: Facility = load(Constants.FACILITY_SCENES[type]).instance()
 	if not facility.can_build(planet_data, location):
 		facility.queue_free()
-		return null
+		return [null, "Can't build this facility here"]
 	
 	facility.init(location, planet_data)
 	
 	taxes.budget -= costs
 	
-	return add_facility_scene(facility, name)
+	return [add_facility_scene(facility, name), null]
 
 
 func add_facility_scene(facility: Facility, name: String):
@@ -101,12 +101,19 @@ func can_set_land_use(city: City, node: int, land_use: int):
 			and not network.has_facility(node) \
 			and not planet_data.get_node(node).is_occupied:
 		
-		return land_use == Constants.LU_NONE or city.has_landuse_requirements(land_use)
+		if land_use == Constants.LU_NONE:
+			return [true, null]
+		
+		var req = city.has_landuse_requirements(land_use)
+		if req:
+			return [true, null]
+		else:
+			return [false, "Requirements not met: %s" % Constants.LU_REQUIREMENTS[land_use]]
 	else:
-		return false
+		return [false, "Land is already occupied"]
 
 
-func set_land_use(city: City, node: int, land_use: int) -> bool:
+func set_land_use(city: City, node: int, land_use: int):
 	if land_use == Constants.LU_NONE:
 		if node in city.land_use:
 			var lut = city.land_use[node]
@@ -115,25 +122,26 @@ func set_land_use(city: City, node: int, land_use: int) -> bool:
 			city.land_use.erase(node)
 			planet_data.set_occupied(node, false)
 			city.update_visuals(planet_data)
-			return true
+			return null
 		else:
-			return false
+			return "Can't clear, land is not is use"
 	
-	if not can_set_land_use(city, node, land_use):
-		return false
+	var can_set_err = can_set_land_use(city, node, land_use)
+	if not can_set_err[0]:
+		return can_set_err[1]
 	
 	var veg = planet_data.get_node(node).vegetation_type
 	var lu: Dictionary = constants.LU_MAPPING[land_use]
 	
 	if city.workers < Constants.LU_WORKERS[land_use]:
-		return false
+		return "Not enough workers (requires %d)" % Constants.LU_WORKERS[land_use]
 	
 	if not veg in lu:
-		return false
+		return "Vegetation type %s can't be used for %s" % [Constants.VEG_NAMES[veg], Constants.LU_NAMES[land_use]]
 	
 	planet_data.set_occupied(node, true)
 	city.land_use[node] = land_use
 	city.workers -= Constants.LU_WORKERS[land_use]
 	city.update_visuals(planet_data)
 	
-	return true
+	return null
