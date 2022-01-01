@@ -263,6 +263,7 @@ _global_script_class_icons={
 config/name="PlanetaryDefense"
 run/main_scene="res://scenes/gui/main_menu.tscn"
 config/icon="res://assets/icons/icon.png"
+config/windows_native_icon="res://assets/icons/icon.ico"
 
 [autoload]
 
