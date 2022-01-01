@@ -1,0 +1,8 @@
+[gd_resource type="ShortCut" load_steps=2 format=2]
+
+[sub_resource type="InputEventKey" id=3]
+pressed = true
+scancode = 82
+
+[resource]
+shortcut = SubResource( 3 )
