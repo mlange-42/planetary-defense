@@ -69,6 +69,11 @@ const FACILITY_IN_CITY = {
 	FAC_PORT: true,
 }
 
+const FACILITY_KEYS = {
+	FAC_CITY: KEY_C,
+	FAC_PORT: KEY_P,
+}
+
 const COMM_FOOD: String = "Food"
 const COMM_RESOURCES: String = "Resources"
 const COMM_PRODUCTS: String = "Products"
@@ -154,6 +159,14 @@ const LU_INFO = {
 	LU_FOREST: "Grow crops to harvest resources.",
 	LU_FACTORY: "Transforms resources into products.",
 	LU_FISHERY: "Fishes for food.",
+}
+
+const LU_KEYS = {
+	LU_NONE: KEY_R,
+	LU_CROPS: KEY_C,
+	LU_FOREST: KEY_F,
+	LU_FACTORY: KEY_A,
+	LU_FISHERY: KEY_I,
 }
 
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(COMM_RESOURCES, 1, COMM_PRODUCTS, 1, 5))

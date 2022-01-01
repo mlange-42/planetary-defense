@@ -33,6 +33,12 @@ func init(the_fsm: Gui, args: Dictionary):
 		button.text = Constants.LU_NAMES[lu]
 		button.group = button_group
 		
+		var evt = InputEventKey.new()
+		evt.pressed = true
+		evt.scancode = Constants.LU_KEYS[lu]
+		button.shortcut = ShortCut.new()
+		button.shortcut.shortcut = evt
+		
 		buttons.add_child(button)
 	
 	var fac_buttons: Container = $Margin/EditControls/Buttons/FacilityPanel/FacilityButtons
@@ -42,6 +48,12 @@ func init(the_fsm: Gui, args: Dictionary):
 			button.facility = fac
 			button.text = fac
 			button.group = button_group
+			
+			var evt = InputEventKey.new()
+			evt.pressed = true
+			evt.scancode = Constants.FACILITY_KEYS[fac]
+			button.shortcut = ShortCut.new()
+			button.shortcut.shortcut = evt
 			
 			fac_buttons.add_child(button)
 
