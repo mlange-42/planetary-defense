@@ -51,6 +51,7 @@ var builder: BuildManager
 var flow: FlowManager
 var cities: CityManager
 var taxes: TaxManager
+var resources: ResourceManager
 
 # Array of Dictionaries to override parameters
 func _init(params: Array):
@@ -121,6 +122,7 @@ func _ready():
 		var consts: LandUse = $"/root/VegetationLandUse" as LandUse
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
+		self.resources = ResourceManager.new(planet_data)
 		self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, roads, planet_data)
@@ -154,6 +156,9 @@ func save_game():
 	var taxes_json = to_json(taxes.save())
 	file.store_line(taxes_json)
 	
+	var resources_json = to_json(resources.save())
+	file.store_line(resources_json)
+	
 	for node in roads.facilities:
 		var facility = roads.facilities[node]
 		
@@ -178,6 +183,10 @@ func load_game():
 	var taxes_json = file.get_line()
 	self.taxes = TaxManager.new()
 	self.taxes.read(parse_json(taxes_json))
+	
+	var resources_json = file.get_line()
+	self.resources = ResourceManager.new(planet_data)
+	self.resources.read(parse_json(resources_json))
 	
 	self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
 	self.flow = FlowManager.new(roads)

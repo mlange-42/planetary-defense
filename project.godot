@@ -205,6 +205,16 @@ _global_script_classes=[ {
 "path": "res://scripts/gui/states/quit_dialog.gd"
 }, {
 "base": "Reference",
+"class": "ResourceManager",
+"language": "GDScript",
+"path": "res://scripts/managers/resource_manager.gd"
+}, {
+"base": "Reference",
+"class": "Resources",
+"language": "GDScript",
+"path": "res://scripts/constants/resources.gd"
+}, {
+"base": "Reference",
 "class": "RoadNetwork",
 "language": "GDScript",
 "path": "res://scripts/managers/road_network.gd"
@@ -269,6 +279,8 @@ _global_script_class_icons={
 "Port": "",
 "ProductionInfo": "",
 "QuitDialog": "",
+"ResourceManager": "",
+"Resources": "",
 "RoadNetwork": "",
 "RoadsState": "",
 "SettingsState": "",

@@ -103,14 +103,26 @@ func update_node_info(node: int):
 		return
 		
 	var veg = fsm.planet.planet_data.get_node(node).vegetation_type
+	var res_here = fsm.planet.resources.resources.get(node, null)
 	
-	var text: String = "%s\n" % LandUse.VEG_NAMES[veg]
+	var res_str = "" if res_here == null else " - " + Resources.RES_NAMES[res_here[0]]
+	
+	var text: String = "%s%s\n" % [LandUse.VEG_NAMES[veg], res_str]
 	for lut in fsm.constants.LU_MAPPING:
 		var lu: Dictionary = fsm.constants.LU_MAPPING[lut]
 		if veg in lu:
 			var prod: LandUse.VegLandUse = lu[veg]
 			var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
 			text += " %-10s%s\n" % [LandUse.LU_NAMES[lut], prod_string]
+	
+	if res_here != null:
+		var res_id = res_here[0]
+		for r in fsm.constants.LU_RESOURCES:
+			var res: Dictionary = fsm.constants.LU_RESOURCES[r]
+			if res_here[0] in res:
+				var prod: LandUse.VegLandUse = res[res_id]
+				var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
+				text += " %-10s%s\n" % [Resource.RES_NAMES[res_id], prod_string]
 	
 	node_text.text = text.substr(0, text.length()-1)
 

@@ -30,6 +30,7 @@ const LU_CROPS: int = 1
 const LU_FOREST: int = 2
 const LU_FACTORY: int = 3
 const LU_FISHERY: int = 4
+const LU_MINES: int = 5
 
 const LU_COLORS = {
 	LU_NONE: Color.gray,
@@ -37,6 +38,7 @@ const LU_COLORS = {
 	LU_FOREST: Color.black,
 	LU_FACTORY: Color.red,
 	LU_FISHERY: Color.aqua,
+	LU_MINES: Color.magenta,
 }
 
 const LU_NAMES = {
@@ -45,6 +47,7 @@ const LU_NAMES = {
 	LU_FOREST: "Forest",
 	LU_FACTORY: "Factory",
 	LU_FISHERY: "Fishery",
+	LU_MINES: "Mines",
 }
 
 const LU_WORKERS = {
@@ -53,6 +56,7 @@ const LU_WORKERS = {
 	LU_FOREST: 1,
 	LU_FACTORY: 3,
 	LU_FISHERY: 1,
+	LU_MINES: 3,
 }
 
 const LU_OUTPUT = {
@@ -60,6 +64,7 @@ const LU_OUTPUT = {
 	LU_FOREST: Commodities.COMM_RESOURCES,
 	LU_FACTORY: Commodities.COMM_PRODUCTS,
 	LU_FISHERY: Commodities.COMM_FOOD,
+	LU_MINES: Commodities.COMM_RESOURCES,
 }
 
 const LU_REQUIREMENTS = {
@@ -68,6 +73,7 @@ const LU_REQUIREMENTS = {
 	LU_FOREST: [],
 	LU_FACTORY: [],
 	LU_FISHERY: [Facilities.FAC_PORT],
+	LU_MINES: [],
 }
 
 const LU_INFO = {
@@ -76,6 +82,7 @@ const LU_INFO = {
 	LU_FOREST: "Grow crops to harvest resources.",
 	LU_FACTORY: "Transforms resources into products.",
 	LU_FISHERY: "Fishes for food.",
+	LU_MINES: "Mines for resources.",
 }
 
 const LU_KEYS = {
@@ -84,6 +91,7 @@ const LU_KEYS = {
 	LU_FOREST: KEY_F,
 	LU_FACTORY: KEY_A,
 	LU_FISHERY: KEY_I,
+	LU_MINES: KEY_M,
 }
 
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(Commodities.COMM_RESOURCES, 1, Commodities.COMM_PRODUCTS, 1, 5))
@@ -113,9 +121,21 @@ var LU_MAPPING = {
 	LU_FISHERY: {
 		VEG_WATER: VegLandUse.new(Production.new(Commodities.COMM_FOOD, 2), null, null),
 	},
+	LU_MINES: {},
+}
+
+var LU_RESOURCES = {
+	LU_CROPS: {},
+	LU_FOREST: {},
+	LU_FACTORY: {},
+	LU_FISHERY: {},
+	LU_MINES: {
+		Resources.RES_METAL: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 10), null, null),
+	},
 }
 
 var VEG_MAPPING = _remap(LU_MAPPING)
+var RES_MAPPING = _remap(LU_RESOURCES)
 
 func _remap(map: Dictionary) -> Dictionary:
 	var res = {}
