@@ -24,3 +24,14 @@ func _on_visibility_changed(_button_pressed):
 func _on_Back_pressed():
 	fsm.pop()
 
+
+func _on_EnableAllButton_pressed():
+	city_labels.pressed = true
+	land_use.pressed = true
+	roads.pressed = true
+
+
+func _on_DisableAllButton_pressed():
+	city_labels.pressed = false
+	land_use.pressed = false
+	roads.pressed = false
