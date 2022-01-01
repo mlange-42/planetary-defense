@@ -87,6 +87,14 @@ const LU_OUTPUT = {
 	LU_MINES: Commodities.COMM_RESOURCES,
 }
 
+const LU_RESOURCE = {
+	LU_CROPS: null,
+	LU_FOREST: null,
+	LU_FACTORY: null,
+	LU_FISHERY: null,
+	LU_MINES: Resources.RES_METAL,
+}
+
 const LU_REQUIREMENTS = {
 	LU_NONE: [],
 	LU_CROPS: [],

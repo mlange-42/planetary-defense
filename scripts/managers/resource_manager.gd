@@ -51,6 +51,23 @@ func add_resources(node: int, radius: int, type: int, amount: int):
 			resources[n[0]] = [type, amount]
 
 
+func extract_resource(node: int, type: int, amount: int) -> int:
+	var value = 0
+	
+	if resources.has(node):
+		var res = resources[node]
+		if res[0] == type:
+			var v = min(res[1], amount)
+			if v == res[1]:
+				# warning-ignore:return_value_discarded
+				resources.erase(node)
+			else:
+				res[1] -= v
+			value = v
+	
+	return value
+
+
 func save() -> Dictionary:
 	return {
 		"resources": resources

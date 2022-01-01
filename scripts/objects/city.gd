@@ -162,6 +162,6 @@ func _draw_cells(planet_data):
 	for c in land_use:
 		var p = planet_data.get_position(c)
 		land_use_mesh.set_color(LandUse.LU_COLORS[land_use[c]])
-		land_use_mesh.add_vertex(self.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
+		land_use_mesh.add_vertex(self.to_local(p + Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
 	land_use_mesh.end()

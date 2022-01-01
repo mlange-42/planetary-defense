@@ -64,5 +64,4 @@ func _draw_resource(pos: Vector3, type: int):
 	var norm = pos.normalized()
 	
 	set_color(col)
-	#add_vertex(pos)
-	add_vertex(pos + 3 * Consts.DRAW_HEIGHT_OFFSET * norm)
+	add_vertex(pos + 0.5 * Consts.DRAW_HEIGHT_OFFSET * norm)

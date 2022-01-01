@@ -5,6 +5,7 @@ const ROAD_CAPACITY = 25
 var constants: LandUse
 
 var network: RoadNetwork
+var resources: ResourceManager
 var planet_data = null
 var taxes: TaxManager
 var parent_node: Spatial
@@ -12,9 +13,11 @@ var parent_node: Spatial
 
 # warning-ignore:shadowed_variable
 # warning-ignore:shadowed_variable
-func _init(consts: LandUse, net: RoadNetwork, planet_data, taxes: TaxManager, node: Spatial):
+# warning-ignore:shadowed_variable
+func _init(consts: LandUse, net: RoadNetwork, resources: ResourceManager, planet_data, taxes: TaxManager, node: Spatial):
 	self.constants = consts
 	self.network = net
+	self.resources = resources
 	self.planet_data = planet_data
 	self.taxes = taxes
 	self.parent_node = node
@@ -130,14 +133,21 @@ func set_land_use(city: City, node: int, land_use: int):
 	if not can_set_err[0]:
 		return can_set_err[1]
 	
+	var res_here = resources.resources.get(node, null)
+	var extract_resource = LandUse.LU_RESOURCE[land_use]
 	var veg = planet_data.get_node(node).vegetation_type
-	var lu: Dictionary = constants.LU_MAPPING[land_use]
+	var lu: Dictionary = constants.LU_MAPPING[land_use] \
+				if extract_resource == null else constants.LU_RESOURCES[land_use]
 	
 	if city.workers < LandUse.LU_WORKERS[land_use]:
 		return "Not enough workers (requires %d)" % LandUse.LU_WORKERS[land_use]
 	
-	if not veg in lu:
-		return "Vegetation type %s can't be used for %s" % [LandUse.VEG_NAMES[veg], LandUse.LU_NAMES[land_use]]
+	if extract_resource == null:
+		if not veg in lu:
+			return "Vegetation type %s can't be used for %s" % [LandUse.VEG_NAMES[veg], LandUse.LU_NAMES[land_use]]
+	else:
+		if res_here == null or res_here[0] != extract_resource:
+			return "Resource %s not available here" % Resources.RES_NAMES[extract_resource]
 	
 	planet_data.set_occupied(node, true)
 	city.land_use[node] = land_use

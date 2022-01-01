@@ -62,6 +62,7 @@ func _init(params: Array):
 
 func _ready():
 	var material = preload("res://assets/materials/unlit_vertex_color.tres")
+	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
 	
 	facilities = Spatial.new()
 	add_child(facilities)
@@ -77,7 +78,7 @@ func _ready():
 	add_child(path_debug)
 	
 	resource_debug = DebugDraw.new()
-	resource_debug.material_override = material
+	resource_debug.material_override = material_resources
 	resource_debug.set_layer_mask_bit(Consts.LAYER_BASE, false)
 	resource_debug.set_layer_mask_bit(Consts.LAYER_RESOURCES, true)
 	add_child(resource_debug)
@@ -130,9 +131,9 @@ func _ready():
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data)
-		self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
+		self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
 		self.flow = FlowManager.new(roads)
-		self.cities = CityManager.new(consts, roads, planet_data)
+		self.cities = CityManager.new(consts, roads, resources, planet_data)
 		
 		self.resources.generate_resources()
 		_redraw_resources()
@@ -198,9 +199,9 @@ func load_game():
 	self.resources = ResourceManager.new(planet_data)
 	self.resources.read(parse_json(resources_json))
 	
-	self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
+	self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
 	self.flow = FlowManager.new(roads)
-	self.cities = CityManager.new(consts, roads, planet_data)
+	self.cities = CityManager.new(consts, roads, resources, planet_data)
 	
 	while not file.eof_reached():
 		var line: String = file.get_line()
@@ -339,5 +340,6 @@ func next_turn():
 	taxes.road_transport_costs(roads.edges)
 	
 	_redraw_roads()
+	_redraw_resources()
 	
 	emit_budget()
