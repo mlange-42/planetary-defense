@@ -9,16 +9,16 @@ onready var roads: CheckBox = find_node("Roads")
 
 func _ready():
 	var cam = get_viewport().get_camera()
-	city_labels.set_pressed_no_signal(cam.get_cull_mask_bit(Constants.LAYER_LABELS))
-	land_use.set_pressed_no_signal(cam.get_cull_mask_bit(Constants.LAYER_LAND_USE))
-	roads.set_pressed_no_signal(cam.get_cull_mask_bit(Constants.LAYER_ROADS))
+	city_labels.set_pressed_no_signal(cam.get_cull_mask_bit(Consts.LAYER_LABELS))
+	land_use.set_pressed_no_signal(cam.get_cull_mask_bit(Consts.LAYER_LAND_USE))
+	roads.set_pressed_no_signal(cam.get_cull_mask_bit(Consts.LAYER_ROADS))
 
 
 func _on_visibility_changed(_button_pressed):
 	var cam = get_viewport().get_camera()
-	cam.set_cull_mask_bit(Constants.LAYER_LABELS, city_labels.pressed)
-	cam.set_cull_mask_bit(Constants.LAYER_LAND_USE, land_use.pressed)
-	cam.set_cull_mask_bit(Constants.LAYER_ROADS, roads.pressed)
+	cam.set_cull_mask_bit(Consts.LAYER_LABELS, city_labels.pressed)
+	cam.set_cull_mask_bit(Consts.LAYER_LAND_USE, land_use.pressed)
+	cam.set_cull_mask_bit(Consts.LAYER_ROADS, roads.pressed)
 
 
 func _on_Back_pressed():

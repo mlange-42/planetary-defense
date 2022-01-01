@@ -13,7 +13,7 @@ onready var prod_container = $Buttons/ProductionPanel/ProductionContainer
 var infos = {}
 
 func _ready():
-	for comm in Constants.COMM_ALL:
+	for comm in Commodities.COMM_ALL:
 		var info: ProductionInfo = preload("res://scenes/gui/states/flows/production_info.tscn").instance()
 		info.set_commodity(comm)
 		infos[comm] = info
@@ -53,7 +53,7 @@ func state_entered():
 	if comm_list.is_anything_selected():
 		update_flows(comm_list.get_selected_items()[0])
 	
-	for comm in Constants.COMM_ALL:
+	for comm in Commodities.COMM_ALL:
 		var info = infos[comm]
 		var f = fsm.planet.roads.total_flows.get(comm, 0)
 		info.set_values(fsm.planet.roads.total_sources.get(comm, 0), f, fsm.planet.roads.total_sinks.get(comm, 0))
@@ -72,7 +72,7 @@ func _on_Commodities_item_selected(index: int):
 
 
 func update_flows(index: int):
-	var comm: String = "" if index >= Constants.COMM_ALL.size() else Constants.COMM_ALL[index]
+	var comm: String = "" if index >= Commodities.COMM_ALL.size() else Commodities.COMM_ALL[index]
 	var grad: Gradient = gradient_tex.texture.gradient
 	
 	var max_value: int = fsm.planet.draw_flows(comm, grad.colors[0], grad.colors[-1])

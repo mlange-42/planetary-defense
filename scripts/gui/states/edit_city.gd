@@ -5,9 +5,9 @@ onready var city_text: RichTextLabel = find_node("CityText")
 onready var node_text: RichTextLabel = $InfoContainer/VBoxContainer/NodePanel/NodeText
 
 onready var sliders = {
-	Constants.COMM_ALL[0]: $Margin/EditControls/WeightPanel/WeightControls/FoodSlider,
-	Constants.COMM_ALL[1]: $Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider,
-	Constants.COMM_ALL[2]: $Margin/EditControls/WeightPanel/WeightControls/ProductsSlider,
+	Commodities.COMM_ALL[0]: $Margin/EditControls/WeightPanel/WeightControls/FoodSlider,
+	Commodities.COMM_ALL[1]: $Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider,
+	Commodities.COMM_ALL[2]: $Margin/EditControls/WeightPanel/WeightControls/ProductsSlider,
 }
 onready var auto_assign: CheckBox = $Margin/EditControls/WeightPanel/WeightControls/AutoAssignCheckBox
 onready var weights_display: Label = $Margin/EditControls/WeightPanel/WeightControls/WeightsDisplay
@@ -27,23 +27,23 @@ func init(the_fsm: Gui, args: Dictionary):
 	
 	var buttons: Container = $Margin/EditControls/Buttons/LuPanel/LuButtons
 	button_group = ButtonGroup.new()
-	for lu in Constants.LU_NAMES:
+	for lu in LandUse.LU_NAMES:
 		var button := LandUseButton.new()
 		button.land_use = lu
-		button.text = Constants.LU_NAMES[lu]
+		button.text = LandUse.LU_NAMES[lu]
 		button.group = button_group
 		
 		var evt = InputEventKey.new()
 		evt.pressed = true
-		evt.scancode = Constants.LU_KEYS[lu]
+		evt.scancode = LandUse.LU_KEYS[lu]
 		button.shortcut = ShortCut.new()
 		button.shortcut.shortcut = evt
 		
 		buttons.add_child(button)
 	
 	var fac_buttons: Container = $Margin/EditControls/Buttons/FacilityPanel/FacilityButtons
-	for fac in Constants.FACILITY_IN_CITY:
-		if Constants.FACILITY_IN_CITY[fac]:
+	for fac in Facilities.FACILITY_IN_CITY:
+		if Facilities.FACILITY_IN_CITY[fac]:
 			var button := FacilityButton.new()
 			button.facility = fac
 			button.text = fac
@@ -51,7 +51,7 @@ func init(the_fsm: Gui, args: Dictionary):
 			
 			var evt = InputEventKey.new()
 			evt.pressed = true
-			evt.scancode = Constants.FACILITY_KEYS[fac]
+			evt.scancode = Facilities.FACILITY_KEYS[fac]
 			button.shortcut = ShortCut.new()
 			button.shortcut.shortcut = evt
 			
@@ -59,7 +59,7 @@ func init(the_fsm: Gui, args: Dictionary):
 
 
 func _ready():
-	for comm in Constants.COMM_ALL:
+	for comm in Commodities.COMM_ALL:
 		var info: CityProductionInfo = preload("res://scenes/gui/states/city/city_production_info.tscn").instance()
 		info.set_commodity(comm)
 		infos[comm] = info
@@ -69,7 +69,7 @@ func _ready():
 func state_entered():
 	auto_assign.pressed = city.auto_assign_workers
 	for i in range(city.commodity_weights.size()):
-		sliders[Constants.COMM_ALL[i]].value = city.commodity_weights[i]
+		sliders[Commodities.COMM_ALL[i]].value = city.commodity_weights[i]
 	
 	update_city_info()
 	update_weights_display()
@@ -79,14 +79,14 @@ func state_entered():
 func state_exited():
 	city.auto_assign_workers = auto_assign.pressed
 	for i in range(city.commodity_weights.size()):
-		city.commodity_weights[i] = sliders[Constants.COMM_ALL[i]].value
+		city.commodity_weights[i] = sliders[Commodities.COMM_ALL[i]].value
 	
 	city.set_label_visible(true)
 
 
 func update_city_info():
 	city_text.text = "%s\n Free workers: %d" % [city.name, city.workers]
-	for comm in Constants.COMM_ALL:
+	for comm in Commodities.COMM_ALL:
 		var flows = city.flows.get(comm, [0, 0])
 		var pot_source = 0
 		for key in city.conversions:
@@ -104,13 +104,13 @@ func update_node_info(node: int):
 		
 	var veg = fsm.planet.planet_data.get_node(node).vegetation_type
 	
-	var text: String = "%s\n" % Constants.VEG_NAMES[veg]
+	var text: String = "%s\n" % LandUse.VEG_NAMES[veg]
 	for lut in fsm.constants.LU_MAPPING:
 		var lu: Dictionary = fsm.constants.LU_MAPPING[lut]
 		if veg in lu:
-			var prod: Constants.VegLandUse = lu[veg]
+			var prod: LandUse.VegLandUse = lu[veg]
 			var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
-			text += " %-10s%s\n" % [Constants.LU_NAMES[lut], prod_string]
+			text += " %-10s%s\n" % [LandUse.LU_NAMES[lut], prod_string]
 	
 	node_text.text = text.substr(0, text.length()-1)
 
@@ -179,12 +179,12 @@ func on_planet_clicked(node: int, button: int):
 			# warning-ignore:return_value_discarded
 			var err = fsm.planet.builder.set_land_use(city, node, curr_tool)
 			if err != null:
-				fsm.show_message(err, Constants.MESSAGE_ERROR)
+				fsm.show_message(err, Consts.MESSAGE_ERROR)
 		elif button == BUTTON_RIGHT:
 			# warning-ignore:return_value_discarded
-			var err = fsm.planet.builder.set_land_use(city, node, Constants.LU_NONE)
+			var err = fsm.planet.builder.set_land_use(city, node, LandUse.LU_NONE)
 			if err != null:
-				fsm.show_message(err, Constants.MESSAGE_ERROR)
+				fsm.show_message(err, Consts.MESSAGE_ERROR)
 		update_city_info()
 	else:
 		if button == BUTTON_LEFT:
@@ -195,4 +195,4 @@ func on_planet_clicked(node: int, button: int):
 					fac_err[0].city_node_id = city.node_id
 					city.add_facility(node, fac_err[0])
 				else:
-					fsm.show_message(fac_err[1], Constants.MESSAGE_ERROR)
+					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)

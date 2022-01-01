@@ -78,7 +78,7 @@ func solve():
 		i += 1
 	
 	var total_flows: Dictionary = {}
-	for comm in Constants.COMM_ALL:
+	for comm in Commodities.COMM_ALL:
 		total_flows[comm] = 0
 	
 	var pair_flows = flow.get_pair_flows()
