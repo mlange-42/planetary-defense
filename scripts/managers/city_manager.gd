@@ -218,8 +218,8 @@ func assign_city_workers(city: City, builder: BuildManager):
 			var veg = planet_data.get_node(node).vegetation_type
 			var res = resources.resources.get(node, null)
 			
-			var lu_options: Dictionary = constants.VEG_MAPPING[veg]
-			var res_options: Dictionary = constants.RES_MAPPING[res[0]] if res != null else {}
+			var lu_options: Dictionary = constants.VEG_MAPPING.get(veg, {})
+			var res_options: Dictionary = constants.RES_MAPPING.get(res[0], {}) if res != null else {}
 			for key in res_options:
 				lu_options[key] = res_options[key]
 			
