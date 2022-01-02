@@ -99,20 +99,42 @@ func update_city_info():
 
 func update_node_info(node: int):
 	if node < 0:
-		node_text.text = ""
+		node_text.bbcode_text = ""
 		return
-		
-	var veg = fsm.planet.planet_data.get_node(node).vegetation_type
 	
-	var text: String = "%s\n" % LandUse.VEG_NAMES[veg]
+	var lu_here = city.land_use.get(node, 0)
+	var veg = fsm.planet.planet_data.get_node(node).vegetation_type
+	var res_here = fsm.planet.resources.resources.get(node, null)
+	
+	var res_str = "" if res_here == null else " - " + Resources.RES_NAMES[res_here[0]]
+	
+	var text: String = "%s%s\n" % [LandUse.VEG_NAMES[veg], res_str]
 	for lut in fsm.constants.LU_MAPPING:
 		var lu: Dictionary = fsm.constants.LU_MAPPING[lut]
 		if veg in lu:
+			if lu[veg] == null:
+				continue
 			var prod: LandUse.VegLandUse = lu[veg]
 			var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
-			text += " %-10s%s\n" % [LandUse.LU_NAMES[lut], prod_string]
+			var line = " %-10s%s" % [LandUse.LU_NAMES[lut], prod_string]
+			if lut == lu_here:
+				line = "[u]%s[/u]" % line
+			text += line + "\n"
 	
-	node_text.text = text.substr(0, text.length()-1)
+	if res_here != null:
+		var res_id = res_here[0]
+		for lut in fsm.constants.LU_RESOURCES:
+			var res: Dictionary = fsm.constants.LU_RESOURCES[lut]
+			var lu: Dictionary = fsm.constants.LU_MAPPING[lut]
+			if res.has(res_here[0]) and lu.has(veg):
+				var prod: LandUse.VegLandUse = res[res_id]
+				var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
+				var line = " %-10s%s" % [LandUse.LU_NAMES[lut], prod_string]
+				if lut == lu_here:
+					line = "[u]%s[/u]" % line
+				text += line + "\n"
+	
+	node_text.bbcode_text = text.substr(0, text.length()-1)
 
 
 func update_weights_display():

@@ -2,12 +2,15 @@ class_name CityManager
 
 var constants: LandUse
 var network: RoadNetwork
+var resources: ResourceManager
 var planet_data = null
 
 # warning-ignore:shadowed_variable
-func _init(consts: LandUse, net: RoadNetwork, planet_data):
+# warning-ignore:shadowed_variable
+func _init(consts: LandUse, net: RoadNetwork, resources: ResourceManager, planet_data):
 	self.constants = consts
 	self.network = net
+	self.resources = resources
 	self.planet_data = planet_data
 
 func pre_update():
@@ -35,14 +38,18 @@ func pre_update():
 			var lu = city.land_use[node]
 			var data = planet_data.get_node(node)
 			
+			var extract_resource = LandUse.LU_RESOURCE[lu]
 			var lu_data = constants.LU_MAPPING[lu]
+			var res_data = constants.LU_RESOURCES[lu]
 			if not data.vegetation_type in lu_data:
 				continue
 			
 			var workers = LandUse.LU_WORKERS[lu]
 			products_required += workers
 			
-			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type]
+			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
+						if extract_resource == null else res_data[extract_resource]
+			
 			if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
 				workers_to_feed += workers
 				if food_available >= workers:
@@ -51,7 +58,11 @@ func pre_update():
 					continue
 			
 			if veg_data.source != null:
-				city.add_source(veg_data.source.commodity, veg_data.source.amount)
+				# TODO: extract resources only if they are really used!
+				var amount = veg_data.source.amount if extract_resource == null \
+								else resources.extract_resource(node, extract_resource, veg_data.source.amount)
+				if amount != 0:
+					city.add_source(veg_data.source.commodity, amount)
 			
 			if veg_data.sink != null:
 				city.add_sink(veg_data.sink.commodity, veg_data.sink.amount)
@@ -89,14 +100,18 @@ func post_update():
 			var lu = city.land_use[node]
 			var data = planet_data.get_node(node)
 			
-			var lu_data: Dictionary = constants.LU_MAPPING[lu]
+			var extract_resource = LandUse.LU_RESOURCE[lu]
+			var lu_data = constants.LU_MAPPING[lu]
+			var res_data = constants.LU_RESOURCES[lu]
 			if not data.vegetation_type in lu_data:
 				continue
 			
 			var workers = LandUse.LU_WORKERS[lu]
 			total_workers += workers
 			
-			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type]
+			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
+						if extract_resource == null else res_data[extract_resource]
+			
 			if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
 				if food_available >= workers:
 					food_available -= workers
@@ -184,9 +199,16 @@ func assign_city_workers(city: City, builder: BuildManager):
 				continue
 			
 			var veg = planet_data.get_node(node).vegetation_type
-			var lu_options = constants.VEG_MAPPING[veg]
+			var res = resources.resources.get(node, null)
+			
+			var lu_options: Dictionary = constants.VEG_MAPPING[veg]
+			var res_options: Dictionary = constants.RES_MAPPING[res[0]] if res != null else {}
+			for key in res_options:
+				lu_options[key] = res_options[key]
 			
 			for lu in lu_options:
+				if lu_options[lu] == null:
+					continue
 				if comm_map[LandUse.LU_OUTPUT[lu]] == best_commodity \
 						and LandUse.LU_WORKERS[lu] <= city.workers \
 						and city.has_landuse_requirements(lu):

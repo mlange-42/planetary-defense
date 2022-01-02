@@ -24,6 +24,7 @@ func _ready():
 	comm_list.add_item("(total)")
 	
 	comm_list.select(0)
+	comm_list.grab_focus()
 	
 	set_colors(Color.white, Color.purple)
 

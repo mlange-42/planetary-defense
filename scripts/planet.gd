@@ -42,6 +42,7 @@ onready var facilities: Spatial
 
 onready var road_debug: DebugDraw
 onready var path_debug: DebugDraw
+onready var resource_debug: DebugDraw
 onready var flows_graphs: FlowGraphs
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -51,6 +52,7 @@ var builder: BuildManager
 var flow: FlowManager
 var cities: CityManager
 var taxes: TaxManager
+var resources: ResourceManager
 
 # Array of Dictionaries to override parameters
 func _init(params: Array):
@@ -60,6 +62,7 @@ func _init(params: Array):
 
 func _ready():
 	var material = preload("res://assets/materials/unlit_vertex_color.tres")
+	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
 	
 	facilities = Spatial.new()
 	add_child(facilities)
@@ -73,6 +76,12 @@ func _ready():
 	path_debug = DebugDraw.new()
 	path_debug.material_override = material
 	add_child(path_debug)
+	
+	resource_debug = DebugDraw.new()
+	resource_debug.material_override = material_resources
+	resource_debug.set_layer_mask_bit(Consts.LAYER_BASE, false)
+	resource_debug.set_layer_mask_bit(Consts.LAYER_RESOURCES, true)
+	add_child(resource_debug)
 	
 	flows_graphs = FlowGraphs.new()
 	flows_graphs.material_override = material
@@ -121,14 +130,18 @@ func _ready():
 		var consts: LandUse = $"/root/VegetationLandUse" as LandUse
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
-		self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
+		self.resources = ResourceManager.new(planet_data)
+		self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
 		self.flow = FlowManager.new(roads)
-		self.cities = CityManager.new(consts, roads, planet_data)
+		self.cities = CityManager.new(consts, roads, resources, planet_data)
+		
+		self.resources.generate_resources()
+		_redraw_resources()
 		
 		if not load_planet:
 			FileUtil.create_user_dir(Consts.SAVEGAME_DIR)
 			self.planet_data.to_csv(planet_file)
-	
+			self.save_game()
 
 
 func init():
@@ -153,6 +166,9 @@ func save_game():
 	
 	var taxes_json = to_json(taxes.save())
 	file.store_line(taxes_json)
+	
+	var resources_json = to_json(resources.save())
+	file.store_line(resources_json)
 	
 	for node in roads.facilities:
 		var facility = roads.facilities[node]
@@ -179,9 +195,13 @@ func load_game():
 	self.taxes = TaxManager.new()
 	self.taxes.read(parse_json(taxes_json))
 	
-	self.builder = BuildManager.new(consts, roads, planet_data, taxes, facilities)
+	var resources_json = file.get_line()
+	self.resources = ResourceManager.new(planet_data)
+	self.resources.read(parse_json(resources_json))
+	
+	self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
 	self.flow = FlowManager.new(roads)
-	self.cities = CityManager.new(consts, roads, planet_data)
+	self.cities = CityManager.new(consts, roads, resources, planet_data)
 	
 	while not file.eof_reached():
 		var line: String = file.get_line()
@@ -208,6 +228,7 @@ func load_game():
 	file.close()
 	
 	_redraw_roads()
+	_redraw_resources()
 
 
 func calc_point_path(from: int, to: int) -> Array:
@@ -238,9 +259,12 @@ func draw_path(from: int, to: int) -> bool:
 
 func add_road(from: int, to: int):
 	var path = calc_id_path(from, to)
-	if builder.add_road(path):
+	var err = builder.add_road(path)
+	if err == null:
 		_redraw_roads()
 		emit_budget()
+	
+	return err
 
 
 func remove_road(from: int, to: int):
@@ -255,6 +279,10 @@ func get_facility(id: int):
 
 func _redraw_roads():
 	road_debug.draw_roads(planet_data, roads, Color(0.02, 0.02, 0.02), Color.red)
+
+
+func _redraw_resources():
+	resource_debug.draw_resources(planet_data, resources)
 
 
 func draw_flows(commodity: String, color1: Color, color2: Color) -> int:
@@ -315,5 +343,6 @@ func next_turn():
 	taxes.road_transport_costs(roads.edges)
 	
 	_redraw_roads()
+	_redraw_resources()
 	
 	emit_budget()

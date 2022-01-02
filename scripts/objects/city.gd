@@ -8,7 +8,7 @@ onready var land_use_mesh: ImmediateGeometry = $LandUse
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
 var facilities: Dictionary = {}
-var radius: int = 2
+var radius: int = Consts.INITIAL_CITY_RADIUS
 var workers: int = Consts.INITIAL_CITY_POP
 
 var commodity_weights: Array = [100, 100, 100]
@@ -157,7 +157,7 @@ func _draw_cells(planet_data):
 		if cells[c] == radius and not c in land_use:
 			var p = planet_data.get_position(c)
 			land_use_mesh.set_color(Color.dimgray)
-			land_use_mesh.add_vertex(self.to_local(p + Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
+			land_use_mesh.add_vertex(self.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
 	for c in land_use:
 		var p = planet_data.get_position(c)
