@@ -30,7 +30,6 @@ func pre_update():
 		food_available -= city.workers()
 		
 		var workers_to_feed = city.workers()
-		var products_required = city.workers()
 		
 		var keys = city.land_use.keys()
 		keys.shuffle()
@@ -45,7 +44,6 @@ func pre_update():
 				continue
 			
 			var workers = LandUse.LU_WORKERS[lu]
-			products_required += workers
 			
 			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
 						if extract_resource == null else res_data[extract_resource]
@@ -72,7 +70,7 @@ func pre_update():
 				city.add_conversion(c.from, c.from_amount, c.to, c.to_amount, c.max_from_amount)
 		
 		city.add_sink(Commodities.COMM_FOOD, workers_to_feed)
-		city.add_sink(Commodities.COMM_PRODUCTS, products_required / 2)
+		city.add_sink(Commodities.COMM_PRODUCTS, Cities.products_demand(city.population()))
 
 
 func post_update():
@@ -97,8 +95,6 @@ func post_update():
 		
 		for comm in Commodities.COMM_ALL:
 			comm_produced[comm] = city.flows.get(comm, [0, 0])[0]
-		
-		var total_workers = city.population()
 		
 		var all_workers_supplied = food_available >= 0
 		
@@ -136,13 +132,11 @@ func post_update():
 						comm_produced[comm] -= realized_amount
 		
 		var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
-		var share_satisfied = clamp(products_available / float(max(total_workers / 2, 1)), 0, 1)
+		var demand = Cities.products_demand(city.population())
+		var share_satisfied = 1.0 if demand == 0 else clamp(products_available / float(demand), 0, 1)
 		
 		if all_workers_supplied:
 			print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
-			if total_workers <= Cities.NO_PRODUCTS_CITY_POP:
-				share_satisfied = 1.0
-			
 			if randf() < Cities.CITY_GROWTH_PROB * share_satisfied:
 				city.add_workers(1)
 				city.update_visuals(planet_data)
