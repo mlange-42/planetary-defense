@@ -148,7 +148,7 @@ func add_facility(node: int, facility: Facility):
 
 
 func update_visuals(planet_data):
-	label.set_text("%s (%d)" % [name, workers()])
+	label.set_text("%s (%d/%d)" % [name, workers(), population()])
 	
 	var flows_food = flows.get(Commodities.COMM_FOOD, [0, 0])
 	var demand_food = sinks.get(Commodities.COMM_FOOD, 0)
