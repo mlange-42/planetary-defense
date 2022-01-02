@@ -101,6 +101,16 @@ const LU_WORKERS = {
 	LU_OIL_RIG: 3,
 }
 
+const LU_MAINTENANCE = {
+	LU_NONE: 0,
+	LU_CROPS: 0,
+	LU_FOREST: 0,
+	LU_FACTORY: 1,
+	LU_FISHERY: 0,
+	LU_MINES: 1,
+	LU_OIL_RIG: 1,
+}
+
 const LU_OUTPUT = {
 	LU_CROPS: Commodities.COMM_FOOD,
 	LU_FOREST: Commodities.COMM_RESOURCES,

@@ -6,6 +6,7 @@ var maintenance: int = 0
 var maintenance_roads: int = 0
 var maintenance_transport: int = 0
 var maintenance_facilities: int = 0
+var maintenance_land_use: int = 0
 
 
 func earn_taxes(total_flows: Dictionary):
@@ -19,9 +20,17 @@ func earn_taxes(total_flows: Dictionary):
 
 func pay_costs(facilities: Dictionary, network_edges: Dictionary):
 	maintenance_facilities = 0
+	maintenance_land_use = 0
 	for node in facilities:
-		var type = facilities[node].type
+		var fac = facilities[node]
+		var type = fac.type
 		maintenance_facilities += Facilities.FACILITY_MAINTENANCE[type]
+		
+		if fac.type == Facilities.FAC_CITY:
+			var city: City = fac as City
+			for n in city.land_use:
+				var lu = city.land_use[n]
+				maintenance_land_use += LandUse.LU_MAINTENANCE[lu]
 	
 	# warning-ignore:integer_division
 	maintenance_roads = int(ceil((network_edges.size() / 2) * Consts.ROAD_MAINTENANCE_1000 / 1000.0))
@@ -32,7 +41,7 @@ func pay_costs(facilities: Dictionary, network_edges: Dictionary):
 	
 	maintenance_transport = int(ceil(total * Consts.TRANSPORT_COST_1000 / 1000.0))
 	
-	maintenance = maintenance_roads + maintenance_transport + maintenance_facilities
+	maintenance = maintenance_roads + maintenance_transport + maintenance_facilities + maintenance_land_use
 	budget -= maintenance
 
 
@@ -42,6 +51,7 @@ func save() -> Dictionary:
 		"taxes": taxes,
 		"maintenance": maintenance,
 		"maintenance_facilities": maintenance_facilities,
+		"maintenance_land_use": maintenance_land_use,
 		"maintenance_roads": maintenance_roads,
 		"maintenance_transport": maintenance_transport,
 	}
@@ -52,5 +62,6 @@ func read(dict: Dictionary):
 	taxes = dict["taxes"] as int
 	maintenance = dict["maintenance"] as int
 	maintenance_facilities = dict.get("maintenance_facilities", 0) as int
+	maintenance_land_use = dict.get("maintenance_land_use", 0) as int
 	maintenance_roads = dict["maintenance_roads"] as int
 	maintenance_transport = dict["maintenance_transport"] as int
