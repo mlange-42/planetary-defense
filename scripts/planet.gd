@@ -211,7 +211,7 @@ func load_game():
 		
 		var fac_json = parse_json(line)
 		var facility: Facility = load(Facilities.FACILITY_SCENES[fac_json["type"]]).instance()
-		facility.init(fac_json["node_id"] as int, planet_data)
+		facility.init(fac_json["node_id"] as int, planet_data, fac_json["type"])
 		facility.read(fac_json)
 		
 		builder.add_facility_scene(facility, facility.name)

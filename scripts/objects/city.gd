@@ -17,11 +17,6 @@ var commodity_weights: Array = [100, 100, 100]
 var auto_assign_workers: bool = true
 
 
-func init(node: int, planet_data):
-	.init(node, planet_data)
-	type = Facilities.FAC_CITY
-
-
 func on_ready(planet_data):
 	var sprite = $Pole/Sprite3D
 	
@@ -58,32 +53,20 @@ func save() -> Dictionary:
 	for node in land_use:
 		lu.append([node, land_use[node]])
 	
-	var conv = []
-	for key in conversions:
-		var c = conversions[key]
-		conv.append([key, c])
+	var dict = .save()
 	
-	var dict = {
-		"type": type,
-		"name": name,
-		"node_id": node_id,
-		"radius": radius,
-		"workers": _workers,
-		"commodity_weights": commodity_weights,
-		"auto_assign_workers": auto_assign_workers,
-		"land_use": lu,
-		"sources": sources,
-		"sinks": sinks,
-		"conversions": conv,
-		"flows": flows,
-	}
+	dict["radius"] = radius
+	dict["workers"] = _workers
+	dict["commodity_weights"] = commodity_weights
+	dict["auto_assign_workers"] = auto_assign_workers
+	dict["land_use"] = lu
 	
 	return dict
 
 
 func read(dict: Dictionary):
-	name = dict["name"]
-	node_id = dict["node_id"] as int
+	.read(dict)
+	
 	radius = dict["radius"] as int
 	_workers = dict["workers"] as int
 	_population = _workers
@@ -96,24 +79,6 @@ func read(dict: Dictionary):
 	for lu in dict["land_use"]:
 		land_use[lu[0] as int] = lu[1] as int
 		_population += LandUse.LU_WORKERS[lu[1] as int]
-	
-	var fl = dict["flows"]
-	for comm in fl:
-		var f = fl[comm]
-		flows[comm] = [f[0] as int, f[1] as int]
-		
-	var so = dict["sources"]
-	for comm in so:
-		sources[comm] = so[comm] as int
-		
-	var si = dict["sinks"]
-	for comm in si:
-		sinks[comm] = si[comm] as int
-		
-	var co = dict["conversions"]
-	for comm in co:
-		var c = comm[1]
-		conversions[comm[0]] = [c[0] as int, c[1] as int]
 
 
 func can_build(planet_data, node) -> bool:

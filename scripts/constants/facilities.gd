@@ -37,7 +37,7 @@ const FACILITY_MAINTENANCE = {
 const FACILITY_SINKS = {
 	FAC_CITY: null,
 	FAC_PORT: null,
-	FAC_AIR_DEFENSE: null,
+	FAC_AIR_DEFENSE: [[Commodities.COMM_PRODUCTS, 10]],
 	FAC_MISSILE_BASE: null,
 }
 

@@ -14,9 +14,20 @@ var conversions: Dictionary
 
 var flows: Dictionary
 
+var is_supplied: bool = false
+
+
+# warning-ignore:shadowed_variable
 # warning-ignore:unused_argument
-func init(node: int, planet_data):
+func init(node: int, planet_data, type: String):
 	self.node_id = node
+	self.type = type
+	
+	if Facilities.FACILITY_SINKS.has(type):
+		var s = Facilities.FACILITY_SINKS[type]
+		for sink in s:
+			add_sink(s[0], s[1])
+
 
 # warning-ignore:unused_argument
 func on_ready(planet_data):
@@ -24,11 +35,21 @@ func on_ready(planet_data):
 
 
 func save() -> Dictionary:
+	var conv = []
+	for key in conversions:
+		var c = conversions[key]
+		conv.append([key, c])
+	
 	var dict = {
 		"type": type,
 		"name": name,
 		"node_id": node_id,
 		"city_node_id": city_node_id,
+		"sources": sources,
+		"sinks": sinks,
+		"conversions": conv,
+		"flows": flows,
+		"is_supplied": is_supplied,
 	}
 	return dict
 
@@ -37,6 +58,35 @@ func read(dict: Dictionary):
 	name = dict["name"]
 	node_id = dict["node_id"] as int
 	city_node_id = dict["city_node_id"] as int
+	is_supplied = dict["is_supplied"] as bool
+	
+	var fl = dict["flows"]
+	for comm in fl:
+		var f = fl[comm]
+		flows[comm] = [f[0] as int, f[1] as int]
+		
+	var so = dict["sources"]
+	for comm in so:
+		sources[comm] = so[comm] as int
+		
+	var si = dict["sinks"]
+	for comm in si:
+		sinks[comm] = si[comm] as int
+		
+	var co = dict["conversions"]
+	for comm in co:
+		var c = comm[1]
+		conversions[comm[0]] = [c[0] as int, c[1] as int]
+
+
+func calc_is_supplied():
+	var res = true
+	for comm in sinks:
+		var flow = flows.get(comm, [0, 0])
+		if flow[1] < sinks[comm]:
+			res = false
+	
+	is_supplied = res
 
 
 # warning-ignore:unused_argument

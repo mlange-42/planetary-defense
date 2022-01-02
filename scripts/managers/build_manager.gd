@@ -87,7 +87,7 @@ func add_facility(type: String, location: int, name: String):
 		facility.queue_free()
 		return [null, "Can't build this facility here"]
 	
-	facility.init(location, planet_data)
+	facility.init(location, planet_data, type)
 	
 	taxes.budget -= costs
 	
