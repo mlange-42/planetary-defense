@@ -73,13 +73,13 @@ text = "Facilities"
 [node name="WeightPanel" type="PanelContainer" parent="Margin/EditControls"]
 margin_top = 102.0
 margin_right = 120.0
-margin_bottom = 298.0
+margin_bottom = 322.0
 
 [node name="WeightControls" type="VBoxContainer" parent="Margin/EditControls/WeightPanel"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 113.0
-margin_bottom = 189.0
+margin_bottom = 213.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -139,6 +139,12 @@ margin_top = 168.0
 margin_right = 106.0
 margin_bottom = 182.0
 align = 1
+
+[node name="GrowButton" type="Button" parent="Margin/EditControls/WeightPanel/WeightControls"]
+margin_top = 186.0
+margin_right = 106.0
+margin_bottom = 206.0
+text = "Grow city"
 
 [node name="InfoContainer" type="MarginContainer" parent="."]
 anchor_left = 1.0
@@ -208,3 +214,4 @@ __meta__ = {
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/FoodSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ProductsSlider" to="." method="_on_weights_changed"]
+[connection signal="pressed" from="Margin/EditControls/WeightPanel/WeightControls/GrowButton" to="." method="_on_GrowButton_pressed"]

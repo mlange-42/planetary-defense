@@ -101,6 +101,16 @@ const LU_WORKERS = {
 	LU_OIL_RIG: 3,
 }
 
+const LU_MAINTENANCE = {
+	LU_NONE: 0,
+	LU_CROPS: 0,
+	LU_FOREST: 0,
+	LU_FACTORY: 1,
+	LU_FISHERY: 0,
+	LU_MINES: 1,
+	LU_OIL_RIG: 1,
+}
+
 const LU_OUTPUT = {
 	LU_CROPS: Commodities.COMM_FOOD,
 	LU_FOREST: Commodities.COMM_RESOURCES,
@@ -149,6 +159,8 @@ const LU_KEYS = {
 	LU_OIL_RIG: KEY_O,
 }
 
+var _res_all_land = {VEG_DESERT: null, VEG_TUNDRA: null, VEG_TAIGA: null, VEG_STEPPE: null,
+					VEG_TEMPERATE_FOREST: null, VEG_SUBTROPICAL_FOREST: null, VEG_TROPICAL_FOREST: null}
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(Commodities.COMM_RESOURCES, 1, Commodities.COMM_PRODUCTS, 1, 5))
 
 var LU_MAPPING = {
@@ -176,8 +188,7 @@ var LU_MAPPING = {
 	LU_FISHERY: {
 		VEG_WATER: VegLandUse.new(Production.new(Commodities.COMM_FOOD, 2), null, null),
 	},
-	LU_MINES: {VEG_DESERT: null, VEG_TUNDRA: null, VEG_TAIGA: null, VEG_STEPPE: null,
-				VEG_TEMPERATE_FOREST: null, VEG_SUBTROPICAL_FOREST: null, VEG_TROPICAL_FOREST: null},
+	LU_MINES: _res_all_land,
 	LU_OIL_RIG: {VEG_WATER: null},
 }
 

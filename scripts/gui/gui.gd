@@ -39,7 +39,7 @@ func on_planet_clicked(node: int, button: int):
 func set_budget_taxes_maintenance(taxes: TaxManager):
 	budget_label.text = str(taxes.budget)
 	taxes_label.text = str(taxes.taxes)
-	maintenance_label.text = "%d (%d+%d+%d)" % [taxes.maintenance, taxes.maintenance_facilities, taxes.maintenance_roads, taxes.maintenance_transport]
+	maintenance_label.text = "%d (%d+%d+%d+%d)" % [taxes.maintenance, taxes.maintenance_facilities, taxes.maintenance_land_use, taxes.maintenance_roads, taxes.maintenance_transport]
 	net_label.text = "%+d" % (taxes.taxes - taxes.maintenance)
 
 

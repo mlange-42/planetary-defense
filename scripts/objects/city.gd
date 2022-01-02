@@ -9,7 +9,9 @@ var cells: Dictionary = {}
 var land_use: Dictionary = {}
 var facilities: Dictionary = {}
 var radius: int = Cities.INITIAL_CITY_RADIUS
-var workers: int = Cities.INITIAL_CITY_POP
+
+var _workers: int = Cities.INITIAL_CITY_POP setget , workers
+var _population: int = Cities.INITIAL_CITY_POP
 
 var commodity_weights: Array = [100, 100, 100]
 var auto_assign_workers: bool = true
@@ -29,6 +31,27 @@ func on_ready(planet_data):
 	update_cells(planet_data)
 
 
+func population() -> int:
+	return _population
+
+
+func workers() -> int:
+	return _workers
+
+
+func add_workers(num: int):
+	_workers += num
+	_population += num
+
+
+func free_workers(num: int):
+	_workers += num
+
+
+func assign_workers(num: int):
+	_workers -= num
+
+
 func save() -> Dictionary:
 	var lu = []
 	
@@ -45,7 +68,7 @@ func save() -> Dictionary:
 		"name": name,
 		"node_id": node_id,
 		"radius": radius,
-		"workers": workers,
+		"workers": _workers,
 		"commodity_weights": commodity_weights,
 		"auto_assign_workers": auto_assign_workers,
 		"land_use": lu,
@@ -62,7 +85,8 @@ func read(dict: Dictionary):
 	name = dict["name"]
 	node_id = dict["node_id"] as int
 	radius = dict["radius"] as int
-	workers = dict["workers"] as int
+	_workers = dict["workers"] as int
+	_population = _workers
 	auto_assign_workers = dict["auto_assign_workers"] as bool
 	
 	var weigths = dict["commodity_weights"]
@@ -71,6 +95,7 @@ func read(dict: Dictionary):
 	
 	for lu in dict["land_use"]:
 		land_use[lu[0] as int] = lu[1] as int
+		_population += LandUse.LU_WORKERS[lu[1] as int]
 	
 	var fl = dict["flows"]
 	for comm in fl:
@@ -123,7 +148,7 @@ func add_facility(node: int, facility: Facility):
 
 
 func update_visuals(planet_data):
-	label.set_text("%s (%d)" % [name, workers])
+	label.set_text("%s (%d/%d)" % [name, workers(), population()])
 	
 	var flows_food = flows.get(Commodities.COMM_FOOD, [0, 0])
 	var demand_food = sinks.get(Commodities.COMM_FOOD, 0)
@@ -133,7 +158,7 @@ func update_visuals(planet_data):
 	
 	if flows_food[1] < demand_food:
 		label.self_modulate = Color.red
-	elif flows_prod[1] == 0:
+	elif flows_prod[1] == 0 && demand_prod > 0:
 		label.self_modulate = Color.orangered
 	elif flows_prod[1] < demand_prod:
 		label.self_modulate = Color.yellow

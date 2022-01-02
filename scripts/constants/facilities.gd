@@ -20,7 +20,7 @@ const FACILITY_COSTS = {
 }
 
 const FACILITY_MAINTENANCE = {
-	FAC_CITY: 0,
+	FAC_CITY: 1,
 	FAC_PORT: 5,
 }
 

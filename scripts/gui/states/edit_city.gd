@@ -12,6 +12,8 @@ onready var sliders = {
 onready var auto_assign: CheckBox = $Margin/EditControls/WeightPanel/WeightControls/AutoAssignCheckBox
 onready var weights_display: Label = $Margin/EditControls/WeightPanel/WeightControls/WeightsDisplay
 
+onready var grow_button: Button = find_node("GrowButton") 
+
 onready var container: Container = find_node("CityInfoContainer")
 
 var city_node: int
@@ -85,7 +87,7 @@ func state_exited():
 
 
 func update_city_info():
-	city_text.text = "%s\n Free workers: %d" % [city.name, city.workers]
+	city_text.text = "%s (%d/%d workers)" % [city.name, city.workers(), city.population()]
 	for comm in Commodities.COMM_ALL:
 		var flows = city.flows.get(comm, [0, 0])
 		var pot_source = 0
@@ -95,7 +97,9 @@ func update_city_info():
 				pot_source += city.sinks.get(key[0], 0) * conv[1] / conv[0]
 		
 		infos[comm].set_values(city.sources.get(comm, 0) + pot_source, flows[0], flows[1], city.sinks.get(comm, 0))
-
+	
+	grow_button.hint_tooltip = "Grow city radius.\n Cost: %d\n Maintenance: %d->%d" \
+			% [Cities.city_growth_cost(city.radius), Cities.city_maintenance(city.radius), Cities.city_maintenance(city.radius + 1)]
 
 func update_node_info(node: int):
 	if node < 0:
@@ -218,3 +222,11 @@ func on_planet_clicked(node: int, button: int):
 					city.add_facility(node, fac_err[0])
 				else:
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
+
+
+func _on_GrowButton_pressed():
+	var err = fsm.planet.builder.grow_city(city)
+	if err == null:
+		update_city_info()
+	else:
+		fsm.show_message(err, Consts.MESSAGE_ERROR)
