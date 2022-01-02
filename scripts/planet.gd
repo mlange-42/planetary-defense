@@ -46,7 +46,10 @@ onready var resource_debug: DebugDraw
 onready var flows_graphs: FlowGraphs
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+
 var planet_data = null
+
+var stats: StatsManager
 var roads: RoadNetwork
 var builder: BuildManager
 var flow: FlowManager
@@ -128,6 +131,7 @@ func _ready():
 		load_game()
 	else:
 		var consts: LandUse = $"/root/VegetationLandUse" as LandUse
+		self.stats = StatsManager.new()
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data)
@@ -161,6 +165,9 @@ func save_game():
 		print("Error opening file")
 		return
 	
+	var stats_json = to_json(stats.save())
+	file.store_line(stats_json)
+	
 	var roads_json = to_json(roads.save())
 	file.store_line(roads_json)
 	
@@ -187,6 +194,10 @@ func load_game():
 	
 	var consts: LandUse = $"/root/VegetationLandUse" as LandUse
 	
+	var stats_json = file.get_line()
+	self.stats = StatsManager.new()
+	self.stats.read(parse_json(stats_json))
+	
 	var roads_json = file.get_line()
 	self.roads = RoadNetwork.new()
 	self.roads.read(parse_json(roads_json))
@@ -211,7 +222,7 @@ func load_game():
 		
 		var fac_json = parse_json(line)
 		var facility: Facility = load(Facilities.FACILITY_SCENES[fac_json["type"]]).instance()
-		facility.init(fac_json["node_id"] as int, planet_data)
+		facility.init(fac_json["node_id"] as int, planet_data, fac_json["type"])
 		facility.read(fac_json)
 		
 		builder.add_facility_scene(facility, facility.name)
@@ -341,6 +352,8 @@ func next_turn():
 	
 	taxes.earn_taxes(roads.total_flows)
 	taxes.pay_costs(roads.facilities, roads.edges)
+	
+	stats.update_turn()
 	
 	_redraw_roads()
 	_redraw_resources()

@@ -9,10 +9,20 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Facility",
+"class": "AirDefense",
+"language": "GDScript",
+"path": "res://scripts/objects/air_defense.gd"
+}, {
 "base": "Reference",
 "class": "BuildManager",
 "language": "GDScript",
 "path": "res://scripts/managers/build_manager.gd"
+}, {
+"base": "GuiState",
+"class": "BuildState",
+"language": "GDScript",
+"path": "res://scripts/gui/states/build.gd"
 }, {
 "base": "Spatial",
 "class": "CameraControl",
@@ -23,11 +33,6 @@ _global_script_classes=[ {
 "class": "Cities",
 "language": "GDScript",
 "path": "res://scripts/constants/cities.gd"
-}, {
-"base": "GuiState",
-"class": "CitiesState",
-"language": "GDScript",
-"path": "res://scripts/gui/states/cities.gd"
 }, {
 "base": "Facility",
 "class": "City",
@@ -159,6 +164,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/gui/controls/land_use_button.gd"
 }, {
+"base": "Facility",
+"class": "MissileBase",
+"language": "GDScript",
+"path": "res://scripts/objects/missile_base.gd"
+}, {
 "base": "Spatial",
 "class": "Mouse",
 "language": "GDScript",
@@ -235,6 +245,11 @@ _global_script_classes=[ {
 "path": "res://scripts/gui/states/settings.gd"
 }, {
 "base": "Reference",
+"class": "StatsManager",
+"language": "GDScript",
+"path": "res://scripts/managers/stats_manager.gd"
+}, {
+"base": "Reference",
 "class": "TaxManager",
 "language": "GDScript",
 "path": "res://scripts/managers/tax_manager.gd"
@@ -245,10 +260,11 @@ _global_script_classes=[ {
 "path": "res://scripts/geom/uv_sphere.gd"
 } ]
 _global_script_class_icons={
+"AirDefense": "",
 "BuildManager": "",
+"BuildState": "",
 "CameraControl": "",
 "Cities": "",
-"CitiesState": "",
 "City": "",
 "CityLabel": "",
 "CityManager": "",
@@ -275,6 +291,7 @@ _global_script_class_icons={
 "IcoSphere": "",
 "LandUse": "",
 "LandUseButton": "",
+"MissileBase": "",
 "Mouse": "",
 "MultiCommodityFlow": "",
 "NodeData": "",
@@ -290,6 +307,7 @@ _global_script_class_icons={
 "RoadNetwork": "",
 "RoadsState": "",
 "SettingsState": "",
+"StatsManager": "",
 "TaxManager": "",
 "UvSphere": ""
 }

@@ -17,130 +17,131 @@ func pre_update():
 	var facilities = network.facilities
 	
 	for fid in facilities:
-		var facility = facilities[fid]
-		if not facility is City:
-			continue
+		var facility: Facility = facilities[fid]
 		
-		var city = facility as City
-		city.sources.clear()
-		city.sinks.clear()
-		city.conversions.clear()
-		
-		var food_available = city.flows[Commodities.COMM_FOOD][1] if Commodities.COMM_FOOD in city.flows else 0
-		food_available -= city.workers()
-		
-		var workers_to_feed = city.workers()
-		
-		var keys = city.land_use.keys()
-		keys.shuffle()
-		for node in keys:
-			var lu = city.land_use[node]
-			var data = planet_data.get_node(node)
-			
-			var extract_resource = LandUse.LU_RESOURCE[lu]
-			var lu_data = constants.LU_MAPPING[lu]
-			var res_data = constants.LU_RESOURCES[lu]
-			if not data.vegetation_type in lu_data:
-				continue
-			
-			var workers = LandUse.LU_WORKERS[lu]
-			
-			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
-						if extract_resource == null else res_data[extract_resource]
-			
-			if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
-				workers_to_feed += workers
-				if food_available >= workers:
-					food_available -= workers
-				else:
-					continue
-			
-			if veg_data.source != null:
-				# TODO: extract resources only if they are really used!
-				var amount = veg_data.source.amount if extract_resource == null \
-								else resources.can_extract_resource(node, extract_resource, veg_data.source.amount)
-				if amount != 0:
-					city.add_source(veg_data.source.commodity, amount)
-			
-			if veg_data.sink != null:
-				city.add_sink(veg_data.sink.commodity, veg_data.sink.amount)
-		
-			if veg_data.conversion != null:
-				var c: LandUse.Conversion = veg_data.conversion
-				city.add_conversion(c.from, c.from_amount, c.to, c.to_amount, c.max_from_amount)
-		
-		city.add_sink(Commodities.COMM_FOOD, workers_to_feed)
-		city.add_sink(Commodities.COMM_PRODUCTS, Cities.products_demand(city.population()))
+		if facility is City:
+			var city = facility as City
+			pre_update_city(city)
 
 
 func post_update():
 	var facilities = network.facilities
-	var comm_produced = {}
-	for comm in Commodities.COMM_ALL:
-		comm_produced[comm] = 0
 	
 	for fid in facilities:
-		var facility = facilities[fid]
-		if not facility is City:
+		var facility: Facility = facilities[fid]
+		if facility is City:
+			var city = facility as City
+			post_update_city(city)
+		
+		facility.calc_is_supplied()
+
+
+func pre_update_city(city: City):
+	city.sources.clear()
+	city.sinks.clear()
+	city.conversions.clear()
+	
+	var food_available = city.flows[Commodities.COMM_FOOD][1] if Commodities.COMM_FOOD in city.flows else 0
+	food_available -= city.workers()
+	
+	var workers_to_feed = city.workers()
+	
+	var keys = city.land_use.keys()
+	keys.shuffle()
+	for node in keys:
+		var lu = city.land_use[node]
+		var data = planet_data.get_node(node)
+		
+		var extract_resource = LandUse.LU_RESOURCE[lu]
+		var lu_data = constants.LU_MAPPING[lu]
+		var res_data = constants.LU_RESOURCES[lu]
+		if not data.vegetation_type in lu_data:
 			continue
 		
-		var city = facility as City
+		var workers = LandUse.LU_WORKERS[lu]
 		
-		#while city.land_use.size() * 2 > city.cells.size():
-		#	city.radius += 1
-		#	city.update_cells(planet_data)
+		var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
+					if extract_resource == null else res_data[extract_resource]
 		
-		var food_available = city.flows.get(Commodities.COMM_FOOD, [0, 0])[1]
-		food_available -= city.workers()
-		
-		for comm in Commodities.COMM_ALL:
-			comm_produced[comm] = city.flows.get(comm, [0, 0])[0]
-		
-		var all_workers_supplied = food_available >= 0
-		
-		var keys = city.land_use.keys()
-		keys.shuffle()
-		for node in keys:
-			var lu = city.land_use[node]
-			var data = planet_data.get_node(node)
-			
-			var extract_resource = LandUse.LU_RESOURCE[lu]
-			var lu_data = constants.LU_MAPPING[lu]
-			var res_data = constants.LU_RESOURCES[lu]
-			if not data.vegetation_type in lu_data:
+		if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
+			workers_to_feed += workers
+			if food_available >= workers:
+				food_available -= workers
+			else:
 				continue
-			
-			var workers = LandUse.LU_WORKERS[lu]
-			
-			var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
-						if extract_resource == null else res_data[extract_resource]
-			
-			if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
-				if food_available >= workers:
-					food_available -= workers
+		
+		if veg_data.source != null:
+			# TODO: extract resources only if they are really used!
+			var amount = veg_data.source.amount if extract_resource == null \
+							else resources.can_extract_resource(node, extract_resource, veg_data.source.amount)
+			if amount != 0:
+				city.add_source(veg_data.source.commodity, amount)
+		
+		if veg_data.sink != null:
+			city.add_sink(veg_data.sink.commodity, veg_data.sink.amount)
+	
+		if veg_data.conversion != null:
+			var c: LandUse.Conversion = veg_data.conversion
+			city.add_conversion(c.from, c.from_amount, c.to, c.to_amount, c.max_from_amount)
+	
+	city.add_sink(Commodities.COMM_FOOD, workers_to_feed)
+	city.add_sink(Commodities.COMM_PRODUCTS, Cities.products_demand(city.population()))
+
+
+func post_update_city(city: City):
+	var food_available = city.flows.get(Commodities.COMM_FOOD, [0, 0])[1]
+	food_available -= city.workers()
+	
+	var comm_produced = {}
+	
+	for comm in Commodities.COMM_ALL:
+		comm_produced[comm] = city.flows.get(comm, [0, 0])[0]
+	
+	var all_workers_supplied = food_available >= 0
+	
+	var keys = city.land_use.keys()
+	keys.shuffle()
+	for node in keys:
+		var lu = city.land_use[node]
+		var data = planet_data.get_node(node)
+		
+		var extract_resource = LandUse.LU_RESOURCE[lu]
+		var lu_data = constants.LU_MAPPING[lu]
+		var res_data = constants.LU_RESOURCES[lu]
+		if not data.vegetation_type in lu_data:
+			continue
+		
+		var workers = LandUse.LU_WORKERS[lu]
+		
+		var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
+					if extract_resource == null else res_data[extract_resource]
+		
+		if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
+			if food_available >= workers:
+				food_available -= workers
+			else:
+				all_workers_supplied = false
+		
+		if veg_data.source != null:
+			var comm = veg_data.source.commodity
+			if comm_produced[comm] > 0:
+				if extract_resource == null:
+					comm_produced[comm] = max(0, comm_produced[comm] - veg_data.source.amount)
 				else:
-					all_workers_supplied = false
-			
-			if veg_data.source != null:
-				var comm = veg_data.source.commodity
-				if comm_produced[comm] > 0:
-					if extract_resource == null:
-						comm_produced[comm] = max(0, comm_produced[comm] - veg_data.source.amount)
-					else:
-						var amount = min(veg_data.source.amount, comm_produced[comm])
-						var realized_amount = resources.extract_resource(node, extract_resource, amount)
-						comm_produced[comm] -= realized_amount
-		
-		var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
-		var demand = Cities.products_demand(city.population())
-		var share_satisfied = 1.0 if demand == 0 else clamp(products_available / float(demand), 0, 1)
-		var rel_growth = 1.0 - (city.population() / float(city.cells.size()))
-		
-		if all_workers_supplied:
-			print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
-			if randf() < Cities.CITY_GROWTH_PROB * share_satisfied * rel_growth:
-				city.add_workers(1)
-				city.update_visuals(planet_data)
+					var amount = min(veg_data.source.amount, comm_produced[comm])
+					var realized_amount = resources.extract_resource(node, extract_resource, amount)
+					comm_produced[comm] -= realized_amount
+	
+	var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
+	var demand = Cities.products_demand(city.population())
+	var share_satisfied = 1.0 if demand == 0 else clamp(products_available / float(demand), 0, 1)
+	var rel_growth = 1.0 - (city.population() / float(city.cells.size()))
+	
+	if all_workers_supplied:
+		print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
+		if randf() < Cities.CITY_GROWTH_PROB * share_satisfied * rel_growth:
+			city.add_workers(1)
+			city.update_visuals(planet_data)
 
 
 func assign_workers(builder: BuildManager):

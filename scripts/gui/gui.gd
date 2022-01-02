@@ -7,6 +7,7 @@ onready var budget_label = $MarginContainer/PanelContainer/HBoxContainer/BudgetL
 onready var taxes_label = $MarginContainer/PanelContainer/HBoxContainer/TaxesLabel
 onready var maintenance_label = $MarginContainer/PanelContainer/HBoxContainer/MaintenenaceLabel
 onready var net_label = $MarginContainer/PanelContainer/HBoxContainer/NetLabel
+onready var turn_label = $MarginContainer/PanelContainer/HBoxContainer/TurnLabel
 
 onready var error_container = $ErrorContainer
 onready var error_label = find_node("ErrorLabel")
@@ -41,6 +42,7 @@ func set_budget_taxes_maintenance(taxes: TaxManager):
 	taxes_label.text = str(taxes.taxes)
 	maintenance_label.text = "%d (%d+%d+%d+%d)" % [taxes.maintenance, taxes.maintenance_facilities, taxes.maintenance_land_use, taxes.maintenance_roads, taxes.maintenance_transport]
 	net_label.text = "%+d" % (taxes.taxes - taxes.maintenance)
+	turn_label.text = str(planet.stats.turn())
 
 
 func state():

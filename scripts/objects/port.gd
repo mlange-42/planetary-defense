@@ -1,10 +1,9 @@
 extends Facility
 class_name Port
 
-func init(node: int, planet_data):
-	.init(node, planet_data)
+func init(node: int, planet_data, type: String):
+	.init(node, planet_data, type)
 	
-	type = Facilities.FAC_PORT
 	planet_data.set_port(node, true)
 
 
