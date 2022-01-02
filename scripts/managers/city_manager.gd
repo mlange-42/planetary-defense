@@ -141,10 +141,10 @@ func post_update():
 		
 		if all_workers_supplied:
 			print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
-			if total_workers <= Consts.NO_PRODUCTS_CITY_POP:
+			if total_workers <= Cities.NO_PRODUCTS_CITY_POP:
 				share_satisfied = 1.0
 			
-			if randf() < Consts.CITY_GROWTH_PROB * share_satisfied:
+			if randf() < Cities.CITY_GROWTH_PROB * share_satisfied:
 				city.workers += 1
 				city.update_visuals(planet_data)
 
@@ -218,8 +218,8 @@ func assign_city_workers(city: City, builder: BuildManager):
 			var veg = planet_data.get_node(node).vegetation_type
 			var res = resources.resources.get(node, null)
 			
-			var lu_options: Dictionary = constants.VEG_MAPPING[veg]
-			var res_options: Dictionary = constants.RES_MAPPING[res[0]] if res != null else {}
+			var lu_options: Dictionary = constants.VEG_MAPPING.get(veg, {})
+			var res_options: Dictionary = constants.RES_MAPPING.get(res[0], {}) if res != null else {}
 			for key in res_options:
 				lu_options[key] = res_options[key]
 			

@@ -19,6 +19,11 @@ const FACILITY_COSTS = {
 	FAC_PORT: 50,
 }
 
+const FACILITY_MAINTENANCE = {
+	FAC_CITY: 0,
+	FAC_PORT: 5,
+}
+
 const FACILITY_IN_CITY = {
 	FAC_CITY: false,
 	FAC_PORT: true,

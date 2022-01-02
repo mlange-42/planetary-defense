@@ -8,8 +8,8 @@ onready var land_use_mesh: ImmediateGeometry = $LandUse
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
 var facilities: Dictionary = {}
-var radius: int = Consts.INITIAL_CITY_RADIUS
-var workers: int = Consts.INITIAL_CITY_POP
+var radius: int = Cities.INITIAL_CITY_RADIUS
+var workers: int = Cities.INITIAL_CITY_POP
 
 var commodity_weights: Array = [100, 100, 100]
 var auto_assign_workers: bool = true
