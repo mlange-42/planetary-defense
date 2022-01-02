@@ -122,7 +122,7 @@ func set_land_use(city: City, node: int, land_use: int):
 	if land_use == LandUse.LU_NONE:
 		if node in city.land_use:
 			var lut = city.land_use[node]
-			city.workers += LandUse.LU_WORKERS[lut]
+			city.free_workers(LandUse.LU_WORKERS[lut])
 			# warning-ignore:return_value_discarded
 			city.land_use.erase(node)
 			planet_data.set_occupied(node, false)
@@ -140,7 +140,7 @@ func set_land_use(city: City, node: int, land_use: int):
 	var veg = planet_data.get_node(node).vegetation_type
 	var lu: Dictionary = constants.LU_MAPPING[land_use]
 	
-	if city.workers < LandUse.LU_WORKERS[land_use]:
+	if city.workers() < LandUse.LU_WORKERS[land_use]:
 		return "Not enough workers (requires %d)" % LandUse.LU_WORKERS[land_use]
 	
 	if not veg in lu:
@@ -152,7 +152,7 @@ func set_land_use(city: City, node: int, land_use: int):
 	
 	planet_data.set_occupied(node, true)
 	city.land_use[node] = land_use
-	city.workers -= LandUse.LU_WORKERS[land_use]
+	city.assign_workers(LandUse.LU_WORKERS[land_use])
 	city.update_visuals(planet_data)
 	
 	return null

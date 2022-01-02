@@ -85,7 +85,7 @@ func state_exited():
 
 
 func update_city_info():
-	city_text.text = "%s\n Free workers: %d" % [city.name, city.workers]
+	city_text.text = "%s (%d/%d workers)" % [city.name, city.workers(), city.population()]
 	for comm in Commodities.COMM_ALL:
 		var flows = city.flows.get(comm, [0, 0])
 		var pot_source = 0
