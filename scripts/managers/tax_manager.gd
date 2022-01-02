@@ -24,13 +24,15 @@ func pay_costs(facilities: Dictionary, network_edges: Dictionary):
 	for node in facilities:
 		var fac = facilities[node]
 		var type = fac.type
-		maintenance_facilities += Facilities.FACILITY_MAINTENANCE[type]
 		
 		if fac.type == Facilities.FAC_CITY:
 			var city: City = fac as City
+			maintenance_facilities += Cities.city_maintenance(city.radius)
 			for n in city.land_use:
 				var lu = city.land_use[n]
 				maintenance_land_use += LandUse.LU_MAINTENANCE[lu]
+		else:
+			maintenance_facilities += Facilities.FACILITY_MAINTENANCE[type]
 	
 	# warning-ignore:integer_division
 	maintenance_roads = int(ceil((network_edges.size() / 2) * Consts.ROAD_MAINTENANCE_1000 / 1000.0))

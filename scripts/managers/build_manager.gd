@@ -59,6 +59,17 @@ func remove_road(path: Array) -> bool:
 	return true
 
 
+func grow_city(city: City):
+	var cost = Cities.city_growth_cost(city.radius)
+	if cost > taxes.budget:
+		return "Not enough money to grow city (requires %d)" % cost
+	
+	city.radius += 1
+	city.update_cells(planet_data)
+	
+	return null
+
+
 func add_facility(type: String, location: int, name: String):
 	if not Facilities.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)

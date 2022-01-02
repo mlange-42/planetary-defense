@@ -158,7 +158,7 @@ func update_visuals(planet_data):
 	
 	if flows_food[1] < demand_food:
 		label.self_modulate = Color.red
-	elif flows_prod[1] == 0:
+	elif flows_prod[1] == 0 && demand_prod > 0:
 		label.self_modulate = Color.orangered
 	elif flows_prod[1] < demand_prod:
 		label.self_modulate = Color.yellow

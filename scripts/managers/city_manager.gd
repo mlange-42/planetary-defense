@@ -86,9 +86,9 @@ func post_update():
 		
 		var city = facility as City
 		
-		while city.land_use.size() * 2 > city.cells.size():
-			city.radius += 1
-			city.update_cells(planet_data)
+		#while city.land_use.size() * 2 > city.cells.size():
+		#	city.radius += 1
+		#	city.update_cells(planet_data)
 		
 		var food_available = city.flows.get(Commodities.COMM_FOOD, [0, 0])[1]
 		food_available -= city.workers()
@@ -134,10 +134,11 @@ func post_update():
 		var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
 		var demand = Cities.products_demand(city.population())
 		var share_satisfied = 1.0 if demand == 0 else clamp(products_available / float(demand), 0, 1)
+		var rel_growth = 1.0 - (city.population() / float(city.cells.size()))
 		
 		if all_workers_supplied:
 			print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
-			if randf() < Cities.CITY_GROWTH_PROB * share_satisfied:
+			if randf() < Cities.CITY_GROWTH_PROB * share_satisfied * rel_growth:
 				city.add_workers(1)
 				city.update_visuals(planet_data)
 
