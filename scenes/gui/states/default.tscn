@@ -3,7 +3,7 @@
 [ext_resource path="res://assets/shortkeys/m.tres" type="ShortCut" id=1]
 [ext_resource path="res://assets/shortkeys/s.tres" type="ShortCut" id=2]
 [ext_resource path="res://scripts/gui/states/default.gd" type="Script" id=3]
-[ext_resource path="res://assets/shortkeys/c.tres" type="ShortCut" id=4]
+[ext_resource path="res://assets/shortkeys/b.tres" type="ShortCut" id=4]
 [ext_resource path="res://assets/shortkeys/r.tres" type="ShortCut" id=5]
 [ext_resource path="res://assets/shortkeys/f.tres" type="ShortCut" id=6]
 

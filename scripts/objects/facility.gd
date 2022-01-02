@@ -23,8 +23,8 @@ func init(node: int, planet_data, type: String):
 	self.node_id = node
 	self.type = type
 	
-	if Facilities.FACILITY_SINKS.has(type):
-		var s = Facilities.FACILITY_SINKS[type]
+	var s = Facilities.FACILITY_SINKS[type]
+	if s != null:
 		for sink in s:
 			add_sink(s[0], s[1])
 
