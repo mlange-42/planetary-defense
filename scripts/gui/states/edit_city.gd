@@ -112,6 +112,8 @@ func update_node_info(node: int):
 	for lut in fsm.constants.LU_MAPPING:
 		var lu: Dictionary = fsm.constants.LU_MAPPING[lut]
 		if veg in lu:
+			if lu[veg] == null:
+				continue
 			var prod: LandUse.VegLandUse = lu[veg]
 			var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
 			var line = " %-10s%s" % [LandUse.LU_NAMES[lut], prod_string]
@@ -123,7 +125,8 @@ func update_node_info(node: int):
 		var res_id = res_here[0]
 		for lut in fsm.constants.LU_RESOURCES:
 			var res: Dictionary = fsm.constants.LU_RESOURCES[lut]
-			if res_here[0] in res:
+			var lu: Dictionary = fsm.constants.LU_MAPPING[lut]
+			if res.has(res_here[0]) and lu.has(veg):
 				var prod: LandUse.VegLandUse = res[res_id]
 				var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
 				var line = " %-10s%s" % [LandUse.LU_NAMES[lut], prod_string]

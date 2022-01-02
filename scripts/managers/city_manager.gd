@@ -41,7 +41,7 @@ func pre_update():
 			var extract_resource = LandUse.LU_RESOURCE[lu]
 			var lu_data = constants.LU_MAPPING[lu]
 			var res_data = constants.LU_RESOURCES[lu]
-			if not data.vegetation_type in lu_data and extract_resource == null:
+			if not data.vegetation_type in lu_data:
 				continue
 			
 			var workers = LandUse.LU_WORKERS[lu]
@@ -58,6 +58,7 @@ func pre_update():
 					continue
 			
 			if veg_data.source != null:
+				# TODO: extract resources only if they are really used!
 				var amount = veg_data.source.amount if extract_resource == null \
 								else resources.extract_resource(node, extract_resource, veg_data.source.amount)
 				if amount != 0:
@@ -102,7 +103,7 @@ func post_update():
 			var extract_resource = LandUse.LU_RESOURCE[lu]
 			var lu_data = constants.LU_MAPPING[lu]
 			var res_data = constants.LU_RESOURCES[lu]
-			if not data.vegetation_type in lu_data and extract_resource == null:
+			if not data.vegetation_type in lu_data:
 				continue
 			
 			var workers = LandUse.LU_WORKERS[lu]
@@ -206,6 +207,8 @@ func assign_city_workers(city: City, builder: BuildManager):
 				lu_options[key] = res_options[key]
 			
 			for lu in lu_options:
+				if lu_options[lu] == null:
+					continue
 				if comm_map[LandUse.LU_OUTPUT[lu]] == best_commodity \
 						and LandUse.LU_WORKERS[lu] <= city.workers \
 						and city.has_landuse_requirements(lu):

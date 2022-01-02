@@ -136,16 +136,15 @@ func set_land_use(city: City, node: int, land_use: int):
 	var res_here = resources.resources.get(node, null)
 	var extract_resource = LandUse.LU_RESOURCE[land_use]
 	var veg = planet_data.get_node(node).vegetation_type
-	var lu: Dictionary = constants.LU_MAPPING[land_use] \
-				if extract_resource == null else constants.LU_RESOURCES[land_use]
+	var lu: Dictionary = constants.LU_MAPPING[land_use]
 	
 	if city.workers < LandUse.LU_WORKERS[land_use]:
 		return "Not enough workers (requires %d)" % LandUse.LU_WORKERS[land_use]
 	
-	if extract_resource == null:
-		if not veg in lu:
-			return "Vegetation type %s can't be used for %s" % [LandUse.VEG_NAMES[veg], LandUse.LU_NAMES[land_use]]
-	else:
+	if not veg in lu:
+		return "Vegetation type %s can't be used for %s" % [LandUse.VEG_NAMES[veg], LandUse.LU_NAMES[land_use]]
+	
+	if extract_resource != null:
 		if res_here == null or res_here[0] != extract_resource:
 			return "Resource %s not available here" % Resources.RES_NAMES[extract_resource]
 	

@@ -141,7 +141,7 @@ func _ready():
 		if not load_planet:
 			FileUtil.create_user_dir(Consts.SAVEGAME_DIR)
 			self.planet_data.to_csv(planet_file)
-	
+			self.save_game()
 
 
 func init():

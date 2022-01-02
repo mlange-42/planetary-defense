@@ -52,7 +52,7 @@ func draw_resources(planet_data, resources: ResourceManager):
 	
 	for node in resources.resources:
 		var res = resources.resources[node]
-		var pos: Vector3 = planet_data.get_node(node).position
+		var pos: Vector3 = planet_data.get_position(node)
 		
 		_draw_resource(pos, res[0])
 	
@@ -64,4 +64,4 @@ func _draw_resource(pos: Vector3, type: int):
 	var norm = pos.normalized()
 	
 	set_color(col)
-	add_vertex(pos + 0.5 * Consts.DRAW_HEIGHT_OFFSET * norm)
+	add_vertex(pos + Consts.DRAW_HEIGHT_OFFSET * norm)
