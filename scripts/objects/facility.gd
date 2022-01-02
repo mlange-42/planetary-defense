@@ -22,6 +22,23 @@ func init(node: int, planet_data):
 func on_ready(planet_data):
 	pass
 
+
+func save() -> Dictionary:
+	var dict = {
+		"type": type,
+		"name": name,
+		"node_id": node_id,
+		"city_node_id": city_node_id,
+	}
+	return dict
+
+
+func read(dict: Dictionary):
+	name = dict["name"]
+	node_id = dict["node_id"] as int
+	city_node_id = dict["city_node_id"] as int
+
+
 # warning-ignore:unused_argument
 # warning-ignore:unused_argument
 func can_build(planet_data, node) -> bool:
