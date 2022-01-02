@@ -26,7 +26,7 @@ func init(node: int, planet_data, type: String):
 	var s = Facilities.FACILITY_SINKS[type]
 	if s != null:
 		for sink in s:
-			add_sink(s[0], s[1])
+			add_sink(sink[0], sink[1])
 
 
 # warning-ignore:unused_argument
