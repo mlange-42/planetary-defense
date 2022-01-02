@@ -141,10 +141,10 @@ func post_update():
 		
 		if all_workers_supplied:
 			print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
-			if total_workers <= Consts.NO_PRODUCTS_CITY_POP:
+			if total_workers <= Cities.NO_PRODUCTS_CITY_POP:
 				share_satisfied = 1.0
 			
-			if randf() < Consts.CITY_GROWTH_PROB * share_satisfied:
+			if randf() < Cities.CITY_GROWTH_PROB * share_satisfied:
 				city.workers += 1
 				city.update_visuals(planet_data)
 
