@@ -60,7 +60,7 @@ func pre_update():
 			if veg_data.source != null:
 				# TODO: extract resources only if they are really used!
 				var amount = veg_data.source.amount if extract_resource == null \
-								else resources.extract_resource(node, extract_resource, veg_data.source.amount)
+								else resources.can_extract_resource(node, extract_resource, veg_data.source.amount)
 				if amount != 0:
 					city.add_source(veg_data.source.commodity, amount)
 			
@@ -77,6 +77,9 @@ func pre_update():
 
 func post_update():
 	var facilities = network.facilities
+	var comm_produced = {}
+	for comm in Commodities.COMM_ALL:
+		comm_produced[comm] = 0
 	
 	for fid in facilities:
 		var facility = facilities[fid]
@@ -89,14 +92,19 @@ func post_update():
 			city.radius += 1
 			city.update_cells(planet_data)
 		
-		var food_available = city.flows[Commodities.COMM_FOOD][1] if Commodities.COMM_FOOD in city.flows else 0
+		var food_available = city.flows.get(Commodities.COMM_FOOD, [0, 0])[1]
 		food_available -= city.workers
+		
+		for comm in Commodities.COMM_ALL:
+			comm_produced[comm] = city.flows.get(comm, [0, 0])[0]
 		
 		var total_workers = city.workers
 		
 		var all_workers_supplied = food_available >= 0
 		
-		for node in city.land_use:
+		var keys = city.land_use.keys()
+		keys.shuffle()
+		for node in keys:
 			var lu = city.land_use[node]
 			var data = planet_data.get_node(node)
 			
@@ -117,9 +125,18 @@ func post_update():
 					food_available -= workers
 				else:
 					all_workers_supplied = false
-					break
+			
+			if veg_data.source != null:
+				var comm = veg_data.source.commodity
+				if comm_produced[comm] > 0:
+					if extract_resource == null:
+						comm_produced[comm] = max(0, comm_produced[comm] - veg_data.source.amount)
+					else:
+						var amount = min(veg_data.source.amount, comm_produced[comm])
+						var realized_amount = resources.extract_resource(node, extract_resource, amount)
+						comm_produced[comm] -= realized_amount
 		
-		var products_available = city.flows[Commodities.COMM_PRODUCTS][1] if Commodities.COMM_PRODUCTS in city.flows else 0
+		var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
 		var share_satisfied = clamp(products_available / float(max(total_workers / 2, 1)), 0, 1)
 		
 		if all_workers_supplied:

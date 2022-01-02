@@ -68,6 +68,18 @@ func extract_resource(node: int, type: int, amount: int) -> int:
 	return value
 
 
+func can_extract_resource(node: int, type: int, amount: int) -> int:
+	var value = 0
+	
+	if resources.has(node):
+		var res = resources[node]
+		if res[0] == type:
+			var v = min(res[1], amount)
+			value = v
+	
+	return value
+
+
 func save() -> Dictionary:
 	return {
 		"resources": resources

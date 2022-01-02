@@ -260,9 +260,9 @@ func draw_path(from: int, to: int) -> bool:
 func add_road(from: int, to: int):
 	var path = calc_id_path(from, to)
 	var err = builder.add_road(path)
-	if err == null:
-		_redraw_roads()
-		emit_budget()
+	
+	_redraw_roads()
+	emit_budget()
 	
 	return err
 
