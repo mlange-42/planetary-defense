@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/gui/states/cheats.gd" type="Script" id=1]
+[ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/shortkeys/ctrl_c.tres" type="ShortCut" id=3]
+
+[node name="Cheats" type="MarginContainer"]
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 10.0
+margin_bottom = -10.0
+rect_min_size = Vector2( 120, 0 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buttons" type="VBoxContainer" parent="."]
+margin_right = 120.0
+margin_bottom = 580.0
+rect_min_size = Vector2( 100, 0 )
+
+[node name="StateControl" parent="Buttons" instance=ExtResource( 2 )]
+text = "Cheats"
+
+[node name="PanelContainer" type="PanelContainer" parent="Buttons"]
+margin_top = 38.0
+margin_right = 120.0
+margin_bottom = 100.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 113.0
+margin_bottom = 55.0
+
+[node name="Command" type="LineEdit" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_right = 106.0
+margin_bottom = 24.0
+hint_tooltip = "Enter cheat command"
+placeholder_text = "Command"
+
+[node name="Cheat" type="Button" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 28.0
+margin_right = 106.0
+margin_bottom = 48.0
+hint_tooltip = "Execute cheat command"
+shortcut = ExtResource( 3 )
+text = "Cheat"
+
+[connection signal="back_pressed" from="Buttons/StateControl" to="." method="_on_Back_pressed"]
+[connection signal="text_entered" from="Buttons/PanelContainer/VBoxContainer/Command" to="." method="_on_Command_text_entered"]
+[connection signal="pressed" from="Buttons/PanelContainer/VBoxContainer/Cheat" to="." method="_on_Cheat_pressed"]
