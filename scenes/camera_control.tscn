@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/camera_control.gd" type="Script" id=1]
+[ext_resource path="res://assets/default_env.tres" type="Environment" id=2]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0.727273 ), 0.0, -2.55122, 0, 0, Vector2( 0.325048, 0.2 ), -0.811751, -0.811751, 0, 0, Vector2( 0.762906, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 1, 0 ]
@@ -21,6 +22,7 @@ directional_shadow_max_distance = 50.0
 
 [node name="Camera" type="Camera" parent="Arm/Arm2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 36.4352 )
+environment = ExtResource( 2 )
 current = true
 fov = 50.0
 near = 0.5

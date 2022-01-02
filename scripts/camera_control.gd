@@ -54,6 +54,9 @@ func _process(delta):
 	camera.translation.z = lerp(camera.translation.z, zoom_target, lerp_speed * delta)
 	var angle = 90 * angle_curve.interpolate(camera.translation.z / max_height)
 	
+	var env: Environment = camera.environment
+	env.fog_depth_begin = camera.translation.z
+	env.fog_depth_end = camera.translation.z * 3
 	
 	rotation.y = lerp(rotation.y, rotation_y_target, lerp_speed * delta)
 	arm.rotation.x = lerp(arm.rotation.x, rotation_x_target, lerp_speed * delta)
