@@ -24,14 +24,14 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_right = 304.0
+margin_right = 336.0
 margin_bottom = 20.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer"]
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 300.0
+margin_right = 332.0
 margin_bottom = 18.0
 
 [node name="Label2" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
@@ -103,6 +103,27 @@ margin_bottom = 16.0
 hint_tooltip = "Current budget"
 mouse_filter = 0
 text = "1000"
+valign = 1
+
+[node name="VSeparator4" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_left = 300.0
+margin_right = 304.0
+margin_bottom = 16.0
+
+[node name="Label5" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_left = 308.0
+margin_right = 316.0
+margin_bottom = 16.0
+text = "T"
+valign = 1
+
+[node name="TurnLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_left = 320.0
+margin_right = 328.0
+margin_bottom = 16.0
+hint_tooltip = "Game turn"
+mouse_filter = 0
+text = "0"
 valign = 1
 
 [node name="ErrorContainer" type="MarginContainer" parent="."]

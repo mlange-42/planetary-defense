@@ -245,6 +245,11 @@ _global_script_classes=[ {
 "path": "res://scripts/gui/states/settings.gd"
 }, {
 "base": "Reference",
+"class": "StatsManager",
+"language": "GDScript",
+"path": "res://scripts/managers/stats_manager.gd"
+}, {
+"base": "Reference",
 "class": "TaxManager",
 "language": "GDScript",
 "path": "res://scripts/managers/tax_manager.gd"
@@ -302,6 +307,7 @@ _global_script_class_icons={
 "RoadNetwork": "",
 "RoadsState": "",
 "SettingsState": "",
+"StatsManager": "",
 "TaxManager": "",
 "UvSphere": ""
 }
