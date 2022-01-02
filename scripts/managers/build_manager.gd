@@ -23,14 +23,16 @@ func _init(consts: LandUse, net: RoadNetwork, resources: ResourceManager, planet
 	self.parent_node = node
 
 
-func add_road(path: Array) -> bool:
+func add_road(path: Array):
 	if path.size() == 0:
-		return false
+		return "No path specified"
 	
 	var sum_cost = 0
 	
+	var warn = null
 	for i in range(path.size()-1):
 		if taxes.budget < sum_cost + Consts.ROAD_COSTS:
+			warn = "Road not completed - not enough money!"
 			break
 		
 		var p1 = path[i]
@@ -41,7 +43,7 @@ func add_road(path: Array) -> bool:
 	
 	taxes.budget -= sum_cost
 	
-	return true
+	return warn
 
 
 func remove_road(path: Array) -> bool:

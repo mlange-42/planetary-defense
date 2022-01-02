@@ -22,7 +22,10 @@ func on_planet_clicked(node: int, button: int):
 			if clear_button.pressed:
 				fsm.planet.remove_road(start_point, node)
 			else:
-				fsm.planet.add_road(start_point, node)
+				var err = fsm.planet.add_road(start_point, node)
+				if err != null:
+					fsm.show_message(err, Consts.MESSAGE_ERROR)
+			
 			start_point = node
 			fsm.planet.clear_path()
 		else:
