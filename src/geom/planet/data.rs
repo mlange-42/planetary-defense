@@ -247,9 +247,10 @@ impl PlanetData {
             .enumerate()
             .filter_map(move |(i, n)| {
                 let target = &self.nodes[*n];
+                let nav_water = nav_type == self.NAV_WATER;
                 if !target.is_occupied
                     && (nav_type == self.NAV_ALL
-                        || (nav_type == self.NAV_WATER) == target.is_water
+                        || (nav_water == source.is_water && nav_water == target.is_water)
                         || (nav_type == self.NAV_LAND
                             && ((target.is_port && !source.is_water)
                                 || (source.is_port && !target.is_water))))
