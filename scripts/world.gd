@@ -43,6 +43,7 @@ func _ready():
 	planet.connect("budget_changed", self, "_on_budget_changed")
 	
 	planet.init()
+	gui.init()
 
 
 func _on_planet_entered(point: Vector3):

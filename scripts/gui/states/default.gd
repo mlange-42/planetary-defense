@@ -3,6 +3,11 @@ class_name DefaultState
 
 onready var messages: MessageWindow = find_node("Messages")
 
+
+func _ready():
+	update_messages()
+
+
 func _unhandled_key_input(event: InputEventKey):
 	if event.pressed:
 		if event.scancode == KEY_C and event.control and event.shift:
@@ -42,7 +47,9 @@ func _on_next_turn():
 	fsm.planet.next_turn()
 	
 	fsm.show_message("Next turn", Consts.MESSAGE_INFO)
-	
+	update_messages()
+
+func update_messages():
 	messages.update_messages(fsm.planet.messages)
 	if not fsm.planet.messages.messages.empty():
 		messages.visible = true

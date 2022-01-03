@@ -3,6 +3,7 @@ class_name MessageWindow
 
 onready var container: VBoxContainer = find_node("MessageContainer")
 
+
 func update_messages(messages: MessageManager):
 	for n in container.get_children():
 		container.remove_child(n)

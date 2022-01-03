@@ -16,7 +16,7 @@ onready var error_timer = find_node("ErrorTimer")
 var planet: Planet
 var states = []
 
-func _ready():
+func init():
 	error_container.visible = false
 	push("default", {})
 
