@@ -40,7 +40,7 @@ material = SubResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3 )
 layers = 2
 cast_shadow = 0
-lod_min_distance = 2.0
+extra_cull_margin = 0.5
 centered = false
 offset = Vector2( 0, -30 )
 pixel_size = 0.003
@@ -57,7 +57,6 @@ render_target_v_flip = true
 
 [node name="Label" parent="Pole/Sprite3D/Viewport" instance=ExtResource( 3 )]
 margin_right = 416.0
-margin_bottom = 56.0
 
 [node name="LandUse" type="ImmediateGeometry" parent="."]
 layers = 4
