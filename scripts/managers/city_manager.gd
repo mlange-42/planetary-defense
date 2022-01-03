@@ -22,16 +22,21 @@ func pre_update():
 func post_update():
 	var facilities = planet.roads.facilities
 	
+	var attractiveness = {}
+	
 	for fid in facilities:
 		var facility: Facility = facilities[fid]
 		if facility is City:
 			var city = facility as City
-			post_update_city(city)
+			var attr = post_update_city(city)
+			attractiveness[city] = attr
 		
 		facility.calc_is_supplied()
 		if not facility.is_supplied:
 			var name = facility.name if facility is City else facility.type
 			planet.messages.add_message(facility.node_id, "[u]%s[/u] not supplied" % name, Consts.MESSAGE_WARNING)
+	
+	migrate(attractiveness)
 
 
 func pre_update_city(city: City):
@@ -86,7 +91,7 @@ func pre_update_city(city: City):
 	city.add_sink(Commodities.COMM_PRODUCTS, Cities.products_demand(city.population()))
 
 
-func post_update_city(city: City):
+func post_update_city(city: City) -> float:
 	var food_available = city.flows.get(Commodities.COMM_FOOD, [0, 0])[1]
 	food_available -= city.workers()
 	
@@ -133,14 +138,49 @@ func post_update_city(city: City):
 	var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
 	var demand = Cities.products_demand(city.population())
 	var share_satisfied = 1.0 if demand == 0 else clamp(products_available / float(demand), 0, 1)
-	var rel_growth = 1.0 - (city.population() / float(city.cells.size()))
+	var space_growth = clamp(1.0 - (city.population() / float(city.cells.size())), 0, 1)
+	var unemployment = city.workers() / float(city.population())
+	var employment_growth = clamp(1.0 - 4.0 * unemployment, 0, 1)
+	
+	var attractiveness = share_satisfied * space_growth * employment_growth
 	
 	if all_workers_supplied:
 		print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
-		if randf() < Cities.CITY_GROWTH_PROB * share_satisfied * rel_growth:
+		if randf() < Cities.CITY_GROWTH_PROB * attractiveness:
 			city.add_workers(1)
 			city.update_visuals(planet.planet_data)
 			planet.messages.add_message(city.node_id, "Population growth in [u]%s[/u]" % city.name, Consts.MESSAGE_INFO)
+	
+	return attractiveness
+
+
+func migrate(attractiveness: Dictionary):
+	for city in attractiveness:
+		for _i in city.workers():
+			if randf() < Cities.UNEMPLOYED_MIGRATION_PROB:
+				mirgate_inhabitant(city, attractiveness)
+
+
+func mirgate_inhabitant(from: City, attractiveness: Dictionary):
+	var curr_attr = attractiveness[from]
+	var max_attr = 0
+	var max_city = null
+	
+	for city in attractiveness:
+		var attr = attractiveness[city]
+		# TODO: make dependent on existing network path between cities
+		if city != from and attr > curr_attr and attr > max_attr:
+			max_attr = attr
+			max_city = city
+	
+	if max_city != null:
+		from.remove_workers(1)
+		max_city.add_workers(1)
+		
+		from.update_visuals(planet.planet_data)
+		max_city.update_visuals(planet.planet_data)
+		planet.messages.add_message(from.node_id, "Worker migrated from [u]%s[/u] to [u]%s[/u]" \
+					% [from.name, max_city.name], Consts.MESSAGE_INFO)
 
 
 func assign_workers(builder: BuildManager):

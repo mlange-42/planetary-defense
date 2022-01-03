@@ -11,6 +11,8 @@ const NO_PRODUCTS_CITY_POP: int = 3
 
 const PRODUCTS_PER_POP: float = 0.5
 
+const UNEMPLOYED_MIGRATION_PROB = 0.05
+
 static func products_demand(pop: int) -> int:
 	if pop <= NO_PRODUCTS_CITY_POP:
 		return 0
