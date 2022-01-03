@@ -122,7 +122,6 @@ shortcut = SubResource( 10 )
 text = "Turn"
 
 [node name="Messages" parent="." instance=ExtResource( 8 )]
-visible = false
 
 [connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
 [connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/SettingsButton" to="." method="_on_SettingsButton_pressed"]

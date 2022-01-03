@@ -30,7 +30,11 @@ func init(node: int, planet_data, type: String):
 
 
 # warning-ignore:unused_argument
-func on_ready(planet_data):
+func on_ready(_planet_data):
+	pass
+
+
+func removed(_planet):
 	pass
 
 

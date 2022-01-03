@@ -20,3 +20,5 @@ const LAYER_LABELS: int = 1
 const LAYER_LAND_USE: int = 2
 const LAYER_ROADS: int = 3
 const LAYER_RESOURCES: int = 4
+const LAYER_RANGES: int = 5
+const LAYER_EVENTS: int = 6
