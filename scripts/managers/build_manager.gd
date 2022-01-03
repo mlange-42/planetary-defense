@@ -66,6 +66,7 @@ func grow_city(city: City):
 	
 	city.radius += 1
 	city.update_cells(planet_data)
+	taxes.budget -= cost
 	
 	return null
 

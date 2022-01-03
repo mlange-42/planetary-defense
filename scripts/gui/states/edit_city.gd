@@ -101,6 +101,7 @@ func update_city_info():
 	grow_button.hint_tooltip = "Grow city radius.\n Cost: %d\n Maintenance: %d->%d" \
 			% [Cities.city_growth_cost(city.radius), Cities.city_maintenance(city.radius), Cities.city_maintenance(city.radius + 1)]
 
+
 func update_node_info(node: int):
 	if node < 0:
 		node_text.bbcode_text = ""
@@ -225,7 +226,7 @@ func on_planet_clicked(node: int, button: int):
 
 
 func _on_GrowButton_pressed():
-	var err = fsm.planet.builder.grow_city(city)
+	var err = fsm.planet.grow_city(city)
 	if err == null:
 		update_city_info()
 	else:

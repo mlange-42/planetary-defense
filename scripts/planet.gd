@@ -308,6 +308,13 @@ func add_facility(type: String, location: int, name: String):
 	return fac_err
 
 
+func grow_city(city: City):
+	var err = builder.grow_city(city)
+	if err == null:
+		emit_budget()
+	return err
+
+
 func clear_path():
 	path_debug.clear_all()
 
