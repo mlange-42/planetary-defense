@@ -32,7 +32,7 @@ func _on_SettingsButton_pressed():
 	fsm.push("settings", {})
 
 func _on_MessagesButton_pressed():
-	messages.visible = true
+	messages.visible = not messages.visible
 
 func _on_Road_pressed():
 	fsm.push("roads", {})
