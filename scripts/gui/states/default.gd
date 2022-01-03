@@ -1,10 +1,14 @@
 extends GuiState
 class_name DefaultState
 
+onready var messages: MessageWindow = find_node("Messages")
+
 func _unhandled_key_input(event: InputEventKey):
 	if event.pressed:
 		if event.scancode == KEY_C and event.control and event.shift:
 			fsm.push("cheats", {})
+		elif event.scancode == KEY_ESCAPE:
+			messages.visible = false
 
 
 func on_planet_clicked(node: int, button: int):
@@ -23,7 +27,7 @@ func _on_SettingsButton_pressed():
 	fsm.push("settings", {})
 
 func _on_MessagesButton_pressed():
-	fsm.push("messages", {})
+	messages.visible = true
 
 func _on_Road_pressed():
 	fsm.push("roads", {})
@@ -36,5 +40,9 @@ func _on_Build_pressed():
 
 func _on_next_turn():
 	fsm.planet.next_turn()
-	fsm.push("messages", {})
+	
 	fsm.show_message("Next turn", Consts.MESSAGE_INFO)
+	
+	messages.update_messages(fsm.planet.messages)
+	if not fsm.planet.messages.messages.empty():
+		messages.visible = true

@@ -1,0 +1,64 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/gui/controls/messages.gd" type="Script" id=1]
+
+[node name="Messages" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginMessages" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -334.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = 14.0
+grow_horizontal = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginMessages"]
+margin_right = 334.0
+margin_bottom = 38.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginMessages/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 327.0
+margin_bottom = 31.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginMessages/PanelContainer/VBoxContainer"]
+margin_right = 320.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="MarginMessages/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 297.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Messages"
+
+[node name="HideButton" type="Button" parent="MarginMessages/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 301.0
+margin_right = 320.0
+margin_bottom = 20.0
+hint_tooltip = "Hide messages"
+text = "x"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MessageContainer" type="VBoxContainer" parent="MarginMessages/PanelContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 320.0
+margin_bottom = 24.0
+grow_horizontal = 0
+rect_min_size = Vector2( 320, 0 )
+
+[connection signal="pressed" from="MarginMessages/PanelContainer/VBoxContainer/HBoxContainer/HideButton" to="." method="_on_HideButton_pressed"]

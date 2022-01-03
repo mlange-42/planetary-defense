@@ -13,6 +13,7 @@ func _ready():
 	var button = Button.new()
 	button.size_flags_vertical = 0
 	button.text = "->"
+	button.hint_tooltip = "Go to message location"
 	button.connect("pressed", self, "_on_button_pressed")
 	
 	add_child(button)
