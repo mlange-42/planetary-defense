@@ -24,6 +24,11 @@ func _ready():
 	message_label.bbcode_enabled = true
 	message_label.bbcode_text = message.text
 	
+	if message.message_type == Consts.MESSAGE_WARNING:
+		message_label.self_modulate = Color.yellow
+	elif message.message_type == Consts.MESSAGE_ERROR:
+		message_label.self_modulate = Color.orange
+	
 	var vbox = VBoxContainer.new()
 	vbox.alignment = ALIGN_CENTER
 	vbox.size_flags_horizontal = SIZE_FILL | SIZE_EXPAND
