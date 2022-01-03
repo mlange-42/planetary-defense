@@ -39,6 +39,11 @@ func add_workers(num: int):
 	_population += num
 
 
+func remove_workers(num: int):
+	_workers -= num
+	_population -= num
+
+
 func free_workers(num: int):
 	_workers += num
 

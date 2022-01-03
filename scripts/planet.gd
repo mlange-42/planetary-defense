@@ -57,6 +57,7 @@ var cities: CityManager
 var taxes: TaxManager
 var resources: ResourceManager
 var messages: MessageManager
+var story: StoryManager
 
 # Array of Dictionaries to override parameters
 func _init(params: Array):
@@ -134,6 +135,7 @@ func _ready():
 		var consts: LandUse = $"/root/VegetationLandUse" as LandUse
 		self.stats = StatsManager.new()
 		self.messages = MessageManager.new()
+		self.story = StoryManager.new(self)
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data)
@@ -192,6 +194,8 @@ func save_game():
 
 
 func load_game():
+	self.story = StoryManager.new(self)
+	
 	var file := File.new()
 	if file.open(FileUtil.save_path(save_name, FileUtil.GAME_EXTENSION), File.READ) != 0:
 		print("Error opening file")
@@ -362,6 +366,8 @@ func _create_collision(shape: ConcavePolygonShape) -> Area:
 
 func next_turn():
 	messages.clear_messages()
+	
+	story.update_turn()
 	
 	cities.pre_update()
 	flow.solve()
