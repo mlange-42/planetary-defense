@@ -29,6 +29,12 @@ func _unhandled_key_input(event: InputEventKey):
 			get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
 
 
+func on_planet_entered(node: int):
+	state().on_planet_entered(node)
+	
+func on_planet_exited():
+	state().on_planet_exited()
+
 func on_planet_hovered(node: int):
 	state().on_planet_hovered(node)
 

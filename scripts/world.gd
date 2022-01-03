@@ -11,6 +11,8 @@ onready var cam_control: CameraControl = $CameraControl
 # Array of Dictionaries to override parameters
 var planet_params = []
 
+var hover_id: int = -1
+
 func _init():
 	pass
 
@@ -43,22 +45,27 @@ func _ready():
 	planet.init()
 
 
-func _on_planet_entered(_point: Vector3):
+func _on_planet_entered(point: Vector3):
 	pointer.visible = true
+	var id = planet.planet_data.get_closest_point(point)
+	gui.on_planet_entered(id)
 
 
 func _on_planet_exited():
 	pointer.visible = false
+	gui.on_planet_exited()
 
 
 func _on_planet_hovered(point: Vector3):
 	var id = planet.planet_data.get_closest_point(point)
-
-	var node = planet.planet_data.get_node(id)
-	pointer.translation = node.position
-	pointer.look_at(2 * node.position, Vector3.UP)
-
-	gui.on_planet_hovered(id)
+	
+	if id != hover_id:
+		var node = planet.planet_data.get_node(id)
+		pointer.translation = node.position
+		pointer.look_at(2 * node.position, Vector3.UP)
+		gui.on_planet_hovered(id)
+		
+		hover_id = id
 
 
 func _on_planet_clicked(point: Vector3, button: int):

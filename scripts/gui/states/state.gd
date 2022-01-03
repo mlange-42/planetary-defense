@@ -12,6 +12,12 @@ func state_entered():
 func state_exited():
 	pass
 
+func on_planet_entered(_node: int):
+	pass
+
+func on_planet_exited():
+	pass
+
 func on_planet_hovered(_node: int):
 	pass
 
