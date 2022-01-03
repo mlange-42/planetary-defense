@@ -7,8 +7,8 @@
 
 [node name="Ship" type="CSGCylinder" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -1.5 )
-radius = 0.25
-height = 0.2
+radius = 0.15
+height = 0.08
 cone = true
 material = ExtResource( 1 )
 

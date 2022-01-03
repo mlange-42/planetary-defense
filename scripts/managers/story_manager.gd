@@ -26,3 +26,25 @@ func update_turn():
 func clear_events():
 	for e in turn_events:
 		e.delete(planet)
+
+
+func save() -> Dictionary:
+	var events = []
+	
+	for e in turn_events:
+		events.append(e.save())
+	
+	return {"events": events}
+
+
+func read(dict: Dictionary):
+	var events = dict["events"]
+	
+	for e in events:
+		var evt = load(e["script"]).new()
+		evt.read(e)
+		
+		evt.init(planet)
+		evt.show_effect(planet)
+		
+		turn_events.append(evt)

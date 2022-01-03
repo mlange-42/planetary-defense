@@ -175,6 +175,9 @@ func save_game():
 	var msg_json = to_json(messages.save())
 	file.store_line(msg_json)
 	
+	var story_json = to_json(story.save())
+	file.store_line(story_json)
+	
 	var roads_json = to_json(roads.save())
 	file.store_line(roads_json)
 	
@@ -194,7 +197,6 @@ func save_game():
 
 
 func load_game():
-	self.story = StoryManager.new(self)
 	
 	var file := File.new()
 	if file.open(FileUtil.save_path(save_name, FileUtil.GAME_EXTENSION), File.READ) != 0:
@@ -210,6 +212,10 @@ func load_game():
 	var msg_json = file.get_line()
 	self.messages = MessageManager.new()
 	self.messages.read(parse_json(msg_json))
+	
+	var story_json = file.get_line()
+	self.story = StoryManager.new(self)
+	self.story.read(parse_json(story_json))
 	
 	var roads_json = file.get_line()
 	self.roads = RoadNetwork.new()
