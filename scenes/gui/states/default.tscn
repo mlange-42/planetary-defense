@@ -131,3 +131,4 @@ visible = false
 [connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Roads" to="." method="_on_Road_pressed"]
 [connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Flows" to="." method="_on_Flows_pressed"]
 [connection signal="pressed" from="LeftMargin/DefaultControls/NextTurnButton" to="." method="_on_next_turn"]
+[connection signal="go_to_pressed" from="Messages" to="." method="_on_Messages_go_to_pressed"]

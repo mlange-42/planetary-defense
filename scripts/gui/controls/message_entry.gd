@@ -1,9 +1,9 @@
 extends HBoxContainer
 class_name MessageEntry
 
+signal go_to_pressed(message)
 
 var message: MessageManager.Message
-
 
 func _init(m: MessageManager.Message):
 	message = m
@@ -38,4 +38,4 @@ func _ready():
 
 
 func _on_button_pressed():
-	print("Go to location - not implemented")
+	emit_signal("go_to_pressed", message)

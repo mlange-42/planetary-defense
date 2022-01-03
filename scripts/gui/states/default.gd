@@ -53,3 +53,7 @@ func update_messages():
 	messages.update_messages(fsm.planet.messages)
 	if not fsm.planet.messages.messages.empty():
 		messages.visible = true
+
+func _on_Messages_go_to_pressed(message):
+	var loc = fsm.planet.planet_data.get_position(message.node)
+	fsm.go_to(loc)

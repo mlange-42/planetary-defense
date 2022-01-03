@@ -58,8 +58,8 @@ func _process(delta):
 	env.fog_depth_begin = camera.translation.z
 	env.fog_depth_end = camera.translation.z * 3
 	
-	rotation.y = lerp(rotation.y, rotation_y_target, lerp_speed * delta)
-	arm.rotation.x = lerp(arm.rotation.x, rotation_x_target, lerp_speed * delta)
+	rotation.y = lerp_angle(rotation.y, rotation_y_target, lerp_speed * delta)
+	arm.rotation.x = lerp_angle(arm.rotation.x, rotation_x_target, lerp_speed * delta)
 	arm2.rotation.x = deg2rad(angle)
 
 
@@ -70,3 +70,10 @@ func get_cull_mask(layer: int) -> bool:
 func set_cull_mask(layer: int, enable: bool):
 	camera.set_cull_mask_bit(layer, enable)
 
+
+func go_to(location: Vector3):
+	var norm = location.normalized()
+	var ll = GeoUtil.xyz_to_lla(norm)
+	
+	rotation_x_target = -deg2rad(ll.y)
+	rotation_y_target = deg2rad(90 - ll.x)
