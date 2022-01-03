@@ -3,6 +3,7 @@ class_name StoryManager
 var planet = null
 var turn_events: Array = []
 
+var min_pop = 50
 var attack_probability = 0.1
 
 # warning-ignore:shadowed_variable
@@ -12,6 +13,13 @@ func _init(planet):
 
 func update_turn():
 	clear_events()
+	
+	var cities_pop = _count_cities_pop()
+	var _cities = cities_pop[0]
+	var pop = cities_pop[1]
+	
+	if pop < min_pop:
+		return
 	
 	if randf() < attack_probability:
 		var new_event = AirAttack.new()
@@ -23,6 +31,19 @@ func update_turn():
 				planet.messages.add_message(new_event.node_id, msg, Consts.MESSAGE_ERROR)
 			
 			turn_events.append(new_event)
+
+
+func _count_cities_pop():
+	var cities = 0
+	var pop = 0
+	var facilities = planet.roads.facilities
+	for node in facilities:
+		var fac = facilities[node]
+		if fac is City:
+			cities += 1
+			pop += fac.population()
+	
+	return [cities, pop]
 
 
 func clear_events():
