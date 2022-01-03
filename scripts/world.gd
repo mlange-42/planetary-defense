@@ -42,7 +42,11 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	planet.connect("budget_changed", self, "_on_budget_changed")
 	
+	# warning-ignore:return_value_discarded
+	gui.connect("go_to_location", self, "_on_go_to_location")
+	
 	planet.init()
+	gui.init()
 
 
 func _on_planet_entered(point: Vector3):
@@ -104,3 +108,7 @@ func _hide_info():
 
 func _on_budget_changed(taxes: TaxManager):
 	gui.set_budget_taxes_maintenance(taxes)
+
+
+func _on_go_to_location(location: Vector3):
+	cam_control.go_to(location)

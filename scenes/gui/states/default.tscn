@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/shortkeys/m.tres" type="ShortCut" id=1]
 [ext_resource path="res://assets/shortkeys/s.tres" type="ShortCut" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://assets/shortkeys/b.tres" type="ShortCut" id=4]
 [ext_resource path="res://assets/shortkeys/r.tres" type="ShortCut" id=5]
 [ext_resource path="res://assets/shortkeys/f.tres" type="ShortCut" id=6]
+[ext_resource path="res://assets/shortkeys/n.tres" type="ShortCut" id=7]
+[ext_resource path="res://scenes/gui/controls/messages.tscn" type="PackedScene" id=8]
 
 [sub_resource type="InputEventKey" id=9]
 control = true
@@ -16,43 +18,51 @@ scancode = 84
 [sub_resource type="ShortCut" id=10]
 shortcut = SubResource( 9 )
 
-[node name="Default" type="MarginContainer"]
+[node name="Default" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LeftMargin" type="MarginContainer" parent="."]
 anchor_bottom = 1.0
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 10.0
 margin_bottom = -10.0
 rect_min_size = Vector2( 120, 0 )
-script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DefaultControls" type="VBoxContainer" parent="."]
+[node name="DefaultControls" type="VBoxContainer" parent="LeftMargin"]
 margin_right = 120.0
 margin_bottom = 580.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="PanelContainer" parent="DefaultControls"]
+[node name="PanelContainer" type="PanelContainer" parent="LeftMargin/DefaultControls"]
 margin_right = 120.0
-margin_bottom = 138.0
+margin_bottom = 162.0
 
-[node name="Buttons" type="VBoxContainer" parent="DefaultControls/PanelContainer"]
+[node name="Buttons" type="VBoxContainer" parent="LeftMargin/DefaultControls/PanelContainer"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 113.0
-margin_bottom = 131.0
+margin_bottom = 155.0
 
-[node name="MainMenuButton" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
+[node name="MainMenuButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
 margin_right = 106.0
 margin_bottom = 20.0
 hint_tooltip = "Save, quit, etc"
 shortcut = ExtResource( 1 )
 text = "Main menu"
 
-[node name="SettingsButton" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
+[node name="SettingsButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
 margin_top = 24.0
 margin_right = 106.0
 margin_bottom = 44.0
@@ -60,42 +70,50 @@ hint_tooltip = "Graphics and visibility settings"
 shortcut = ExtResource( 2 )
 text = "Settings"
 
-[node name="HSeparator" type="HSeparator" parent="DefaultControls/PanelContainer/Buttons"]
+[node name="MessagesButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
 margin_top = 48.0
 margin_right = 106.0
-margin_bottom = 52.0
+margin_bottom = 68.0
+hint_tooltip = "View game messages"
+shortcut = ExtResource( 7 )
+text = "Messages"
 
-[node name="Build" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
-margin_top = 56.0
+[node name="HSeparator" type="HSeparator" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
+margin_top = 72.0
 margin_right = 106.0
 margin_bottom = 76.0
+
+[node name="Build" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
+margin_top = 80.0
+margin_right = 106.0
+margin_bottom = 100.0
 hint_tooltip = "Found a new city. Click cities to manage them."
 shortcut = ExtResource( 4 )
 text = "Build"
 
-[node name="Roads" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
-margin_top = 80.0
+[node name="Roads" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
+margin_top = 104.0
 margin_right = 106.0
-margin_bottom = 100.0
+margin_bottom = 124.0
 hint_tooltip = "Build and remove roads"
 shortcut = ExtResource( 5 )
 text = "Roads"
 
-[node name="Flows" type="Button" parent="DefaultControls/PanelContainer/Buttons"]
-margin_top = 104.0
+[node name="Flows" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
+margin_top = 128.0
 margin_right = 106.0
-margin_bottom = 124.0
+margin_bottom = 148.0
 hint_tooltip = "Inspect flows"
 shortcut = ExtResource( 6 )
 text = "Flows"
 
-[node name="Placeholder" type="Control" parent="DefaultControls"]
-margin_top = 142.0
+[node name="Placeholder" type="Control" parent="LeftMargin/DefaultControls"]
+margin_top = 166.0
 margin_right = 120.0
 margin_bottom = 556.0
 size_flags_vertical = 3
 
-[node name="NextTurnButton" type="Button" parent="DefaultControls"]
+[node name="NextTurnButton" type="Button" parent="LeftMargin/DefaultControls"]
 margin_top = 560.0
 margin_right = 120.0
 margin_bottom = 580.0
@@ -103,9 +121,14 @@ hint_tooltip = "Advance time by one turn"
 shortcut = SubResource( 10 )
 text = "Turn"
 
-[connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
-[connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/SettingsButton" to="." method="_on_SettingsButton_pressed"]
-[connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/Build" to="." method="_on_Build_pressed"]
-[connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/Roads" to="." method="_on_Road_pressed"]
-[connection signal="pressed" from="DefaultControls/PanelContainer/Buttons/Flows" to="." method="_on_Flows_pressed"]
-[connection signal="pressed" from="DefaultControls/NextTurnButton" to="." method="_on_next_turn"]
+[node name="Messages" parent="." instance=ExtResource( 8 )]
+visible = false
+
+[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
+[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/SettingsButton" to="." method="_on_SettingsButton_pressed"]
+[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/MessagesButton" to="." method="_on_MessagesButton_pressed"]
+[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Build" to="." method="_on_Build_pressed"]
+[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Roads" to="." method="_on_Road_pressed"]
+[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Flows" to="." method="_on_Flows_pressed"]
+[connection signal="pressed" from="LeftMargin/DefaultControls/NextTurnButton" to="." method="_on_next_turn"]
+[connection signal="go_to_pressed" from="Messages" to="." method="_on_Messages_go_to_pressed"]

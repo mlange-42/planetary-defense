@@ -56,6 +56,7 @@ var flow: FlowManager
 var cities: CityManager
 var taxes: TaxManager
 var resources: ResourceManager
+var messages: MessageManager
 
 # Array of Dictionaries to override parameters
 func _init(params: Array):
@@ -132,12 +133,13 @@ func _ready():
 	else:
 		var consts: LandUse = $"/root/VegetationLandUse" as LandUse
 		self.stats = StatsManager.new()
+		self.messages = MessageManager.new()
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data)
 		self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
 		self.flow = FlowManager.new(roads)
-		self.cities = CityManager.new(consts, roads, resources, planet_data)
+		self.cities = CityManager.new(consts, self)
 		
 		self.resources.generate_resources()
 		_redraw_resources()
@@ -167,6 +169,9 @@ func save_game():
 	
 	var stats_json = to_json(stats.save())
 	file.store_line(stats_json)
+	
+	var msg_json = to_json(messages.save())
+	file.store_line(msg_json)
 	
 	var roads_json = to_json(roads.save())
 	file.store_line(roads_json)
@@ -198,6 +203,10 @@ func load_game():
 	self.stats = StatsManager.new()
 	self.stats.read(parse_json(stats_json))
 	
+	var msg_json = file.get_line()
+	self.messages = MessageManager.new()
+	self.messages.read(parse_json(msg_json))
+	
 	var roads_json = file.get_line()
 	self.roads = RoadNetwork.new()
 	self.roads.read(parse_json(roads_json))
@@ -212,7 +221,7 @@ func load_game():
 	
 	self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
 	self.flow = FlowManager.new(roads)
-	self.cities = CityManager.new(consts, roads, resources, planet_data)
+	self.cities = CityManager.new(consts, self)
 	
 	while not file.eof_reached():
 		var line: String = file.get_line()
@@ -352,6 +361,8 @@ func _create_collision(shape: ConcavePolygonShape) -> Area:
 
 
 func next_turn():
+	messages.clear_messages()
+	
 	cities.pre_update()
 	flow.solve()
 	cities.post_update()

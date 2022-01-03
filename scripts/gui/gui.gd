@@ -1,6 +1,8 @@
 extends Control
 class_name Gui
 
+signal go_to_location(location)
+
 onready var constants: LandUse = $"/root/VegetationLandUse"
 
 onready var budget_label = $MarginContainer/PanelContainer/HBoxContainer/BudgetLabel
@@ -16,7 +18,7 @@ onready var error_timer = find_node("ErrorTimer")
 var planet: Planet
 var states = []
 
-func _ready():
+func init():
 	error_container.visible = false
 	push("default", {})
 
@@ -108,6 +110,13 @@ func show_message(message: String, message_level: int):
 	error_container.visible = true
 	error_timer.start()
 
+
+func log_message(node: int, message: String, message_level: int):
+	planet.messages.add_message(node, message, message_level)
+
+
+func go_to(location: Vector3):
+	emit_signal("go_to_location", location)
 
 func _on_ErrorTimer_timeout():
 	error_container.visible = false

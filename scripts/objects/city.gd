@@ -137,7 +137,7 @@ func set_label_visible(vis: bool):
 	pole.visible = vis
 
 
-func _draw_cells(planet_data): 
+func _draw_cells(planet_data):
 	land_use_mesh.clear()
 	land_use_mesh.begin(Mesh.PRIMITIVE_POINTS)
 	

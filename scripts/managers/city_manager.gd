@@ -1,20 +1,15 @@
 class_name CityManager
 
 var constants: LandUse
-var network: RoadNetwork
-var resources: ResourceManager
-var planet_data = null
+var planet = null
 
 # warning-ignore:shadowed_variable
-# warning-ignore:shadowed_variable
-func _init(consts: LandUse, net: RoadNetwork, resources: ResourceManager, planet_data):
+func _init(consts: LandUse, planet):
 	self.constants = consts
-	self.network = net
-	self.resources = resources
-	self.planet_data = planet_data
+	self.planet = planet
 
 func pre_update():
-	var facilities = network.facilities
+	var facilities = planet.roads.facilities
 	
 	for fid in facilities:
 		var facility: Facility = facilities[fid]
@@ -25,7 +20,7 @@ func pre_update():
 
 
 func post_update():
-	var facilities = network.facilities
+	var facilities = planet.roads.facilities
 	
 	for fid in facilities:
 		var facility: Facility = facilities[fid]
@@ -34,6 +29,9 @@ func post_update():
 			post_update_city(city)
 		
 		facility.calc_is_supplied()
+		if not facility.is_supplied:
+			var name = facility.name if facility is City else facility.type
+			planet.messages.add_message(facility.node_id, "[u]%s[/u] not supplied" % name, Consts.MESSAGE_WARNING)
 
 
 func pre_update_city(city: City):
@@ -50,7 +48,7 @@ func pre_update_city(city: City):
 	keys.shuffle()
 	for node in keys:
 		var lu = city.land_use[node]
-		var data = planet_data.get_node(node)
+		var data = planet.planet_data.get_node(node)
 		
 		var extract_resource = LandUse.LU_RESOURCE[lu]
 		var lu_data = constants.LU_MAPPING[lu]
@@ -73,7 +71,7 @@ func pre_update_city(city: City):
 		if veg_data.source != null:
 			# TODO: extract resources only if they are really used!
 			var amount = veg_data.source.amount if extract_resource == null \
-							else resources.can_extract_resource(node, extract_resource, veg_data.source.amount)
+							else planet.resources.can_extract_resource(node, extract_resource, veg_data.source.amount)
 			if amount != 0:
 				city.add_source(veg_data.source.commodity, amount)
 		
@@ -103,7 +101,7 @@ func post_update_city(city: City):
 	keys.shuffle()
 	for node in keys:
 		var lu = city.land_use[node]
-		var data = planet_data.get_node(node)
+		var data = planet.planet_data.get_node(node)
 		
 		var extract_resource = LandUse.LU_RESOURCE[lu]
 		var lu_data = constants.LU_MAPPING[lu]
@@ -129,7 +127,7 @@ func post_update_city(city: City):
 					comm_produced[comm] = max(0, comm_produced[comm] - veg_data.source.amount)
 				else:
 					var amount = min(veg_data.source.amount, comm_produced[comm])
-					var realized_amount = resources.extract_resource(node, extract_resource, amount)
+					var realized_amount = planet.resources.extract_resource(node, extract_resource, amount)
 					comm_produced[comm] -= realized_amount
 	
 	var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
@@ -141,11 +139,12 @@ func post_update_city(city: City):
 		print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
 		if randf() < Cities.CITY_GROWTH_PROB * share_satisfied * rel_growth:
 			city.add_workers(1)
-			city.update_visuals(planet_data)
+			city.update_visuals(planet.planet_data)
+			planet.messages.add_message(city.node_id, "Population growth in [u]%s[/u]" % city.name, Consts.MESSAGE_INFO)
 
 
 func assign_workers(builder: BuildManager):
-	var facilities = network.facilities
+	var facilities = planet.roads.facilities
 	
 	for fid in facilities:
 		var facility = facilities[fid]
@@ -154,7 +153,7 @@ func assign_workers(builder: BuildManager):
 		
 		var city = facility as City
 		assign_city_workers(city, builder)
-		city.update_visuals(planet_data)
+		city.update_visuals(planet.planet_data)
 
 
 func assign_city_workers(city: City, builder: BuildManager):
@@ -210,8 +209,8 @@ func assign_city_workers(city: City, builder: BuildManager):
 			if not builder.can_set_land_use(city, node, LandUse.LU_NONE)[0]:
 				continue
 			
-			var veg = planet_data.get_node(node).vegetation_type
-			var res = resources.resources.get(node, null)
+			var veg = planet.planet_data.get_node(node).vegetation_type
+			var res = planet.resources.resources.get(node, null)
 			
 			var lu_options: Dictionary = constants.VEG_MAPPING.get(veg, {})
 			var res_options: Dictionary = constants.RES_MAPPING.get(res[0], {}) if res != null else {}
