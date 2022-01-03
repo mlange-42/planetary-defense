@@ -26,4 +26,5 @@ depth = 0.13
 material = ExtResource( 2 )
 
 [node name="RingGeometry" type="ImmediateGeometry" parent="."]
+layers = 32
 material_override = ExtResource( 3 )

@@ -63,6 +63,9 @@ func do_effect(planet):
 			continue
 		
 		var def = fac as Defense
+		if not def.is_supplied:
+			continue
+		
 		var inter = def.intercepts
 		for type in inter:
 			if self is type:
