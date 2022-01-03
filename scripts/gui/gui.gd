@@ -109,5 +109,9 @@ func show_message(message: String, message_level: int):
 	error_timer.start()
 
 
+func log_message(node: int, message: String, message_level: int):
+	planet.messages.add_message(node, message, message_level)
+
+
 func _on_ErrorTimer_timeout():
 	error_container.visible = false

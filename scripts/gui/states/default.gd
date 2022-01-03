@@ -22,6 +22,9 @@ func _on_MainMenuButton_pressed():
 func _on_SettingsButton_pressed():
 	fsm.push("settings", {})
 
+func _on_MessagesButton_pressed():
+	fsm.push("messages", {})
+
 func _on_Road_pressed():
 	fsm.push("roads", {})
 
@@ -33,4 +36,5 @@ func _on_Build_pressed():
 
 func _on_next_turn():
 	fsm.planet.next_turn()
+	fsm.push("messages", {})
 	fsm.show_message("Next turn", Consts.MESSAGE_INFO)

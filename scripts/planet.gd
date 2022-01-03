@@ -56,6 +56,7 @@ var flow: FlowManager
 var cities: CityManager
 var taxes: TaxManager
 var resources: ResourceManager
+var messages: MessageManager
 
 # Array of Dictionaries to override parameters
 func _init(params: Array):
@@ -132,12 +133,13 @@ func _ready():
 	else:
 		var consts: LandUse = $"/root/VegetationLandUse" as LandUse
 		self.stats = StatsManager.new()
+		self.messages = MessageManager.new()
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data)
 		self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
 		self.flow = FlowManager.new(roads)
-		self.cities = CityManager.new(consts, roads, resources, planet_data)
+		self.cities = CityManager.new(consts, self)
 		
 		self.resources.generate_resources()
 		_redraw_resources()
@@ -187,6 +189,8 @@ func save_game():
 
 
 func load_game():
+	self.messages = MessageManager.new()
+	
 	var file := File.new()
 	if file.open(FileUtil.save_path(save_name, FileUtil.GAME_EXTENSION), File.READ) != 0:
 		print("Error opening file")
@@ -212,7 +216,7 @@ func load_game():
 	
 	self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
 	self.flow = FlowManager.new(roads)
-	self.cities = CityManager.new(consts, roads, resources, planet_data)
+	self.cities = CityManager.new(consts, self)
 	
 	while not file.eof_reached():
 		var line: String = file.get_line()
@@ -352,6 +356,8 @@ func _create_collision(shape: ConcavePolygonShape) -> Area:
 
 
 func next_turn():
+	messages.clear_messages()
+	
 	cities.pre_update()
 	flow.solve()
 	cities.post_update()
