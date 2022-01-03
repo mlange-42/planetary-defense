@@ -20,6 +20,13 @@ const FACILITY_INFO = {
 	FAC_MISSILE_BASE: "Fires missiles against orbital targets",
 }
 
+const FACILITY_RADIUS = {
+	FAC_CITY: 1,
+	FAC_PORT: 0,
+	FAC_AIR_DEFENSE: 5,
+	FAC_MISSILE_BASE: 0,
+}
+
 const FACILITY_COSTS = {
 	FAC_CITY: 100,
 	FAC_PORT: 50,

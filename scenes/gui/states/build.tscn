@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/shortkeys/ctrl_r.tres" type="ShortCut" id=2]
 [ext_resource path="res://scripts/gui/states/build.gd" type="Script" id=3]
 
-[node name="BuildCities" type="MarginContainer"]
+[node name="Build" type="MarginContainer"]
 anchor_bottom = 1.0
 margin_left = 10.0
 margin_top = 10.0
