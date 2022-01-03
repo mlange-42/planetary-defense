@@ -1,4 +1,4 @@
-extends Facility
+extends Defense
 class_name AirDefense
 
 var radius: int
@@ -6,9 +6,12 @@ var radius: int
 onready var pole: CSGBox = $Pole
 onready var ring: ImmediateGeometry = $RingGeometry
 
-var cells: Dictionary = {}
 
 func _ready():
+	intercepts = {
+		AirAttack: 0.75,
+	}
+	
 	radius = Facilities.FACILITY_RADIUS[type]
 	
 	var material = SpatialMaterial.new()

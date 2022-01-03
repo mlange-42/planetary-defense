@@ -4,6 +4,7 @@ class_name AirAttack
 var scene: Spatial
 var strength = 3
 var hits = []
+var misses = []
 
 
 func save() -> Dictionary:
@@ -11,6 +12,7 @@ func save() -> Dictionary:
 	
 	dict["strength"] = strength
 	dict["hits"] = hits
+	dict["misses"] = misses
 	
 	return dict
 
@@ -19,10 +21,14 @@ func read(dict: Dictionary):
 	.read(dict)
 	
 	strength = dict["strength"] as int
-	var h = dict["hits"]
 	
+	var h = dict["hits"]
 	for hit in h:
 		hits.append(hit as int)
+	
+	var m = dict["misses"]
+	for miss in m:
+		misses.append(miss as int)
 
 
 func select_target(planet) -> bool:
@@ -50,6 +56,18 @@ func init(planet):
 
 
 func do_effect(planet):
+	var defenses = []
+	for node in planet.roads.facilities:
+		var fac = planet.roads.facilities[node]
+		if not fac is Defense:
+			continue
+		
+		var def = fac as Defense
+		var inter = def.intercepts
+		for type in inter:
+			if self is type:
+				defenses.append([def, inter[type]])
+	
 	var city = planet.roads.facilities[node_id] as City
 	var nodes = city.land_use.keys()
 	nodes.shuffle()
@@ -59,6 +77,16 @@ func do_effect(planet):
 	
 	for i in range(0, min(strength, nodes.size())):
 		var node = nodes[i]
+		
+		var prob = 1.0
+		for def in defenses:
+			if def[0].cells.has(node):
+				prob *= 1.0 - def[1]
+		
+		if randf() >= prob:
+			misses.append(node)
+			continue
+		
 		var lu = city.land_use[node]
 		var workers = LandUse.LU_WORKERS[lu]
 		
@@ -84,7 +112,7 @@ func delete(planet):
 
 func _draw_hits(planet):
 	var geom: ImmediateGeometry = scene.get_node("Hits")
-	var center = (scene.get_node("Ship") as Spatial).global_transform.origin
+	var center = scene.to_local((scene.get_node("Ship") as Spatial).global_transform.origin)
 	
 	geom.clear()
 	geom.begin(Mesh.PRIMITIVE_LINES)
@@ -92,8 +120,15 @@ func _draw_hits(planet):
 	geom.set_color(Color.red)
 	
 	for node in hits:
-		var p = planet.planet_data.get_position(node)
-		geom.add_vertex(scene.to_local(p))
-		geom.add_vertex(scene.to_local(center))
+		var p = scene.to_local(planet.planet_data.get_position(node))
+		geom.add_vertex(center)
+		geom.add_vertex(p)
+	
+	geom.set_color(Color.magenta)
+	
+	for node in misses:
+		var p = scene.to_local(planet.planet_data.get_position(node))
+		geom.add_vertex(center)
+		geom.add_vertex(center + 0.75 * (p - center))
 	
 	geom.end()
