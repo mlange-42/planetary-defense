@@ -34,7 +34,7 @@ At the left, there are buttons to assign land use, and to build facilities like 
 Below these, there are controls to set the city's preferences when auto-managing land use.
 
 Land use can only be assigned to cells if there are free workers available.
-At the bottom right, the lower box statistics for the city.
+At the bottom right, the lower box shows statistics for the city.
 The numbers behind the city's name denote the free and total workers.
 
 With right-click, land use can be cleared, which frees workers.
