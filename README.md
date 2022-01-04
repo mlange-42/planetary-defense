@@ -49,3 +49,7 @@ However, is not principally excluded for the future.
 ## Contributing
 
 **Contributions and feedback welcome!**
+
+For general feedback and feature ideas, please use the [Discussions](https://github.com/mlange-42/planetary-defense/discussions).
+
+To report a bug, [open an issue](https://github.com/mlange-42/planetary-defense/issues).
