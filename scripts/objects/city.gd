@@ -3,6 +3,7 @@ class_name City
 
 onready var label: CityLabel = $Pole/Sprite3D/Viewport/Label
 onready var pole: Spatial = $Pole
+onready var sprite: Sprite3D = $Pole/Sprite3D
 onready var land_use_mesh: ImmediateGeometry = $LandUse
 
 var cells: Dictionary = {}
@@ -18,12 +19,20 @@ var auto_assign_workers: bool = true
 
 
 func on_ready(planet_data):
-	var sprite = $Pole/Sprite3D
-	
 	sprite.texture = $Pole/Sprite3D/Viewport.get_texture()
 	sprite.texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
 	
 	update_cells(planet_data)
+
+
+func _process(_delta):
+	var cam = get_viewport().get_camera().global_transform.origin
+	var dist = global_transform.origin.distance_to(cam)
+	if dist < Cities.LABEL_MAX_DIST and dist > Cities.LABEL_MIN_DIST:
+		pole.scale = Vector3.ONE * (0.1 * dist)
+		pole.visible = true
+	else:
+		pole.visible = false
 
 
 func population() -> int:
@@ -136,10 +145,6 @@ func update_visuals(planet_data):
 		label.self_modulate = Color.white
 	
 	_draw_cells(planet_data)
-
-
-func set_label_visible(vis: bool):
-	pole.visible = vis
 
 
 func _draw_cells(planet_data):

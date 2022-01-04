@@ -1,8 +1,14 @@
 class_name Cities
 
+# Minimum distance for city label visibility
+const LABEL_MIN_DIST = 1.2
+# Maximum distance for city label visibility
+const LABEL_MAX_DIST = 12.0
 
+# Basic growth probability
 const CITY_GROWTH_PROB: float = 0.25
 
+# Base cost for extending city radius, see city_growth_cost(...)
 const CITY_EXTENSION_COST: int = 25
 
 const INITIAL_CITY_RADIUS: int = 1
