@@ -28,7 +28,7 @@ func read(dict: Dictionary):
 	
 	var m = dict["misses"]
 	for miss in m:
-		misses.append(miss as int)
+		misses.append([miss[0] as int, miss[1] as int])
 
 
 func select_target(planet) -> bool:
@@ -69,7 +69,7 @@ func do_effect(planet):
 		var inter = def.intercepts
 		for type in inter:
 			if self is type:
-				defenses.append([def, inter[type]])
+				defenses.append([node, def, inter[type]])
 	
 	var city = planet.roads.facilities[node_id] as City
 	var nodes = city.land_use.keys()
@@ -81,13 +81,15 @@ func do_effect(planet):
 	for i in range(0, min(strength, nodes.size())):
 		var node = nodes[i]
 		
+		var defs = []
 		var prob = 1.0
 		for def in defenses:
-			if def[0].cells.has(node):
-				prob *= 1.0 - def[1]
+			if def[1].cells.has(node):
+				prob *= 1.0 - def[2]
+				defs.append(def[0])
 		
 		if randf() >= prob:
-			misses.append(node)
+			misses.append([node, defs[randi() % defs.size()]])
 			continue
 		
 		var lu = city.land_use[node]
@@ -127,11 +129,18 @@ func _draw_hits(planet):
 		geom.add_vertex(center)
 		geom.add_vertex(p)
 	
-	geom.set_color(Color.magenta)
-	
-	for node in misses:
-		var p = scene.to_local(planet.planet_data.get_position(node))
+	for node_def in misses:
+		var p = scene.to_local(planet.planet_data.get_position(node_def[0]))
+		var p_def = scene.to_local(planet.planet_data.get_position(node_def[1]))
+		var p_inter = center + 0.75 * (p - center)
+		
+		geom.set_color(Color.magenta)
 		geom.add_vertex(center)
-		geom.add_vertex(center + 0.75 * (p - center))
+		geom.add_vertex(p_inter)
+		
+		geom.set_color(Color.blue)
+		geom.add_vertex(p_def)
+		geom.add_vertex(p_inter)
+		
 	
 	geom.end()
