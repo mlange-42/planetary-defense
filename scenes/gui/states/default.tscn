@@ -34,6 +34,7 @@ margin_top = 10.0
 margin_right = 10.0
 margin_bottom = -10.0
 rect_min_size = Vector2( 120, 0 )
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -41,6 +42,7 @@ __meta__ = {
 [node name="DefaultControls" type="VBoxContainer" parent="LeftMargin"]
 margin_right = 120.0
 margin_bottom = 580.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -124,6 +126,7 @@ clip_text = true
 margin_top = 198.0
 margin_right = 120.0
 margin_bottom = 556.0
+mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="NextTurnButton" type="Button" parent="LeftMargin/DefaultControls"]
