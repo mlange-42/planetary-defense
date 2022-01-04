@@ -27,15 +27,10 @@ func on_planet_clicked(node: int, button: int):
 			fsm.push("edit_city", {"node": node})
 
 func on_planet_hovered(node: int):
-	var veg = fsm.planet.planet_data.get_node(node).vegetation_type
-	var res_here = fsm.planet.resources.resources.get(node, null)
-	var text = LandUse.VEG_NAMES[veg]
-	if res_here != null:
-		text += "\n %s" % Resources.RES_NAMES[res_here[0]]
-	veg_label.text = text
+	veg_label.text = fsm.get_node_info(node)
 
 func on_planet_exited():
-	veg_label.text = "Space"
+	veg_label.text = fsm.get_node_info(-1)
 
 
 func _on_MainMenuButton_pressed():

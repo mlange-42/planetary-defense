@@ -118,5 +118,23 @@ func log_message(node: int, message: String, message_level: int):
 func go_to(location: Vector3):
 	emit_signal("go_to_location", location)
 
+
+func get_node_info(node: int):
+	if node < 0:
+		return "Space"
+	
+	var veg = planet.planet_data.get_node(node).vegetation_type
+	var res_here = planet.resources.resources.get(node, null)
+	var fac_here = planet.roads.facilities.get(node, null)
+	var text = LandUse.VEG_NAMES[veg]
+	if res_here != null:
+		text += "\n %s" % Resources.RES_NAMES[res_here[0]]
+	if fac_here != null:
+		var n = ("C: %s" % fac_here.name) if fac_here is City else fac_here.type
+		text += "\n%s" % n
+	
+	return text
+
+
 func _on_ErrorTimer_timeout():
 	error_container.visible = false
