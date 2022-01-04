@@ -113,21 +113,23 @@ func add_facility_scene(facility: Facility, name: String):
 
 # Use land_use = LandUse.LU_NONE to ignore specific requirements
 func can_set_land_use(city: City, node: int, land_use: int):
-	if node in city.cells \
-			and not network.is_road(node) \
-			and not network.has_facility(node) \
-			and not planet_data.get_node(node).is_occupied:
-		
-		if land_use == LandUse.LU_NONE:
-			return [true, null]
-		
-		var req = city.has_landuse_requirements(land_use)
-		if req:
-			return [true, null]
-		else:
-			return [false, "Requirements not met: %s" % LandUse.LU_REQUIREMENTS[land_use]]
-	else:
+	if network.is_road(node) \
+			or network.has_facility(node) \
+			or planet_data.get_node(node).is_occupied:
 		return [false, "Land is already occupied"]
+	
+	if not node in city.cells:
+		return [false, "Land is not in range of %s" % city.name]
+	
+	
+	if land_use == LandUse.LU_NONE:
+		return [true, null]
+	
+	var req = city.has_landuse_requirements(land_use)
+	if req:
+		return [true, null]
+	else:
+		return [false, "Requirements not met: %s" % LandUse.LU_REQUIREMENTS[land_use]]
 
 
 func set_land_use(city: City, node: int, land_use: int):
