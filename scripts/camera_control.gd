@@ -21,6 +21,7 @@ var rotation_y_target: float
 var min_height: float
 var max_height: float
 
+var current_position = null
 
 func init():
 	arm2.translation.z = planet_radius
@@ -35,12 +36,18 @@ func init():
 
 func _unhandled_input(event) -> void:
 	if event is InputEventMouseButton:
+		var zoomed = false
 		if event.button_index == BUTTON_RIGHT:
 			dragging = event.pressed
 		elif event.button_index == BUTTON_WHEEL_UP:
 			zoom_target = clamp(zoom_target * (1.0 + zoom_increment), min_height, max_height)
+			zoomed = true
 		elif event.button_index == BUTTON_WHEEL_DOWN:
 			zoom_target = clamp(zoom_target / (1.0 + zoom_increment), min_height, max_height)
+			zoomed = true
+		
+		if zoomed and current_position != null:
+			go_to(current_position)
 	
 	var sens = camera.translation.z / float(planet_radius)
 	
@@ -61,6 +68,10 @@ func _process(delta):
 	rotation.y = lerp_angle(rotation.y, rotation_y_target, lerp_speed * delta)
 	arm.rotation.x = lerp_angle(arm.rotation.x, rotation_x_target, lerp_speed * delta)
 	arm2.rotation.x = deg2rad(angle)
+
+
+func hovered_position_changed(pos):
+	current_position = pos
 
 
 func get_cull_mask(layer: int) -> bool:

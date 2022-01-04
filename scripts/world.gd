@@ -58,6 +58,7 @@ func _on_planet_entered(point: Vector3):
 func _on_planet_exited():
 	pointer.visible = false
 	gui.on_planet_exited()
+	cam_control.hovered_position_changed(null)
 
 
 func _on_planet_hovered(point: Vector3):
@@ -70,6 +71,7 @@ func _on_planet_hovered(point: Vector3):
 		gui.on_planet_hovered(id)
 		
 		hover_id = id
+		cam_control.hovered_position_changed(node.position)
 
 
 func _on_planet_clicked(point: Vector3, button: int):
