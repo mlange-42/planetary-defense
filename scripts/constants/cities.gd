@@ -1,7 +1,7 @@
 class_name Cities
 
 # Minimum distance for city label visibility
-const LABEL_MIN_DIST = 1.6
+const LABEL_MIN_DIST = 1.2
 # Maximum distance for city label visibility
 const LABEL_MAX_DIST = 12.0
 

@@ -29,7 +29,6 @@ func _process(_delta):
 	var cam = get_viewport().get_camera().global_transform.origin
 	var dist = global_transform.origin.distance_to(cam)
 	if dist < Cities.LABEL_MAX_DIST and dist > Cities.LABEL_MIN_DIST:
-		var scale = 1.0 / dist
 		pole.scale = Vector3.ONE * (0.1 * dist)
 		pole.visible = true
 	else:
@@ -146,10 +145,6 @@ func update_visuals(planet_data):
 		label.self_modulate = Color.white
 	
 	_draw_cells(planet_data)
-
-
-func set_label_visible(vis: bool):
-	pole.visible = vis
 
 
 func _draw_cells(planet_data):

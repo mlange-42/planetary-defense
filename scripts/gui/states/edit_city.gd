@@ -75,15 +75,12 @@ func state_entered():
 	
 	update_city_info()
 	update_weights_display()
-	city.set_label_visible(false)
 
 
 func state_exited():
 	city.auto_assign_workers = auto_assign.pressed
 	for i in range(city.commodity_weights.size()):
 		city.commodity_weights[i] = sliders[Commodities.COMM_ALL[i]].value
-	
-	city.set_label_visible(true)
 
 
 func update_city_info():
