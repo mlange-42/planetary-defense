@@ -19,6 +19,7 @@ margin_top = 10.0
 margin_right = 10.0
 margin_bottom = -10.0
 rect_min_size = Vector2( 120, 0 )
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -27,6 +28,7 @@ __meta__ = {
 margin_right = 120.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 100, 0 )
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
