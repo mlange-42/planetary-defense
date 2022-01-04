@@ -29,21 +29,21 @@ smooth_faces = false
 material = SubResource( 1 )
 
 [node name="Pole" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.075 )
 layers = 2
 width = 0.015
 height = 0.015
-depth = 0.6
+depth = 1.0
 material = SubResource( 2 )
 
 [node name="Sprite3D" type="Sprite3D" parent="Pole"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5 )
 layers = 2
 cast_shadow = 0
 extra_cull_margin = 0.5
 centered = false
 offset = Vector2( 0, -30 )
-pixel_size = 0.003
+pixel_size = 0.004
 billboard = 1
 double_sided = false
 texture = SubResource( 4 )
