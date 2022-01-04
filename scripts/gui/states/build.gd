@@ -5,6 +5,7 @@ var names = CityNames.GERMAN
 
 onready var name_edit: LineEdit = find_node("CityName")
 onready var buttons: Container = find_node("Buttons")
+onready var veg_label: Label = find_node("VegetationLabel")
 
 var indicator: ImmediateGeometry
 
@@ -69,9 +70,11 @@ func on_planet_entered(_node: int):
 
 func on_planet_exited():
 	indicator.visible = false
-
+	veg_label.text = fsm.get_node_info(-1)
 
 func on_planet_hovered(node: int):
+	veg_label.text = fsm.get_node_info(node)
+	
 	var curr_tool = get_facility_tool()
 	if curr_tool == null:
 		return

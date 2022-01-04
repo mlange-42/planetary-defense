@@ -107,8 +107,21 @@ hint_tooltip = "Inspect flows"
 shortcut = ExtResource( 6 )
 text = "Flows"
 
-[node name="Placeholder" type="Control" parent="LeftMargin/DefaultControls"]
+[node name="VegContainer" type="PanelContainer" parent="LeftMargin/DefaultControls"]
 margin_top = 166.0
+margin_right = 120.0
+margin_bottom = 194.0
+
+[node name="VegetationLabel" type="Label" parent="LeftMargin/DefaultControls/VegContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 113.0
+margin_bottom = 21.0
+text = "Space"
+clip_text = true
+
+[node name="Placeholder" type="Control" parent="LeftMargin/DefaultControls"]
+margin_top = 198.0
 margin_right = 120.0
 margin_bottom = 556.0
 size_flags_vertical = 3
