@@ -197,16 +197,19 @@ func on_planet_clicked(node: int, button: int):
 			fsm.push("edit_city", {"node": node})
 			return
 	
+	if button == BUTTON_RIGHT:
+		# warning-ignore:return_value_discarded
+		var err = fsm.planet.builder.set_land_use(city, node, LandUse.LU_NONE)
+		if err != null:
+			fsm.show_message(err, Consts.MESSAGE_ERROR)
+		else:
+			update_city_info()
+	
 	var curr_tool = get_land_use_tool()
 	if curr_tool != null:
 		if button == BUTTON_LEFT:
 			# warning-ignore:return_value_discarded
 			var err = fsm.planet.builder.set_land_use(city, node, curr_tool)
-			if err != null:
-				fsm.show_message(err, Consts.MESSAGE_ERROR)
-		elif button == BUTTON_RIGHT:
-			# warning-ignore:return_value_discarded
-			var err = fsm.planet.builder.set_land_use(city, node, LandUse.LU_NONE)
 			if err != null:
 				fsm.show_message(err, Consts.MESSAGE_ERROR)
 		update_city_info()
