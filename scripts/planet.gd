@@ -35,8 +35,8 @@ export var smooth: bool = false
 export var atlas_size: int = 4
 export var atlas_margin: float = 32.0 / 1024.0
 
-export var land_material: Material = preload("res://assets/materials/vegetation.tres")
-export var water_material: Material = preload("res://assets/materials/water.tres")
+export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
+export var water_material: Material = preload("res://assets/materials/planet/water.tres")
 
 onready var facilities: Spatial
 
