@@ -19,8 +19,9 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="CityLabel" type="PanelContainer"]
-margin_right = 14.0
-margin_bottom = 14.0
+margin_right = 16.0
+margin_bottom = 56.0
+size_flags_horizontal = 8
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
@@ -30,11 +31,10 @@ __meta__ = {
 [node name="Label" type="Label" parent="."]
 margin_left = 8.0
 margin_top = 5.0
-margin_right = 408.0
+margin_right = 8.0
 margin_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 8
 custom_fonts/font = ExtResource( 1 )
-text = "A long city name"
-align = 1
 valign = 1

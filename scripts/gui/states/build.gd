@@ -95,6 +95,7 @@ func on_planet_clicked(node: int, button: int):
 					set_random_name()
 				for button in button_group.get_buttons():
 					button.pressed = false
+				indicator.visible = false
 			else:
 				fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
 		else:
