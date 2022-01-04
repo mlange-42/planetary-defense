@@ -2,6 +2,7 @@ extends GuiState
 class_name DefaultState
 
 onready var messages: MessageWindow = find_node("Messages")
+onready var veg_label: Label = find_node("VegetationLabel")
 
 
 func _ready():
@@ -24,6 +25,18 @@ func on_planet_clicked(node: int, button: int):
 		
 		if facility is City:
 			fsm.push("edit_city", {"node": node})
+
+func on_planet_hovered(node: int):
+	var veg = fsm.planet.planet_data.get_node(node).vegetation_type
+	var res_here = fsm.planet.resources.resources.get(node, null)
+	var text = LandUse.VEG_NAMES[veg]
+	if res_here != null:
+		text += "\n %s" % Resources.RES_NAMES[res_here[0]]
+	veg_label.text = text
+
+func on_planet_exited():
+	veg_label.text = "Space"
+
 
 func _on_MainMenuButton_pressed():
 	fsm.push("game_menu", {})

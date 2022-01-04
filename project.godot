@@ -204,7 +204,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"

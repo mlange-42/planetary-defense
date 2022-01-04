@@ -54,5 +54,18 @@ hint_tooltip = "Random name"
 shortcut = ExtResource( 2 )
 text = "R"
 
+[node name="VegContainer" type="PanelContainer" parent="Controls"]
+margin_top = 80.0
+margin_right = 120.0
+margin_bottom = 108.0
+
+[node name="VegetationLabel" type="Label" parent="Controls/VegContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 113.0
+margin_bottom = 21.0
+text = "Space"
+clip_text = true
+
 [connection signal="back_pressed" from="Controls/StateControl" to="." method="_on_Back_pressed"]
 [connection signal="pressed" from="Controls/PanelContainer/Buttons/HBoxContainer/RandomNameButton" to="." method="set_random_name"]
