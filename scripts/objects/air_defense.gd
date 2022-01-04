@@ -3,7 +3,7 @@ class_name AirDefense
 
 var radius: int
 
-onready var pole: CSGBox = $Pole
+onready var warning = $Warning
 onready var ring: ImmediateGeometry = $RingGeometry
 
 
@@ -13,10 +13,6 @@ func _ready():
 	}
 	
 	radius = Facilities.FACILITY_RADIUS[type]
-	
-	var material = SpatialMaterial.new()
-	material.emission_enabled = true
-	pole.material = material
 
 
 func on_ready(planet_data):
@@ -25,13 +21,12 @@ func on_ready(planet_data):
 		cells[c[0]] = c[1]
 	
 	_draw_cells(planet_data)
+	calc_is_supplied()
 
 
 func calc_is_supplied():
 	.calc_is_supplied()
-	var col = Color.green if is_supplied else Color.red
-	pole.material.albedo_color = col
-	pole.material.emission = col
+	warning.set_shown(not is_supplied)
 
 
 func can_build(planet_data, node) -> bool:

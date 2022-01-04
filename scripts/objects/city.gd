@@ -1,9 +1,7 @@
 extends Facility
 class_name City
 
-onready var label: CityLabel = $Pole/Sprite3D/Viewport/Label
-onready var pole: Spatial = $Pole
-onready var sprite: Sprite3D = $Pole/Sprite3D
+onready var city_sign: Spatial = $CitySign
 onready var land_use_mesh: ImmediateGeometry = $LandUse
 
 var cells: Dictionary = {}
@@ -19,20 +17,7 @@ var auto_assign_workers: bool = true
 
 
 func on_ready(planet_data):
-	sprite.texture = $Pole/Sprite3D/Viewport.get_texture()
-	sprite.texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
-	
 	update_cells(planet_data)
-
-
-func _process(_delta):
-	var cam = get_viewport().get_camera().global_transform.origin
-	var dist = global_transform.origin.distance_to(cam)
-	if dist < Cities.LABEL_MAX_DIST and dist > Cities.LABEL_MIN_DIST:
-		pole.scale = Vector3.ONE * (0.1 * dist)
-		pole.visible = true
-	else:
-		pole.visible = false
 
 
 func population() -> int:
@@ -127,7 +112,7 @@ func add_facility(node: int, facility: Facility):
 
 
 func update_visuals(planet_data):
-	label.set_text("%s (%d/%d)" % [name, workers(), population()])
+	city_sign.set_text("%s (%d/%d)" % [name, workers(), population()])
 	
 	var flows_food = flows.get(Commodities.COMM_FOOD, [0, 0])
 	var demand_food = sinks.get(Commodities.COMM_FOOD, 0)
@@ -136,13 +121,13 @@ func update_visuals(planet_data):
 	var demand_prod = sinks.get(Commodities.COMM_PRODUCTS, 0)
 	
 	if flows_food[1] < demand_food:
-		label.self_modulate = Color.red
+		city_sign.set_color(Color.red)
 	elif flows_prod[1] == 0 && demand_prod > 0:
-		label.self_modulate = Color.orangered
+		city_sign.set_color(Color.orangered)
 	elif flows_prod[1] < demand_prod:
-		label.self_modulate = Color.yellow
+		city_sign.set_color(Color.yellow)
 	else:
-		label.self_modulate = Color.white
+		city_sign.set_color(Color.white)
 	
 	_draw_cells(planet_data)
 
