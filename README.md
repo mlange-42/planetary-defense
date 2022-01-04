@@ -8,7 +8,7 @@ A game about planetary colonization and defense, with a focus on infrastructure 
 
 **[Read the tutorial](docs/tutorial.md)** for getting started.
 
-![Screenshot](https://user-images.githubusercontent.com/44003176/147794302-35d259bf-3b86-4913-ae50-d8ca0b22ed0e.png)
+![Screenshot](https://user-images.githubusercontent.com/44003176/148104085-2269ac79-29bf-4391-86fa-a4bc50f8a13f.png)
 
 Made with [Godot](https://godotengine.org/) and :crab: [Rust](https://rust-lang.org).
 
