@@ -49,11 +49,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/city.gd"
 }, {
-"base": "Control",
-"class": "CityLabel",
-"language": "GDScript",
-"path": "res://scripts/objects/city_label.gd"
-}, {
 "base": "Reference",
 "class": "CityManager",
 "language": "GDScript",
@@ -209,7 +204,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -308,7 +303,6 @@ _global_script_class_icons={
 "CheatsState": "",
 "Cities": "",
 "City": "",
-"CityLabel": "",
 "CityManager": "",
 "CityNames": "",
 "CityProductionInfo": "",
