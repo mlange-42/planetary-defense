@@ -7,6 +7,7 @@ onready var container: VBoxContainer = find_node("MessageContainer")
 
 func update_messages(messages: MessageManager):
 	clear_messages()
+	rect_size = Vector2(0, 0)
 	
 	for m in messages.messages:
 		add_message(m)

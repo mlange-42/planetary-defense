@@ -35,6 +35,7 @@ func _ready():
 	add_child(vbox)
 	
 	vbox.add_child(message_label)
+	rect_size = Vector2(0, 0)
 
 
 func _on_button_pressed():
