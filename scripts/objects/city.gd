@@ -2,7 +2,7 @@ extends Facility
 class_name City
 
 onready var city_sign: Spatial = $CitySign
-onready var land_use_mesh: ImmediateGeometry = $LandUse
+onready var land_use_node: Spatial = $LandUse
 onready var borders_mesh: RangeIndicator = $RangeIndicator
 
 var cells: Dictionary = {}
@@ -21,6 +21,9 @@ var auto_assign_workers: bool = true
 
 func on_ready(planet_data):
 	update_cells(planet_data)
+	
+	for node in land_use:
+		add_land_use_node(planet_data, node, land_use[node])
 
 
 func population() -> int:
@@ -101,9 +104,10 @@ func has_landuse_requirements(lu: int) -> bool:
 	return true
 
 
-func set_land_use(node: int, lu: int):
+func set_land_use(planet_data, node: int, lu: int):
 	land_use[node] = lu
 	assign_workers(LandUse.LU_WORKERS[lu])
+	add_land_use_node(planet_data, node, lu)
 
 
 func clear_land_use(node: int):
@@ -111,6 +115,24 @@ func clear_land_use(node: int):
 	free_workers(LandUse.LU_WORKERS[lut])
 	# warning-ignore:return_value_discarded
 	land_use.erase(node)
+	remove_land_use_node(node)
+
+
+func add_land_use_node(planet_data, node: int, lu: int):
+	var pos = planet_data.get_position(node)
+	var child = LandUseNode.new(node, lu)
+	land_use_nodes[node] = child
+	
+	land_use_node.add_child(child)
+	child.look_at_from_position(pos, 2 * pos, Vector3.UP)
+
+
+func remove_land_use_node(node: int):
+	var child = land_use_nodes[node]
+	land_use_node.remove_child(child)
+	child.queue_free()
+	# warning-ignore:return_value_discarded
+	land_use_nodes.erase(node)
 
 
 func update_cells(planet_data):
@@ -144,25 +166,7 @@ func update_visuals(planet_data):
 	else:
 		city_sign.set_color(Color.white)
 	
-	_draw_cells(planet_data)
 	_draw_borders(planet_data)
-
-
-func _draw_cells(planet_data):
-	land_use_mesh.clear()
-	land_use_mesh.begin(Mesh.PRIMITIVE_POINTS)
-	
-	# Dummy vertex, as for some reason a single vertex is not drag
-	# TODO: report Godot bug
-	land_use_mesh.set_color(Color.white)
-	land_use_mesh.add_vertex(Vector3.ZERO)
-	
-	for c in land_use:
-		var p = planet_data.get_position(c)
-		land_use_mesh.set_color(LandUse.LU_COLORS[land_use[c]])
-		land_use_mesh.add_vertex(self.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
-	
-	land_use_mesh.end()
 
 
 func _draw_borders(planet_data):

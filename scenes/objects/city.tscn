@@ -24,6 +24,4 @@ layers = 32
 material_override = ExtResource( 2 )
 script = ExtResource( 5 )
 
-[node name="LandUse" type="ImmediateGeometry" parent="."]
-layers = 4
-material_override = ExtResource( 2 )
+[node name="LandUse" type="Spatial" parent="."]

@@ -161,7 +161,7 @@ func set_land_use(city: City, node: int, land_use: int):
 		if res_here == null or res_here[0] != extract_resource:
 			return "Resource %s not available here" % Resources.RES_NAMES[extract_resource]
 	
-	city.set_land_use(node, land_use)
+	city.set_land_use(planet_data, node, land_use)
 	planet_data.set_occupied(node, true)
 	city.update_visuals(planet_data)
 	

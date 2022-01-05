@@ -8,5 +8,6 @@ func _init(node: int, lu: int):
 	node_id = node
 	land_use = lu
 	
-	var child = load(LandUse.LU_SCENES[lu]).instanciate()
+	var child: Spatial = load(LandUse.LU_SCENES[lu]).instance()
+	child.rotate_x(deg2rad(-90))
 	add_child(child)

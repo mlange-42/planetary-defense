@@ -5,7 +5,9 @@
 [node name="lu_test" type="Spatial"]
 
 [node name="CSGCylinder" type="CSGCylinder" parent="."]
-radius = 0.05
-height = 0.2
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0 )
+radius = 0.04
+height = 0.04
 sides = 6
+cone = true
 material = ExtResource( 1 )
