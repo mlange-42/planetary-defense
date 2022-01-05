@@ -139,7 +139,7 @@ func post_update_city(city: City) -> float:
 	var demand = Cities.products_demand(city.population())
 	var share_satisfied = 1.0 if demand == 0 else clamp(products_available / float(demand), 0, 1)
 	var space_growth = clamp(1.0 - (city.population() / float(city.cells.size())), 0, 1)
-	var unemployment = city.workers() / float(city.population())
+	var unemployment = 0.0 if city.population() == 0 else (city.workers() / float(city.population()))
 	var employment_growth = clamp(1.0 - unemployment / Cities.UNEMPLOYMENT_NO_GROWTH, 0, 1)
 	
 	var attractiveness = share_satisfied * space_growth * employment_growth

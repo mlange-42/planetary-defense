@@ -1,6 +1,6 @@
 class_name Event
 
-var node_id: int
+var node_id: int = -1
 
 
 func select_target(_planet):
@@ -13,6 +13,10 @@ func init(_planet):
 
 func do_effect(_planet):
 	pass
+
+
+func has_target() -> bool:
+	return node_id >= 0
 
 
 func delete(_planet):

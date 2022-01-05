@@ -23,6 +23,25 @@ func evaluate(cmd: String):
 		fsm.planet.emit_budget()
 		fsm.show_message("Added 1000 to budget", Consts.MESSAGE_INFO)
 		return true
+	elif cmd.find("attack ") == 0:
+		var city_name = cmd.trim_prefix("attack ")
+		var node = -1
+		var fac = fsm.planet.roads.facilities
+		for n in fac:
+			var f = fac[n]
+			if f is City and f.name == city_name:
+				node = n
+				break
+		
+		if node < 0:
+			fsm.show_message("No city named %s" % city_name, Consts.MESSAGE_WARNING)
+			return false
+		
+		var event = AirAttack.new()
+		event.node_id = node
+		fsm.planet.story.add_next_turn_event(event)
+		fsm.show_message("%s will be attacked next turn" % city_name, Consts.MESSAGE_INFO)
+		return true
 	
 	fsm.show_message("bzzzzz...", Consts.MESSAGE_WARNING)
 	return false

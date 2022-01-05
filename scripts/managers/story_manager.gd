@@ -2,6 +2,7 @@ class_name StoryManager
 
 var planet = null
 var turn_events: Array = []
+var next_turn_events: Array = []
 
 var min_pop = 50
 var attack_probability = 0.1
@@ -11,8 +12,17 @@ func _init(planet):
 	self.planet = planet
 
 
+func add_next_turn_event(event: Event):
+	next_turn_events.append(event)
+
+
 func update_turn():
 	clear_events()
+	
+	for event in next_turn_events:
+		do_event(event)
+	
+	next_turn_events.clear()
 	
 	var cities_pop = _count_cities_pop()
 	var _cities = cities_pop[0]
@@ -22,15 +32,18 @@ func update_turn():
 		return
 	
 	if randf() < attack_probability:
-		var new_event = AirAttack.new()
-		if new_event.select_target(planet):
-			new_event.init(planet)
-			var msg = new_event.do_effect(planet)
-			new_event.show_effect(planet)
-			if msg != null:
-				planet.messages.add_message(new_event.node_id, msg, Consts.MESSAGE_ERROR)
-			
-			turn_events.append(new_event)
+		do_event(AirAttack.new())
+
+
+func do_event(new_event: Event):
+	if new_event.has_target() or new_event.select_target(planet):
+		new_event.init(planet)
+		var msg = new_event.do_effect(planet)
+		new_event.show_effect(planet)
+		if msg != null:
+			planet.messages.add_message(new_event.node_id, msg, Consts.MESSAGE_ERROR)
+		
+		turn_events.append(new_event)
 
 
 func _count_cities_pop():
