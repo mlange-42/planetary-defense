@@ -1,5 +1,7 @@
 class_name Resources
 
+# See LandUse.VEG_RESOURCES for distribution and default amounts
+
 const RES_METAL: int = 0
 const RES_OIL: int = 1
 

@@ -30,19 +30,19 @@ const VEG_RESOURCES = {
 		VEG_DESERT: {
 			"probability": 0.005,
 			"radius": 0,
-			"amount": 1000,
+			"amount": 2500,
 			"elevation": [0.0, 1.0],
 		},
 		VEG_TAIGA: {
 			"probability": 0.01,
 			"radius": 0,
-			"amount": 1000,
+			"amount": 2500,
 			"elevation": [0.2, 1.0],
 		},
 		VEG_STEPPE: {
 			"probability": 0.01,
 			"radius": 0,
-			"amount": 1000,
+			"amount": 2500,
 			"elevation": [0.2, 1.0],
 		},
 	},
@@ -50,13 +50,13 @@ const VEG_RESOURCES = {
 		VEG_DESERT: {
 			"probability": 0.001,
 			"radius": 1,
-			"amount": 250,
+			"amount": 1000,
 			"elevation": [0.0, 0.1],
 		},
 		VEG_WATER: {
-			"probability": 0.001,
+			"probability": 0.002,
 			"radius": 1,
-			"amount": 250,
+			"amount": 1000,
 			"elevation": [-0.2, 0.0],
 		},
 	},
@@ -70,6 +70,7 @@ const LU_FACTORY: int = 3
 const LU_FISHERY: int = 4
 const LU_MINES: int = 5
 const LU_OIL_RIG: int = 6
+const LU_OIL_WELL: int = 7
 
 const LU_COLORS = {
 	LU_NONE: Color.gray,
@@ -79,6 +80,7 @@ const LU_COLORS = {
 	LU_FISHERY: Color.aqua,
 	LU_MINES: Color.magenta,
 	LU_OIL_RIG: Color.magenta,
+	LU_OIL_WELL: Color.magenta,
 }
 
 const LU_NAMES = {
@@ -89,16 +91,18 @@ const LU_NAMES = {
 	LU_FISHERY: "Fishery",
 	LU_MINES: "Mines",
 	LU_OIL_RIG: "Oil rig",
+	LU_OIL_WELL: "Oil well",
 }
 
 const LU_WORKERS = {
 	LU_NONE: 0,
 	LU_CROPS: 1,
 	LU_FOREST: 1,
-	LU_FACTORY: 3,
+	LU_FACTORY: 2,
 	LU_FISHERY: 1,
 	LU_MINES: 3,
 	LU_OIL_RIG: 3,
+	LU_OIL_WELL: 2,
 }
 
 const LU_MAINTENANCE = {
@@ -108,7 +112,8 @@ const LU_MAINTENANCE = {
 	LU_FACTORY: 1,
 	LU_FISHERY: 0,
 	LU_MINES: 1,
-	LU_OIL_RIG: 1,
+	LU_OIL_RIG: 2,
+	LU_OIL_WELL: 1,
 }
 
 const LU_OUTPUT = {
@@ -118,6 +123,7 @@ const LU_OUTPUT = {
 	LU_FISHERY: Commodities.COMM_FOOD,
 	LU_MINES: Commodities.COMM_RESOURCES,
 	LU_OIL_RIG: Commodities.COMM_RESOURCES,
+	LU_OIL_WELL: Commodities.COMM_RESOURCES,
 }
 
 const LU_RESOURCE = {
@@ -127,6 +133,7 @@ const LU_RESOURCE = {
 	LU_FISHERY: null,
 	LU_MINES: Resources.RES_METAL,
 	LU_OIL_RIG: Resources.RES_OIL,
+	LU_OIL_WELL: Resources.RES_OIL,
 }
 
 const LU_REQUIREMENTS = {
@@ -137,6 +144,7 @@ const LU_REQUIREMENTS = {
 	LU_FISHERY: [Facilities.FAC_PORT],
 	LU_MINES: [],
 	LU_OIL_RIG: [Facilities.FAC_PORT],
+	LU_OIL_WELL: [],
 }
 
 const LU_INFO = {
@@ -146,7 +154,8 @@ const LU_INFO = {
 	LU_FACTORY: "Transforms resources into products.",
 	LU_FISHERY: "Fishes for food.",
 	LU_MINES: "Mines for metal resources.",
-	LU_OIL_RIG: "Drills for oil resources.",
+	LU_OIL_RIG: "Drills for oil resources off-shore.",
+	LU_OIL_WELL: "Drills for oil resources on land.",
 }
 
 const LU_KEYS = {
@@ -157,6 +166,7 @@ const LU_KEYS = {
 	LU_FISHERY: KEY_I,
 	LU_MINES: KEY_M,
 	LU_OIL_RIG: KEY_O,
+	LU_OIL_WELL: KEY_W,
 }
 
 var _res_all_land = {VEG_DESERT: null, VEG_TUNDRA: null, VEG_TAIGA: null, VEG_STEPPE: null,
@@ -190,6 +200,7 @@ var LU_MAPPING = {
 	},
 	LU_MINES: _res_all_land,
 	LU_OIL_RIG: {VEG_WATER: null},
+	LU_OIL_WELL: _res_all_land,
 }
 
 var LU_RESOURCES = {
@@ -201,7 +212,10 @@ var LU_RESOURCES = {
 		Resources.RES_METAL: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 10), null, null),
 	},
 	LU_OIL_RIG: {
-		Resources.RES_OIL: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 8), null, null),
+		Resources.RES_OIL: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 10), null, null),
+	},
+	LU_OIL_WELL: {
+		Resources.RES_OIL: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 6), null, null),
 	},
 }
 
