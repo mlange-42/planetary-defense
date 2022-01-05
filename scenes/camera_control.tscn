@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/camera_control.gd" type="Script" id=1]
-[ext_resource path="res://assets/default_env.tres" type="Environment" id=2]
+[ext_resource path="res://assets/camera_env.tres" type="Environment" id=2]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0.727273 ), 0.0, -2.55122, 0, 0, Vector2( 0.325048, 0.2 ), -0.811751, -0.811751, 0, 0, Vector2( 0.762906, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 1, 0 ]

@@ -14,6 +14,8 @@ const SAVEGAME_DIR = "save"
 const CONFIG_DIR = "config"
 
 const DRAW_HEIGHT_OFFSET: float = 0.02
+const ROAD_WIDTH: float = 0.03
+
 
 const LAYER_BASE: int = 0
 const LAYER_LABELS: int = 1

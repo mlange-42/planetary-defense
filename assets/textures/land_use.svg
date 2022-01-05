@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1024"
+   height="1024"
+   viewBox="0 0 1024 1024"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="land_use.svg"
+   inkscape:export-filename="C:\Data\Hack\Godot\godot-projects\planetary-defense\assets\textures\land_use.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient901">
+      <stop
+         style="stop-color:#000000;stop-opacity:0"
+         offset="0"
+         id="stop897" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1"
+         offset="1"
+         id="stop899" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient901"
+       id="linearGradient903-1"
+       x1="240"
+       y1="128"
+       x2="244.03572"
+       y2="128"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(240)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#b7b7b7"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="436.23419"
+     inkscape:cy="378.63858"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     units="px"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-page="true"
+     inkscape:lockguides="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-nodes="false"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-global="true">
+    <sodipodi:guide
+       position="512,1024"
+       orientation="1,0"
+       id="guide837"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="256,1024"
+       orientation="1,0"
+       id="guide839"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,768"
+       orientation="0,-1"
+       id="guide843"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,512"
+       orientation="0,-1"
+       id="guide845"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,256"
+       orientation="0,-1"
+       id="guide847"
+       inkscape:locked="true" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid849"
+       empspacing="8" />
+    <sodipodi:guide
+       position="0,992"
+       orientation="0,-1"
+       id="guide855"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,800"
+       orientation="0,-1"
+       id="guide857"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,736"
+       orientation="0,-1"
+       id="guide859"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,544"
+       orientation="0,-1"
+       id="guide861"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,480"
+       orientation="0,-1"
+       id="guide863"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,288"
+       orientation="0,-1"
+       id="guide865"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,224"
+       orientation="0,-1"
+       id="guide867"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,32"
+       orientation="0,-1"
+       id="guide869"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="32,1024"
+       orientation="1,0"
+       id="guide871"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="224,1024"
+       orientation="1,0"
+       id="guide873"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="288,1024"
+       orientation="1,0"
+       id="guide875"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="480,1024"
+       orientation="1,0"
+       id="guide877"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="544,1024"
+       orientation="1,0"
+       id="guide881"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="736,1024"
+       orientation="1,0"
+       id="guide883"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="992,1024"
+       orientation="1,0"
+       id="guide887"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,1024"
+       orientation="0,1024"
+       id="guide889"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="1024,1024"
+       orientation="1024,0"
+       id="guide891"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="1024,0"
+       orientation="0,-1024"
+       id="guide893"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,0"
+       orientation="-1024,0"
+       id="guide895"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="768,1024"
+       orientation="1,0"
+       id="guide1220"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="800,1024"
+       orientation="1,0"
+       id="guide1222"
+       inkscape:locked="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Areas"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851"
+       width="192"
+       height="192"
+       x="32"
+       y="288" />
+    <rect
+       style="fill:#fbfb7d;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-5"
+       width="192"
+       height="192"
+       x="288"
+       y="32" />
+    <rect
+       style="fill:#198448;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1"
+       width="192"
+       height="192"
+       x="544"
+       y="32" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect867"
+       width="8"
+       height="120"
+       x="144"
+       y="288" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect867-63"
+       width="48"
+       height="48"
+       x="32"
+       y="288" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 304,32 64,192"
+       id="path938" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 352,32.000001 416,224"
+       id="path938-8" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 400,32 64,192"
+       id="path938-0" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 447.28452,32.319582 32.33014,99.432768"
+       id="path938-7" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 287.52442,120.26741 33.63642,103.28304"
+       id="path938-5" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 328,32 64,192"
+       id="path938-6" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 376,32 64,192"
+       id="path938-72" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 423.89152,32.060997 57.0741,171.763753"
+       id="path938-82" />
+    <path
+       style="fill:none;stroke:#cccc70;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 288.49323,56.359362 344.13097,223.92635"
+       id="path938-1" />
+    <rect
+       style="fill:#847b3b;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7"
+       width="192"
+       height="80"
+       x="544"
+       y="144" />
+    <rect
+       style="fill:#ce4415;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-4"
+       width="192"
+       height="192"
+       x="800"
+       y="32" />
+    <rect
+       style="fill:#10100c;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7-9"
+       width="192"
+       height="80"
+       x="800"
+       y="144" />
+    <rect
+       style="fill:#ce4415;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-4-7"
+       width="192"
+       height="192"
+       x="288"
+       y="288" />
+    <rect
+       style="fill:#10100c;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7-9-0"
+       width="96"
+       height="80"
+       x="288"
+       y="400" />
+    <rect
+       style="fill:#c5c5c5;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-4-7-2"
+       width="192"
+       height="192"
+       x="544"
+       y="288" />
+    <rect
+       style="fill:#ce4415;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-4-7-1"
+       width="104"
+       height="64"
+       x="544"
+       y="416" />
+    <rect
+       style="fill:#10100c;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7-9-0-0"
+       width="88"
+       height="64"
+       x="648"
+       y="416" />
+    <rect
+       style="fill:#2962b1;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7-9-0-0-2"
+       width="72"
+       height="24"
+       x="664"
+       y="312" />
+    <rect
+       style="fill:#2962b1;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7-9-0-0-2-9"
+       width="72"
+       height="24"
+       x="664"
+       y="368" />
+    <rect
+       style="fill:#898775;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7-9-0-8"
+       width="96"
+       height="80"
+       x="384"
+       y="400" />
+    <rect
+       style="fill:#898775;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7-9-0-8-3"
+       width="192"
+       height="112"
+       x="800"
+       y="288" />
+    <rect
+       style="fill:#10100c;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-7-9-0-6"
+       width="96"
+       height="80"
+       x="800"
+       y="400" />
+    <rect
+       style="fill:#ce4415;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="rect851-1-4-7-1-4"
+       width="96"
+       height="80"
+       x="896"
+       y="400" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Names"
+     style="display:inline"
+     sodipodi:insensitive="true">
+    <text
+       xml:space="preserve"
+       style="font-size:16px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px"
+       x="30.6875"
+       y="492.63281"
+       id="text912"><tspan
+         sodipodi:role="line"
+         id="tspan910"
+         x="30.6875"
+         y="492.63281">Fishery</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px"
+       x="287.20312"
+       y="236.82031"
+       id="text912-7"><tspan
+         sodipodi:role="line"
+         id="tspan910-1"
+         x="287.20312"
+         y="236.82031">Crops</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline"
+       x="542.6875"
+       y="239.8125"
+       id="text912-7-4"><tspan
+         sodipodi:role="line"
+         id="tspan910-1-7"
+         x="542.6875"
+         y="239.8125">Forest</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline"
+       x="802.20312"
+       y="240"
+       id="text912-7-4-9"><tspan
+         sodipodi:role="line"
+         id="tspan910-1-7-3"
+         x="802.20312"
+         y="240">Factory</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline"
+       x="286.6875"
+       y="492.63281"
+       id="text912-5"><tspan
+         sodipodi:role="line"
+         id="tspan910-6"
+         x="286.6875"
+         y="492.63281">Mines</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline"
+       x="542.8125"
+       y="495.8125"
+       id="text912-5-9"><tspan
+         sodipodi:role="line"
+         id="tspan910-6-7"
+         x="542.8125"
+         y="495.8125">Oil rig</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0px;word-spacing:0px;display:inline"
+       x="798.6875"
+       y="492.63281"
+       id="text912-5-7"><tspan
+         sodipodi:role="line"
+         id="tspan910-6-4"
+         x="798.6875"
+         y="492.63281">Oil well</tspan></text>
+  </g>
+</svg>

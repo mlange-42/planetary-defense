@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/objects/missile_base.gd" type="Script" id=1]
-[ext_resource path="res://assets/materials/default_sand.tres" type="Material" id=2]
+[ext_resource path="res://assets/materials/color/sand.tres" type="Material" id=2]
+
 
 [node name="MissileBase" type="Spatial"]
 script = ExtResource( 1 )
