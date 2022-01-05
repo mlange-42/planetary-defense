@@ -3,6 +3,7 @@ class_name City
 
 onready var city_sign: Spatial = $CitySign
 onready var land_use_mesh: ImmediateGeometry = $LandUse
+onready var borders_mesh: RangeIndicator = $RangeIndicator
 
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
@@ -130,19 +131,17 @@ func update_visuals(planet_data):
 		city_sign.set_color(Color.white)
 	
 	_draw_cells(planet_data)
+	_draw_borders(planet_data)
 
 
 func _draw_cells(planet_data):
 	land_use_mesh.clear()
 	land_use_mesh.begin(Mesh.PRIMITIVE_POINTS)
 	
+	# Dummy vertex, as for some reason a single vertex is not drag
+	# TODO: report Godot bug
 	land_use_mesh.set_color(Color.white)
-	
-	for c in cells:
-		if cells[c] == radius and not c in land_use:
-			var p = planet_data.get_position(c)
-			land_use_mesh.set_color(Color.dimgray)
-			land_use_mesh.add_vertex(self.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
+	land_use_mesh.add_vertex(Vector3.ZERO)
 	
 	for c in land_use:
 		var p = planet_data.get_position(c)
@@ -150,3 +149,7 @@ func _draw_cells(planet_data):
 		land_use_mesh.add_vertex(self.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
 	land_use_mesh.end()
+
+
+func _draw_borders(planet_data):
+	borders_mesh.draw_range(planet_data, node_id, cells, radius, Color.red)

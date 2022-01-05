@@ -1,5 +1,6 @@
 use gdnative::api::Curve;
 use gdnative::prelude::*;
+use std::f32::consts::PI;
 
 use noise::{
     BasicMulti, Billow, Fbm, HybridMulti, MultiFractal, NoiseFn, OpenSimplex, Perlin, RidgedMulti,
@@ -203,8 +204,13 @@ impl PlanetGenerator {
 
         let colors = self.generate_colors(&nodes);
 
+        let radius = self.params.as_ref().unwrap().radius;
+        let cell_area = (4.0 * PI * radius * radius) / (nodes.len() as f32);
+        let cell_radius = (cell_area / PI).sqrt();
+
         let props = PlanetProperties {
-            radius: self.params.as_ref().unwrap().radius,
+            radius,
+            cell_radius,
             max_elevation: self.params.as_ref().unwrap().terrain_max_height,
         };
 

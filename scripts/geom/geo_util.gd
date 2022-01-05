@@ -47,3 +47,38 @@ static func split_unsmooth(mesh: Mesh):
 	
 	mesh.surface_remove(0)
 	st.commit(mesh)
+
+
+static func project_to_plane(vec: Vector3, origin: Vector3, normal: Vector3) -> Vector3:
+	var dist = (vec - origin).dot(normal)
+	return vec - (normal * dist)
+
+
+static func angle_on_plane(vec: Vector3, origin: Vector3, e1: Vector3, e2: Vector3) -> float:
+	var v = vec - origin
+	var x = e1.dot(v)
+	var y = e2.dot(v)
+	
+	return atan2(y, x)
+
+
+static func sort_by_angle(points: Array, origin: Vector3, normal: Vector3):
+	var e1 = (project_to_plane(points[0], origin, normal) - origin).normalized()
+	var e2 = normal.cross(e1)
+	
+	var temp_array = []
+	for p in points:
+		temp_array.append([angle_on_plane(p, origin, e1, e2), p])
+	
+	temp_array.sort_custom(FirstElementSorter, "sort_ascending")
+	points.clear()
+	
+	for p in temp_array:
+		points.append(p[1])
+
+
+class FirstElementSorter:
+	static func sort_ascending(a, b):
+		if a[0] < b[0]:
+			return true
+		return false

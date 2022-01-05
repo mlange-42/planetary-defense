@@ -4,7 +4,7 @@ class_name AirDefense
 var radius: int
 
 onready var warning = $Warning
-onready var ring: ImmediateGeometry = $RingGeometry
+onready var range_indicator: RangeIndicator = $RangeIndicator
 
 
 func _ready():
@@ -34,15 +34,4 @@ func can_build(planet_data, node) -> bool:
 
 
 func _draw_cells(planet_data): 
-	ring.clear()
-	ring.begin(Mesh.PRIMITIVE_LINES)
-	
-	ring.set_color(Color.cyan)
-	
-	for c in cells:
-		if cells[c] == radius:
-			var p = planet_data.get_position(c)
-			ring.add_vertex(self.to_local(p))
-			ring.add_vertex(self.to_local(p + 0.25 * p.normalized()))
-	
-	ring.end()
+	range_indicator.draw_range(planet_data, node_id, cells, radius, Color.magenta)
