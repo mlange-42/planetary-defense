@@ -115,6 +115,12 @@ func log_message(node: int, message: String, message_level: int):
 	planet.messages.add_message(node, message, message_level)
 
 
+func _on_next_turn():
+	planet.next_turn()
+	state().on_next_turn()
+	show_message("Next turn", Consts.MESSAGE_INFO)
+
+
 func go_to(location: Vector3):
 	emit_signal("go_to_location", location)
 
