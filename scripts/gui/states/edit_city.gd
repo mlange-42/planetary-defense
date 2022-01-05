@@ -24,8 +24,7 @@ var infos = {}
 
 func init(the_fsm: Gui, args: Dictionary):
 	.init(the_fsm, args)
-	city_node = args["node"]
-	city = fsm.planet.roads.get_facility(city_node) as City
+	set_city(args["node"])
 	
 	var buttons: Container = $Margin/EditControls/Buttons/LuPanel/LuButtons
 	button_group = ButtonGroup.new()
@@ -58,6 +57,11 @@ func init(the_fsm: Gui, args: Dictionary):
 			button.shortcut.shortcut = evt
 			
 			fac_buttons.add_child(button)
+
+
+func set_city(node):
+	city_node = node
+	city = fsm.planet.roads.get_facility(city_node) as City
 
 
 func _ready():
@@ -197,8 +201,8 @@ func on_planet_clicked(node: int, button: int):
 	if button == BUTTON_LEFT:
 		var facility: Facility = fsm.planet.get_facility(node)
 		if facility != null and facility is City and facility != city:
-			fsm.pop()
-			fsm.push("edit_city", {"node": node})
+			set_city(node)
+			state_entered()
 			return
 	
 	if button == BUTTON_RIGHT:
