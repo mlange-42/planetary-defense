@@ -13,7 +13,7 @@ const CITY_EXTENSION_COST: int = 25
 
 const INITIAL_CITY_RADIUS: int = 1
 const INITIAL_CITY_POP: int = 1
-const NO_PRODUCTS_CITY_POP: int = 3
+const NO_PRODUCTS_CITY_POP: int = 4
 
 const PRODUCTS_PER_POP: float = 0.5
 
