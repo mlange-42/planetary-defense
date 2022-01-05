@@ -3,6 +3,7 @@ class_name City
 
 onready var city_sign: Spatial = $CitySign
 onready var land_use_mesh: ImmediateGeometry = $LandUse
+onready var borders_mesh: ImmediateGeometry = $Borders
 
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
@@ -130,19 +131,17 @@ func update_visuals(planet_data):
 		city_sign.set_color(Color.white)
 	
 	_draw_cells(planet_data)
+	_draw_borders(planet_data)
 
 
 func _draw_cells(planet_data):
 	land_use_mesh.clear()
 	land_use_mesh.begin(Mesh.PRIMITIVE_POINTS)
 	
+	# Dummy vertex, as for some reason a single vertex is not drag
+	# TODO: report Godot bug
 	land_use_mesh.set_color(Color.white)
-	
-	for c in cells:
-		if cells[c] == radius and not c in land_use:
-			var p = planet_data.get_position(c)
-			land_use_mesh.set_color(Color.dimgray)
-			land_use_mesh.add_vertex(self.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
+	land_use_mesh.add_vertex(Vector3.ZERO)
 	
 	for c in land_use:
 		var p = planet_data.get_position(c)
@@ -150,3 +149,31 @@ func _draw_cells(planet_data):
 		land_use_mesh.add_vertex(self.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
 	
 	land_use_mesh.end()
+
+
+func _draw_borders(planet_data):
+	var border_cells = []
+	
+	for c in cells:
+		if cells[c] == radius:
+			border_cells.append(planet_data.get_position(c))
+	
+	var origin = planet_data.get_position(node_id)
+	
+	GeoUtil.sort_by_angle(border_cells, origin, origin.normalized())
+	
+	borders_mesh.clear()
+	borders_mesh.begin(Mesh.PRIMITIVE_LINES)
+	borders_mesh.set_color(Color.magenta)
+	
+	var rad = planet_data.get_cell_radius()
+	
+	for i in range(border_cells.size()):
+		var p1 = border_cells[i]
+		var p2 = border_cells[(i + 1) % border_cells.size()]
+		var n1 = (p1 - origin).normalized()
+		var n2 = (p2 - origin).normalized()
+		borders_mesh.add_vertex(self.to_local(p1 + 2 * Consts.DRAW_HEIGHT_OFFSET * p1.normalized() + rad * n1))
+		borders_mesh.add_vertex(self.to_local(p2 + 2 * Consts.DRAW_HEIGHT_OFFSET * p2.normalized() + rad * n2))
+	
+	borders_mesh.end()

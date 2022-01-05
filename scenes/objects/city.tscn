@@ -18,6 +18,10 @@ material = ExtResource( 4 )
 
 [node name="CitySign" parent="." instance=ExtResource( 3 )]
 
+[node name="Borders" type="ImmediateGeometry" parent="."]
+layers = 32
+material_override = ExtResource( 2 )
+
 [node name="LandUse" type="ImmediateGeometry" parent="."]
 layers = 4
 material_override = ExtResource( 2 )

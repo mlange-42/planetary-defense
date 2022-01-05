@@ -64,6 +64,7 @@ pub struct NodeNeighbors {
 #[derive(Serialize, Deserialize)]
 pub struct PlanetProperties {
     pub radius: f32,
+    pub cell_radius: f32,
     pub max_elevation: f32,
 }
 
@@ -121,6 +122,11 @@ impl PlanetData {
     #[export]
     fn get_radius(&self, _owner: &Reference) -> f32 {
         self.properties.radius
+    }
+
+    #[export]
+    fn get_cell_radius(&self, _owner: &Reference) -> f32 {
+        self.properties.cell_radius
     }
 
     #[export]
@@ -299,6 +305,7 @@ mod tests {
 
         let props = PlanetProperties {
             radius: 1.0,
+            cell_radius: 0.01,
             max_elevation: 0.1,
         };
 
