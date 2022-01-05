@@ -83,6 +83,10 @@ func state_exited():
 		city.commodity_weights[i] = sliders[Commodities.COMM_ALL[i]].value
 
 
+func on_next_turn():
+	update_city_info()
+
+
 func update_city_info():
 	city_text.text = "%s (%d/%d workers)" % [city.name, city.workers(), city.population()]
 	for comm in Commodities.COMM_ALL:

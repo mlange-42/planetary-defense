@@ -60,6 +60,10 @@ func state_entered():
 		info.set_values(fsm.planet.roads.total_sources.get(comm, 0), f, fsm.planet.roads.total_sinks.get(comm, 0))
 
 
+func on_next_turn():
+	state_entered()
+
+
 func state_exited():
 	fsm.planet.clear_flows()
 

@@ -6,7 +6,15 @@ onready var veg_label: Label = find_node("VegetationLabel")
 
 
 func _ready():
-	update_messages()
+	update_messages(true)
+
+
+func state_entered():
+	update_messages(false)
+
+
+func on_next_turn():
+	update_messages(true)
 
 
 func _unhandled_key_input(event: InputEventKey):
@@ -51,15 +59,9 @@ func _on_Flows_pressed():
 func _on_Build_pressed():
 	fsm.push("build", {})
 
-func _on_next_turn():
-	fsm.planet.next_turn()
-	
-	fsm.show_message("Next turn", Consts.MESSAGE_INFO)
-	update_messages()
-
-func update_messages():
+func update_messages(set_visible: bool):
 	messages.update_messages(fsm.planet.messages)
-	if not fsm.planet.messages.messages.empty():
+	if set_visible and not fsm.planet.messages.messages.empty():
 		messages.visible = true
 
 func _on_Messages_go_to_pressed(message):

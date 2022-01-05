@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/shortkeys/m.tres" type="ShortCut" id=1]
 [ext_resource path="res://assets/shortkeys/s.tres" type="ShortCut" id=2]
@@ -8,15 +8,6 @@
 [ext_resource path="res://assets/shortkeys/f.tres" type="ShortCut" id=6]
 [ext_resource path="res://assets/shortkeys/n.tres" type="ShortCut" id=7]
 [ext_resource path="res://scenes/gui/controls/messages.tscn" type="PackedScene" id=8]
-
-[sub_resource type="InputEventKey" id=9]
-control = true
-command = true
-pressed = true
-scancode = 84
-
-[sub_resource type="ShortCut" id=10]
-shortcut = SubResource( 9 )
 
 [node name="Default" type="Control"]
 anchor_right = 1.0
@@ -122,21 +113,6 @@ margin_bottom = 21.0
 text = "Space"
 clip_text = true
 
-[node name="Placeholder" type="Control" parent="LeftMargin/DefaultControls"]
-margin_top = 198.0
-margin_right = 120.0
-margin_bottom = 556.0
-mouse_filter = 2
-size_flags_vertical = 3
-
-[node name="NextTurnButton" type="Button" parent="LeftMargin/DefaultControls"]
-margin_top = 560.0
-margin_right = 120.0
-margin_bottom = 580.0
-hint_tooltip = "Advance time by one turn"
-shortcut = SubResource( 10 )
-text = "Turn"
-
 [node name="Messages" parent="." instance=ExtResource( 8 )]
 
 [connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
@@ -145,5 +121,4 @@ text = "Turn"
 [connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Build" to="." method="_on_Build_pressed"]
 [connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Roads" to="." method="_on_Road_pressed"]
 [connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Flows" to="." method="_on_Flows_pressed"]
-[connection signal="pressed" from="LeftMargin/DefaultControls/NextTurnButton" to="." method="_on_next_turn"]
 [connection signal="go_to_pressed" from="Messages" to="." method="_on_Messages_go_to_pressed"]
