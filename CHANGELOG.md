@@ -11,6 +11,7 @@
 
 * Move the next turn button to the top-level GUI to make it accessible from everywhere
 * Keep selected tool when switching between cities in city management
+* Draw outlines instead of only vertices for all ranges (build, city, air defense)
 
 ### Bug fixes
 

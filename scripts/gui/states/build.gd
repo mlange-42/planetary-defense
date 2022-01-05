@@ -7,18 +7,18 @@ onready var name_edit: LineEdit = find_node("CityName")
 onready var buttons: Container = find_node("Buttons")
 onready var veg_label: Label = find_node("VegetationLabel")
 
-var indicator: ImmediateGeometry
+var indicator: RangeIndicator
 
 var button_group: ButtonGroup
 
-var cells: Array = []
+var cells: Dictionary = {}
 var radius: int = 0
 
 
 func _ready():
 	set_random_name()
 	
-	indicator = ImmediateGeometry.new()
+	indicator = RangeIndicator.new()
 	indicator.material_override = preload("res://assets/materials/unlit_vertex_color.tres")
 	fsm.planet.add_child(indicator)
 	
@@ -112,31 +112,21 @@ func _update_range(node: int, new_radius: int):
 		cells.clear()
 		var temp_cells = fsm.planet.planet_data.get_in_radius(node, new_radius)
 		for c in temp_cells:
-			if c[1] == new_radius:
-				cells.append(c[0])
+			cells[c[0]] = c[1]
 		
 		var pos = fsm.planet.planet_data.get_position(node)
 		indicator.translation = pos
 		indicator.look_at(2 * pos, Vector3.UP)
 		
-		_draw_range()
+		_draw_range(node)
 	
 	radius = new_radius
 
 
-func _draw_range():
+func _draw_range(center: int):
 	indicator.visible = true
 	
-	indicator.clear()
-	indicator.begin(Mesh.PRIMITIVE_POINTS)
-	
-	indicator.set_color(Color.white)
-	
-	for c in cells:
-		var p = fsm.planet.planet_data.get_position(c)
-		indicator.add_vertex(indicator.to_local(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized()))
-	
-	indicator.end()
+	indicator.draw_range(fsm.planet.planet_data, center, cells, radius, Color.white)
 
 
 func _notification(what):
