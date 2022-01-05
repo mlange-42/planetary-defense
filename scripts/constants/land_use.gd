@@ -83,6 +83,19 @@ const LU_COLORS = {
 	LU_OIL_WELL: Color.magenta,
 }
 
+const _test_scene = "res://scenes/objects/land_use/lu_test.tscn"
+
+const LU_SCENES = {
+	LU_NONE: _test_scene,
+	LU_CROPS: _test_scene,
+	LU_FOREST: _test_scene,
+	LU_FACTORY: _test_scene,
+	LU_FISHERY: _test_scene,
+	LU_MINES: _test_scene,
+	LU_OIL_RIG: _test_scene,
+	LU_OIL_WELL: _test_scene,
+}
+
 const LU_NAMES = {
 	LU_NONE: "Clear",
 	LU_CROPS: "Crops",

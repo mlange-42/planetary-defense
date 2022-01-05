@@ -7,6 +7,8 @@ onready var borders_mesh: RangeIndicator = $RangeIndicator
 
 var cells: Dictionary = {}
 var land_use: Dictionary = {}
+var land_use_nodes: Dictionary = {}
+
 var facilities: Dictionary = {}
 var radius: int = Cities.INITIAL_CITY_RADIUS
 
@@ -97,6 +99,18 @@ func has_landuse_requirements(lu: int) -> bool:
 			return false
 	
 	return true
+
+
+func set_land_use(node: int, lu: int):
+	land_use[node] = lu
+	assign_workers(LandUse.LU_WORKERS[lu])
+
+
+func clear_land_use(node: int):
+	var lut = land_use[node]
+	free_workers(LandUse.LU_WORKERS[lut])
+	# warning-ignore:return_value_discarded
+	land_use.erase(node)
 
 
 func update_cells(planet_data):

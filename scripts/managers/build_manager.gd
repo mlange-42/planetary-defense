@@ -135,10 +135,7 @@ func can_set_land_use(city: City, node: int, land_use: int):
 func set_land_use(city: City, node: int, land_use: int):
 	if land_use == LandUse.LU_NONE:
 		if node in city.land_use:
-			var lut = city.land_use[node]
-			city.free_workers(LandUse.LU_WORKERS[lut])
-			# warning-ignore:return_value_discarded
-			city.land_use.erase(node)
+			city.clear_land_use(node)
 			planet_data.set_occupied(node, false)
 			city.update_visuals(planet_data)
 			return null
@@ -164,9 +161,8 @@ func set_land_use(city: City, node: int, land_use: int):
 		if res_here == null or res_here[0] != extract_resource:
 			return "Resource %s not available here" % Resources.RES_NAMES[extract_resource]
 	
+	city.set_land_use(node, land_use)
 	planet_data.set_occupied(node, true)
-	city.land_use[node] = land_use
-	city.assign_workers(LandUse.LU_WORKERS[land_use])
 	city.update_visuals(planet_data)
 	
 	return null
