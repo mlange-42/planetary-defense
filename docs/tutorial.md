@@ -44,6 +44,28 @@ Then, select "Crops" and assign them to a different cell with left-click.
 Also note the upper bottom-right box.
 It shows which land use is possible on the cell under the mouse, and how much of which commodity it would produce.
 
+## Economy
+
+The economy is based on three commodities: food, resources and products (plus electricity in the future).
+
+**Food** is required by all workers except those producing food themselves.
+
+**Resources** are extracted by workers, and transformed into **Products** in factories (also requires workers).
+
+Finally, **Products** are required to maintain military facilities, and for cities to grow.
+
+```
+ Resources ==[Factory]=> Products
+          \   /           |   |
+           \ /            |   V
+ Food --> Workers         |   Facilities
+                          |   (e.g. Military)
+                          V
+                       City growth
+```
+
+Production is local to cities, but everything can be transported along the [Transport network](transport-network).
+
 ## Finances
 
 At the top of the main screen, there is the finances and turn bar.
