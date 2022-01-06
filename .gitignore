@@ -9,6 +9,9 @@ export.cfg
 .mono/
 data_*/
 
+# Blender backup files
+*.blend1
+
 # Build output
 build/
 

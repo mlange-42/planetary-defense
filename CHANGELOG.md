@@ -6,6 +6,7 @@
 
 * Cheat to schedule an attack on a city for the next turn
 * Oil well land use for oil extraction on land
+* Geometries for all land uses and facilities
 
 ### Changed
 
