@@ -89,8 +89,20 @@ func calc_is_supplied():
 		var flow = flows.get(comm, [0, 0])
 		if flow[1] < sinks[comm]:
 			res = false
+			break
 	
 	is_supplied = res
+
+
+func get_missing_supply() -> Dictionary:
+	var res = {}
+	
+	for comm in sinks:
+		var flow = flows.get(comm, [0, 0])
+		if flow[1] < sinks[comm]:
+			res[comm] = res.get(comm, 0) + sinks[comm] - flow[1]
+	
+	return res
 
 
 # warning-ignore:unused_argument
