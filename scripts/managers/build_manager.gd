@@ -155,12 +155,12 @@ func set_land_use(city: City, node: int, land_use: int):
 		else:
 			return "Can't clear, land is not is use"
 	
-	if city.workers() < LandUse.LU_WORKERS[land_use]:
-		return "Not enough workers (requires %d)" % LandUse.LU_WORKERS[land_use]
-	
 	var can_set_err = can_set_land_use(city, node, land_use, true)
 	if not can_set_err[0]:
 		return can_set_err[1]
+	
+	if city.workers() < LandUse.LU_WORKERS[land_use]:
+		return "Not enough workers (requires %d)" % LandUse.LU_WORKERS[land_use]
 	
 	city.set_land_use(planet_data, node, land_use)
 	planet_data.set_occupied(node, true)

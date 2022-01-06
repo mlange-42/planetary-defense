@@ -16,9 +16,11 @@ onready var grow_button: Button = find_node("GrowButton")
 
 onready var container: Container = find_node("CityInfoContainer")
 
+var pointer_offset = -0.03
 var indicator: RangeIndicator
 var pointer: Spatial
 var sub_pointer: GeometryInstance
+var selected_node: int = -1
 
 var city_node: int
 var city: City
@@ -42,7 +44,7 @@ func init(the_fsm: Gui, args: Dictionary):
 	sub_pointer.sides = 12
 	sub_pointer.smooth_faces = true
 	pointer.add_child(sub_pointer)
-	sub_pointer.translate(Vector3(0, 0, -0.03))
+	sub_pointer.translate(Vector3(0, 0, pointer_offset))
 	sub_pointer.rotate_x(deg2rad(-90))
 	
 	
@@ -245,10 +247,16 @@ func set_pointer(lu_tool, facility_tool):
 	else:
 		return
 	
+	child.translate(Vector3(0, pointer_offset, 0))
 	sub_pointer.add_child(child)
+	move_pointer(selected_node)
 
 
 func move_pointer(node: int):
+	if node < 0:
+		pointer.visible = false
+		return
+	
 	var pos = fsm.planet.planet_data.get_position(node)
 	pointer.look_at_from_position(pos, 2 * pos, Vector3.UP)
 	
@@ -264,16 +272,19 @@ func move_pointer(node: int):
 
 func on_planet_exited():
 	pointer.visible = false
+	selected_node = -1
 
 
 func on_planet_hovered(node: int):
 	if not node in city.cells:
 		update_node_info(-1)
 		pointer.visible = false
+		selected_node = -1
 		return
 	
 	update_node_info(node)
 	pointer.visible = true
+	selected_node = node
 	move_pointer(node)
 
 
@@ -311,6 +322,8 @@ func on_planet_clicked(node: int, button: int):
 					city.add_facility(node, fac_err[0])
 				else:
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
+	
+	move_pointer(selected_node)
 
 
 func _on_GrowButton_pressed():
