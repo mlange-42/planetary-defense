@@ -67,13 +67,14 @@ func _init(params: Array):
 
 func _ready():
 	var material = preload("res://assets/materials/unlit_vertex_color.tres")
+	var material_roads = preload("res://assets/materials/planet/roads.tres")
 	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
 	
 	facilities = Spatial.new()
 	add_child(facilities)
 	
 	road_debug = DebugDraw.new()
-	road_debug.material_override = material
+	road_debug.material_override = material_roads
 	road_debug.set_layer_mask_bit(Consts.LAYER_BASE, false)
 	road_debug.set_layer_mask_bit(Consts.LAYER_ROADS, true)
 	add_child(road_debug)
