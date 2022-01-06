@@ -40,7 +40,6 @@ centered = false
 offset = Vector2( 0, -30 )
 pixel_size = 0.004
 double_sided = false
-alpha_cut = 2
 
 [node name="Viewport" type="Viewport" parent="Sprite3D"]
 size = Vector2( 800, 60 )

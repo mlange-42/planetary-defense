@@ -12,5 +12,5 @@ material_override = ExtResource( 3 )
 cast_shadow = 0
 pixel_size = 0.005
 billboard = 1
-alpha_cut = 2
+double_sided = false
 texture = ExtResource( 1 )
