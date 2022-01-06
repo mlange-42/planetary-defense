@@ -1,8 +1,6 @@
 extends ImmediateGeometry
 class_name DebugDraw
 
-export var road_width: float = 0.05
-
 
 func clear_all():
 	clear()
@@ -30,8 +28,8 @@ func draw_roads(planet_data, roads: RoadNetwork, color1: Color, color2: Color):
 		for node2 in n:
 			var edge = roads.edges[[node1, node2]]
 			var p2 = planet_data.get_position(node2)
-			var x_off = (p2 - p1).cross(p1).normalized() * road_width
-			var y_off = (p2 - p1).normalized() * (0.5 * road_width)
+			var x_off = (p2 - p1).cross(p1).normalized() * Consts.ROAD_WIDTH
+			var y_off = (p2 - p1).normalized() * (0.5 * Consts.ROAD_WIDTH)
 			var h_off = Consts.DRAW_HEIGHT_OFFSET * p1.normalized()
 			
 			set_color(color1.linear_interpolate(color2, edge.flow/float(edge.capacity)))
