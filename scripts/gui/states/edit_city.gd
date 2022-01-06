@@ -16,6 +16,8 @@ onready var grow_button: Button = find_node("GrowButton")
 
 onready var container: Container = find_node("CityInfoContainer")
 
+var indicator: RangeIndicator
+
 var city_node: int
 var city: City
 var button_group: ButtonGroup
@@ -24,6 +26,11 @@ var infos = {}
 
 func init(the_fsm: Gui, args: Dictionary):
 	.init(the_fsm, args)
+	
+	indicator = RangeIndicator.new()
+	indicator.material_override = preload("res://assets/materials/gradient/alpha_yellow.tres")
+	fsm.planet.add_child(indicator)
+	
 	set_city(args["node"])
 	
 	var buttons: Container = $Margin/EditControls/Buttons/LuPanel/LuButtons
@@ -62,6 +69,8 @@ func init(the_fsm: Gui, args: Dictionary):
 func set_city(node):
 	city_node = node
 	city = fsm.planet.roads.get_facility(city_node) as City
+	
+	indicator.draw_range(fsm.planet.planet_data, city.node_id, city.cells, city.radius, Color.white)
 
 
 func _ready():
@@ -239,3 +248,9 @@ func _on_GrowButton_pressed():
 		update_city_info()
 	else:
 		fsm.show_message(err, Consts.MESSAGE_ERROR)
+
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		fsm.planet.remove_child(indicator)
+		indicator.queue_free()
