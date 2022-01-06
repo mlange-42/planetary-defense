@@ -10,7 +10,6 @@ onready var label: Control = $Sprite3D/Viewport/Label/Label
 
 func _ready():
 	sprite.texture = $Sprite3D/Viewport.get_texture()
-	sprite.texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
 	
 	sprite.material_override.albedo_texture = $Sprite3D/Viewport.get_texture()
 	sprite.material_override.albedo_texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
