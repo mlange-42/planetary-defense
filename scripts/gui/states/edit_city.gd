@@ -70,7 +70,7 @@ func set_city(node):
 	city_node = node
 	city = fsm.planet.roads.get_facility(city_node) as City
 	
-	indicator.draw_range(fsm.planet.planet_data, city.node_id, city.cells, city.radius, Color.white)
+	update_range()
 
 
 func _ready():
@@ -114,6 +114,10 @@ func update_city_info():
 	
 	grow_button.hint_tooltip = "Grow city radius.\n Cost: %d\n Maintenance: %d->%d" \
 			% [Cities.city_growth_cost(city.radius), Cities.city_maintenance(city.radius), Cities.city_maintenance(city.radius + 1)]
+
+
+func update_range():
+	indicator.draw_range(fsm.planet.planet_data, city.node_id, city.cells, city.radius, Color.white)
 
 
 func update_node_info(node: int):
@@ -246,6 +250,7 @@ func _on_GrowButton_pressed():
 	var err = fsm.planet.grow_city(city)
 	if err == null:
 		update_city_info()
+		update_range()
 	else:
 		fsm.show_message(err, Consts.MESSAGE_ERROR)
 

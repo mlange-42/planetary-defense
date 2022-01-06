@@ -25,7 +25,6 @@ func draw_roads(planet_data, roads: RoadNetwork, color1: Color, color2: Color):
 	for node1 in roads.neighbors:
 		var n = roads.neighbors[node1]
 		var p1 = planet_data.get_position(node1)
-		var norm1 = p1.normalized()
 		for node2 in n:
 			var edge = roads.edges[[node1, node2]]
 			var p2 = planet_data.get_position(node2)
