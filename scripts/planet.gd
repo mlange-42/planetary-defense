@@ -356,7 +356,7 @@ func _add_node(node: GeometryInstance, name: String) -> GeometryInstance:
 
 
 func _create_water() -> Mesh:
-	var sphere = UvSphere.new(water_rings, water_segments, radius + 0.8 * height_step)
+	var sphere = UvSphere.new(water_rings, water_segments, radius)
 	return sphere.create()
 
 
