@@ -11,7 +11,7 @@ script = ExtResource( 1 )
 angle_curve = SubResource( 1 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 0.906308, 0, -0.422618, 0, 1, 0, 0.422618, 0, 0.906308, -9, 0, 0 )
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -9, 0, 0 )
 directional_shadow_mode = 1
 directional_shadow_depth_range = 1
 directional_shadow_max_distance = 50.0
