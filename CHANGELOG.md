@@ -16,7 +16,10 @@
 * Increase resource amounts in deposits
 * Reduce number of workers for factory to 2
 * Let cities grow up to 5 without requiring products
+* Reduced maintenance costs for ports, air defense, roads and transport
+* Reduced basic city growth probability from 25% to 20%
 
 ### Bug fixes
 
+* No more flickering city labels [#51]
 * Cities now regrowth after complete wipe out [#119]
