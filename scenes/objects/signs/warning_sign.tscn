@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/sprites/signs/warning.svg" type="Texture" id=1]
 [ext_resource path="res://scripts/objects/distance_scaled.gd" type="Script" id=2]
+[ext_resource path="res://assets/materials/signs/warning_sign.tres" type="Material" id=3]
 
 [node name="Warning" type="Spatial"]
 script = ExtResource( 2 )
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+material_override = ExtResource( 3 )
+cast_shadow = 0
 pixel_size = 0.005
 billboard = 1
+double_sided = false
 texture = ExtResource( 1 )

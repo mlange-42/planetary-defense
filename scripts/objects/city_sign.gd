@@ -1,5 +1,8 @@
 extends Spatial
 
+
+export var size: float = 0.1
+
 onready var sprite: Sprite3D = $Sprite3D
 onready var label_panel: Control = $Sprite3D/Viewport/Label
 onready var label: Control = $Sprite3D/Viewport/Label/Label
@@ -7,14 +10,16 @@ onready var label: Control = $Sprite3D/Viewport/Label/Label
 
 func _ready():
 	sprite.texture = $Sprite3D/Viewport.get_texture()
-	sprite.texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
+	
+	sprite.material_override.albedo_texture = $Sprite3D/Viewport.get_texture()
+	sprite.material_override.albedo_texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
 
 
 func _process(_delta):
 	var cam = get_viewport().get_camera().global_transform.origin
 	var dist = global_transform.origin.distance_to(cam)
 	if dist < Cities.LABEL_MAX_DIST and dist > Cities.LABEL_MIN_DIST:
-		scale = Vector3.ONE * (0.1 * dist)
+		scale = Vector3.ONE * (size * dist)
 		visible = true
 	else:
 		visible = false
