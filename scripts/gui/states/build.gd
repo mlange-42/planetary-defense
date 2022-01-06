@@ -19,7 +19,7 @@ func _ready():
 	set_random_name()
 	
 	indicator = RangeIndicator.new()
-	indicator.material_override = preload("res://assets/materials/unlit_vertex_color.tres")
+	indicator.material_override = preload("res://assets/materials/gradient/alpha_white.tres")
 	fsm.planet.add_child(indicator)
 	
 	button_group = ButtonGroup.new()
