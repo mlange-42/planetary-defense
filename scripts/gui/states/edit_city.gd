@@ -16,7 +16,11 @@ onready var grow_button: Button = find_node("GrowButton")
 
 onready var container: Container = find_node("CityInfoContainer")
 
+var pointer_offset = -0.03
 var indicator: RangeIndicator
+var pointer: Spatial
+var sub_pointer: GeometryInstance
+var selected_node: int = -1
 
 var city_node: int
 var city: City
@@ -30,6 +34,20 @@ func init(the_fsm: Gui, args: Dictionary):
 	indicator = RangeIndicator.new()
 	indicator.material_override = preload("res://assets/materials/gradient/alpha_yellow.tres")
 	fsm.planet.add_child(indicator)
+	
+	pointer = Spatial.new()
+	fsm.planet.add_child(pointer)
+	sub_pointer = CSGTorus.new()
+	sub_pointer.inner_radius = 0.085
+	sub_pointer.outer_radius = 0.115
+	sub_pointer.ring_sides = 4
+	sub_pointer.sides = 12
+	sub_pointer.smooth_faces = true
+	pointer.add_child(sub_pointer)
+	sub_pointer.translate(Vector3(0, 0, pointer_offset))
+	sub_pointer.rotate_x(deg2rad(-90))
+	
+	
 	
 	set_city(args["node"])
 	
@@ -64,6 +82,9 @@ func init(the_fsm: Gui, args: Dictionary):
 			button.shortcut.shortcut = evt
 			
 			fac_buttons.add_child(button)
+	
+	# warning-ignore:return_value_discarded
+	button_group.connect("pressed", self, "_on_tool_changed")
 
 
 func set_city(node):
@@ -201,13 +222,70 @@ func _on_weights_changed(_value: float):
 func _on_Back_pressed():
 	fsm.pop()
 
+func _on_tool_changed(_button):
+	var curr_tool = get_land_use_tool()
+	if curr_tool != null:
+		set_pointer(curr_tool, null)
+	else:
+		curr_tool = get_facility_tool()
+		if curr_tool != null:
+			set_pointer(null, curr_tool)
+		else:
+			set_pointer(null, null)
+
+
+func set_pointer(lu_tool, facility_tool):
+	for child in sub_pointer.get_children():
+		sub_pointer.remove_child(child)
+		child.queue_free()
+	
+	var child: Spatial = null
+	if lu_tool != null:
+		child = load(LandUse.LU_SCENES[lu_tool]).instance()
+	elif facility_tool != null:
+		child = load(Facilities.FACILITY_POINTERS[facility_tool]).instance()
+	else:
+		return
+	
+	child.translate(Vector3(0, pointer_offset, 0))
+	sub_pointer.add_child(child)
+	move_pointer(selected_node)
+
+
+func move_pointer(node: int):
+	if node < 0:
+		pointer.visible = false
+		return
+	
+	var pos = fsm.planet.planet_data.get_position(node)
+	pointer.look_at_from_position(pos, 2 * pos, Vector3.UP)
+	
+	var curr_tool = get_land_use_tool()
+	if curr_tool == null:
+		sub_pointer.material_override = preload("res://assets/materials/color/white.tres")
+	else:
+		if fsm.planet.builder.can_set_land_use(city, node, curr_tool, true)[0]:
+			sub_pointer.material_override = preload("res://assets/materials/color/green.tres")
+		else:
+			sub_pointer.material_override = preload("res://assets/materials/color/red.tres")
+
+
+func on_planet_exited():
+	pointer.visible = false
+	selected_node = -1
+
 
 func on_planet_hovered(node: int):
 	if not node in city.cells:
 		update_node_info(-1)
+		pointer.visible = false
+		selected_node = -1
 		return
 	
 	update_node_info(node)
+	pointer.visible = true
+	selected_node = node
+	move_pointer(node)
 
 
 func on_planet_clicked(node: int, button: int):
@@ -244,6 +322,8 @@ func on_planet_clicked(node: int, button: int):
 					city.add_facility(node, fac_err[0])
 				else:
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
+	
+	move_pointer(selected_node)
 
 
 func _on_GrowButton_pressed():
@@ -258,4 +338,6 @@ func _on_GrowButton_pressed():
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		fsm.planet.remove_child(indicator)
+		fsm.planet.remove_child(pointer)
 		indicator.queue_free()
+		pointer.queue_free()

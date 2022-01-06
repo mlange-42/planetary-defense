@@ -65,8 +65,7 @@ func _on_planet_hovered(point: Vector3):
 	
 	if id != hover_id:
 		var node = planet.planet_data.get_node(id)
-		pointer.translation = node.position
-		pointer.look_at(2 * node.position, Vector3.UP)
+		pointer.look_at_from_position(node.position, 2 * node.position, Vector3.UP)
 		gui.on_planet_hovered(id)
 		
 		hover_id = id

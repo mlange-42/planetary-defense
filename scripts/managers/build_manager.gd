@@ -112,7 +112,7 @@ func add_facility_scene(facility: Facility, name: String):
 
 
 # Use land_use = LandUse.LU_NONE to ignore specific requirements
-func can_set_land_use(city: City, node: int, land_use: int):
+func can_set_land_use(city: City, node: int, land_use: int, consider_veg_res: bool = false):
 	if network.is_road(node) \
 			or network.has_facility(node) \
 			or planet_data.get_node(node).is_occupied:
@@ -121,15 +121,28 @@ func can_set_land_use(city: City, node: int, land_use: int):
 	if not node in city.cells:
 		return [false, "Land is not in range of %s" % city.name]
 	
-	
 	if land_use == LandUse.LU_NONE:
 		return [true, null]
 	
 	var req = city.has_landuse_requirements(land_use)
-	if req:
-		return [true, null]
-	else:
+	if not req:
 		return [false, "Requirements not met: %s" % LandUse.LU_REQUIREMENTS[land_use]]
+	
+	if not consider_veg_res:
+		return [true, null]
+	
+	var veg = planet_data.get_node(node).vegetation_type
+	var lu: Dictionary = constants.LU_MAPPING[land_use]
+	if not veg in lu:
+		return [false, "Land use %s not possible on %s" % [LandUse.LU_NAMES[land_use], LandUse.VEG_NAMES[veg]]]
+	
+	var extract_resource = LandUse.LU_RESOURCE[land_use]
+	if extract_resource != null:
+		var res_here = resources.resources.get(node, null)
+		if res_here == null or res_here[0] != extract_resource:
+			return [false, "Land use %s not possible without resource %s" % [LandUse.LU_NAMES[land_use], Resources.RES_NAMES[extract_resource]]]
+	
+	return [true, null]
 
 
 func set_land_use(city: City, node: int, land_use: int):
@@ -142,24 +155,12 @@ func set_land_use(city: City, node: int, land_use: int):
 		else:
 			return "Can't clear, land is not is use"
 	
-	var can_set_err = can_set_land_use(city, node, land_use)
+	var can_set_err = can_set_land_use(city, node, land_use, true)
 	if not can_set_err[0]:
 		return can_set_err[1]
 	
-	var res_here = resources.resources.get(node, null)
-	var extract_resource = LandUse.LU_RESOURCE[land_use]
-	var veg = planet_data.get_node(node).vegetation_type
-	var lu: Dictionary = constants.LU_MAPPING[land_use]
-	
 	if city.workers() < LandUse.LU_WORKERS[land_use]:
 		return "Not enough workers (requires %d)" % LandUse.LU_WORKERS[land_use]
-	
-	if not veg in lu:
-		return "Vegetation type %s can't be used for %s" % [LandUse.VEG_NAMES[veg], LandUse.LU_NAMES[land_use]]
-	
-	if extract_resource != null:
-		if res_here == null or res_here[0] != extract_resource:
-			return "Resource %s not available here" % Resources.RES_NAMES[extract_resource]
 	
 	city.set_land_use(planet_data, node, land_use)
 	planet_data.set_occupied(node, true)

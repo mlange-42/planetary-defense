@@ -84,7 +84,7 @@ const LU_COLORS = {
 }
 
 const LU_SCENES = {
-	LU_NONE: "",
+	LU_NONE: "res://assets/geom/clear.escn",
 	LU_CROPS: "res://assets/geom/crops.escn",
 	LU_FOREST: "res://assets/geom/forest.escn",
 	LU_FACTORY: "res://assets/geom/factory.escn",

@@ -13,6 +13,13 @@ const FACILITY_SCENES = {
 #	FAC_MISSILE_BASE: "res://scenes/objects/missile_base.tscn",
 }
 
+const FACILITY_POINTERS = {
+	FAC_CITY: "res://assets/geom/city.escn",
+	FAC_PORT: "res://assets/geom/port.escn",
+	FAC_AIR_DEFENSE: "res://assets/geom/air_defense.escn",
+#	FAC_MISSILE_BASE: "res://assets/geom/missile_base.escn",
+}
+
 const FACILITY_INFO = {
 	FAC_CITY: "A city",
 	FAC_PORT: "Required for sea transport and fishery",
