@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/camera_control.gd" type="Script" id=1]
 [ext_resource path="res://assets/camera_env.tres" type="Environment" id=2]
@@ -6,9 +6,18 @@
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0.727273 ), 0.0, -2.55122, 0, 0, Vector2( 0.325048, 0.2 ), -0.811751, -0.811751, 0, 0, Vector2( 0.762906, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 1, 0 ]
 
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.208647, 1 )
+colors = PoolColorArray( 0.529412, 0.807843, 0.980392, 1, 0.0117647, 0.054902, 0.282353, 1, 0, 0.00637817, 0.0742188, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+width = 1024
+
 [node name="CameraControl" type="Spatial"]
 script = ExtResource( 1 )
 angle_curve = SubResource( 1 )
+sky_color = SubResource( 3 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -9, 0, 0 )

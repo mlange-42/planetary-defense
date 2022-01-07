@@ -8,6 +8,7 @@ export var zoom_increment: float = 0.1
 export var lerp_speed: float = 10
 
 export var angle_curve: Curve
+export (GradientTexture) var sky_color: GradientTexture
 
 onready var arm: Spatial = $Arm
 onready var arm2: Spatial = $Arm/Arm2
@@ -54,9 +55,12 @@ func _process(delta):
 	camera.translation.z = lerp(camera.translation.z, zoom_target, lerp_speed * delta)
 	var angle = 90 * angle_curve.interpolate(camera.translation.z / max_height)
 	
+	var z = camera.translation.z
 	var env: Environment = camera.environment
-	env.fog_depth_begin = camera.translation.z
-	env.fog_depth_end = camera.translation.z * 3
+	env.fog_depth_begin = z
+	env.fog_depth_end = z * 3
+	
+	env.background_color = sky_color.gradient.interpolate( (z - min_height) / (max_height - min_height) )
 	
 	rotation.y = lerp_angle(rotation.y, rotation_y_target, lerp_speed * delta)
 	arm.rotation.x = lerp_angle(arm.rotation.x, rotation_x_target, lerp_speed * delta)
