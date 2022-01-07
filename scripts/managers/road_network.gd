@@ -13,9 +13,9 @@ class Edge:
 		self.to = to_id
 		self.capacity = cap
 
-var neighbors: Dictionary = {}
-var edges: Dictionary = {}
-var facilities: Dictionary = {}
+var _neighbors: Dictionary = {}
+var _edges: Dictionary = {}
+var _facilities: Dictionary = {}
 
 var total_flows: Dictionary = {}
 var pair_flows: Dictionary = {}
@@ -30,14 +30,14 @@ func save() -> Dictionary:
 	var dict = {}
 	
 	var neigh = []
-	for n in neighbors:
-		neigh.append([n, neighbors[n]])
+	for n in _neighbors:
+		neigh.append([n, _neighbors[n]])
 	
 	dict["neighbors"] = neigh
 	
 	var edge_data = []
-	for edge in edges:
-		var e = edges[edge]
+	for edge in _edges:
+		var e = _edges[edge]
 		edge_data.append([edge[0], edge[1], e.capacity, e.flow])
 	
 	dict["edge_data"] = edge_data
@@ -78,7 +78,7 @@ func read(dict: Dictionary):
 		
 		var e = Edge.new(v1, v2, cap)
 		e.flow = fl
-		edges[[v1, v2]] = e
+		_edges[[v1, v2]] = e
 	
 	var p_flows = dict["pair_flows"]
 	for e in p_flows:
@@ -113,38 +113,39 @@ func disconnect_points(v1: int, v2: int):
 	_disconnect(v2, v1)
 
 
-func add_facility(node: int, facility: Facility):
-	assert(not facilities.has(node), "There is already a facility at node %s" % node)
-	facilities[node] = facility
+func add_facility(v: int, facility: Facility):
+	assert(not _facilities.has(v), "There is already a facility at node %s" % v)
+	_facilities[v] = facility
 
-func remove_facility(node: int):
-	assert(facilities.erase(node), "There is no a facility at node %s to remove" % node)
+
+func remove_facility(v: int):
+	assert(_facilities.erase(v), "There is no a facility at node %s to remove" % v)
 
 
 func has_facility(v: int) -> bool:
-	return facilities.has(v)
+	return _facilities.has(v)
 
 
 func is_road(v: int) -> bool:
-	return neighbors.has(v)
+	return _neighbors.has(v)
 
 
 func get_facility(v: int):
-	if not facilities.has(v):
+	if not _facilities.has(v):
 		return null
-	return facilities[v]
+	return _facilities[v]
 
 
 func points_connected(v1: int, v2: int) -> bool:
-	return edges.has([v1, v2])
+	return _edges.has([v1, v2])
 
 
 func get_edges():
 	var edge_list = []
 	
-	for key in neighbors:
-		var n: Array = neighbors[key]
-		if n.size() == 2 and not facilities.has(key):
+	for key in _neighbors:
+		var n: Array = _neighbors[key]
+		if n.size() == 2 and not _facilities.has(key):
 			continue
 		
 		for i in range(n.size()):
@@ -156,7 +157,7 @@ func get_edges():
 
 
 func reset_flow():
-	for edge in edges.values():
+	for edge in _edges.values():
 		edge.flow = 0
 	
 	for comm in Commodities.COMM_ALL:
@@ -168,7 +169,7 @@ func _trace_edge(node: int, neighbor: int) -> Array:
 	var result = [node]
 	var first = node
 	var previous: int = node
-	var current: int = neighbors[node][neighbor]
+	var current: int = _neighbors[node][neighbor]
 	var capacity = MAX_INT
 	
 	while true:
@@ -176,12 +177,12 @@ func _trace_edge(node: int, neighbor: int) -> Array:
 			return []
 		
 		result.append(current)
-		var edge: Edge = edges[[previous, current]]
+		var edge: Edge = _edges[[previous, current]]
 		if edge.capacity < capacity:
 			capacity = edge.capacity
 		
-		n = neighbors[current]
-		if n.size() != 2 or facilities.has(current):
+		n = _neighbors[current]
+		if n.size() != 2 or _facilities.has(current):
 			return [result, capacity]
 		
 		var n0 = n[0]
@@ -193,26 +194,26 @@ func _trace_edge(node: int, neighbor: int) -> Array:
 
 
 func _connect(v1: int, v2: int, capacity: int):
-	if neighbors.has(v1):
-		var n: Array = neighbors[v1]
+	if _neighbors.has(v1):
+		var n: Array = _neighbors[v1]
 		assert(not n.has(v2), "Points %d and %d are already connected" % [v1, v2])
 		
 		n.append(v2)
 	else:
-		neighbors[v1] = [v2]
+		_neighbors[v1] = [v2]
 	
-	edges[[v1, v2]] = Edge.new(v1, v2, capacity)
+	_edges[[v1, v2]] = Edge.new(v1, v2, capacity)
 
 
 func _disconnect(v1: int, v2: int):
-	assert(neighbors.has(v1), "Points %d and %d are not connected" % [v1, v2])
+	assert(_neighbors.has(v1), "Points %d and %d are not connected" % [v1, v2])
 	
-	var n: Array = neighbors[v1]
+	var n: Array = _neighbors[v1]
 	var idx = n.find(v2)
 	assert(idx >= 0, "Points %d and %d are not connected" % [v1, v2])
 	
 	n.remove(idx)
-	assert(edges.erase([v1, v2]), "Points %d and %d have no edge to remove" % [v1, v2])
+	assert(_edges.erase([v1, v2]), "Points %d and %d have no edge to remove" % [v1, v2])
 	
 	if n.empty():
-		assert(neighbors.erase(v1), "Points %d and %d are not connected" % [v1, v2])
+		assert(_neighbors.erase(v1), "Points %d and %d are not connected" % [v1, v2])
