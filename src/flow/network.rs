@@ -1,6 +1,9 @@
 use std::collections::btree_map::Entry;
 use std::collections::{BTreeMap, BTreeSet};
 
+use gdnative::prelude::*;
+use gdnative::private::godot_object::Sealed;
+
 #[allow(dead_code)]
 struct Edge {
     from: usize,
@@ -22,16 +25,36 @@ impl Edge {
 }
 
 #[allow(dead_code)]
-#[derive(Default)]
+#[derive(NativeClass, Default)]
+#[inherit(Reference)]
 pub struct FlowNetwork {
     neighbors: BTreeMap<usize, Vec<usize>>,
     edges: BTreeMap<(usize, usize), Edge>,
     facilities: BTreeSet<usize>,
 }
 
+impl Sealed for FlowNetwork {}
+
+unsafe impl GodotObject for FlowNetwork {
+    type RefKind = RefCounted;
+
+    fn class_name() -> &'static str {
+        "FlowNetwork"
+    }
+}
+
 #[allow(dead_code)]
+#[methods]
 impl FlowNetwork {
-    pub fn set_facility(&mut self, v: usize, is_facility: bool) {
+    fn new(_owner: &Reference) -> Self {
+        Self::default()
+    }
+
+    #[export]
+    fn _init(&mut self, _owner: &Reference) {}
+
+    #[export]
+    pub fn set_facility(&mut self, _owner: &Reference, v: usize, is_facility: bool) {
         assert_ne!(
             self.facilities.contains(&v),
             is_facility,
@@ -47,25 +70,29 @@ impl FlowNetwork {
         }
     }
 
-    pub fn is_road(&self, v: usize) -> bool {
+    #[export]
+    pub fn is_road(&self, _owner: &Reference, v: usize) -> bool {
         self.neighbors.contains_key(&v)
     }
 
-    pub fn points_connected(&self, v1: usize, v2: usize) -> bool {
+    #[export]
+    pub fn points_connected(&self, _owner: &Reference, v1: usize, v2: usize) -> bool {
         self.edges.contains_key(&(v1, v2))
     }
 
-    pub fn connect_points(&mut self, v1: usize, v2: usize, capacity: u32) {
+    #[export]
+    pub fn connect_points(&mut self, _owner: &Reference, v1: usize, v2: usize, capacity: u32) {
         self._connect(v1, v2, capacity);
         self._connect(v2, v1, capacity);
     }
 
-    pub fn disconnect_points(&mut self, v1: usize, v2: usize) {
+    #[export]
+    pub fn disconnect_points(&mut self, _owner: &Reference, v1: usize, v2: usize) {
         self._disconnect(v1, v2);
         self._disconnect(v2, v1);
     }
 
-    fn get_edges(&self) -> Vec<(Vec<usize>, u32)> {
+    pub fn get_edges(&self) -> Vec<(Vec<usize>, u32)> {
         let mut edge_list = vec![];
 
         for (key, n) in &self.neighbors {
