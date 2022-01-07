@@ -1,15 +1,16 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/gui/states/settings.gd" type="Script" id=1]
 [ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/shortkeys/c.tres" type="ShortCut" id=3]
 [ext_resource path="res://assets/shortkeys/l.tres" type="ShortCut" id=4]
 [ext_resource path="res://assets/shortkeys/r.tres" type="ShortCut" id=5]
-[ext_resource path="res://assets/shortkeys/a.tres" type="ShortCut" id=6]
+[ext_resource path="res://assets/shortkeys/d.tres" type="ShortCut" id=6]
 [ext_resource path="res://assets/shortkeys/ctrl_a.tres" type="ShortCut" id=7]
 [ext_resource path="res://assets/shortkeys/e.tres" type="ShortCut" id=8]
 [ext_resource path="res://assets/shortkeys/s.tres" type="ShortCut" id=9]
 [ext_resource path="res://assets/shortkeys/ctrl_shift_a.tres" type="ShortCut" id=10]
+[ext_resource path="res://assets/shortkeys/u.tres" type="ShortCut" id=11]
 
 [node name="Settings" type="MarginContainer"]
 anchor_bottom = 1.0
@@ -54,14 +55,14 @@ text = "Visibility"
 margin_top = 18.0
 margin_right = 127.0
 margin_bottom = 42.0
-shortcut = ExtResource( 3 )
+shortcut = ExtResource( 4 )
 text = "City labels"
 
 [node name="LandUse" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
 margin_top = 46.0
 margin_right = 127.0
 margin_bottom = 70.0
-shortcut = ExtResource( 4 )
+shortcut = ExtResource( 11 )
 text = "Land use"
 
 [node name="Roads" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
@@ -82,7 +83,7 @@ text = "Resources"
 margin_top = 130.0
 margin_right = 127.0
 margin_bottom = 154.0
-shortcut = ExtResource( 6 )
+shortcut = ExtResource( 3 )
 text = "City ranges"
 
 [node name="DefenseRanges" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
