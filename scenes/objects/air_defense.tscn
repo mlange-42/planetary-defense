@@ -13,7 +13,7 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 
 [node name="RangeIndicator" type="ImmediateGeometry" parent="."]
-layers = 32
+layers = 64
 material_override = ExtResource( 3 )
 cast_shadow = 0
 script = ExtResource( 5 )
