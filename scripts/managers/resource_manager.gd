@@ -51,6 +51,14 @@ func add_resources(node: int, radius: int, type: int, amount: int):
 			resources[n[0]] = [type, amount]
 
 
+func has_resource(node: int, type: int) -> bool:
+	if resources.has(node):
+		var res = resources[node]
+		return res[0] == type
+	else:
+		return false
+
+
 func extract_resource(node: int, type: int, amount: int) -> int:
 	var value = 0
 	
