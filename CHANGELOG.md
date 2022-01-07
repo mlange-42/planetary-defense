@@ -10,9 +10,10 @@
 * Pointer geometries and build indicator for setting land use in cities
 * Highlight the currently selected city by differently colored outline
 * Information on what is missing in messages for unsupplied facilities
-* Notification when aresource deposit is depleted
+* Notification when a resource deposit is depleted
 * Sky color transition to blue when zooming in
 * Independent visibility settings for city and defense ranges
+* Animated turret rotation for air defense
 
 ### Changed
 
@@ -21,7 +22,7 @@
 * Draw outlines instead of only vertices for all ranges (build, city, air defense)
   * Even draw bands with alpha gradient
 * Increase resource amounts in deposits
-* Make starting groth and production easier:
+* Make starting up growth and production easier:
   * Reduce number of workers for factory to 2
   * Let cities grow up to 5 without requiring products
 * Reduced maintenance costs for ports, air defense, roads and transport
