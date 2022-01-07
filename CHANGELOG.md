@@ -10,6 +10,9 @@
 * Pointer geometries and build indicator for setting land use in cities
 * Highlight the currently selected city by differently colored outline
 * Information on what is missing in messages for unsupplied facilities
+* Notification when aresource deposit is depleted
+* Sky color transition to blue when zooming in
+* Independent visibility settings for city and defense ranges
 
 ### Changed
 
