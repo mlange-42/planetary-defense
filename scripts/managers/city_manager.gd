@@ -136,6 +136,8 @@ func post_update_city(city: City) -> float:
 					var amount = min(veg_data.source.amount, comm_produced[comm])
 					var realized_amount = planet.resources.extract_resource(node, extract_resource, amount)
 					comm_produced[comm] -= realized_amount
+					if not planet.resources.has_resource(node, extract_resource):
+						planet.messages.add_message(node, "%s depleted in %s" % [Resources.RES_NAMES[extract_resource], city.name], Consts.MESSAGE_ERROR)
 	
 	var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
 	var demand = Cities.products_demand(city.population())
