@@ -20,6 +20,7 @@ func _ready():
 	find_node("Inspect").group = mode_buttons
 	find_node("Build").group = mode_buttons
 	find_node("Flows").group = mode_buttons
+	find_node("Settings").group = mode_buttons
 	
 	# warning-ignore:return_value_discarded
 	stats_bar.connect("next_turn", self, "_on_next_turn")
