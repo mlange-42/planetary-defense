@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/clear_road.svg-078e3f58882467ea76cbe24b041de886.stex"
+path="res://.import/forest.svg-5eceafabedaa5ac8fe9c0aa3218d49f5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/clear_road.svg"
-dest_files=[ "res://.import/clear_road.svg-078e3f58882467ea76cbe24b041de886.stex" ]
+source_file="res://assets/icons/land_use/forest.svg"
+dest_files=[ "res://.import/forest.svg-5eceafabedaa5ac8fe9c0aa3218d49f5.stex" ]
 
 [params]
 

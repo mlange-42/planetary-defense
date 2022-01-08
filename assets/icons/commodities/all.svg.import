@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fishery.svg-17aa7d5733687df2eef0c5d8adb65f64.stex"
+path="res://.import/all.svg-b01a6bd295d100fb7a9bed4810e43ba9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/fishery.svg"
-dest_files=[ "res://.import/fishery.svg-17aa7d5733687df2eef0c5d8adb65f64.stex" ]
+source_file="res://assets/icons/commodities/all.svg"
+dest_files=[ "res://.import/all.svg-b01a6bd295d100fb7a9bed4810e43ba9.stex" ]
 
 [params]
 

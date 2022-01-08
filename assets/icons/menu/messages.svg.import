@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/forest.svg-f3659ec1943dfe10cc8114eb274beca3.stex"
+path="res://.import/messages.svg-0447567af368708b144a0fd7844bd85a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/forest.svg"
-dest_files=[ "res://.import/forest.svg-f3659ec1943dfe10cc8114eb274beca3.stex" ]
+source_file="res://assets/icons/menu/messages.svg"
+dest_files=[ "res://.import/messages.svg-0447567af368708b144a0fd7844bd85a.stex" ]
 
 [params]
 

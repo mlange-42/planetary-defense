@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/food.svg-9c428aa221ee7197e3199caf66e0d5ac.stex"
+path="res://.import/build.svg-a009d284932262da5ab4d644bfc7685a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/food.svg"
-dest_files=[ "res://.import/food.svg-9c428aa221ee7197e3199caf66e0d5ac.stex" ]
+source_file="res://assets/icons/land_use/build.svg"
+dest_files=[ "res://.import/build.svg-a009d284932262da5ab4d644bfc7685a.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/oil_well.svg-699f98eff7e6e68c720832706dee60ef.stex"
+path="res://.import/fishery.svg-fcb91361a6229b178e166db63f9c159d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/oil_well.svg"
-dest_files=[ "res://.import/oil_well.svg-699f98eff7e6e68c720832706dee60ef.stex" ]
+source_file="res://assets/icons/land_use/fishery.svg"
+dest_files=[ "res://.import/fishery.svg-fcb91361a6229b178e166db63f9c159d.stex" ]
 
 [params]
 

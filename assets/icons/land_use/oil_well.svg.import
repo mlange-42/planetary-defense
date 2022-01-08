@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/air_defense.svg-2151a52edf5be1e1d2ee4a2b86a06bf4.stex"
+path="res://.import/oil_well.svg-d356bae1a8bf59f6d8c70b909d395805.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/air_defense.svg"
-dest_files=[ "res://.import/air_defense.svg-2151a52edf5be1e1d2ee4a2b86a06bf4.stex" ]
+source_file="res://assets/icons/land_use/oil_well.svg"
+dest_files=[ "res://.import/oil_well.svg-d356bae1a8bf59f6d8c70b909d395805.stex" ]
 
 [params]
 

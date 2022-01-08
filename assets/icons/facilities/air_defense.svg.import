@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/resources.svg-7e4e5ba8665494c463a983d1f97de821.stex"
+path="res://.import/air_defense.svg-115153d39e56ae58701ce0994f5e83b1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/resources.svg"
-dest_files=[ "res://.import/resources.svg-7e4e5ba8665494c463a983d1f97de821.stex" ]
+source_file="res://assets/icons/facilities/air_defense.svg"
+dest_files=[ "res://.import/air_defense.svg-115153d39e56ae58701ce0994f5e83b1.stex" ]
 
 [params]
 

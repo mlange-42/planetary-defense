@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/oil_rig.svg-653e5e3cc82eff802b5ca6438db963fc.stex"
+path="res://.import/clear.svg-0c37f4a80a9d9ab8b978e7d06aff37d1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/oil_rig.svg"
-dest_files=[ "res://.import/oil_rig.svg-653e5e3cc82eff802b5ca6438db963fc.stex" ]
+source_file="res://assets/icons/land_use/clear.svg"
+dest_files=[ "res://.import/clear.svg-0c37f4a80a9d9ab8b978e7d06aff37d1.stex" ]
 
 [params]
 

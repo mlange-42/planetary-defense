@@ -3,10 +3,11 @@
 [ext_resource path="res://assets/styles/panel_stats_bar.stylebox" type="StyleBox" id=1]
 [ext_resource path="res://assets/fonts/consolas_20.tres" type="DynamicFont" id=2]
 [ext_resource path="res://scripts/gui/controls/stats_bar.gd" type="Script" id=3]
-[ext_resource path="res://assets/icons/gui/next_turn.svg" type="Texture" id=4]
+[ext_resource path="res://assets/icons/menu/next_turn.svg" type="Texture" id=4]
 [ext_resource path="res://assets/shortkeys/ctrl_t.tres" type="ShortCut" id=5]
 [ext_resource path="res://scenes/gui/controls/commodity_stats.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/icons/gui/money.svg" type="Texture" id=9]
+[ext_resource path="res://assets/icons/commodities/money.svg" type="Texture" id=9]
+
 
 [node name="StatsBar" type="PanelContainer"]
 anchor_right = 1.0

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mines.svg-043b71d1df02e56cefbc2adbe2021a0b.stex"
+path="res://.import/resources.svg-c40cc034a1a9c676db35a2ff1c4bec8f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/gui/mines.svg"
-dest_files=[ "res://.import/mines.svg-043b71d1df02e56cefbc2adbe2021a0b.stex" ]
+source_file="res://assets/icons/commodities/resources.svg"
+dest_files=[ "res://.import/resources.svg-c40cc034a1a9c676db35a2ff1c4bec8f.stex" ]
 
 [params]
 

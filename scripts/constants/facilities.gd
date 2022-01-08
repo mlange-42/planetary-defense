@@ -21,9 +21,9 @@ const FACILITY_POINTERS = {
 }
 
 const FACILITY_ICONS = {
-	FAC_CITY: "res://assets/icons/gui/city.svg",
-	FAC_PORT: "res://assets/icons/gui/port.svg",
-	FAC_AIR_DEFENSE: "res://assets/icons/gui/air_defense.svg",
+	FAC_CITY: "res://assets/icons/facilities/city.svg",
+	FAC_PORT: "res://assets/icons/facilities/port.svg",
+	FAC_AIR_DEFENSE: "res://assets/icons/facilities/air_defense.svg",
 #	FAC_MISSILE_BASE: "res://assets/icons/gui/missile_base.svg",
 }
 

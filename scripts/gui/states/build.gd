@@ -113,13 +113,21 @@ func on_planet_hovered(node: int):
 
 
 func on_planet_clicked(node: int, button: int):
-	var curr_tool = get_facility_tool()
-	if curr_tool != null:
+	var fac_tool = get_facility_tool()
+	var road_tool = get_road_tool()
+	
+	if button == BUTTON_LEFT and road_tool == null:
+		var facility: Facility = fsm.planet.get_facility(node)
+		if facility != null and facility is City:
+			fsm.push("edit_city", {"node": node})
+			return
+	
+	if fac_tool != null:
 		if button == BUTTON_LEFT:
-			var is_city = curr_tool == Facilities.FAC_CITY
+			var is_city = fac_tool == Facilities.FAC_CITY
 			if not is_city or not name_edit.text.empty():
-				var name = name_edit.text if is_city else curr_tool
-				var fac_err = fsm.planet.add_facility(curr_tool, node, name)
+				var name = name_edit.text if is_city else fac_tool
+				var fac_err = fsm.planet.add_facility(fac_tool, node, name)
 				if fac_err[0] != null:
 					if is_city:
 						set_random_name()
@@ -131,11 +139,10 @@ func on_planet_clicked(node: int, button: int):
 			else:
 				fsm.show_message("No city name given!", Consts.MESSAGE_ERROR)
 	else:
-		curr_tool = get_road_tool()
-		if curr_tool != null:
+		if road_tool != null:
 			if button == BUTTON_LEFT:
 				if road_start_point >= 0:
-					if curr_tool == Roads.ROAD_CLEAR:
+					if road_tool == Roads.ROAD_CLEAR:
 						fsm.planet.remove_road(road_start_point, node)
 					else:
 						var err = fsm.planet.add_road(road_start_point, node)
