@@ -14,18 +14,18 @@ __meta__ = {
 
 [node name="Controls" type="VBoxContainer" parent="."]
 margin_right = 148.0
-margin_bottom = 66.0
+margin_bottom = 70.0
 mouse_filter = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Controls"]
 margin_right = 148.0
-margin_bottom = 38.0
+margin_bottom = 42.0
 
 [node name="Buttons" type="VBoxContainer" parent="Controls/PanelContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 34.0
+margin_bottom = 38.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Controls/PanelContainer/Buttons"]
 margin_right = 140.0
@@ -53,10 +53,16 @@ margin_right = 140.0
 margin_bottom = 30.0
 columns = 4
 
+[node name="RoadButtons" type="GridContainer" parent="Controls/PanelContainer/Buttons"]
+margin_top = 34.0
+margin_right = 140.0
+margin_bottom = 34.0
+columns = 4
+
 [node name="VegContainer" type="PanelContainer" parent="Controls"]
-margin_top = 42.0
+margin_top = 46.0
 margin_right = 148.0
-margin_bottom = 66.0
+margin_bottom = 70.0
 
 [node name="VegetationLabel" type="Label" parent="Controls/VegContainer"]
 margin_left = 4.0

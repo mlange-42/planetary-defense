@@ -4,7 +4,6 @@ class_name BuildState
 var names = CityNames.GERMAN
 
 onready var name_edit: LineEdit = find_node("CityName")
-onready var buttons: Container = find_node("BuildButtons")
 onready var veg_label: Label = find_node("VegetationLabel")
 
 var indicator: RangeIndicator
@@ -17,6 +16,9 @@ var radius: int = 0
 
 func _ready():
 	set_random_name()
+	
+	var build_buttons: Container = find_node("BuildButtons")
+	var road_buttons: Container = find_node("RoadButtons")
 	
 	indicator = RangeIndicator.new()
 	indicator.material_override = preload("res://assets/materials/gradient/alpha_white.tres")
@@ -36,7 +38,21 @@ func _ready():
 			button.shortcut = ShortCut.new()
 			button.shortcut.shortcut = evt
 			
-			buttons.add_child(button)
+			build_buttons.add_child(button)
+	
+	
+	for road in Roads.ROAD_INFO:
+		var button := RoadButton.new()
+		button.mode = road
+		button.group = button_group
+		
+		var evt = InputEventKey.new()
+		evt.pressed = true
+		evt.scancode = Roads.ROAD_KEYS[road]
+		button.shortcut = ShortCut.new()
+		button.shortcut.shortcut = evt
+		
+		road_buttons.add_child(button)
 
 
 func state_entered():
@@ -53,10 +69,18 @@ func set_random_name():
 
 func get_facility_tool():
 	var button = button_group.get_pressed_button()
-	if button == null:
+	if button == null or not button is FacilityButton:
 		return null
 	else:
 		return button.facility
+
+
+func get_road_tool():
+	var button = button_group.get_pressed_button()
+	if button == null or not button is RoadButton:
+		return null
+	else:
+		return button.mode
 
 
 func _on_Back_pressed():
@@ -64,8 +88,8 @@ func _on_Back_pressed():
 
 
 func on_planet_entered(_node: int):
-	indicator.visible = radius > 0
-
+	var curr_tool = get_facility_tool()
+	indicator.visible = curr_tool != null and radius > 0
 
 func on_planet_exited():
 	indicator.visible = false
@@ -75,33 +99,33 @@ func on_planet_hovered(node: int):
 	veg_label.text = fsm.get_node_info(node)
 	
 	var curr_tool = get_facility_tool()
-	if curr_tool == null:
-		return
-	
-	var rad = Facilities.FACILITY_RADIUS[curr_tool]
-	_update_range(node, rad)
+	if curr_tool != null:
+		var rad = Facilities.FACILITY_RADIUS[curr_tool]
+		_update_range(node, rad)
+	else:
+		curr_tool = get_road_tool()
 
 
 func on_planet_clicked(node: int, button: int):
 	if button == BUTTON_LEFT:
 		var curr_tool = get_facility_tool()
-		if curr_tool == null:
-			return
-		
-		var is_city = curr_tool == Facilities.FAC_CITY
-		if not is_city or not name_edit.text.empty():
-			var name = name_edit.text if is_city else curr_tool
-			var fac_err = fsm.planet.add_facility(curr_tool, node, name)
-			if fac_err[0] != null:
-				if is_city:
-					set_random_name()
-				for button in button_group.get_buttons():
-					button.pressed = false
-				indicator.visible = false
+		if curr_tool != null:
+			var is_city = curr_tool == Facilities.FAC_CITY
+			if not is_city or not name_edit.text.empty():
+				var name = name_edit.text if is_city else curr_tool
+				var fac_err = fsm.planet.add_facility(curr_tool, node, name)
+				if fac_err[0] != null:
+					if is_city:
+						set_random_name()
+					for button in button_group.get_buttons():
+						button.pressed = false
+					indicator.visible = false
+				else:
+					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
 			else:
-				fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
+				fsm.show_message("No city name given!", Consts.MESSAGE_ERROR)
 		else:
-			fsm.show_message("No city name given!", Consts.MESSAGE_ERROR)
+			curr_tool = get_road_tool()
 
 
 func _update_range(node: int, new_radius: int):

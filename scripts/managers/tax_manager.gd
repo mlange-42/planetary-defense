@@ -35,7 +35,7 @@ func pay_costs(facilities: Dictionary, network_edges: Dictionary):
 			maintenance_facilities += Facilities.FACILITY_MAINTENANCE[type]
 	
 	# warning-ignore:integer_division
-	maintenance_roads = int(ceil((network_edges.size() / 2) * Consts.ROAD_MAINTENANCE_1000 / 1000.0))
+	maintenance_roads = int(ceil((network_edges.size() / 2) * Roads.ROAD_MAINTENANCE_1000[Roads.ROAD_ROAD] / 1000.0))
 	
 	var total = 0
 	for nn in network_edges:

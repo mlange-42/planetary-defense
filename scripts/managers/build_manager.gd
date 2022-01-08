@@ -31,7 +31,7 @@ func add_road(path: Array):
 	
 	var warn = null
 	for i in range(path.size()-1):
-		if taxes.budget < sum_cost + Consts.ROAD_COSTS:
+		if taxes.budget < sum_cost + Roads.ROAD_COSTS[Roads.ROAD_ROAD]:
 			warn = "Road not completed - not enough money!"
 			break
 		
@@ -39,7 +39,7 @@ func add_road(path: Array):
 		var p2 = path[i+1]
 		if not network.points_connected(p1, p2):
 			network.connect_points(p1, p2, ROAD_CAPACITY)
-			sum_cost += Consts.ROAD_COSTS
+			sum_cost += Roads.ROAD_COSTS[Roads.ROAD_ROAD]
 	
 	taxes.budget -= sum_cost
 	
