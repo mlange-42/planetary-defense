@@ -1,16 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/gui/states/roads.gd" type="Script" id=1]
-[ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/shortkeys/c.tres" type="ShortCut" id=3]
 
 [node name="BuildRoads" type="MarginContainer"]
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = -10.0
-rect_min_size = Vector2( 120, 0 )
+margin_top = 132.0
+margin_right = 148.0
+margin_bottom = -564.0
+rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
@@ -18,21 +16,15 @@ __meta__ = {
 }
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_right = 120.0
-margin_bottom = 580.0
+margin_right = 148.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
-[node name="StateControl" parent="Buttons" instance=ExtResource( 2 )]
-text = "Build roads"
-
 [node name="Clear" type="Button" parent="Buttons"]
-margin_top = 38.0
-margin_right = 120.0
-margin_bottom = 58.0
+margin_right = 148.0
+margin_bottom = 24.0
 hint_tooltip = "Clear roads"
 toggle_mode = true
 shortcut = ExtResource( 3 )
 text = "Clear"
-
-[connection signal="back_pressed" from="Buttons/StateControl" to="." method="_on_Back_pressed"]

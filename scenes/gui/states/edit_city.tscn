@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scripts/gui/states/edit_city.gd" type="Script" id=1]
-[ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
 
 [node name="EditCity" type="Control"]
 anchor_right = 1.0
@@ -14,19 +13,18 @@ __meta__ = {
 
 [node name="Margin" type="MarginContainer" parent="."]
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = -10.0
-rect_min_size = Vector2( 120, 0 )
+margin_top = 132.0
+margin_right = 148.0
+margin_bottom = -304.0
+rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="EditControls" type="VBoxContainer" parent="Margin"]
-margin_right = 120.0
-margin_bottom = 580.0
+margin_right = 148.0
+margin_bottom = 284.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 __meta__ = {
@@ -34,118 +32,114 @@ __meta__ = {
 }
 
 [node name="Buttons" type="VBoxContainer" parent="Margin/EditControls"]
-margin_right = 120.0
-margin_bottom = 98.0
-
-[node name="StateControl" parent="Margin/EditControls/Buttons" instance=ExtResource( 2 )]
-text = "Manage city"
+margin_right = 148.0
+margin_bottom = 52.0
 
 [node name="LuPanel" type="PanelContainer" parent="Margin/EditControls/Buttons"]
-margin_top = 38.0
-margin_right = 120.0
-margin_bottom = 66.0
+margin_right = 148.0
+margin_bottom = 24.0
 
 [node name="LuButtons" type="VBoxContainer" parent="Margin/EditControls/Buttons/LuPanel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 113.0
-margin_bottom = 21.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 144.0
+margin_bottom = 20.0
 
 [node name="Label" type="Label" parent="Margin/EditControls/Buttons/LuPanel/LuButtons"]
-margin_right = 106.0
-margin_bottom = 14.0
+margin_right = 140.0
+margin_bottom = 16.0
 text = "Land use"
 
 [node name="FacilityPanel" type="PanelContainer" parent="Margin/EditControls/Buttons"]
-margin_top = 70.0
-margin_right = 120.0
-margin_bottom = 98.0
+margin_top = 28.0
+margin_right = 148.0
+margin_bottom = 52.0
 
 [node name="FacilityButtons" type="VBoxContainer" parent="Margin/EditControls/Buttons/FacilityPanel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 113.0
-margin_bottom = 21.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 144.0
+margin_bottom = 20.0
 
 [node name="Facilities" type="Label" parent="Margin/EditControls/Buttons/FacilityPanel/FacilityButtons"]
-margin_right = 106.0
-margin_bottom = 14.0
+margin_right = 140.0
+margin_bottom = 16.0
 text = "Facilities"
 
 [node name="WeightPanel" type="PanelContainer" parent="Margin/EditControls"]
-margin_top = 102.0
-margin_right = 120.0
-margin_bottom = 322.0
+margin_top = 56.0
+margin_right = 148.0
+margin_bottom = 284.0
 
 [node name="WeightControls" type="VBoxContainer" parent="Margin/EditControls/WeightPanel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 113.0
-margin_bottom = 213.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 144.0
+margin_bottom = 224.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_right = 106.0
-margin_bottom = 14.0
+margin_right = 140.0
+margin_bottom = 16.0
 text = "Weights"
 
 [node name="AutoAssignCheckBox" type="CheckBox" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 18.0
-margin_right = 106.0
-margin_bottom = 42.0
+margin_top = 20.0
+margin_right = 140.0
+margin_bottom = 44.0
 hint_tooltip = "Auto-assign free workers according the weights below"
 text = "auto assign"
 
 [node name="HSeparator" type="HSeparator" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 46.0
-margin_right = 106.0
-margin_bottom = 50.0
+margin_top = 48.0
+margin_right = 140.0
+margin_bottom = 52.0
 
 [node name="Food" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 54.0
-margin_right = 106.0
-margin_bottom = 68.0
+margin_top = 56.0
+margin_right = 140.0
+margin_bottom = 72.0
 text = "Food"
 
 [node name="FoodSlider" type="HSlider" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 72.0
-margin_right = 106.0
-margin_bottom = 88.0
+margin_top = 76.0
+margin_right = 140.0
+margin_bottom = 92.0
 
 [node name="Resources" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 92.0
-margin_right = 106.0
-margin_bottom = 106.0
+margin_top = 96.0
+margin_right = 140.0
+margin_bottom = 112.0
 text = "Resources"
 
 [node name="ResourcesSlider" type="HSlider" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 110.0
-margin_right = 106.0
-margin_bottom = 126.0
+margin_top = 116.0
+margin_right = 140.0
+margin_bottom = 132.0
 
 [node name="Products" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 130.0
-margin_right = 106.0
-margin_bottom = 144.0
+margin_top = 136.0
+margin_right = 140.0
+margin_bottom = 152.0
 text = "Products"
 
 [node name="ProductsSlider" type="HSlider" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 148.0
-margin_right = 106.0
-margin_bottom = 164.0
+margin_top = 156.0
+margin_right = 140.0
+margin_bottom = 172.0
 
 [node name="WeightsDisplay" type="Label" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 168.0
-margin_right = 106.0
-margin_bottom = 182.0
+margin_top = 176.0
+margin_right = 140.0
+margin_bottom = 192.0
 align = 1
 
 [node name="GrowButton" type="Button" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 186.0
-margin_right = 106.0
-margin_bottom = 206.0
+margin_top = 196.0
+margin_right = 140.0
+margin_bottom = 220.0
 text = "Grow city"
 
 [node name="InfoContainer" type="MarginContainer" parent="."]
@@ -172,14 +166,15 @@ grow_vertical = 0
 alignment = 2
 
 [node name="NodePanel" type="PanelContainer" parent="InfoContainer/VBoxContainer"]
+margin_top = 8.0
 margin_right = 235.0
-margin_bottom = 29.0
+margin_bottom = 33.0
 
 [node name="NodeText" type="RichTextLabel" parent="InfoContainer/VBoxContainer/NodePanel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 228.0
-margin_bottom = 22.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 231.0
+margin_bottom = 21.0
 size_flags_horizontal = 3
 bbcode_enabled = true
 fit_content_height = true
@@ -188,23 +183,23 @@ __meta__ = {
 }
 
 [node name="CityPanel" type="PanelContainer" parent="InfoContainer/VBoxContainer"]
-margin_top = 33.0
+margin_top = 37.0
 margin_right = 235.0
 margin_bottom = 62.0
 grow_horizontal = 0
 grow_vertical = 0
 
 [node name="CityInfoContainer" type="VBoxContainer" parent="InfoContainer/VBoxContainer/CityPanel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 228.0
-margin_bottom = 22.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 231.0
+margin_bottom = 21.0
 grow_vertical = 0
 alignment = 2
 
 [node name="CityText" type="RichTextLabel" parent="InfoContainer/VBoxContainer/CityPanel/CityInfoContainer"]
-margin_right = 221.0
-margin_bottom = 15.0
+margin_right = 227.0
+margin_bottom = 17.0
 rect_min_size = Vector2( 0, 12 )
 text = "Name"
 fit_content_height = true
@@ -212,7 +207,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="back_pressed" from="Margin/EditControls/Buttons/StateControl" to="." method="_on_Back_pressed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/FoodSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ProductsSlider" to="." method="_on_weights_changed"]

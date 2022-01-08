@@ -33,9 +33,9 @@ func init():
 
 func _unhandled_key_input(event: InputEventKey):
 	if event.pressed:
-		if event.scancode == KEY_S and event.control:
+		if event.scancode == KEY_S and event.control and not event.shift:
 			save_game()
-		elif event.scancode == KEY_Q and event.control:
+		elif event.scancode == KEY_Q and event.control and not event.shift:
 			get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
 		elif event.scancode == KEY_ESCAPE:
 			messages.visible = false

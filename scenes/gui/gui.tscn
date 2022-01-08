@@ -41,9 +41,9 @@ __meta__ = {
 [node name="GridContainer" type="GridContainer" parent="Buttons"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 108.0
+margin_right = 144.0
 margin_bottom = 72.0
-columns = 3
+columns = 4
 
 [node name="MainMenu" type="Button" parent="Buttons/GridContainer"]
 margin_right = 32.0
@@ -65,6 +65,12 @@ margin_right = 104.0
 margin_bottom = 32.0
 shortcut = ExtResource( 16 )
 icon = ExtResource( 8 )
+
+[node name="Label" type="Label" parent="Buttons/GridContainer"]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
 
 [node name="Inspect" type="Button" parent="Buttons/GridContainer"]
 margin_top = 36.0

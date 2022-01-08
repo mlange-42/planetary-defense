@@ -1,7 +1,6 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/gui/states/settings.gd" type="Script" id=1]
-[ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/shortkeys/c.tres" type="ShortCut" id=3]
 [ext_resource path="res://assets/shortkeys/l.tres" type="ShortCut" id=4]
 [ext_resource path="res://assets/shortkeys/r.tres" type="ShortCut" id=5]
@@ -14,11 +13,10 @@
 
 [node name="Settings" type="MarginContainer"]
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = -10.0
-rect_min_size = Vector2( 120, 0 )
+margin_top = 132.0
+margin_right = 148.0
+margin_bottom = -340.0
+rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
@@ -26,107 +24,101 @@ __meta__ = {
 }
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_right = 141.0
-margin_bottom = 580.0
+margin_right = 148.0
+margin_bottom = 248.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
-[node name="StateControl" parent="Buttons" instance=ExtResource( 2 )]
-margin_right = 141.0
-text = "Settings"
-
 [node name="PanelContainer" type="PanelContainer" parent="Buttons"]
-margin_top = 38.0
-margin_right = 141.0
-margin_bottom = 286.0
+margin_right = 148.0
+margin_bottom = 248.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/PanelContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 134.0
-margin_bottom = 241.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 144.0
+margin_bottom = 244.0
 
 [node name="Label" type="Label" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_right = 127.0
-margin_bottom = 14.0
+margin_right = 140.0
+margin_bottom = 16.0
 text = "Visibility"
 
 [node name="CityLabels" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 18.0
-margin_right = 127.0
-margin_bottom = 42.0
+margin_top = 20.0
+margin_right = 140.0
+margin_bottom = 44.0
 shortcut = ExtResource( 4 )
 text = "City labels"
 
 [node name="LandUse" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 46.0
-margin_right = 127.0
-margin_bottom = 70.0
+margin_top = 48.0
+margin_right = 140.0
+margin_bottom = 72.0
 shortcut = ExtResource( 11 )
 text = "Land use"
 
 [node name="Roads" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 74.0
-margin_right = 127.0
-margin_bottom = 98.0
+margin_top = 76.0
+margin_right = 140.0
+margin_bottom = 100.0
 shortcut = ExtResource( 5 )
 text = "Roads"
 
 [node name="Resources" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 102.0
-margin_right = 127.0
-margin_bottom = 126.0
+margin_top = 104.0
+margin_right = 140.0
+margin_bottom = 128.0
 shortcut = ExtResource( 9 )
 text = "Resources"
 
 [node name="CityRanges" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 130.0
-margin_right = 127.0
-margin_bottom = 154.0
+margin_top = 132.0
+margin_right = 140.0
+margin_bottom = 156.0
 shortcut = ExtResource( 3 )
 text = "City ranges"
 
 [node name="DefenseRanges" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 158.0
-margin_right = 127.0
-margin_bottom = 182.0
+margin_top = 160.0
+margin_right = 140.0
+margin_bottom = 184.0
 shortcut = ExtResource( 6 )
 text = "Defense ranges"
 
 [node name="Events" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 186.0
-margin_right = 127.0
-margin_bottom = 210.0
+margin_top = 188.0
+margin_right = 140.0
+margin_bottom = 212.0
 shortcut = ExtResource( 8 )
 text = "Events"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 214.0
-margin_right = 127.0
-margin_bottom = 234.0
+margin_top = 216.0
+margin_right = 140.0
+margin_bottom = 240.0
 
 [node name="Control" type="Control" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
-margin_right = 82.0
-margin_bottom = 20.0
+margin_right = 100.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="EnableAllButton" type="Button" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
-margin_left = 86.0
-margin_right = 106.0
-margin_bottom = 20.0
+margin_left = 104.0
+margin_right = 120.0
+margin_bottom = 24.0
 hint_tooltip = "Enable all"
 shortcut = ExtResource( 7 )
 text = "+"
 
 [node name="DisableAllButton" type="Button" parent="Buttons/PanelContainer/VBoxContainer/HBoxContainer"]
-margin_left = 110.0
-margin_right = 127.0
-margin_bottom = 20.0
+margin_left = 124.0
+margin_right = 140.0
+margin_bottom = 24.0
 hint_tooltip = "Disable all"
 shortcut = ExtResource( 10 )
 text = "-"
 
-[connection signal="back_pressed" from="Buttons/StateControl" to="." method="_on_Back_pressed"]
 [connection signal="toggled" from="Buttons/PanelContainer/VBoxContainer/CityLabels" to="." method="_on_visibility_changed"]
 [connection signal="toggled" from="Buttons/PanelContainer/VBoxContainer/LandUse" to="." method="_on_visibility_changed"]
 [connection signal="toggled" from="Buttons/PanelContainer/VBoxContainer/Roads" to="." method="_on_visibility_changed"]

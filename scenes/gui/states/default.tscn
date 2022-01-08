@@ -12,33 +12,24 @@ __meta__ = {
 }
 
 [node name="LeftMargin" type="MarginContainer" parent="."]
+anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 120.0
-margin_right = 10.0
-margin_bottom = -10.0
-rect_min_size = Vector2( 120, 0 )
+margin_top = -24.0
+margin_right = 112.0
+rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DefaultControls" type="VBoxContainer" parent="LeftMargin"]
-margin_right = 120.0
-margin_bottom = 590.0
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VegContainer" type="PanelContainer" parent="LeftMargin/DefaultControls"]
-margin_right = 120.0
+[node name="VegContainer" type="PanelContainer" parent="LeftMargin"]
+margin_right = 148.0
 margin_bottom = 24.0
 
-[node name="VegetationLabel" type="Label" parent="LeftMargin/DefaultControls/VegContainer"]
+[node name="VegetationLabel" type="Label" parent="LeftMargin/VegContainer"]
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 116.0
+margin_right = 144.0
 margin_bottom = 20.0
 text = "Space"
 clip_text = true

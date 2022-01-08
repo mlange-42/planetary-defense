@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/gui/states/flows.gd" type="Script" id=1]
-[ext_resource path="res://scenes/gui/states/state_control.tscn" type="PackedScene" id=2]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 1, 1, 1, 1, 0.63, 0.13, 0.94, 1 )
@@ -12,11 +11,10 @@ width = 512
 
 [node name="InspectFlows" type="MarginContainer"]
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 10.0
-margin_bottom = -10.0
-rect_min_size = Vector2( 120, 0 )
+margin_top = 132.0
+margin_right = 138.0
+margin_bottom = -403.0
+rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 script = ExtResource( 1 )
 __meta__ = {
@@ -24,39 +22,35 @@ __meta__ = {
 }
 
 [node name="Buttons" type="VBoxContainer" parent="."]
-margin_right = 120.0
-margin_bottom = 580.0
+margin_right = 148.0
+margin_bottom = 185.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
-[node name="StateControl" parent="Buttons" instance=ExtResource( 2 )]
-text = "Flows"
-
 [node name="Commodities" type="ItemList" parent="Buttons"]
-margin_top = 38.0
-margin_right = 120.0
-margin_bottom = 47.0
+margin_right = 148.0
+margin_bottom = 9.0
 hint_tooltip = "Select commodity to view flow"
 auto_height = true
 
 [node name="LegendContainer" type="PanelContainer" parent="Buttons"]
-margin_top = 51.0
-margin_right = 120.0
-margin_bottom = 213.0
+margin_top = 13.0
+margin_right = 148.0
+margin_bottom = 173.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/LegendContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 113.0
-margin_bottom = 155.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 144.0
+margin_bottom = 156.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_right = 106.0
-margin_bottom = 20.0
+margin_right = 140.0
+margin_bottom = 22.0
 
 [node name="MaxColorButton" type="ColorPickerButton" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer"]
 margin_right = 30.0
-margin_bottom = 20.0
+margin_bottom = 22.0
 rect_min_size = Vector2( 30, 0 )
 hint_tooltip = "High color"
 focus_mode = 0
@@ -67,20 +61,20 @@ edit_alpha = false
 [node name="MaxLabel" type="Label" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer"]
 margin_left = 34.0
 margin_top = 3.0
-margin_right = 106.0
-margin_bottom = 17.0
+margin_right = 140.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "100"
 align = 1
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 24.0
-margin_right = 106.0
-margin_bottom = 124.0
+margin_top = 26.0
+margin_right = 140.0
+margin_bottom = 126.0
 
 [node name="Control" type="Control" parent="Buttons/LegendContainer/VBoxContainer/AspectRatioContainer"]
-margin_left = 3.0
-margin_right = 103.0
+margin_left = 20.0
+margin_right = 120.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
@@ -97,13 +91,13 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 128.0
-margin_right = 106.0
-margin_bottom = 148.0
+margin_top = 130.0
+margin_right = 140.0
+margin_bottom = 152.0
 
 [node name="MinColorButton" type="ColorPickerButton" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 30.0
-margin_bottom = 20.0
+margin_bottom = 22.0
 rect_min_size = Vector2( 30, 0 )
 hint_tooltip = "Low color"
 focus_mode = 0
@@ -114,24 +108,23 @@ edit_alpha = false
 [node name="MinLabel" type="Label" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 34.0
 margin_top = 3.0
-margin_right = 106.0
-margin_bottom = 17.0
+margin_right = 140.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "0"
 align = 1
 
 [node name="ProductionPanel" type="PanelContainer" parent="Buttons"]
-margin_top = 217.0
-margin_right = 120.0
-margin_bottom = 231.0
+margin_top = 177.0
+margin_right = 148.0
+margin_bottom = 185.0
 
 [node name="ProductionContainer" type="VBoxContainer" parent="Buttons/ProductionPanel"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 113.0
-margin_bottom = 7.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 144.0
+margin_bottom = 4.0
 
-[connection signal="back_pressed" from="Buttons/StateControl" to="." method="_on_Back_pressed"]
 [connection signal="item_selected" from="Buttons/Commodities" to="." method="_on_Commodities_item_selected"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton" to="." method="_on_gradient_color_changed"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton" to="." method="_on_gradient_color_changed"]
