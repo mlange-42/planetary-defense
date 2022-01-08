@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://assets/default.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
 [ext_resource path="res://assets/styles/stylebox_flat.stylebox" type="StyleBox" id=3]
+[ext_resource path="res://scenes/gui/controls/messages.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/gui/controls/stats_bar.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/icons/gui/main_menu.svg" type="Texture" id=6]
 [ext_resource path="res://assets/icons/gui/settings.svg" type="Texture" id=7]
@@ -10,10 +11,12 @@
 [ext_resource path="res://assets/icons/gui/flows.svg" type="Texture" id=9]
 [ext_resource path="res://assets/icons/gui/build.svg" type="Texture" id=10]
 [ext_resource path="res://assets/icons/gui/inspect.svg" type="Texture" id=11]
-[ext_resource path="res://assets/shortkeys/m.tres" type="ShortCut" id=12]
+[ext_resource path="res://assets/shortkeys/ctrl_m.tres" type="ShortCut" id=12]
 [ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=13]
 [ext_resource path="res://assets/shortkeys/ctrl_b.tres" type="ShortCut" id=14]
 [ext_resource path="res://assets/shortkeys/ctrl_f.tres" type="ShortCut" id=15]
+[ext_resource path="res://assets/shortkeys/ctrl_n.tres" type="ShortCut" id=16]
+[ext_resource path="res://assets/shortkeys/ctrl_shift_s.tres" type="ShortCut" id=17]
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
@@ -53,12 +56,14 @@ icon = ExtResource( 6 )
 margin_left = 36.0
 margin_right = 68.0
 margin_bottom = 32.0
+shortcut = ExtResource( 17 )
 icon = ExtResource( 7 )
 
 [node name="Messages" type="Button" parent="Buttons/GridContainer"]
 margin_left = 72.0
 margin_right = 104.0
 margin_bottom = 32.0
+shortcut = ExtResource( 16 )
 icon = ExtResource( 8 )
 
 [node name="Inspect" type="Button" parent="Buttons/GridContainer"]
@@ -119,9 +124,13 @@ text = "Test"
 [node name="ErrorTimer" type="Timer" parent="."]
 wait_time = 5.0
 
+[node name="MessageWindow" parent="." instance=ExtResource( 4 )]
+
 [connection signal="pressed" from="Buttons/GridContainer/MainMenu" to="." method="_on_MainMenu_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Settings" to="." method="_on_Settings_pressed"]
+[connection signal="pressed" from="Buttons/GridContainer/Messages" to="." method="_on_Messages_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Inspect" to="." method="_on_Inspect_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Build" to="." method="_on_Build_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Flows" to="." method="_on_Flows_pressed"]
 [connection signal="timeout" from="ErrorTimer" to="." method="_on_ErrorTimer_timeout"]
+[connection signal="go_to_pressed" from="MessageWindow" to="." method="_on_Messages_go_to_pressed"]

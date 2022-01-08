@@ -6,6 +6,7 @@ signal go_to_location(location)
 onready var constants: LandUse = $"/root/VegetationLandUse"
 
 onready var stats_bar: StatsBar = $StatsBar
+onready var messages: MessageWindow = find_node("MessageWindow")
 
 onready var error_container = $ErrorContainer
 onready var error_label = find_node("ErrorLabel")
@@ -20,11 +21,14 @@ func _ready():
 	find_node("Build").group = mode_buttons
 	find_node("Flows").group = mode_buttons
 	
+	# warning-ignore:return_value_discarded
 	stats_bar.connect("next_turn", self, "_on_next_turn")
+
 
 func init():
 	error_container.visible = false
 	push("default", {})
+	update_messages(true)
 
 
 func _unhandled_key_input(event: InputEventKey):
@@ -33,6 +37,8 @@ func _unhandled_key_input(event: InputEventKey):
 			save_game()
 		elif event.scancode == KEY_Q and event.control:
 			get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
+		elif event.scancode == KEY_ESCAPE:
+			messages.visible = false
 
 
 func on_planet_entered(node: int):
@@ -51,6 +57,17 @@ func on_planet_clicked(node: int, button: int):
 
 func update_finances():
 	stats_bar.update_finances(planet)
+
+
+func update_messages(set_visible: bool):
+	messages.update_messages(planet.messages)
+	if set_visible and not planet.messages.messages.empty():
+		messages.visible = true
+
+
+func _on_Messages_go_to_pressed(message):
+	var loc = planet.planet_data.get_position(message.node)
+	go_to(loc)
 
 
 func state():
@@ -135,6 +152,7 @@ func log_message(node: int, message: String, message_level: int):
 func _on_next_turn():
 	planet.next_turn()
 	state().on_next_turn()
+	update_messages(true)
 	show_message("Next turn", Consts.MESSAGE_INFO)
 
 
@@ -168,6 +186,9 @@ func _on_MainMenu_pressed():
 
 func _on_Settings_pressed():
 	push("settings", {})
+
+func _on_Messages_pressed():
+	messages.visible = not messages.visible
 
 func _on_Build_pressed():
 	pop_all()

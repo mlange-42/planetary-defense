@@ -1,13 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://assets/shortkeys/m.tres" type="ShortCut" id=1]
-[ext_resource path="res://assets/shortkeys/s.tres" type="ShortCut" id=2]
 [ext_resource path="res://scripts/gui/states/default.gd" type="Script" id=3]
-[ext_resource path="res://assets/shortkeys/b.tres" type="ShortCut" id=4]
-[ext_resource path="res://assets/shortkeys/r.tres" type="ShortCut" id=5]
-[ext_resource path="res://assets/shortkeys/f.tres" type="ShortCut" id=6]
-[ext_resource path="res://assets/shortkeys/n.tres" type="ShortCut" id=7]
-[ext_resource path="res://scenes/gui/controls/messages.tscn" type="PackedScene" id=8]
 
 [node name="Default" type="Control"]
 anchor_right = 1.0
@@ -38,72 +31,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="PanelContainer" parent="LeftMargin/DefaultControls"]
-margin_right = 120.0
-margin_bottom = 180.0
-
-[node name="Buttons" type="VBoxContainer" parent="LeftMargin/DefaultControls/PanelContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 116.0
-margin_bottom = 176.0
-
-[node name="MainMenuButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_right = 112.0
-margin_bottom = 24.0
-hint_tooltip = "Save, quit, etc"
-shortcut = ExtResource( 1 )
-text = "Main menu"
-
-[node name="SettingsButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 28.0
-margin_right = 112.0
-margin_bottom = 52.0
-hint_tooltip = "Graphics and visibility settings"
-shortcut = ExtResource( 2 )
-text = "Settings"
-
-[node name="MessagesButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 56.0
-margin_right = 112.0
-margin_bottom = 80.0
-hint_tooltip = "View game messages"
-shortcut = ExtResource( 7 )
-text = "Messages"
-
-[node name="HSeparator" type="HSeparator" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 84.0
-margin_right = 112.0
-margin_bottom = 88.0
-
-[node name="Build" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 92.0
-margin_right = 112.0
-margin_bottom = 116.0
-hint_tooltip = "Found a new city. Click cities to manage them."
-shortcut = ExtResource( 4 )
-text = "Build"
-
-[node name="Roads" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 120.0
-margin_right = 112.0
-margin_bottom = 144.0
-hint_tooltip = "Build and remove roads"
-shortcut = ExtResource( 5 )
-text = "Roads"
-
-[node name="Flows" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 148.0
-margin_right = 112.0
-margin_bottom = 172.0
-hint_tooltip = "Inspect flows"
-shortcut = ExtResource( 6 )
-text = "Flows"
-
 [node name="VegContainer" type="PanelContainer" parent="LeftMargin/DefaultControls"]
-margin_top = 184.0
 margin_right = 120.0
-margin_bottom = 208.0
+margin_bottom = 24.0
 
 [node name="VegetationLabel" type="Label" parent="LeftMargin/DefaultControls/VegContainer"]
 margin_left = 4.0
@@ -112,13 +42,3 @@ margin_right = 116.0
 margin_bottom = 20.0
 text = "Space"
 clip_text = true
-
-[node name="Messages" parent="." instance=ExtResource( 8 )]
-
-[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
-[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/SettingsButton" to="." method="_on_SettingsButton_pressed"]
-[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/MessagesButton" to="." method="_on_MessagesButton_pressed"]
-[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Build" to="." method="_on_Build_pressed"]
-[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Roads" to="." method="_on_Road_pressed"]
-[connection signal="pressed" from="LeftMargin/DefaultControls/PanelContainer/Buttons/Flows" to="." method="_on_Flows_pressed"]
-[connection signal="go_to_pressed" from="Messages" to="." method="_on_Messages_go_to_pressed"]
