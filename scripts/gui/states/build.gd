@@ -13,6 +13,7 @@ var button_group: ButtonGroup
 var cells: Dictionary = {}
 var radius: int = 0
 
+var road_start_point: int = -1
 
 func _ready():
 	set_random_name()
@@ -53,6 +54,9 @@ func _ready():
 		button.shortcut.shortcut = evt
 		
 		road_buttons.add_child(button)
+	
+	# warning-ignore:return_value_discarded
+	button_group.connect("pressed", self, "_on_tool_changed")
 
 
 func state_entered():
@@ -61,6 +65,7 @@ func state_entered():
 
 func state_exited():
 	indicator.visible = false
+	fsm.planet.clear_path()
 
 
 func set_random_name():
@@ -94,6 +99,7 @@ func on_planet_entered(_node: int):
 func on_planet_exited():
 	indicator.visible = false
 	veg_label.text = fsm.get_node_info(-1)
+	fsm.planet.clear_path()
 
 func on_planet_hovered(node: int):
 	veg_label.text = fsm.get_node_info(node)
@@ -104,12 +110,16 @@ func on_planet_hovered(node: int):
 		_update_range(node, rad)
 	else:
 		curr_tool = get_road_tool()
+		if curr_tool != null:
+			if road_start_point >= 0:
+				# warning-ignore:return_value_discarded
+				fsm.planet.draw_path(road_start_point, node)
 
 
 func on_planet_clicked(node: int, button: int):
-	if button == BUTTON_LEFT:
-		var curr_tool = get_facility_tool()
-		if curr_tool != null:
+	var curr_tool = get_facility_tool()
+	if curr_tool != null:
+		if button == BUTTON_LEFT:
 			var is_city = curr_tool == Facilities.FAC_CITY
 			if not is_city or not name_edit.text.empty():
 				var name = name_edit.text if is_city else curr_tool
@@ -124,8 +134,31 @@ func on_planet_clicked(node: int, button: int):
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
 			else:
 				fsm.show_message("No city name given!", Consts.MESSAGE_ERROR)
-		else:
-			curr_tool = get_road_tool()
+	else:
+		curr_tool = get_road_tool()
+		if curr_tool != null:
+			if button == BUTTON_LEFT:
+				if road_start_point >= 0:
+					if curr_tool == Roads.ROAD_CLEAR:
+						fsm.planet.remove_road(road_start_point, node)
+					else:
+						var err = fsm.planet.add_road(road_start_point, node)
+						if err != null:
+							fsm.show_message(err, Consts.MESSAGE_ERROR)
+					
+					road_start_point = node
+					fsm.planet.clear_path()
+				else:
+					road_start_point = node
+			elif button == BUTTON_RIGHT:
+				road_start_point = -1
+				fsm.planet.clear_path()
+
+
+func _on_tool_changed(_button):
+	var curr_tool = get_facility_tool()
+	if curr_tool != null:
+		fsm.planet.clear_path()
 
 
 func _update_range(node: int, new_radius: int):

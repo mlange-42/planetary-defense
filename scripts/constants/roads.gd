@@ -4,8 +4,8 @@ const ROAD_CLEAR: int = 0
 const ROAD_ROAD: int = 1
 
 const ROAD_ICONS = {
-	ROAD_CLEAR: "res://assets/icons/gui/road.svg",
-	ROAD_ROAD: "res://assets/icons/gui/clear_road.svg",
+	ROAD_CLEAR: "res://assets/icons/gui/clear_road.svg",
+	ROAD_ROAD: "res://assets/icons/gui/road.svg",
 }
 
 const ROAD_INFO = {
