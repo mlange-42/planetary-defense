@@ -51,12 +51,11 @@ func init(the_fsm: Gui, args: Dictionary):
 	
 	set_city(args["node"])
 	
-	var buttons: Container = $Margin/EditControls/Buttons/LuPanel/LuButtons
+	var buttons: Container = find_node("LuButtons")
 	button_group = ButtonGroup.new()
 	for lu in LandUse.LU_NAMES:
 		var button := LandUseButton.new()
 		button.land_use = lu
-		button.text = LandUse.LU_NAMES[lu]
 		button.group = button_group
 		
 		var evt = InputEventKey.new()
