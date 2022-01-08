@@ -318,6 +318,11 @@ _global_script_classes=[ {
 "class": "UvSphere",
 "language": "GDScript",
 "path": "res://scripts/geom/uv_sphere.gd"
+}, {
+"base": "Control",
+"class": "VisibilityButtons",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/visibility_buttons.gd"
 } ]
 _global_script_class_icons={
 "AirAttack": "",
@@ -381,7 +386,8 @@ _global_script_class_icons={
 "StatsManager": "",
 "StoryManager": "",
 "TaxManager": "",
-"UvSphere": ""
+"UvSphere": "",
+"VisibilityButtons": ""
 }
 
 [application]

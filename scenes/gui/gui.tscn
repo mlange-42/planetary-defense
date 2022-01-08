@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://assets/default.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
@@ -17,7 +17,7 @@
 [ext_resource path="res://assets/shortkeys/ctrl_f.tres" type="ShortCut" id=15]
 [ext_resource path="res://assets/shortkeys/ctrl_n.tres" type="ShortCut" id=16]
 [ext_resource path="res://assets/shortkeys/ctrl_shift_s.tres" type="ShortCut" id=17]
-
+[ext_resource path="res://scenes/gui/controls/visibility_buttons.tscn" type="PackedScene" id=18]
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
@@ -138,6 +138,24 @@ text = "Test"
 wait_time = 5.0
 
 [node name="MessageWindow" parent="." instance=ExtResource( 4 )]
+
+[node name="InfoPanel" type="PanelContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -32.0
+margin_right = 16.0
+grow_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InfoPanel"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 196.0
+margin_bottom = 28.0
+
+[node name="VisibilityButtons" parent="InfoPanel/VBoxContainer" instance=ExtResource( 18 )]
 
 [connection signal="pressed" from="Buttons/GridContainer/MainMenu" to="." method="_on_MainMenu_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Settings" to="." method="_on_Settings_pressed"]
