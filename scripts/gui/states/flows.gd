@@ -55,10 +55,6 @@ func state_exited():
 	fsm.planet.clear_flows()
 
 
-func _on_Back_pressed():
-	fsm.pop()
-
-
 func _on_Commodities_item_selected(index: int):
 	update_flows(index)
 

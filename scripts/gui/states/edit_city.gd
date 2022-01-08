@@ -217,9 +217,6 @@ func _on_weights_changed(_value: float):
 	update_weights_display()
 
 
-func _on_Back_pressed():
-	fsm.pop()
-
 func _on_tool_changed(_button):
 	var curr_tool = get_land_use_tool()
 	if curr_tool != null:

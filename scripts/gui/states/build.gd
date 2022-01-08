@@ -88,10 +88,6 @@ func get_road_tool():
 		return button.mode
 
 
-func _on_Back_pressed():
-	fsm.pop()
-
-
 func on_planet_entered(_node: int):
 	var curr_tool = get_facility_tool()
 	indicator.visible = curr_tool != null and radius > 0

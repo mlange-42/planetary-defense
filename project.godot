@@ -290,11 +290,6 @@ _global_script_classes=[ {
 "path": "res://scripts/constants/roads.gd"
 }, {
 "base": "GuiState",
-"class": "RoadsState",
-"language": "GDScript",
-"path": "res://scripts/gui/states/roads.gd"
-}, {
-"base": "GuiState",
 "class": "SettingsState",
 "language": "GDScript",
 "path": "res://scripts/gui/states/settings.gd"
@@ -381,7 +376,6 @@ _global_script_class_icons={
 "RoadButton": "",
 "RoadNetwork": "",
 "Roads": "",
-"RoadsState": "",
 "SettingsState": "",
 "StatsBar": "",
 "StatsManager": "",
