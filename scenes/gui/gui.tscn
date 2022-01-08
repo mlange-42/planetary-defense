@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/default.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
 [ext_resource path="res://assets/styles/stylebox_flat.stylebox" type="StyleBox" id=3]
-[ext_resource path="res://assets/shortkeys/ctrl_t.tres" type="ShortCut" id=4]
 [ext_resource path="res://scenes/gui/controls/stats_bar.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/icons/gui/main_menu.svg" type="Texture" id=6]
 [ext_resource path="res://assets/icons/gui/settings.svg" type="Texture" id=7]
@@ -11,6 +10,10 @@
 [ext_resource path="res://assets/icons/gui/flows.svg" type="Texture" id=9]
 [ext_resource path="res://assets/icons/gui/build.svg" type="Texture" id=10]
 [ext_resource path="res://assets/icons/gui/inspect.svg" type="Texture" id=11]
+[ext_resource path="res://assets/shortkeys/m.tres" type="ShortCut" id=12]
+[ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=13]
+[ext_resource path="res://assets/shortkeys/ctrl_b.tres" type="ShortCut" id=14]
+[ext_resource path="res://assets/shortkeys/ctrl_f.tres" type="ShortCut" id=15]
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
@@ -42,6 +45,8 @@ columns = 3
 [node name="MainMenu" type="Button" parent="Buttons/GridContainer"]
 margin_right = 32.0
 margin_bottom = 32.0
+hint_tooltip = "Main menu (save, quit)"
+shortcut = ExtResource( 12 )
 icon = ExtResource( 6 )
 
 [node name="Settings" type="Button" parent="Buttons/GridContainer"]
@@ -60,6 +65,9 @@ icon = ExtResource( 8 )
 margin_top = 36.0
 margin_right = 32.0
 margin_bottom = 68.0
+toggle_mode = true
+pressed = true
+shortcut = ExtResource( 13 )
 icon = ExtResource( 11 )
 
 [node name="Build" type="Button" parent="Buttons/GridContainer"]
@@ -67,6 +75,8 @@ margin_left = 36.0
 margin_top = 36.0
 margin_right = 68.0
 margin_bottom = 68.0
+toggle_mode = true
+shortcut = ExtResource( 14 )
 icon = ExtResource( 10 )
 
 [node name="Flows" type="Button" parent="Buttons/GridContainer"]
@@ -74,6 +84,8 @@ margin_left = 72.0
 margin_top = 36.0
 margin_right = 104.0
 margin_bottom = 68.0
+toggle_mode = true
+shortcut = ExtResource( 15 )
 icon = ExtResource( 9 )
 
 [node name="ErrorContainer" type="MarginContainer" parent="."]
@@ -104,22 +116,12 @@ margin_right = 36.0
 margin_bottom = 18.0
 text = "Test"
 
-[node name="NextTurnButton" type="Button" parent="."]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = -32.0
-margin_right = 130.0
-margin_bottom = -10.0
-hint_tooltip = "Advance time by one turn"
-shortcut = ExtResource( 4 )
-text = "Turn"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="ErrorTimer" type="Timer" parent="."]
 wait_time = 5.0
 
-[connection signal="pressed" from="NextTurnButton" to="." method="_on_next_turn"]
+[connection signal="pressed" from="Buttons/GridContainer/MainMenu" to="." method="_on_MainMenu_pressed"]
+[connection signal="pressed" from="Buttons/GridContainer/Settings" to="." method="_on_Settings_pressed"]
+[connection signal="pressed" from="Buttons/GridContainer/Inspect" to="." method="_on_Inspect_pressed"]
+[connection signal="pressed" from="Buttons/GridContainer/Build" to="." method="_on_Build_pressed"]
+[connection signal="pressed" from="Buttons/GridContainer/Flows" to="." method="_on_Flows_pressed"]
 [connection signal="timeout" from="ErrorTimer" to="." method="_on_ErrorTimer_timeout"]

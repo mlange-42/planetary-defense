@@ -14,6 +14,14 @@ onready var error_timer = find_node("ErrorTimer")
 var planet: Planet
 var states = []
 
+func _ready():
+	var mode_buttons = ButtonGroup.new()
+	find_node("Inspect").group = mode_buttons
+	find_node("Build").group = mode_buttons
+	find_node("Flows").group = mode_buttons
+	
+	stats_bar.connect("next_turn", self, "_on_next_turn")
+
 func init():
 	error_container.visible = false
 	push("default", {})
@@ -81,6 +89,23 @@ func pop():
 	new_state.state_entered()
 
 
+func pop_all():
+	if states.size() < 2:
+		return null
+	
+	var old_state = states.pop_back()
+	self.remove_child(old_state)
+	old_state.state_exited()
+	old_state.queue_free()
+	
+	while states.size() > 1:
+		states.pop_back()
+		
+	var new_state = state()
+	self.add_child(new_state)
+	new_state.state_entered()
+
+
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		if state().get_class() != "QuitDialog":
@@ -136,3 +161,21 @@ func get_node_info(node: int):
 
 func _on_ErrorTimer_timeout():
 	error_container.visible = false
+
+
+func _on_MainMenu_pressed():
+	push("game_menu", {})
+
+func _on_Settings_pressed():
+	push("settings", {})
+
+func _on_Build_pressed():
+	pop_all()
+	push("build", {})
+
+func _on_Flows_pressed():
+	pop_all()
+	push("flows", {})
+
+func _on_Inspect_pressed():
+	pop_all()

@@ -1,6 +1,8 @@
 extends PanelContainer
 class_name StatsBar
 
+signal next_turn
+
 onready var budget_label = find_node("BudgetLabel")
 onready var taxes_label = find_node("TaxesLabel")
 onready var maintenance_label = find_node("MaintenanceLabel")
@@ -19,3 +21,7 @@ func update_finances(planet: Planet):
 	
 	maintenance_label.hint_tooltip = "Maintenance\n Facilities: %4d\n Land use:   %4d\n Roads:      %4d\n Transport:  %4d" \
 		% [tx.maintenance_facilities, tx.maintenance_land_use, tx.maintenance_roads, tx.maintenance_transport]
+
+
+func _on_NextTurnButton_pressed():
+	emit_signal("next_turn")
