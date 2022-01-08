@@ -67,12 +67,11 @@ func init(the_fsm: Gui, args: Dictionary):
 		
 		buttons.add_child(button)
 	
-	var fac_buttons: Container = $Margin/EditControls/Buttons/FacilityPanel/FacilityButtons
+	var fac_buttons: Container = find_node("FacilityButtons")
 	for fac in Facilities.FACILITY_IN_CITY:
 		if Facilities.FACILITY_IN_CITY[fac]:
 			var button := FacilityButton.new()
 			button.facility = fac
-			button.text = fac
 			button.group = button_group
 			
 			var evt = InputEventKey.new()

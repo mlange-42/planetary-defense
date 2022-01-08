@@ -4,7 +4,7 @@ class_name BuildState
 var names = CityNames.GERMAN
 
 onready var name_edit: LineEdit = find_node("CityName")
-onready var buttons: Container = find_node("Buttons")
+onready var buttons: Container = find_node("BuildButtons")
 onready var veg_label: Label = find_node("VegetationLabel")
 
 var indicator: RangeIndicator
@@ -28,7 +28,6 @@ func _ready():
 		if not Facilities.FACILITY_IN_CITY[fac]:
 			var button := FacilityButton.new()
 			button.facility = fac
-			button.text = fac
 			button.group = button_group
 			
 			var evt = InputEventKey.new()
