@@ -5,11 +5,7 @@ signal go_to_location(location)
 
 onready var constants: LandUse = $"/root/VegetationLandUse"
 
-onready var budget_label = $MarginContainer/PanelContainer/HBoxContainer/BudgetLabel
-onready var taxes_label = $MarginContainer/PanelContainer/HBoxContainer/TaxesLabel
-onready var maintenance_label = $MarginContainer/PanelContainer/HBoxContainer/MaintenenaceLabel
-onready var net_label = $MarginContainer/PanelContainer/HBoxContainer/NetLabel
-onready var turn_label = $MarginContainer/PanelContainer/HBoxContainer/TurnLabel
+onready var stats_bar: StatsBar = $StatsBar
 
 onready var error_container = $ErrorContainer
 onready var error_label = find_node("ErrorLabel")
@@ -45,12 +41,8 @@ func on_planet_clicked(node: int, button: int):
 	state().on_planet_clicked(node, button)
 
 
-func set_budget_taxes_maintenance(taxes: TaxManager):
-	budget_label.text = str(taxes.budget)
-	taxes_label.text = str(taxes.taxes)
-	maintenance_label.text = "%d (%d+%d+%d+%d)" % [taxes.maintenance, taxes.maintenance_facilities, taxes.maintenance_land_use, taxes.maintenance_roads, taxes.maintenance_transport]
-	net_label.text = "%+d" % (taxes.taxes - taxes.maintenance)
-	turn_label.text = str(planet.stats.turn())
+func update_finances():
+	stats_bar.update_finances(planet)
 
 
 func state():

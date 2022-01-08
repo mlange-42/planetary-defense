@@ -284,6 +284,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/gui/states/settings.gd"
 }, {
+"base": "PanelContainer",
+"class": "StatsBar",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/stats_bar.gd"
+}, {
 "base": "Reference",
 "class": "StatsManager",
 "language": "GDScript",
@@ -360,6 +365,7 @@ _global_script_class_icons={
 "RoadNetwork": "",
 "RoadsState": "",
 "SettingsState": "",
+"StatsBar": "",
 "StatsManager": "",
 "StoryManager": "",
 "TaxManager": "",
@@ -370,8 +376,8 @@ _global_script_class_icons={
 
 config/name="PlanetaryDefense"
 run/main_scene="res://scenes/gui/main_menu.tscn"
-config/icon="res://assets/icons/icon.png"
-config/windows_native_icon="res://assets/icons/icon.ico"
+config/icon="res://assets/icons/app/icon.png"
+config/windows_native_icon="res://assets/icons/app/icon.ico"
 
 [autoload]
 
@@ -383,6 +389,8 @@ settings/stdout/verbose_stdout=true
 
 [display]
 
+window/size/width=1280
+window/size/height=720
 window/dpi/allow_hidpi=true
 
 [physics]

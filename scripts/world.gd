@@ -105,8 +105,8 @@ func _hide_info():
 	gui.hide_info()
 
 
-func _on_budget_changed(taxes: TaxManager):
-	gui.set_budget_taxes_maintenance(taxes)
+func _on_budget_changed(_taxes: TaxManager):
+	gui.update_finances()
 
 
 func _on_go_to_location(location: Vector3):

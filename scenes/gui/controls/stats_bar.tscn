@@ -1,0 +1,118 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/styles/stylebox_flat.stylebox" type="StyleBox" id=1]
+[ext_resource path="res://assets/fonts/consolas_24.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scripts/gui/controls/stats_bar.gd" type="Script" id=3]
+
+[node name="StatsBar" type="PanelContainer"]
+anchor_right = 1.0
+margin_bottom = 32.0
+custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 1276.0
+margin_bottom = 34.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 44.0
+margin_bottom = 32.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+margin_right = 44.0
+margin_bottom = 14.0
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 8.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "+"
+align = 2
+valign = 1
+
+[node name="TaxesLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 12.0
+margin_right = 44.0
+margin_bottom = 14.0
+hint_tooltip = "Tax income"
+mouse_filter = 0
+text = "1000"
+valign = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 44.0
+margin_bottom = 32.0
+
+[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 8.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "-"
+align = 2
+valign = 1
+
+[node name="MaintenanceLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 12.0
+margin_right = 44.0
+margin_bottom = 14.0
+hint_tooltip = "Maintenance"
+mouse_filter = 0
+text = "1000"
+valign = 1
+
+[node name="NetLabel" type="Label" parent="HBoxContainer"]
+margin_left = 48.0
+margin_top = 3.0
+margin_right = 113.0
+margin_bottom = 28.0
+hint_tooltip = "Resulting income"
+mouse_filter = 0
+custom_fonts/font = ExtResource( 2 )
+text = "+1000"
+valign = 1
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+margin_left = 117.0
+margin_right = 121.0
+margin_bottom = 32.0
+
+[node name="BudgetLabel" type="Label" parent="HBoxContainer"]
+margin_left = 125.0
+margin_top = 3.0
+margin_right = 177.0
+margin_bottom = 28.0
+hint_tooltip = "Current budget"
+mouse_filter = 0
+custom_fonts/font = ExtResource( 2 )
+text = "1000"
+valign = 1
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_left = 181.0
+margin_right = 1228.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label5" type="Label" parent="HBoxContainer"]
+margin_left = 1232.0
+margin_top = 9.0
+margin_right = 1260.0
+margin_bottom = 23.0
+text = "Turn"
+valign = 1
+
+[node name="TurnLabel" type="Label" parent="HBoxContainer"]
+margin_left = 1264.0
+margin_top = 9.0
+margin_right = 1272.0
+margin_bottom = 23.0
+hint_tooltip = "Game turn"
+mouse_filter = 0
+text = "0"
+valign = 1

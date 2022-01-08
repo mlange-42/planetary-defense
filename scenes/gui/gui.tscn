@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/default.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
 [ext_resource path="res://assets/styles/stylebox_flat.stylebox" type="StyleBox" id=3]
 [ext_resource path="res://assets/shortkeys/ctrl_t.tres" type="ShortCut" id=4]
+[ext_resource path="res://scenes/gui/controls/stats_bar.tscn" type="PackedScene" id=5]
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
@@ -15,117 +16,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_top = 6.0
-grow_horizontal = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
-margin_right = 336.0
-margin_bottom = 20.0
-custom_styles/panel = ExtResource( 3 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer"]
-margin_left = 4.0
-margin_top = 2.0
-margin_right = 332.0
-margin_bottom = 18.0
-
-[node name="Label2" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_right = 8.0
-margin_bottom = 16.0
-text = "+"
-valign = 1
-
-[node name="TaxesLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 12.0
-margin_right = 44.0
-margin_bottom = 16.0
-hint_tooltip = "Tax income"
-mouse_filter = 0
-text = "1000"
-valign = 1
-
-[node name="VSeparator2" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 48.0
-margin_right = 52.0
-margin_bottom = 16.0
-
-[node name="Label3" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 56.0
-margin_right = 64.0
-margin_bottom = 16.0
-text = "-"
-valign = 1
-
-[node name="MaintenenaceLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 68.0
-margin_right = 180.0
-margin_bottom = 16.0
-hint_tooltip = "Maintenance (facilities + land use + roads + transport)"
-mouse_filter = 0
-text = "1000 (500+500)"
-valign = 1
-
-[node name="VSeparator3" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 184.0
-margin_right = 188.0
-margin_bottom = 16.0
-
-[node name="Label4" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 192.0
-margin_right = 208.0
-margin_bottom = 16.0
-text = "->"
-valign = 1
-
-[node name="NetLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 212.0
-margin_right = 252.0
-margin_bottom = 16.0
-hint_tooltip = "Resulting income"
-mouse_filter = 0
-text = "+1000"
-valign = 1
-
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 256.0
-margin_right = 260.0
-margin_bottom = 16.0
-
-[node name="BudgetLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 264.0
-margin_right = 296.0
-margin_bottom = 16.0
-hint_tooltip = "Current budget"
-mouse_filter = 0
-text = "1000"
-valign = 1
-
-[node name="VSeparator4" type="VSeparator" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 300.0
-margin_right = 304.0
-margin_bottom = 16.0
-
-[node name="Label5" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 308.0
-margin_right = 316.0
-margin_bottom = 16.0
-text = "T"
-valign = 1
-
-[node name="TurnLabel" type="Label" parent="MarginContainer/PanelContainer/HBoxContainer"]
-margin_left = 320.0
-margin_right = 328.0
-margin_bottom = 16.0
-hint_tooltip = "Game turn"
-mouse_filter = 0
-text = "0"
-valign = 1
+[node name="StatsBar" parent="." instance=ExtResource( 5 )]
 
 [node name="ErrorContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
