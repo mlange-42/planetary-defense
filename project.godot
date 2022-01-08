@@ -69,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/constants/commodities.gd"
 }, {
+"base": "Control",
+"class": "CommodityStats",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/commodity_stats.gd"
+}, {
 "base": "Reference",
 "class": "Consts",
 "language": "GDScript",
@@ -322,6 +327,7 @@ _global_script_class_icons={
 "CityNames": "",
 "CityProductionInfo": "",
 "Commodities": "",
+"CommodityStats": "",
 "Consts": "",
 "DebugDraw": "",
 "DefaultState": "",

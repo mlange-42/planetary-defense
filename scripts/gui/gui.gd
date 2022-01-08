@@ -29,6 +29,7 @@ func init():
 	error_container.visible = false
 	push("default", {})
 	update_messages(true)
+	stats_bar.update_commodities(planet)
 
 
 func _unhandled_key_input(event: InputEventKey):
@@ -154,6 +155,7 @@ func _on_next_turn():
 	state().on_next_turn()
 	update_messages(true)
 	show_message("Next turn", Consts.MESSAGE_INFO)
+	stats_bar.update_commodities(planet)
 
 
 func go_to(location: Vector3):

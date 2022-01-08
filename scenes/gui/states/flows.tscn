@@ -114,17 +114,6 @@ size_flags_horizontal = 3
 text = "0"
 align = 1
 
-[node name="ProductionPanel" type="PanelContainer" parent="Buttons"]
-margin_top = 177.0
-margin_right = 148.0
-margin_bottom = 185.0
-
-[node name="ProductionContainer" type="VBoxContainer" parent="Buttons/ProductionPanel"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 144.0
-margin_bottom = 4.0
-
 [connection signal="item_selected" from="Buttons/Commodities" to="." method="_on_Commodities_item_selected"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton" to="." method="_on_gradient_color_changed"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton" to="." method="_on_gradient_color_changed"]

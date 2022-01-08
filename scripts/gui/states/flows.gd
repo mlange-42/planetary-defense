@@ -8,17 +8,8 @@ onready var gradient_tex: TextureRect = $Buttons/LegendContainer/VBoxContainer/A
 onready var min_color_button: ColorPickerButton = $Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton
 onready var max_color_button: ColorPickerButton = $Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton
 
-onready var prod_container = $Buttons/ProductionPanel/ProductionContainer
-
-var infos = {}
-
 func _ready():
 	for comm in Commodities.COMM_ALL:
-		var info: ProductionInfo = preload("res://scenes/gui/states/flows/production_info.tscn").instance()
-		info.set_commodity(comm)
-		infos[comm] = info
-		prod_container.add_child(info)
-		
 		comm_list.add_item(comm)
 	
 	comm_list.add_item("(total)")
@@ -53,11 +44,6 @@ func on_planet_clicked(node: int, button: int):
 func state_entered():
 	if comm_list.is_anything_selected():
 		update_flows(comm_list.get_selected_items()[0])
-	
-	for comm in Commodities.COMM_ALL:
-		var info = infos[comm]
-		var f = fsm.planet.roads.total_flows.get(comm, 0)
-		info.set_values(fsm.planet.roads.total_sources.get(comm, 0), f, fsm.planet.roads.total_sinks.get(comm, 0))
 
 
 func on_next_turn():
