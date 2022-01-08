@@ -11,6 +11,7 @@ const COMM_ICONS = {
 	COMM_RESOURCES: "res://assets/icons/gui/resources.svg",
 	COMM_PRODUCTS: "res://assets/icons/gui/products.svg",
 }
+const COMM_ICON_ALL: String = "res://assets/icons/gui/all.svg"
 
 const COMM_TAX_RATES = {
 	COMM_FOOD: 1,

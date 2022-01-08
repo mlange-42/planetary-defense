@@ -1,18 +1,19 @@
 extends GuiState
 class_name FlowsState
 
-onready var comm_list: ItemList = $Buttons/Commodities
-onready var max_label: Label = $Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxLabel
-onready var gradient_tex: TextureRect = $Buttons/LegendContainer/VBoxContainer/AspectRatioContainer/Control/TextureRect
+onready var comm_list: ItemList = find_node("Commodities")
+onready var comm_label: Label = find_node("CommodityLabel")
+onready var max_label: Label = find_node("MaxLabel")
+onready var gradient_tex: TextureRect = find_node("TextureRect")
 
-onready var min_color_button: ColorPickerButton = $Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton
-onready var max_color_button: ColorPickerButton = $Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton
+onready var min_color_button: ColorPickerButton = find_node("MinColorButton")
+onready var max_color_button: ColorPickerButton = find_node("MaxColorButton")
 
 func _ready():
 	for comm in Commodities.COMM_ALL:
-		comm_list.add_item(comm)
+		comm_list.add_item("", load(Commodities.COMM_ICONS[comm]))
 	
-	comm_list.add_item("(total)")
+	comm_list.add_item("", load(Commodities.COMM_ICON_ALL))
 	
 	comm_list.select(0)
 	comm_list.grab_focus()
@@ -68,6 +69,8 @@ func update_flows(index: int):
 	
 	var max_value: int = fsm.planet.draw_flows(comm, grad.colors[0], grad.colors[-1])
 	max_label.text = str(max_value)
+	
+	comm_label.text = "All" if comm.empty() else comm
 
 
 func _on_gradient_color_changed(_color):

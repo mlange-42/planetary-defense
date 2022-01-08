@@ -12,8 +12,8 @@ width = 512
 [node name="InspectFlows" type="MarginContainer"]
 anchor_bottom = 1.0
 margin_top = 132.0
-margin_right = 138.0
-margin_bottom = -403.0
+margin_right = 148.0
+margin_bottom = -415.0
 rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 script = ExtResource( 1 )
@@ -23,30 +23,40 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 margin_right = 148.0
-margin_bottom = 185.0
+margin_bottom = 193.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
-[node name="Commodities" type="ItemList" parent="Buttons"]
-margin_right = 148.0
-margin_bottom = 9.0
-hint_tooltip = "Select commodity to view flow"
-auto_height = true
-
 [node name="LegendContainer" type="PanelContainer" parent="Buttons"]
-margin_top = 13.0
 margin_right = 148.0
-margin_bottom = 173.0
+margin_bottom = 193.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/LegendContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 156.0
+margin_bottom = 189.0
+
+[node name="Commodities" type="ItemList" parent="Buttons/LegendContainer/VBoxContainer"]
+margin_right = 140.0
+margin_bottom = 9.0
+hint_tooltip = "Select commodity to view flow"
+custom_constants/icon_margin = 0
+custom_constants/hseparation = 2
+auto_height = true
+max_columns = 4
+icon_mode = 0
+
+[node name="CommodityLabel" type="Label" parent="Buttons/LegendContainer/VBoxContainer"]
+margin_top = 13.0
+margin_right = 140.0
+margin_bottom = 29.0
+text = "Commodity"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
+margin_top = 33.0
 margin_right = 140.0
-margin_bottom = 22.0
+margin_bottom = 55.0
 
 [node name="MaxColorButton" type="ColorPickerButton" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer"]
 margin_right = 30.0
@@ -68,9 +78,9 @@ text = "100"
 align = 1
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 26.0
+margin_top = 59.0
 margin_right = 140.0
-margin_bottom = 126.0
+margin_bottom = 159.0
 
 [node name="Control" type="Control" parent="Buttons/LegendContainer/VBoxContainer/AspectRatioContainer"]
 margin_left = 20.0
@@ -91,9 +101,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 130.0
+margin_top = 163.0
 margin_right = 140.0
-margin_bottom = 152.0
+margin_bottom = 185.0
 
 [node name="MinColorButton" type="ColorPickerButton" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 30.0
@@ -114,6 +124,6 @@ size_flags_horizontal = 3
 text = "0"
 align = 1
 
-[connection signal="item_selected" from="Buttons/Commodities" to="." method="_on_Commodities_item_selected"]
+[connection signal="item_selected" from="Buttons/LegendContainer/VBoxContainer/Commodities" to="." method="_on_Commodities_item_selected"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton" to="." method="_on_gradient_color_changed"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton" to="." method="_on_gradient_color_changed"]
