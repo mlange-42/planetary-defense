@@ -2,8 +2,6 @@ class_name Consts
 
 const INITIAL_BUDGET: int = 350
 
-const ROAD_COSTS: int = 5
-const ROAD_MAINTENANCE_1000: int = 250
 const TRANSPORT_COST_1000: int = 25
 
 const MESSAGE_INFO: int = 0

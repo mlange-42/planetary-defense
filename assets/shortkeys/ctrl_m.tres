@@ -1,0 +1,10 @@
+[gd_resource type="ShortCut" load_steps=2 format=2]
+
+[sub_resource type="InputEventKey" id=7]
+control = true
+command = true
+pressed = true
+scancode = 77
+
+[resource]
+shortcut = SubResource( 7 )

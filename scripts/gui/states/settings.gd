@@ -33,9 +33,6 @@ func _on_visibility_changed(_button_pressed):
 	cam.set_cull_mask_bit(Consts.LAYER_EVENTS, events.pressed)
 
 
-func _on_Back_pressed():
-	fsm.pop()
-
 func toggle_all(enable: bool):
 	city_labels.pressed = enable
 	land_use.pressed = enable

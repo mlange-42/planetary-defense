@@ -51,12 +51,11 @@ func init(the_fsm: Gui, args: Dictionary):
 	
 	set_city(args["node"])
 	
-	var buttons: Container = $Margin/EditControls/Buttons/LuPanel/LuButtons
+	var buttons: Container = find_node("LuButtons")
 	button_group = ButtonGroup.new()
 	for lu in LandUse.LU_NAMES:
 		var button := LandUseButton.new()
 		button.land_use = lu
-		button.text = LandUse.LU_NAMES[lu]
 		button.group = button_group
 		
 		var evt = InputEventKey.new()
@@ -67,12 +66,11 @@ func init(the_fsm: Gui, args: Dictionary):
 		
 		buttons.add_child(button)
 	
-	var fac_buttons: Container = $Margin/EditControls/Buttons/FacilityPanel/FacilityButtons
+	var fac_buttons: Container = find_node("FacilityButtons")
 	for fac in Facilities.FACILITY_IN_CITY:
 		if Facilities.FACILITY_IN_CITY[fac]:
 			var button := FacilityButton.new()
 			button.facility = fac
-			button.text = fac
 			button.group = button_group
 			
 			var evt = InputEventKey.new()
@@ -218,9 +216,6 @@ func get_facility_tool():
 func _on_weights_changed(_value: float):
 	update_weights_display()
 
-
-func _on_Back_pressed():
-	fsm.pop()
 
 func _on_tool_changed(_button):
 	var curr_tool = get_land_use_tool()

@@ -1,27 +1,19 @@
 extends GuiState
 class_name FlowsState
 
-onready var comm_list: ItemList = $Buttons/Commodities
-onready var max_label: Label = $Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxLabel
-onready var gradient_tex: TextureRect = $Buttons/LegendContainer/VBoxContainer/AspectRatioContainer/Control/TextureRect
+onready var comm_list: ItemList = find_node("Commodities")
+onready var comm_label: Label = find_node("CommodityLabel")
+onready var max_label: Label = find_node("MaxLabel")
+onready var gradient_tex: TextureRect = find_node("TextureRect")
 
-onready var min_color_button: ColorPickerButton = $Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton
-onready var max_color_button: ColorPickerButton = $Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton
-
-onready var prod_container = $Buttons/ProductionPanel/ProductionContainer
-
-var infos = {}
+onready var min_color_button: ColorPickerButton = find_node("MinColorButton")
+onready var max_color_button: ColorPickerButton = find_node("MaxColorButton")
 
 func _ready():
 	for comm in Commodities.COMM_ALL:
-		var info: ProductionInfo = preload("res://scenes/gui/states/flows/production_info.tscn").instance()
-		info.set_commodity(comm)
-		infos[comm] = info
-		prod_container.add_child(info)
-		
-		comm_list.add_item(comm)
+		comm_list.add_item("", load(Commodities.COMM_ICONS[comm]))
 	
-	comm_list.add_item("(total)")
+	comm_list.add_item("", load(Commodities.COMM_ICON_ALL))
 	
 	comm_list.select(0)
 	comm_list.grab_focus()
@@ -53,11 +45,6 @@ func on_planet_clicked(node: int, button: int):
 func state_entered():
 	if comm_list.is_anything_selected():
 		update_flows(comm_list.get_selected_items()[0])
-	
-	for comm in Commodities.COMM_ALL:
-		var info = infos[comm]
-		var f = fsm.planet.roads.total_flows.get(comm, 0)
-		info.set_values(fsm.planet.roads.total_sources.get(comm, 0), f, fsm.planet.roads.total_sinks.get(comm, 0))
 
 
 func on_next_turn():
@@ -66,10 +53,6 @@ func on_next_turn():
 
 func state_exited():
 	fsm.planet.clear_flows()
-
-
-func _on_Back_pressed():
-	fsm.pop()
 
 
 func _on_Commodities_item_selected(index: int):
@@ -82,6 +65,8 @@ func update_flows(index: int):
 	
 	var max_value: int = fsm.planet.draw_flows(comm, grad.colors[0], grad.colors[-1])
 	max_label.text = str(max_value)
+	
+	comm_label.text = "All" if comm.empty() else comm
 
 
 func _on_gradient_color_changed(_color):

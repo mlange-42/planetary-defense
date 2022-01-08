@@ -5,11 +5,8 @@ signal go_to_location(location)
 
 onready var constants: LandUse = $"/root/VegetationLandUse"
 
-onready var budget_label = $MarginContainer/PanelContainer/HBoxContainer/BudgetLabel
-onready var taxes_label = $MarginContainer/PanelContainer/HBoxContainer/TaxesLabel
-onready var maintenance_label = $MarginContainer/PanelContainer/HBoxContainer/MaintenenaceLabel
-onready var net_label = $MarginContainer/PanelContainer/HBoxContainer/NetLabel
-onready var turn_label = $MarginContainer/PanelContainer/HBoxContainer/TurnLabel
+onready var stats_bar: StatsBar = $StatsBar
+onready var messages: MessageWindow = find_node("MessageWindow")
 
 onready var error_container = $ErrorContainer
 onready var error_label = find_node("ErrorLabel")
@@ -18,17 +15,32 @@ onready var error_timer = find_node("ErrorTimer")
 var planet: Planet
 var states = []
 
+func _ready():
+	var mode_buttons = ButtonGroup.new()
+	find_node("Inspect").group = mode_buttons
+	find_node("Build").group = mode_buttons
+	find_node("Flows").group = mode_buttons
+	find_node("Settings").group = mode_buttons
+	
+	# warning-ignore:return_value_discarded
+	stats_bar.connect("next_turn", self, "_on_next_turn")
+
+
 func init():
 	error_container.visible = false
 	push("default", {})
+	update_messages(true)
+	stats_bar.update_commodities(planet)
 
 
 func _unhandled_key_input(event: InputEventKey):
 	if event.pressed:
-		if event.scancode == KEY_S and event.control:
+		if event.scancode == KEY_S and event.control and not event.shift:
 			save_game()
-		elif event.scancode == KEY_Q and event.control:
+		elif event.scancode == KEY_Q and event.control and not event.shift:
 			get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
+		elif event.scancode == KEY_ESCAPE:
+			messages.visible = false
 
 
 func on_planet_entered(node: int):
@@ -45,12 +57,19 @@ func on_planet_clicked(node: int, button: int):
 	state().on_planet_clicked(node, button)
 
 
-func set_budget_taxes_maintenance(taxes: TaxManager):
-	budget_label.text = str(taxes.budget)
-	taxes_label.text = str(taxes.taxes)
-	maintenance_label.text = "%d (%d+%d+%d+%d)" % [taxes.maintenance, taxes.maintenance_facilities, taxes.maintenance_land_use, taxes.maintenance_roads, taxes.maintenance_transport]
-	net_label.text = "%+d" % (taxes.taxes - taxes.maintenance)
-	turn_label.text = str(planet.stats.turn())
+func update_finances():
+	stats_bar.update_finances(planet)
+
+
+func update_messages(set_visible: bool):
+	messages.update_messages(planet.messages)
+	if set_visible and not planet.messages.messages.empty():
+		messages.visible = true
+
+
+func _on_Messages_go_to_pressed(message):
+	var loc = planet.planet_data.get_position(message.node)
+	go_to(loc)
 
 
 func state():
@@ -89,6 +108,23 @@ func pop():
 	new_state.state_entered()
 
 
+func pop_all():
+	if states.size() < 2:
+		return null
+	
+	var old_state = states.pop_back()
+	self.remove_child(old_state)
+	old_state.state_exited()
+	old_state.queue_free()
+	
+	while states.size() > 1:
+		states.pop_back()
+		
+	var new_state = state()
+	self.add_child(new_state)
+	new_state.state_entered()
+
+
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		if state().get_class() != "QuitDialog":
@@ -118,7 +154,9 @@ func log_message(node: int, message: String, message_level: int):
 func _on_next_turn():
 	planet.next_turn()
 	state().on_next_turn()
+	update_messages(true)
 	show_message("Next turn", Consts.MESSAGE_INFO)
+	stats_bar.update_commodities(planet)
 
 
 func go_to(location: Vector3):
@@ -144,3 +182,24 @@ func get_node_info(node: int):
 
 func _on_ErrorTimer_timeout():
 	error_container.visible = false
+
+
+func _on_MainMenu_pressed():
+	push("game_menu", {})
+
+func _on_Settings_pressed():
+	push("settings", {})
+
+func _on_Messages_pressed():
+	messages.visible = not messages.visible
+
+func _on_Build_pressed():
+	pop_all()
+	push("build", {})
+
+func _on_Flows_pressed():
+	pop_all()
+	push("flows", {})
+
+func _on_Inspect_pressed():
+	pop_all()

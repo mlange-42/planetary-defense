@@ -69,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/constants/commodities.gd"
 }, {
+"base": "Control",
+"class": "CommodityStats",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/commodity_stats.gd"
+}, {
 "base": "Reference",
 "class": "Consts",
 "language": "GDScript",
@@ -269,20 +274,30 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/constants/resources.gd"
 }, {
+"base": "Button",
+"class": "RoadButton",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/road_button.gd"
+}, {
 "base": "Reference",
 "class": "RoadNetwork",
 "language": "GDScript",
 "path": "res://scripts/managers/road_network.gd"
 }, {
-"base": "GuiState",
-"class": "RoadsState",
+"base": "Reference",
+"class": "Roads",
 "language": "GDScript",
-"path": "res://scripts/gui/states/roads.gd"
+"path": "res://scripts/constants/roads.gd"
 }, {
 "base": "GuiState",
 "class": "SettingsState",
 "language": "GDScript",
 "path": "res://scripts/gui/states/settings.gd"
+}, {
+"base": "PanelContainer",
+"class": "StatsBar",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/stats_bar.gd"
 }, {
 "base": "Reference",
 "class": "StatsManager",
@@ -317,6 +332,7 @@ _global_script_class_icons={
 "CityNames": "",
 "CityProductionInfo": "",
 "Commodities": "",
+"CommodityStats": "",
 "Consts": "",
 "DebugDraw": "",
 "DefaultState": "",
@@ -357,9 +373,11 @@ _global_script_class_icons={
 "RangeIndicator": "",
 "ResourceManager": "",
 "Resources": "",
+"RoadButton": "",
 "RoadNetwork": "",
-"RoadsState": "",
+"Roads": "",
 "SettingsState": "",
+"StatsBar": "",
 "StatsManager": "",
 "StoryManager": "",
 "TaxManager": "",
@@ -370,8 +388,8 @@ _global_script_class_icons={
 
 config/name="PlanetaryDefense"
 run/main_scene="res://scenes/gui/main_menu.tscn"
-config/icon="res://assets/icons/icon.png"
-config/windows_native_icon="res://assets/icons/icon.ico"
+config/icon="res://assets/icons/app/icon.png"
+config/windows_native_icon="res://assets/icons/app/icon.ico"
 
 [autoload]
 
@@ -383,7 +401,14 @@ settings/stdout/verbose_stdout=true
 
 [display]
 
+window/size/width=1280
+window/size/height=720
 window/dpi/allow_hidpi=true
+
+[gui]
+
+theme/custom="res://assets/default.theme"
+theme/custom_font="res://assets/fonts/consolas.tres"
 
 [physics]
 

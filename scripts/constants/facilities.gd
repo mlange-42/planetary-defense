@@ -20,6 +20,13 @@ const FACILITY_POINTERS = {
 #	FAC_MISSILE_BASE: "res://assets/geom/missile_base.escn",
 }
 
+const FACILITY_ICONS = {
+	FAC_CITY: "res://assets/icons/gui/city.svg",
+	FAC_PORT: "res://assets/icons/gui/port.svg",
+	FAC_AIR_DEFENSE: "res://assets/icons/gui/air_defense.svg",
+#	FAC_MISSILE_BASE: "res://assets/icons/gui/missile_base.svg",
+}
+
 const FACILITY_INFO = {
 	FAC_CITY: "A city",
 	FAC_PORT: "Required for sea transport and fishery",

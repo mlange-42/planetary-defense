@@ -66,8 +66,8 @@ const VEG_RESOURCES = {
 const LU_NONE: int = 0
 const LU_CROPS: int = 1
 const LU_FOREST: int = 2
-const LU_FACTORY: int = 3
-const LU_FISHERY: int = 4
+const LU_FISHERY: int = 3
+const LU_FACTORY: int = 4
 const LU_MINES: int = 5
 const LU_OIL_RIG: int = 6
 const LU_OIL_WELL: int = 7
@@ -76,8 +76,8 @@ const LU_COLORS = {
 	LU_NONE: Color.gray,
 	LU_CROPS: Color.yellow,
 	LU_FOREST: Color.black,
-	LU_FACTORY: Color.red,
 	LU_FISHERY: Color.aqua,
+	LU_FACTORY: Color.red,
 	LU_MINES: Color.magenta,
 	LU_OIL_RIG: Color.magenta,
 	LU_OIL_WELL: Color.magenta,
@@ -87,19 +87,30 @@ const LU_SCENES = {
 	LU_NONE: "res://assets/geom/clear.escn",
 	LU_CROPS: "res://assets/geom/crops.escn",
 	LU_FOREST: "res://assets/geom/forest.escn",
-	LU_FACTORY: "res://assets/geom/factory.escn",
 	LU_FISHERY: "res://assets/geom/fishery.escn",
+	LU_FACTORY: "res://assets/geom/factory.escn",
 	LU_MINES: "res://assets/geom/mines.escn",
 	LU_OIL_RIG: "res://assets/geom/oil_rig.escn",
 	LU_OIL_WELL: "res://assets/geom/oil_well.escn",
+}
+
+const LU_ICONS = {
+	LU_NONE: "res://assets/icons/gui/clear.svg",
+	LU_CROPS: "res://assets/icons/gui/crops.svg",
+	LU_FOREST: "res://assets/icons/gui/forest.svg",
+	LU_FISHERY: "res://assets/icons/gui/fishery.svg",
+	LU_FACTORY: "res://assets/icons/gui/factory.svg",
+	LU_MINES: "res://assets/icons/gui/mines.svg",
+	LU_OIL_RIG: "res://assets/icons/gui/oil_rig.svg",
+	LU_OIL_WELL: "res://assets/icons/gui/oil_well.svg",
 }
 
 const LU_NAMES = {
 	LU_NONE: "Clear",
 	LU_CROPS: "Crops",
 	LU_FOREST: "Forest",
-	LU_FACTORY: "Factory",
 	LU_FISHERY: "Fishery",
+	LU_FACTORY: "Factory",
 	LU_MINES: "Mines",
 	LU_OIL_RIG: "Oil rig",
 	LU_OIL_WELL: "Oil well",
@@ -109,8 +120,8 @@ const LU_WORKERS = {
 	LU_NONE: 0,
 	LU_CROPS: 1,
 	LU_FOREST: 1,
-	LU_FACTORY: 2,
 	LU_FISHERY: 1,
+	LU_FACTORY: 2,
 	LU_MINES: 3,
 	LU_OIL_RIG: 3,
 	LU_OIL_WELL: 2,
@@ -120,8 +131,8 @@ const LU_MAINTENANCE = {
 	LU_NONE: 0,
 	LU_CROPS: 0,
 	LU_FOREST: 0,
-	LU_FACTORY: 1,
 	LU_FISHERY: 0,
+	LU_FACTORY: 1,
 	LU_MINES: 1,
 	LU_OIL_RIG: 2,
 	LU_OIL_WELL: 1,
@@ -130,8 +141,8 @@ const LU_MAINTENANCE = {
 const LU_OUTPUT = {
 	LU_CROPS: Commodities.COMM_FOOD,
 	LU_FOREST: Commodities.COMM_RESOURCES,
-	LU_FACTORY: Commodities.COMM_PRODUCTS,
 	LU_FISHERY: Commodities.COMM_FOOD,
+	LU_FACTORY: Commodities.COMM_PRODUCTS,
 	LU_MINES: Commodities.COMM_RESOURCES,
 	LU_OIL_RIG: Commodities.COMM_RESOURCES,
 	LU_OIL_WELL: Commodities.COMM_RESOURCES,
@@ -140,8 +151,8 @@ const LU_OUTPUT = {
 const LU_RESOURCE = {
 	LU_CROPS: null,
 	LU_FOREST: null,
-	LU_FACTORY: null,
 	LU_FISHERY: null,
+	LU_FACTORY: null,
 	LU_MINES: Resources.RES_METAL,
 	LU_OIL_RIG: Resources.RES_OIL,
 	LU_OIL_WELL: Resources.RES_OIL,
@@ -151,8 +162,8 @@ const LU_REQUIREMENTS = {
 	LU_NONE: [],
 	LU_CROPS: [],
 	LU_FOREST: [],
-	LU_FACTORY: [],
 	LU_FISHERY: [Facilities.FAC_PORT],
+	LU_FACTORY: [],
 	LU_MINES: [],
 	LU_OIL_RIG: [Facilities.FAC_PORT],
 	LU_OIL_WELL: [],
@@ -162,8 +173,8 @@ const LU_INFO = {
 	LU_NONE: "Clear land use.",
 	LU_CROPS: "Grow crops to harvest food.",
 	LU_FOREST: "Grow crops to harvest resources.",
-	LU_FACTORY: "Transforms resources into products.",
 	LU_FISHERY: "Fishes for food.",
+	LU_FACTORY: "Transforms resources into products.",
 	LU_MINES: "Mines for metal resources.",
 	LU_OIL_RIG: "Drills for oil resources off-shore.",
 	LU_OIL_WELL: "Drills for oil resources on land.",
@@ -173,8 +184,8 @@ const LU_KEYS = {
 	LU_NONE: KEY_R,
 	LU_CROPS: KEY_C,
 	LU_FOREST: KEY_F,
-	LU_FACTORY: KEY_A,
 	LU_FISHERY: KEY_I,
+	LU_FACTORY: KEY_A,
 	LU_MINES: KEY_M,
 	LU_OIL_RIG: KEY_O,
 	LU_OIL_WELL: KEY_W,
@@ -197,6 +208,9 @@ var LU_MAPPING = {
 		VEG_SUBTROPICAL_FOREST: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 1), null, null),
 		VEG_TROPICAL_FOREST: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 2), null, null),
 	},
+	LU_FISHERY: {
+		VEG_WATER: VegLandUse.new(Production.new(Commodities.COMM_FOOD, 2), null, null),
+	},
 	LU_FACTORY: {
 		VEG_DESERT: _factory_lu,
 		VEG_TUNDRA: _factory_lu,
@@ -205,9 +219,6 @@ var LU_MAPPING = {
 		VEG_TEMPERATE_FOREST: _factory_lu,
 		VEG_SUBTROPICAL_FOREST: _factory_lu,
 		VEG_TROPICAL_FOREST: _factory_lu,
-	},
-	LU_FISHERY: {
-		VEG_WATER: VegLandUse.new(Production.new(Commodities.COMM_FOOD, 2), null, null),
 	},
 	LU_MINES: _res_all_land,
 	LU_OIL_RIG: {VEG_WATER: null},

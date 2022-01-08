@@ -8,10 +8,6 @@ func _ready():
 	command_edit.grab_focus()
 
 
-func _on_Back_pressed():
-	fsm.pop()
-
-
 func _on_Cheat_pressed():
 	if evaluate(command_edit.text):
 		command_edit.text = ""

@@ -1,0 +1,186 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/styles/panel_stats_bar.stylebox" type="StyleBox" id=1]
+[ext_resource path="res://assets/fonts/consolas_20.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scripts/gui/controls/stats_bar.gd" type="Script" id=3]
+[ext_resource path="res://assets/icons/gui/next_turn.svg" type="Texture" id=4]
+[ext_resource path="res://assets/shortkeys/ctrl_t.tres" type="ShortCut" id=5]
+[ext_resource path="res://scenes/gui/controls/commodity_stats.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/icons/gui/money.svg" type="Texture" id=9]
+
+[node name="StatsBar" type="PanelContainer"]
+anchor_right = 1.0
+margin_bottom = 32.0
+custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 4.0
+margin_top = 3.0
+margin_right = 1276.0
+margin_bottom = 35.0
+alignment = 1
+
+[node name="Food" parent="HBoxContainer" instance=ExtResource( 6 )]
+
+[node name="Dummy" type="Control" parent="HBoxContainer"]
+margin_left = 86.0
+margin_right = 98.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 12, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Resources" parent="HBoxContainer" instance=ExtResource( 6 )]
+margin_left = 102.0
+margin_right = 184.0
+commodity = "Resources"
+
+[node name="Dummy3" type="Control" parent="HBoxContainer"]
+margin_left = 188.0
+margin_right = 200.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 12, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Products" parent="HBoxContainer" instance=ExtResource( 6 )]
+margin_left = 204.0
+margin_right = 286.0
+commodity = "Products"
+
+[node name="Dummy2" type="Control" parent="HBoxContainer"]
+margin_left = 290.0
+margin_right = 314.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 24, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect4" type="TextureRect" parent="HBoxContainer"]
+margin_left = 318.0
+margin_top = 4.0
+margin_right = 342.0
+margin_bottom = 28.0
+size_flags_vertical = 4
+texture = ExtResource( 9 )
+
+[node name="NetLabel" type="Label" parent="HBoxContainer"]
+margin_left = 346.0
+margin_top = 5.0
+margin_right = 401.0
+margin_bottom = 26.0
+hint_tooltip = "Resulting income"
+mouse_filter = 0
+custom_fonts/font = ExtResource( 2 )
+text = "+1000"
+valign = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 405.0
+margin_right = 449.0
+margin_bottom = 32.0
+custom_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+margin_right = 44.0
+margin_bottom = 16.0
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 8.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+text = "+"
+align = 2
+valign = 1
+
+[node name="TaxesLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 12.0
+margin_right = 44.0
+margin_bottom = 16.0
+hint_tooltip = "Tax income"
+mouse_filter = 0
+text = "1000"
+valign = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+margin_top = 16.0
+margin_right = 44.0
+margin_bottom = 32.0
+
+[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 8.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+text = "-"
+align = 2
+valign = 1
+
+[node name="MaintenanceLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 12.0
+margin_right = 44.0
+margin_bottom = 16.0
+hint_tooltip = "Maintenance"
+mouse_filter = 0
+text = "1000"
+valign = 1
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+margin_left = 453.0
+margin_right = 457.0
+margin_bottom = 32.0
+
+[node name="BudgetLabel" type="Label" parent="HBoxContainer"]
+margin_left = 461.0
+margin_top = 5.0
+margin_right = 505.0
+margin_bottom = 26.0
+hint_tooltip = "Current budget"
+mouse_filter = 0
+custom_fonts/font = ExtResource( 2 )
+text = "1000"
+valign = 1
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_left = 509.0
+margin_right = 1188.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label5" type="Label" parent="HBoxContainer"]
+margin_left = 1192.0
+margin_top = 8.0
+margin_right = 1224.0
+margin_bottom = 24.0
+text = "Turn"
+valign = 1
+
+[node name="TurnLabel" type="Label" parent="HBoxContainer"]
+margin_left = 1228.0
+margin_top = 8.0
+margin_right = 1236.0
+margin_bottom = 24.0
+hint_tooltip = "Game turn"
+mouse_filter = 0
+text = "0"
+valign = 1
+
+[node name="NextTurnButton" type="Button" parent="HBoxContainer"]
+margin_left = 1240.0
+margin_right = 1272.0
+margin_bottom = 32.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+shortcut = ExtResource( 5 )
+icon = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="HBoxContainer/NextTurnButton" to="." method="_on_NextTurnButton_pressed"]
