@@ -182,10 +182,9 @@ func _update_range(node: int, new_radius: int):
 	radius = new_radius
 
 
-func _draw_range(center: int):
-	indicator.visible = true
-	
+func _draw_range(center: int):	
 	indicator.draw_range(fsm.planet.planet_data, center, cells, radius, Color.white)
+	indicator.visible = true
 
 
 func _notification(what):
