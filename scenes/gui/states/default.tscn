@@ -40,70 +40,70 @@ __meta__ = {
 
 [node name="PanelContainer" type="PanelContainer" parent="LeftMargin/DefaultControls"]
 margin_right = 120.0
-margin_bottom = 168.0
+margin_bottom = 180.0
 
 [node name="Buttons" type="VBoxContainer" parent="LeftMargin/DefaultControls/PanelContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 116.0
-margin_bottom = 164.0
+margin_bottom = 176.0
 
 [node name="MainMenuButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
 margin_right = 112.0
-margin_bottom = 22.0
+margin_bottom = 24.0
 hint_tooltip = "Save, quit, etc"
 shortcut = ExtResource( 1 )
 text = "Main menu"
 
 [node name="SettingsButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 26.0
+margin_top = 28.0
 margin_right = 112.0
-margin_bottom = 48.0
+margin_bottom = 52.0
 hint_tooltip = "Graphics and visibility settings"
 shortcut = ExtResource( 2 )
 text = "Settings"
 
 [node name="MessagesButton" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 52.0
+margin_top = 56.0
 margin_right = 112.0
-margin_bottom = 74.0
+margin_bottom = 80.0
 hint_tooltip = "View game messages"
 shortcut = ExtResource( 7 )
 text = "Messages"
 
 [node name="HSeparator" type="HSeparator" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 78.0
+margin_top = 84.0
 margin_right = 112.0
-margin_bottom = 82.0
+margin_bottom = 88.0
 
 [node name="Build" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 86.0
+margin_top = 92.0
 margin_right = 112.0
-margin_bottom = 108.0
+margin_bottom = 116.0
 hint_tooltip = "Found a new city. Click cities to manage them."
 shortcut = ExtResource( 4 )
 text = "Build"
 
 [node name="Roads" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 112.0
+margin_top = 120.0
 margin_right = 112.0
-margin_bottom = 134.0
+margin_bottom = 144.0
 hint_tooltip = "Build and remove roads"
 shortcut = ExtResource( 5 )
 text = "Roads"
 
 [node name="Flows" type="Button" parent="LeftMargin/DefaultControls/PanelContainer/Buttons"]
-margin_top = 138.0
+margin_top = 148.0
 margin_right = 112.0
-margin_bottom = 160.0
+margin_bottom = 172.0
 hint_tooltip = "Inspect flows"
 shortcut = ExtResource( 6 )
 text = "Flows"
 
 [node name="VegContainer" type="PanelContainer" parent="LeftMargin/DefaultControls"]
-margin_top = 172.0
+margin_top = 184.0
 margin_right = 120.0
-margin_bottom = 196.0
+margin_bottom = 208.0
 
 [node name="VegetationLabel" type="Label" parent="LeftMargin/DefaultControls/VegContainer"]
 margin_left = 4.0

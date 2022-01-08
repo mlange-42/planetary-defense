@@ -1,10 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/default.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
 [ext_resource path="res://assets/styles/stylebox_flat.stylebox" type="StyleBox" id=3]
 [ext_resource path="res://assets/shortkeys/ctrl_t.tres" type="ShortCut" id=4]
 [ext_resource path="res://scenes/gui/controls/stats_bar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/icons/gui/main_menu.svg" type="Texture" id=6]
+[ext_resource path="res://assets/icons/gui/settings.svg" type="Texture" id=7]
+[ext_resource path="res://assets/icons/gui/messages.svg" type="Texture" id=8]
+[ext_resource path="res://assets/icons/gui/flows.svg" type="Texture" id=9]
+[ext_resource path="res://assets/icons/gui/build.svg" type="Texture" id=10]
+[ext_resource path="res://assets/icons/gui/inspect.svg" type="Texture" id=11]
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
@@ -17,6 +23,58 @@ __meta__ = {
 }
 
 [node name="StatsBar" parent="." instance=ExtResource( 5 )]
+
+[node name="Buttons" type="PanelContainer" parent="."]
+margin_top = 46.0
+margin_right = 8.0
+margin_bottom = 8.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="Buttons"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 108.0
+margin_bottom = 72.0
+columns = 3
+
+[node name="MainMenu" type="Button" parent="Buttons/GridContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+icon = ExtResource( 6 )
+
+[node name="Settings" type="Button" parent="Buttons/GridContainer"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+icon = ExtResource( 7 )
+
+[node name="Messages" type="Button" parent="Buttons/GridContainer"]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+icon = ExtResource( 8 )
+
+[node name="Inspect" type="Button" parent="Buttons/GridContainer"]
+margin_top = 36.0
+margin_right = 32.0
+margin_bottom = 68.0
+icon = ExtResource( 11 )
+
+[node name="Build" type="Button" parent="Buttons/GridContainer"]
+margin_left = 36.0
+margin_top = 36.0
+margin_right = 68.0
+margin_bottom = 68.0
+icon = ExtResource( 10 )
+
+[node name="Flows" type="Button" parent="Buttons/GridContainer"]
+margin_left = 72.0
+margin_top = 36.0
+margin_right = 104.0
+margin_bottom = 68.0
+icon = ExtResource( 9 )
 
 [node name="ErrorContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
