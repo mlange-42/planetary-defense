@@ -184,6 +184,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/gui/controls/land_use_button.gd"
 }, {
+"base": "VBoxContainer",
+"class": "LandUseEntry",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/land_use_entry.gd"
+}, {
+"base": "Control",
+"class": "LandUseInfo",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/land_use_info.gd"
+}, {
 "base": "Spatial",
 "class": "LandUseNode",
 "language": "GDScript",
@@ -360,6 +370,8 @@ _global_script_class_icons={
 "IcoSphere": "",
 "LandUse": "",
 "LandUseButton": "",
+"LandUseEntry": "",
+"LandUseInfo": "",
 "LandUseNode": "",
 "MessageEntry": "",
 "MessageManager": "",

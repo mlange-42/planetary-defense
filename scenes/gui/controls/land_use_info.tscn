@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/gui/controls/land_use_info.gd" type="Script" id=1]
+
+[node name="LandUseInfo" type="VBoxContainer"]
+margin_right = 192.0
+grow_vertical = 0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 192.0
+margin_bottom = 16.0
+
+[node name="LandUse" type="Label" parent="HBoxContainer"]
+margin_right = 94.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+text = "Land use"
+
+[node name="Resources" type="Label" parent="HBoxContainer"]
+margin_left = 98.0
+margin_right = 192.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+text = "Resources"
+
+[node name="Entries" type="HBoxContainer" parent="."]
+margin_top = 20.0
+margin_right = 192.0
+margin_bottom = 100.0
+grow_vertical = 0
+rect_min_size = Vector2( 0, 80 )

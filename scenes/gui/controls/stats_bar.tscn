@@ -8,7 +8,6 @@
 [ext_resource path="res://scenes/gui/controls/commodity_stats.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/icons/commodities/money.svg" type="Texture" id=9]
 
-
 [node name="StatsBar" type="PanelContainer"]
 anchor_right = 1.0
 margin_bottom = 32.0
@@ -176,6 +175,7 @@ valign = 1
 margin_left = 1240.0
 margin_right = 1272.0
 margin_bottom = 32.0
+hint_tooltip = "End turn"
 size_flags_horizontal = 0
 size_flags_vertical = 4
 shortcut = ExtResource( 5 )

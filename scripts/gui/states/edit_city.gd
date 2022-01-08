@@ -272,12 +272,12 @@ func on_planet_exited():
 
 func on_planet_hovered(node: int):
 	if not node in city.cells:
-		update_node_info(-1)
+		#fsm.update_land_use_info(-1)
 		pointer.visible = false
 		selected_node = -1
 		return
 	
-	update_node_info(node)
+	#fsm.update_land_use_info(node)
 	pointer.visible = true
 	selected_node = node
 	move_pointer(node)
