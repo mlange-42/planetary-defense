@@ -223,6 +223,7 @@ func on_planet_clicked(node: int, button: int):
 	if button == BUTTON_LEFT:
 		var facility: Facility = fsm.planet.get_facility(node)
 		if facility != null and facility is City and facility != city:
+			state_exited()
 			set_city(node)
 			state_entered()
 			return
