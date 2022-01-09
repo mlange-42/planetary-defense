@@ -30,7 +30,7 @@ const FACILITY_ICONS = {
 const FACILITY_INFO = {
 	FAC_CITY: "A city",
 	FAC_PORT: "Required for sea transport and fishery",
-	FAC_AIR_DEFENSE: "Defends an area agains sir-borne attacks",
+	FAC_AIR_DEFENSE: "Defends an area agains air-borne attacks",
 #	FAC_MISSILE_BASE: "Fires missiles against orbital targets",
 }
 

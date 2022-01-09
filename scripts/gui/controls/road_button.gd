@@ -8,7 +8,7 @@ func _ready():
 	
 	self.icon = Roads.ROAD_ICONS[mode]
 	
-	var text = "%s\n Costs: %d, Maintenance: %f" \
+	var text = "%s\n Costs: %d, Maintenance: %s" \
 		% [
 			Roads.ROAD_INFO[mode], 
 			Roads.ROAD_COSTS[mode], 

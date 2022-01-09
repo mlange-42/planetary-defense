@@ -14,6 +14,7 @@ var cells: Dictionary = {}
 var radius: int = 0
 
 var road_start_point: int = -1
+var current_node: int = -1
 
 func _ready():
 	set_random_name()
@@ -65,6 +66,7 @@ func state_entered():
 
 func state_exited():
 	indicator.visible = false
+	current_node = -1
 	fsm.planet.clear_path()
 
 
@@ -98,12 +100,12 @@ func on_planet_exited():
 	fsm.planet.clear_path()
 
 func on_planet_hovered(node: int):
+	current_node = node
 	veg_label.text = fsm.get_node_info(node)
 	
 	var curr_tool = get_facility_tool()
 	if curr_tool != null:
-		var rad = Facilities.FACILITY_RADIUS[curr_tool]
-		_update_range(node, rad)
+		_update_range(node)
 	else:
 		curr_tool = get_road_tool()
 		if curr_tool != null:
@@ -160,26 +162,34 @@ func on_planet_clicked(node: int, button: int):
 
 func _on_tool_changed(_button):
 	var curr_tool = get_facility_tool()
+	var road_tool = get_road_tool()
 	if curr_tool != null:
+		radius = Facilities.FACILITY_RADIUS[curr_tool]
+		
 		fsm.planet.clear_path()
-
-
-func _update_range(node: int, new_radius: int):
-	if new_radius == 0:
+		_update_range(current_node)
+		indicator.visible = true
+	elif road_tool != null:
+		radius = 0
+		
 		indicator.visible = false
-	else:
-		cells.clear()
-		var temp_cells = fsm.planet.planet_data.get_in_radius(node, new_radius)
-		for c in temp_cells:
-			cells[c[0]] = c[1]
-		
-		var pos = fsm.planet.planet_data.get_position(node)
-		indicator.translation = pos
-		indicator.look_at(2 * pos, Vector3.UP)
-		
-		_draw_range(node, new_radius)
+
+
+func _update_range(node: int):
+	if radius == 0 or node < 0:
+		indicator.visible = false
+		return
 	
-	radius = new_radius
+	cells.clear()
+	var temp_cells = fsm.planet.planet_data.get_in_radius(node, radius)
+	for c in temp_cells:
+		cells[c[0]] = c[1]
+	
+	var pos = fsm.planet.planet_data.get_position(node)
+	indicator.translation = pos
+	indicator.look_at(2 * pos, Vector3.UP)
+	
+	_draw_range(node, radius)
 
 
 func _draw_range(center: int, new_radius):

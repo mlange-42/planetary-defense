@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/gui/states/edit_city.gd" type="Script" id=1]
+[ext_resource path="res://assets/icons/menu/grow.svg" type="Texture" id=2]
 
 [node name="EditCity" type="Control"]
 anchor_right = 1.0
@@ -24,7 +25,7 @@ __meta__ = {
 
 [node name="EditControls" type="VBoxContainer" parent="Margin"]
 margin_right = 148.0
-margin_bottom = 284.0
+margin_bottom = 312.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 __meta__ = {
@@ -33,19 +34,19 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="Margin/EditControls"]
 margin_right = 148.0
-margin_bottom = 52.0
+margin_bottom = 108.0
 
 [node name="LuPanel" type="PanelContainer" parent="Margin/EditControls/Buttons"]
 margin_right = 148.0
-margin_bottom = 52.0
+margin_bottom = 108.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Margin/EditControls/Buttons/LuPanel"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 48.0
+margin_bottom = 104.0
 
-[node name="Label" type="Label" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+[node name="LandUse" type="Label" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
 margin_right = 140.0
 margin_bottom = 16.0
 text = "Land use"
@@ -68,16 +69,33 @@ margin_right = 140.0
 margin_bottom = 44.0
 columns = 4
 
+[node name="Promote" type="Label" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+margin_top = 48.0
+margin_right = 140.0
+margin_bottom = 64.0
+text = "Promote"
+
+[node name="PromoteButtons" type="GridContainer" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+margin_top = 68.0
+margin_right = 140.0
+margin_bottom = 100.0
+columns = 4
+
+[node name="GrowButton" type="Button" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer/PromoteButtons"]
+margin_right = 32.0
+margin_bottom = 32.0
+icon = ExtResource( 2 )
+
 [node name="WeightPanel" type="PanelContainer" parent="Margin/EditControls"]
-margin_top = 56.0
+margin_top = 112.0
 margin_right = 148.0
-margin_bottom = 284.0
+margin_bottom = 312.0
 
 [node name="WeightControls" type="VBoxContainer" parent="Margin/EditControls/WeightPanel"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 224.0
+margin_bottom = 196.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -138,13 +156,7 @@ margin_right = 140.0
 margin_bottom = 192.0
 align = 1
 
-[node name="GrowButton" type="Button" parent="Margin/EditControls/WeightPanel/WeightControls"]
-margin_top = 196.0
-margin_right = 140.0
-margin_bottom = 220.0
-text = "Grow city"
-
+[connection signal="pressed" from="Margin/EditControls/Buttons/LuPanel/VBoxContainer/PromoteButtons/GrowButton" to="." method="_on_GrowButton_pressed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/FoodSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ProductsSlider" to="." method="_on_weights_changed"]
-[connection signal="pressed" from="Margin/EditControls/WeightPanel/WeightControls/GrowButton" to="." method="_on_GrowButton_pressed"]
