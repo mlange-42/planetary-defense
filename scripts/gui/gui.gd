@@ -9,6 +9,8 @@ onready var stats_bar: StatsBar = $StatsBar
 onready var messages: MessageWindow = find_node("MessageWindow")
 onready var land_use_info: LandUseInfo = find_node("LandUseInfo")
 onready var facility_info: FacilityInfo = find_node("FacilityInfo")
+onready var build_info: BuildInfo = find_node("BuildInfo")
+onready var info_tabs: TabContainer = find_node("InfoTabs")
 
 onready var inspect_button: Button = find_node("Inspect")
 
@@ -82,6 +84,15 @@ func update_facility_info(node):
 		facility_info.update_info(planet.roads.get_facility(node))
 	else:
 		facility_info.update_info(null)
+	info_tabs.current_tab = 0
+
+
+func update_build_info(type, road_length: int = -1):
+	if road_length >= 0:
+		build_info.update_info_road(type, road_length)
+	else:
+		build_info.update_info_facility(type)
+	info_tabs.current_tab = 1
 
 
 func _on_Messages_go_to_pressed(message):

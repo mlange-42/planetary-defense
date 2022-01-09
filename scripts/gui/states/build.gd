@@ -103,12 +103,16 @@ func on_planet_hovered(node: int):
 	var curr_tool = get_facility_tool()
 	if curr_tool != null:
 		_update_range(node)
+		fsm.update_build_info(curr_tool, -1)
 	else:
 		curr_tool = get_road_tool()
 		if curr_tool != null:
 			if road_start_point >= 0:
 				# warning-ignore:return_value_discarded
-				fsm.planet.draw_path(road_start_point, node)
+				var path = fsm.planet.draw_path(road_start_point, node)
+				fsm.update_build_info(curr_tool, max(1, path.size() - 1))
+			else:
+				fsm.update_build_info(curr_tool, 1)
 
 
 func on_planet_clicked(node: int, button: int):
@@ -166,10 +170,13 @@ func _on_tool_changed(_button):
 		fsm.planet.clear_path()
 		_update_range(current_node)
 		indicator.visible = true
+		
+		fsm.update_build_info(curr_tool, -1)
 	elif road_tool != null:
 		radius = 0
 		
 		indicator.visible = false
+		fsm.update_build_info(road_tool, 1)
 
 
 func _update_range(node: int):

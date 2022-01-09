@@ -8,6 +8,11 @@ const ROAD_ICONS = {
 	ROAD_ROAD: preload("res://assets/icons/facilities/road.svg"),
 }
 
+const ROAD_NAMES = {
+	ROAD_CLEAR: "Clear roads",
+	ROAD_ROAD: "Roads",
+}
+
 const ROAD_INFO = {
 	ROAD_CLEAR: "Clear roads",
 	ROAD_ROAD: "Build roads",
