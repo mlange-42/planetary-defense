@@ -10,9 +10,9 @@ func _init(m: MessageManager.Message):
 
 
 func _ready():
-	var button = Button.new()
-	button.size_flags_vertical = 0
-	button.icon = preload("res://assets/icons/menu/goto_16px.svg")
+	var button = TextureButton.new()
+	button.size_flags_vertical = SIZE_SHRINK_CENTER
+	button.texture_normal = Consts.MESSAGE_ICONS[message.message_type]
 	button.hint_tooltip = "Go to message location"
 	button.connect("pressed", self, "_on_button_pressed")
 	
@@ -21,13 +21,9 @@ func _ready():
 	var message_label = RichTextLabel.new()
 	message_label.fit_content_height = true
 	message_label.size_flags_horizontal = SIZE_FILL | SIZE_EXPAND
+	message_label.size_flags_vertical = SIZE_SHRINK_END
 	message_label.bbcode_enabled = true
 	message_label.bbcode_text = message.text
-	
-	if message.message_type == Consts.MESSAGE_WARNING:
-		message_label.self_modulate = Color.yellow
-	elif message.message_type == Consts.MESSAGE_ERROR:
-		message_label.self_modulate = Color.orange
 	
 	var vbox = VBoxContainer.new()
 	vbox.alignment = ALIGN_CENTER

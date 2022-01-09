@@ -36,7 +36,7 @@ func post_update():
 			var name = facility.name if facility is City else facility.type
 			var miss_text: String = "%s" % facility.get_missing_supply()
 			miss_text = miss_text.substr(1, miss_text.length()-2)
-			planet.messages.add_message(facility.node_id, "[u]%s[/u] not supplied.\n  Missing: %s" % [name, miss_text], Consts.MESSAGE_WARNING)
+			planet.messages.add_message(facility.node_id, "[u]%s[/u] not supplied\n  Missing: %s" % [name, miss_text], Consts.MESSAGE_WARNING)
 	
 	migrate(attractiveness)
 
@@ -137,7 +137,7 @@ func post_update_city(city: City) -> float:
 					var realized_amount = planet.resources.extract_resource(node, extract_resource, amount)
 					comm_produced[comm] -= realized_amount
 					if not planet.resources.has_resource(node, extract_resource):
-						planet.messages.add_message(node, "%s depleted in %s" % [Resources.RES_NAMES[extract_resource], city.name], Consts.MESSAGE_ERROR)
+						planet.messages.add_message(node, "%s depleted in %s" % [Resources.RES_NAMES[extract_resource], city.name], Consts.MESSAGE_WARNING)
 	
 	var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
 	var demand = Cities.products_demand(city.population())

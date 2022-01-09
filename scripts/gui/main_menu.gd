@@ -21,7 +21,6 @@ var files: Array
 onready var settings: GameSettings = get_node("/root/Settings")
 
 func _ready():
-	print(settings)
 	load_options()
 	OS.window_fullscreen = settings.fullscreen
 	
