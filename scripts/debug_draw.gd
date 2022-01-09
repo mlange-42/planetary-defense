@@ -6,14 +6,19 @@ func clear_all():
 	clear()
 
 
-func draw_path(points: Array, color: Color):
+func draw_path(points: Array, max_length: int, color1: Color, color2: Color):
 	clear()
 	begin(Mesh.PRIMITIVE_LINE_STRIP)
 	
-	set_color(color)
+	set_color(color1)
 	
+	var length: int = 0
 	for p in points:
 		add_vertex(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized())
+		if length == max_length:
+			set_color(color2)
+			add_vertex(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized())
+		length += 1
 	
 	end()
 
