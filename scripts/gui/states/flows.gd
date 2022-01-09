@@ -11,9 +11,9 @@ onready var max_color_button: ColorPickerButton = find_node("MaxColorButton")
 
 func _ready():
 	for comm in Commodities.COMM_ALL:
-		comm_list.add_item("", load(Commodities.COMM_ICONS[comm]))
+		comm_list.add_item("", Commodities.COMM_ICONS[comm])
 	
-	comm_list.add_item("", load(Commodities.COMM_ICON_ALL))
+	comm_list.add_item("", Commodities.COMM_ICON_ALL)
 	
 	comm_list.select(0)
 	comm_list.grab_focus()

@@ -6,7 +6,7 @@ var land_use: int
 func _ready():
 	self.toggle_mode = true
 	
-	self.icon = load(LandUse.LU_ICONS[land_use])
+	self.icon = LandUse.LU_ICONS[land_use]
 	
 	var text = "%s\n %s\n Maintenance: %d\n Workers: %d" \
 		% [

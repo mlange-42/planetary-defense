@@ -6,7 +6,7 @@ var mode: int
 func _ready():
 	self.toggle_mode = true
 	
-	self.icon = load(Roads.ROAD_ICONS[mode])
+	self.icon = Roads.ROAD_ICONS[mode]
 	
 	var text = "%s\n Costs: %d, Maintenance: %f" \
 		% [
