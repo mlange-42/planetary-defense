@@ -59,11 +59,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/city_names.gd"
 }, {
-"base": "Control",
-"class": "CityProductionInfo",
-"language": "GDScript",
-"path": "res://scripts/gui/states/city/city_production_info.gd"
-}, {
 "base": "Reference",
 "class": "Commodities",
 "language": "GDScript",
@@ -264,11 +259,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/port.gd"
 }, {
-"base": "Control",
-"class": "ProductionInfo",
-"language": "GDScript",
-"path": "res://scripts/gui/states/flows/production_info.gd"
-}, {
 "base": "GuiState",
 "class": "QuitDialog",
 "language": "GDScript",
@@ -350,7 +340,6 @@ _global_script_class_icons={
 "City": "",
 "CityManager": "",
 "CityNames": "",
-"CityProductionInfo": "",
 "Commodities": "",
 "CommodityStats": "",
 "Consts": "",
@@ -391,7 +380,6 @@ _global_script_class_icons={
 "PlanetGenerator": "",
 "PlanetSettings": "",
 "Port": "",
-"ProductionInfo": "",
 "QuitDialog": "",
 "RangeIndicator": "",
 "ResourceManager": "",
