@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/default.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
-[ext_resource path="res://assets/styles/stylebox_flat.stylebox" type="StyleBox" id=3]
+[ext_resource path="res://scenes/gui/controls/error_panel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/gui/controls/messages.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/gui/controls/stats_bar.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/icons/menu/main_menu.svg" type="Texture" id=6]
@@ -112,31 +112,18 @@ icon = ExtResource( 9 )
 
 [node name="ErrorContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
-anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = -24.0
-margin_right = 20.0
-margin_bottom = -6.0
+margin_left = -54.0
+margin_top = 46.0
+margin_right = 54.0
+margin_bottom = 28.0
 grow_horizontal = 2
-grow_vertical = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ErrorPanel" type="PanelContainer" parent="ErrorContainer"]
-margin_right = 40.0
-margin_bottom = 20.0
-custom_styles/panel = ExtResource( 3 )
-
-[node name="ErrorLabel" type="Label" parent="ErrorContainer/ErrorPanel"]
-self_modulate = Color( 1, 0.823529, 0.588235, 1 )
-margin_left = 4.0
-margin_top = 2.0
-margin_right = 36.0
-margin_bottom = 18.0
-text = "Test"
+[node name="ErrorPanel" parent="ErrorContainer" instance=ExtResource( 3 )]
+margin_bottom = 32.0
 
 [node name="ErrorTimer" type="Timer" parent="."]
 wait_time = 5.0

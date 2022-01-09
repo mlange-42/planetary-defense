@@ -10,6 +10,12 @@ const MESSAGE_INFO: int = 0
 const MESSAGE_WARNING: int = 1
 const MESSAGE_ERROR: int = 2
 
+const MESSAGE_ICONS = {
+	MESSAGE_INFO: preload("res://assets/icons/menu/info.svg"),
+	MESSAGE_WARNING: preload("res://assets/icons/menu/warning.svg"),
+	MESSAGE_ERROR: preload("res://assets/icons/menu/error.svg"),
+}
+
 const SAVEGAME_DIR = "save"
 const CONFIG_DIR = "config"
 
