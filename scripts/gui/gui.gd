@@ -15,7 +15,8 @@ onready var info_tabs: TabContainer = find_node("InfoTabs")
 onready var inspect_button: Button = find_node("Inspect")
 
 onready var error_container = $ErrorContainer
-onready var error_label = find_node("ErrorLabel")
+onready var error_panel: ErrorPanel = $ErrorContainer/ErrorPanel
+
 onready var error_timer = find_node("ErrorTimer")
 
 var planet: Planet
@@ -168,12 +169,7 @@ func save_game():
 
 
 func show_message(message: String, message_level: int):
-	match message_level:
-		Consts.MESSAGE_INFO: error_label.self_modulate = Color.white
-		Consts.MESSAGE_WARNING: error_label.self_modulate = Color.yellow
-		_: error_label.self_modulate = Color.orange
-	
-	error_label.text = message
+	error_panel.set_message(message, message_level)
 	error_container.visible = true
 	error_timer.start()
 
