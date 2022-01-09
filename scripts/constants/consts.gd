@@ -1,5 +1,7 @@
 class_name Consts
 
+const DEFAULT_VIEWPORT_HEIGHT: int = 720
+
 const INITIAL_BUDGET: int = 350
 
 const TRANSPORT_COST_1000: int = 25

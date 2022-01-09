@@ -22,7 +22,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="Pole" type="CSGBox"]
+[node name="CitySign" type="CSGBox"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.075 )
 layers = 2
 width = 0.015
