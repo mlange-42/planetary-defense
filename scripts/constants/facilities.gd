@@ -21,10 +21,10 @@ const FACILITY_POINTERS = {
 }
 
 const FACILITY_ICONS = {
-	FAC_CITY: "res://assets/icons/facilities/city.svg",
-	FAC_PORT: "res://assets/icons/facilities/port.svg",
-	FAC_AIR_DEFENSE: "res://assets/icons/facilities/air_defense.svg",
-#	FAC_MISSILE_BASE: "res://assets/icons/gui/missile_base.svg",
+	FAC_CITY: preload("res://assets/icons/facilities/city.svg"),
+	FAC_PORT: preload("res://assets/icons/facilities/port.svg"),
+	FAC_AIR_DEFENSE: preload("res://assets/icons/facilities/air_defense.svg"),
+#	FAC_MISSILE_BASE: preload("res://assets/icons/gui/missile_base.svg",
 }
 
 const FACILITY_INFO = {

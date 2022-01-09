@@ -10,7 +10,7 @@ onready var demand: Label = find_node("Demand")
 
 func _ready():
 	icon.hint_tooltip = commodity
-	icon.texture = load(Commodities.COMM_ICONS[commodity])
+	icon.texture = Commodities.COMM_ICONS[commodity]
 
 
 func set_values(source: int, sent: int, received: int, sink: int):
