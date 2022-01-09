@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/objects/city.gd" type="Script" id=1]
-[ext_resource path="res://assets/materials/gradient/alpha_red.tres" type="Material" id=2]
+[ext_resource path="res://assets/materials/indicators/range_city.tres" type="Material" id=2]
 [ext_resource path="res://scenes/objects/signs/city_sign.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/geom/city.escn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/objects/range_indicator.gd" type="Script" id=5]
