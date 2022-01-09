@@ -10,6 +10,8 @@ onready var messages: MessageWindow = find_node("MessageWindow")
 onready var land_use_info: LandUseInfo = find_node("LandUseInfo")
 onready var facility_info: FacilityInfo = find_node("FacilityInfo")
 
+onready var inspect_button: Button = find_node("Inspect")
+
 onready var error_container = $ErrorContainer
 onready var error_label = find_node("ErrorLabel")
 onready var error_timer = find_node("ErrorTimer")
@@ -41,8 +43,6 @@ func _unhandled_key_input(event: InputEventKey):
 			save_game()
 		elif event.scancode == KEY_Q and event.control and not event.shift:
 			get_tree().notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST)
-		elif event.scancode == KEY_ESCAPE:
-			messages.visible = false
 
 
 func on_planet_entered(node: int):
@@ -123,6 +123,9 @@ func pop():
 	var new_state = state()
 	self.add_child(new_state)
 	new_state.state_entered()
+	
+	if states.size() == 1:
+		inspect_button.pressed = true
 
 
 func pop_all():
