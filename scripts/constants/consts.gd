@@ -16,6 +16,12 @@ const MESSAGE_ICONS = {
 	MESSAGE_ERROR: preload("res://assets/icons/menu/error.svg"),
 }
 
+const MESSAGE_ICONS_LARGE = {
+	MESSAGE_INFO: preload("res://assets/icons/menu/info_48px.svg"),
+	MESSAGE_WARNING: preload("res://assets/icons/menu/warning_48px.svg"),
+	MESSAGE_ERROR: preload("res://assets/icons/menu/error_48px.svg"),
+}
+
 const SAVEGAME_DIR = "save"
 const CONFIG_DIR = "config"
 
