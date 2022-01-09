@@ -177,13 +177,13 @@ func _update_range(node: int, new_radius: int):
 		indicator.translation = pos
 		indicator.look_at(2 * pos, Vector3.UP)
 		
-		_draw_range(node)
+		_draw_range(node, new_radius)
 	
 	radius = new_radius
 
 
-func _draw_range(center: int):	
-	indicator.draw_range(fsm.planet.planet_data, center, cells, radius, Color.white)
+func _draw_range(center: int, new_radius):
+	indicator.draw_range(fsm.planet.planet_data, center, cells, new_radius, Color.white)
 	indicator.visible = true
 
 
