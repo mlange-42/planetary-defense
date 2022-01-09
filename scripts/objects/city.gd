@@ -158,13 +158,13 @@ func update_visuals(planet_data):
 	var demand_prod = sinks.get(Commodities.COMM_PRODUCTS, 0)
 	
 	if flows_food[1] < demand_food:
-		city_sign.set_color(Color.red)
+		city_sign.set_warning_level(Consts.MESSAGE_ERROR)
 	elif flows_prod[1] == 0 && demand_prod > 0:
-		city_sign.set_color(Color.orangered)
+		city_sign.set_warning_level(Consts.MESSAGE_ERROR)
 	elif flows_prod[1] < demand_prod:
-		city_sign.set_color(Color.yellow)
+		city_sign.set_warning_level(Consts.MESSAGE_WARNING)
 	else:
-		city_sign.set_color(Color.white)
+		city_sign.set_warning_level(Consts.MESSAGE_INFO)
 	
 	_draw_borders(planet_data)
 

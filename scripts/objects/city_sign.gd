@@ -2,11 +2,12 @@ extends Spatial
 
 
 export var size: float = 0.1
-export var default_pixel_size: float = 0.005
+export var default_pixel_size: float = 0.0055
 
 onready var sprite: Sprite3D = $Sprite3D
 onready var label_panel: Control = $Sprite3D/Viewport/Label
-onready var label: Control = $Sprite3D/Viewport/Label/Label
+onready var icon: TextureRect = $Sprite3D/Viewport/Label/Container/Icon
+onready var label: Control = $Sprite3D/Viewport/Label/Container/Label
 
 
 func _ready():
@@ -33,5 +34,9 @@ func set_text(text: String):
 	label.text = text
 	label_panel.rect_size = Vector2(0, 0)
 
-func set_color(color: Color):
-	label_panel.self_modulate = color
+func set_warning_level(level: int):
+	if level > Consts.MESSAGE_INFO:
+		icon.texture = Consts.MESSAGE_ICONS_LARGE[level]
+		icon.visible = true
+	else:
+		icon.visible = false

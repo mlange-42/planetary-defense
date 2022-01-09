@@ -5,7 +5,7 @@ export var animation: String = "TurretAction"
 
 var radius: int
 
-onready var warning = $Warning
+onready var warning = $Error
 onready var range_indicator: RangeIndicator = $RangeIndicator
 onready var anim_player: AnimationPlayer = $air_defense/AnimationPlayer
 
