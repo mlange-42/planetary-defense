@@ -12,33 +12,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Controls" type="VBoxContainer" parent="."]
-margin_right = 148.0
-margin_bottom = 70.0
-mouse_filter = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="Controls"]
+[node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 148.0
 margin_bottom = 42.0
 
-[node name="Buttons" type="VBoxContainer" parent="Controls/PanelContainer"]
+[node name="Buttons" type="VBoxContainer" parent="PanelContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
 margin_bottom = 38.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Controls/PanelContainer/Buttons"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/Buttons"]
 margin_right = 140.0
 margin_bottom = 26.0
 
-[node name="CityName" type="LineEdit" parent="Controls/PanelContainer/Buttons/HBoxContainer"]
+[node name="CityName" type="LineEdit" parent="PanelContainer/Buttons/HBoxContainer"]
 margin_right = 116.0
 margin_bottom = 26.0
 hint_tooltip = "Name for the new city (required)"
 size_flags_horizontal = 3
 placeholder_text = "City name"
 
-[node name="RandomNameButton" type="Button" parent="Controls/PanelContainer/Buttons/HBoxContainer"]
+[node name="RandomNameButton" type="Button" parent="PanelContainer/Buttons/HBoxContainer"]
 margin_left = 120.0
 margin_right = 140.0
 margin_bottom = 26.0
@@ -47,29 +42,16 @@ hint_tooltip = "Random name"
 shortcut = ExtResource( 2 )
 text = "R"
 
-[node name="BuildButtons" type="GridContainer" parent="Controls/PanelContainer/Buttons"]
+[node name="BuildButtons" type="GridContainer" parent="PanelContainer/Buttons"]
 margin_top = 30.0
 margin_right = 140.0
 margin_bottom = 30.0
 columns = 4
 
-[node name="RoadButtons" type="GridContainer" parent="Controls/PanelContainer/Buttons"]
+[node name="RoadButtons" type="GridContainer" parent="PanelContainer/Buttons"]
 margin_top = 34.0
 margin_right = 140.0
 margin_bottom = 34.0
 columns = 4
 
-[node name="VegContainer" type="PanelContainer" parent="Controls"]
-margin_top = 46.0
-margin_right = 148.0
-margin_bottom = 70.0
-
-[node name="VegetationLabel" type="Label" parent="Controls/VegContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 144.0
-margin_bottom = 20.0
-text = "Space"
-clip_text = true
-
-[connection signal="pressed" from="Controls/PanelContainer/Buttons/HBoxContainer/RandomNameButton" to="." method="set_random_name"]
+[connection signal="pressed" from="PanelContainer/Buttons/HBoxContainer/RandomNameButton" to="." method="set_random_name"]
