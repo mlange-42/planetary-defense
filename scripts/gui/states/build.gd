@@ -4,7 +4,6 @@ class_name BuildState
 var names = CityNames.GERMAN
 
 onready var name_edit: LineEdit = find_node("CityName")
-onready var veg_label: Label = find_node("VegetationLabel")
 
 var indicator: RangeIndicator
 
@@ -96,12 +95,10 @@ func on_planet_entered(_node: int):
 
 func on_planet_exited():
 	indicator.visible = false
-	veg_label.text = fsm.get_node_info(-1)
 	fsm.planet.clear_path()
 
 func on_planet_hovered(node: int):
-	current_node = node
-	veg_label.text = fsm.get_node_info(node)
+	self.current_node = node
 	
 	var curr_tool = get_facility_tool()
 	if curr_tool != null:

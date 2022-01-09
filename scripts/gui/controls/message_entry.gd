@@ -12,7 +12,7 @@ func _init(m: MessageManager.Message):
 func _ready():
 	var button = Button.new()
 	button.size_flags_vertical = 0
-	button.text = "->"
+	button.icon = preload("res://assets/icons/menu/goto_16px.svg")
 	button.hint_tooltip = "Go to message location"
 	button.connect("pressed", self, "_on_button_pressed")
 	
