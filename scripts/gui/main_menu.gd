@@ -18,15 +18,13 @@ onready var options: GameOptions = find_node("Options")
 
 var files: Array
 
-var graphics_settings: Dictionary = {}
-
-
-func _init():
-	load_options()
-	OS.window_fullscreen = graphics_settings.get("fullscreen", false)
-
+onready var settings: GameSettings = get_node("/root/Settings")
 
 func _ready():
+	print(settings)
+	load_options()
+	OS.window_fullscreen = settings.fullscreen
+	
 	name_edit.grab_focus()
 	
 	files = list_saved_games()
@@ -71,13 +69,13 @@ func _on_QuitButton_pressed():
 
 
 func _on_OptionsButton_pressed():
-	options.set_options(graphics_settings)
+	options.set_options(settings)
 	options.visible = true
 
 
 func _on_options_confirmed():
 	save_options()
-	OS.window_fullscreen = graphics_settings.get("fullscreen", false)
+	OS.window_fullscreen = settings.fullscreen
 	options.visible = false
 
 
@@ -147,22 +145,8 @@ func list_saved_games():
 
 
 func save_options():
-	var config = ConfigFile.new()
-	config.set_value("Graphics", "settings", graphics_settings)
-	
-	FileUtil.create_user_dir(Consts.CONFIG_DIR)
-	
-	config.save("user://%s/options.cfg" % Consts.CONFIG_DIR)
+	settings.save(null)
 
 
 func load_options():
-	var config = ConfigFile.new()
-	var err = config.load("user://%s/options.cfg" % Consts.CONFIG_DIR)
-	
-	if err == OK:
-		graphics_settings = config.get_value("Graphics", "settings")
-	else:
-		graphics_settings = {
-			"fullscreen": false
-		}
-		save_options()
+	settings.read(null)
