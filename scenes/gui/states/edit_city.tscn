@@ -32,56 +32,52 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Buttons" type="VBoxContainer" parent="Margin/EditControls"]
+[node name="BuildPanel" type="PanelContainer" parent="Margin/EditControls"]
 margin_right = 148.0
 margin_bottom = 108.0
 
-[node name="LuPanel" type="PanelContainer" parent="Margin/EditControls/Buttons"]
-margin_right = 148.0
-margin_bottom = 108.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Margin/EditControls/Buttons/LuPanel"]
+[node name="BuildControls" type="VBoxContainer" parent="Margin/EditControls/BuildPanel"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
 margin_bottom = 104.0
 
-[node name="LandUse" type="Label" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+[node name="LandUse" type="Label" parent="Margin/EditControls/BuildPanel/BuildControls"]
 margin_right = 140.0
 margin_bottom = 16.0
 text = "Land use"
 
-[node name="LuButtons" type="GridContainer" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+[node name="LuButtons" type="GridContainer" parent="Margin/EditControls/BuildPanel/BuildControls"]
 margin_top = 20.0
 margin_right = 140.0
 margin_bottom = 20.0
 columns = 4
 
-[node name="Facilities" type="Label" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+[node name="Facilities" type="Label" parent="Margin/EditControls/BuildPanel/BuildControls"]
 margin_top = 24.0
 margin_right = 140.0
 margin_bottom = 40.0
 text = "Facilities"
 
-[node name="FacilityButtons" type="GridContainer" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+[node name="FacilityButtons" type="GridContainer" parent="Margin/EditControls/BuildPanel/BuildControls"]
 margin_top = 44.0
 margin_right = 140.0
 margin_bottom = 44.0
 columns = 4
 
-[node name="Promote" type="Label" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+[node name="Promote" type="Label" parent="Margin/EditControls/BuildPanel/BuildControls"]
 margin_top = 48.0
 margin_right = 140.0
 margin_bottom = 64.0
 text = "Promote"
 
-[node name="PromoteButtons" type="GridContainer" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer"]
+[node name="PromoteButtons" type="GridContainer" parent="Margin/EditControls/BuildPanel/BuildControls"]
 margin_top = 68.0
 margin_right = 140.0
 margin_bottom = 100.0
 columns = 4
 
-[node name="GrowButton" type="Button" parent="Margin/EditControls/Buttons/LuPanel/VBoxContainer/PromoteButtons"]
+[node name="GrowButton" type="Button" parent="Margin/EditControls/BuildPanel/BuildControls/PromoteButtons"]
 margin_right = 32.0
 margin_bottom = 32.0
 icon = ExtResource( 2 )
@@ -156,7 +152,7 @@ margin_right = 140.0
 margin_bottom = 192.0
 align = 1
 
-[connection signal="pressed" from="Margin/EditControls/Buttons/LuPanel/VBoxContainer/PromoteButtons/GrowButton" to="." method="_on_GrowButton_pressed"]
+[connection signal="pressed" from="Margin/EditControls/BuildPanel/BuildControls/PromoteButtons/GrowButton" to="." method="_on_GrowButton_pressed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/FoodSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/ProductsSlider" to="." method="_on_weights_changed"]

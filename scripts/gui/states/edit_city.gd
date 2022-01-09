@@ -2,12 +2,12 @@ extends GuiState
 class_name EditCityState
 
 onready var sliders = {
-	Commodities.COMM_ALL[0]: $Margin/EditControls/WeightPanel/WeightControls/FoodSlider,
-	Commodities.COMM_ALL[1]: $Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider,
-	Commodities.COMM_ALL[2]: $Margin/EditControls/WeightPanel/WeightControls/ProductsSlider,
+	Commodities.COMM_ALL[0]: find_node("FoodSlider"),
+	Commodities.COMM_ALL[1]: find_node("ResourcesSlider"),
+	Commodities.COMM_ALL[2]: find_node("ProductsSlider"),
 }
-onready var auto_assign: CheckBox = $Margin/EditControls/WeightPanel/WeightControls/AutoAssignCheckBox
-onready var weights_display: Label = $Margin/EditControls/WeightPanel/WeightControls/WeightsDisplay
+onready var auto_assign: CheckBox = find_node("AutoAssignCheckBox")
+onready var weights_display: Label = find_node("WeightsDisplay")
 
 onready var grow_button: Button = find_node("GrowButton") 
 
