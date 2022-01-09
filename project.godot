@@ -59,11 +59,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/city_names.gd"
 }, {
-"base": "Control",
-"class": "CityProductionInfo",
-"language": "GDScript",
-"path": "res://scripts/gui/states/city/city_production_info.gd"
-}, {
 "base": "Reference",
 "class": "Commodities",
 "language": "GDScript",
@@ -118,6 +113,11 @@ _global_script_classes=[ {
 "class": "FacilityButton",
 "language": "GDScript",
 "path": "res://scripts/gui/controls/facility_button.gd"
+}, {
+"base": "Control",
+"class": "FacilityInfo",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/facility_info.gd"
 }, {
 "base": "Reference",
 "class": "FileUtil",
@@ -184,6 +184,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/gui/controls/land_use_button.gd"
 }, {
+"base": "VBoxContainer",
+"class": "LandUseEntry",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/land_use_entry.gd"
+}, {
+"base": "Control",
+"class": "LandUseInfo",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/land_use_info.gd"
+}, {
 "base": "Spatial",
 "class": "LandUseNode",
 "language": "GDScript",
@@ -249,11 +259,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/port.gd"
 }, {
-"base": "Control",
-"class": "ProductionInfo",
-"language": "GDScript",
-"path": "res://scripts/gui/states/flows/production_info.gd"
-}, {
 "base": "GuiState",
 "class": "QuitDialog",
 "language": "GDScript",
@@ -318,6 +323,11 @@ _global_script_classes=[ {
 "class": "UvSphere",
 "language": "GDScript",
 "path": "res://scripts/geom/uv_sphere.gd"
+}, {
+"base": "Control",
+"class": "VisibilityButtons",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/visibility_buttons.gd"
 } ]
 _global_script_class_icons={
 "AirAttack": "",
@@ -330,7 +340,6 @@ _global_script_class_icons={
 "City": "",
 "CityManager": "",
 "CityNames": "",
-"CityProductionInfo": "",
 "Commodities": "",
 "CommodityStats": "",
 "Consts": "",
@@ -342,6 +351,7 @@ _global_script_class_icons={
 "Facilities": "",
 "Facility": "",
 "FacilityButton": "",
+"FacilityInfo": "",
 "FileUtil": "",
 "FlowGraphs": "",
 "FlowManager": "",
@@ -355,6 +365,8 @@ _global_script_class_icons={
 "IcoSphere": "",
 "LandUse": "",
 "LandUseButton": "",
+"LandUseEntry": "",
+"LandUseInfo": "",
 "LandUseNode": "",
 "MessageEntry": "",
 "MessageManager": "",
@@ -368,7 +380,6 @@ _global_script_class_icons={
 "PlanetGenerator": "",
 "PlanetSettings": "",
 "Port": "",
-"ProductionInfo": "",
 "QuitDialog": "",
 "RangeIndicator": "",
 "ResourceManager": "",
@@ -381,7 +392,8 @@ _global_script_class_icons={
 "StatsManager": "",
 "StoryManager": "",
 "TaxManager": "",
-"UvSphere": ""
+"UvSphere": "",
+"VisibilityButtons": ""
 }
 
 [application]

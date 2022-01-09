@@ -7,6 +7,8 @@ onready var constants: LandUse = $"/root/VegetationLandUse"
 
 onready var stats_bar: StatsBar = $StatsBar
 onready var messages: MessageWindow = find_node("MessageWindow")
+onready var land_use_info: LandUseInfo = find_node("LandUseInfo")
+onready var facility_info: FacilityInfo = find_node("FacilityInfo")
 
 onready var error_container = $ErrorContainer
 onready var error_label = find_node("ErrorLabel")
@@ -47,9 +49,13 @@ func on_planet_entered(node: int):
 	state().on_planet_entered(node)
 	
 func on_planet_exited():
+	update_land_use_info(-1)
+	update_facility_info(-1)
 	state().on_planet_exited()
 
 func on_planet_hovered(node: int):
+	update_land_use_info(node)
+	update_facility_info(node)
 	state().on_planet_hovered(node)
 
 
@@ -65,6 +71,17 @@ func update_messages(set_visible: bool):
 	messages.update_messages(planet.messages)
 	if set_visible and not planet.messages.messages.empty():
 		messages.visible = true
+
+
+func update_land_use_info(node: int):
+	land_use_info.update_info(planet, constants, node)
+
+
+func update_facility_info(node):
+	if planet.roads.has_facility(node):
+		facility_info.update_info(planet.roads.get_facility(node))
+	else:
+		facility_info.update_info(null)
 
 
 func _on_Messages_go_to_pressed(message):

@@ -13,7 +13,10 @@ func _ready():
 	icon.texture = load(Commodities.COMM_ICONS[commodity])
 
 
-func set_values(source: int, moved: int, sink: int):
+func set_values(source: int, sent: int, received: int, sink: int):
 	supply.text = str(source)
-	production.text = str(moved)
+	if sent < 0:
+		production.text = str(received)
+	else:
+		production.text = "%d/%d" % [sent, received]
 	demand.text = str(sink)

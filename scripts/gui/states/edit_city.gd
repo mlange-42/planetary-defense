@@ -1,9 +1,6 @@
 extends GuiState
 class_name EditCityState
 
-onready var city_text: RichTextLabel = find_node("CityText")
-onready var node_text: RichTextLabel = $InfoContainer/VBoxContainer/NodePanel/NodeText
-
 onready var sliders = {
 	Commodities.COMM_ALL[0]: $Margin/EditControls/WeightPanel/WeightControls/FoodSlider,
 	Commodities.COMM_ALL[1]: $Margin/EditControls/WeightPanel/WeightControls/ResourcesSlider,
@@ -13,8 +10,6 @@ onready var auto_assign: CheckBox = $Margin/EditControls/WeightPanel/WeightContr
 onready var weights_display: Label = $Margin/EditControls/WeightPanel/WeightControls/WeightsDisplay
 
 onready var grow_button: Button = find_node("GrowButton") 
-
-onready var container: Container = find_node("CityInfoContainer")
 
 var pointer_offset = -0.03
 var indicator: RangeIndicator
@@ -92,14 +87,6 @@ func set_city(node):
 	update_range()
 
 
-func _ready():
-	for comm in Commodities.COMM_ALL:
-		var info: CityProductionInfo = preload("res://scenes/gui/states/city/city_production_info.tscn").instance()
-		info.set_commodity(comm)
-		infos[comm] = info
-		container.add_child(info)
-
-
 func state_entered():
 	auto_assign.pressed = city.auto_assign_workers
 	for i in range(city.commodity_weights.size()):
@@ -120,63 +107,12 @@ func on_next_turn():
 
 
 func update_city_info():
-	city_text.text = "%s (%d/%d workers)" % [city.name, city.workers(), city.population()]
-	for comm in Commodities.COMM_ALL:
-		var flows = city.flows.get(comm, [0, 0])
-		var pot_source = 0
-		for key in city.conversions:
-			if key[1] == comm:
-				var conv = city.conversions[key]
-				pot_source += city.sinks.get(key[0], 0) * conv[1] / conv[0]
-		
-		infos[comm].set_values(city.sources.get(comm, 0) + pot_source, flows[0], flows[1], city.sinks.get(comm, 0))
-	
 	grow_button.hint_tooltip = "Grow city radius.\n Cost: %d\n Maintenance: %d->%d" \
 			% [Cities.city_growth_cost(city.radius), Cities.city_maintenance(city.radius), Cities.city_maintenance(city.radius + 1)]
 
 
 func update_range():
 	indicator.draw_range(fsm.planet.planet_data, city.node_id, city.cells, city.radius, Color.white)
-
-
-func update_node_info(node: int):
-	if node < 0:
-		node_text.bbcode_text = ""
-		return
-	
-	var lu_here = city.land_use.get(node, 0)
-	var veg = fsm.planet.planet_data.get_node(node).vegetation_type
-	var res_here = fsm.planet.resources.resources.get(node, null)
-	
-	var res_str = "" if res_here == null else (" - %s (%s)" % [Resources.RES_NAMES[res_here[0]], res_here[1]])
-	
-	var text: String = "%s%s\n" % [LandUse.VEG_NAMES[veg], res_str]
-	for lut in fsm.constants.LU_MAPPING:
-		var lu: Dictionary = fsm.constants.LU_MAPPING[lut]
-		if veg in lu:
-			if lu[veg] == null:
-				continue
-			var prod: LandUse.VegLandUse = lu[veg]
-			var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
-			var line = " %-10s%s" % [LandUse.LU_NAMES[lut], prod_string]
-			if lut == lu_here:
-				line = "[u]%s[/u]" % line
-			text += line + "\n"
-	
-	if res_here != null:
-		var res_id = res_here[0]
-		for lut in fsm.constants.LU_RESOURCES:
-			var res: Dictionary = fsm.constants.LU_RESOURCES[lut]
-			var lu: Dictionary = fsm.constants.LU_MAPPING[lut]
-			if res.has(res_here[0]) and lu.has(veg):
-				var prod: LandUse.VegLandUse = res[res_id]
-				var prod_string = "" if prod.source == null else (" %2d %s" % [prod.source.amount, prod.source.commodity])
-				var line = " %-10s%s" % [LandUse.LU_NAMES[lut], prod_string]
-				if lut == lu_here:
-					line = "[u]%s[/u]" % line
-				text += line + "\n"
-	
-	node_text.bbcode_text = text.substr(0, text.length()-1)
 
 
 func update_weights_display():
@@ -272,12 +208,12 @@ func on_planet_exited():
 
 func on_planet_hovered(node: int):
 	if not node in city.cells:
-		update_node_info(-1)
+		#fsm.update_land_use_info(-1)
 		pointer.visible = false
 		selected_node = -1
 		return
 	
-	update_node_info(node)
+	#fsm.update_land_use_info(node)
 	pointer.visible = true
 	selected_node = node
 	move_pointer(node)

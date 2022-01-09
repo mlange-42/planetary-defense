@@ -95,14 +95,14 @@ const LU_SCENES = {
 }
 
 const LU_ICONS = {
-	LU_NONE: "res://assets/icons/gui/clear.svg",
-	LU_CROPS: "res://assets/icons/gui/crops.svg",
-	LU_FOREST: "res://assets/icons/gui/forest.svg",
-	LU_FISHERY: "res://assets/icons/gui/fishery.svg",
-	LU_FACTORY: "res://assets/icons/gui/factory.svg",
-	LU_MINES: "res://assets/icons/gui/mines.svg",
-	LU_OIL_RIG: "res://assets/icons/gui/oil_rig.svg",
-	LU_OIL_WELL: "res://assets/icons/gui/oil_well.svg",
+	LU_NONE: "res://assets/icons/land_use/clear.svg",
+	LU_CROPS: "res://assets/icons/land_use/crops.svg",
+	LU_FOREST: "res://assets/icons/land_use/forest.svg",
+	LU_FISHERY: "res://assets/icons/land_use/fishery.svg",
+	LU_FACTORY: "res://assets/icons/land_use/factory.svg",
+	LU_MINES: "res://assets/icons/land_use/mines.svg",
+	LU_OIL_RIG: "res://assets/icons/land_use/oil_rig.svg",
+	LU_OIL_WELL: "res://assets/icons/land_use/oil_well.svg",
 }
 
 const LU_NAMES = {

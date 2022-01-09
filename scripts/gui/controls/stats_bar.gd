@@ -40,7 +40,7 @@ func update_commodities(planet: Planet):
 	for comm in Commodities.COMM_ALL:
 		var info = infos[comm]
 		var f = planet.roads.total_flows.get(comm, 0)
-		info.set_values(planet.roads.total_sources.get(comm, 0), f, planet.roads.total_sinks.get(comm, 0))
+		info.set_values(planet.roads.total_sources.get(comm, 0), -1, f, planet.roads.total_sinks.get(comm, 0))
 
 
 func _on_NextTurnButton_pressed():
