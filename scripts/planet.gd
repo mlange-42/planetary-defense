@@ -278,10 +278,10 @@ func calc_id_path(from: int, to: int) -> Array:
 	return path
 
 
-func draw_path(from: int, to: int) -> Array:
+func draw_path(from: int, to: int, max_length: int) -> Array:
 	var path = calc_point_path(from, to)
 	if path.size() > 0:
-		path_debug.draw_path(path, Color.yellow)
+		path_debug.draw_path(path, max_length, Color.yellow, Color.magenta)
 		return path
 	
 	path_debug.clear()

@@ -109,7 +109,10 @@ func on_planet_hovered(node: int):
 		if curr_tool != null:
 			if road_start_point >= 0:
 				# warning-ignore:return_value_discarded
-				var path = fsm.planet.draw_path(road_start_point, node)
+				var cost = Roads.ROAD_COSTS[curr_tool]
+				var max_length = 9999 if cost == 0 else fsm.planet.taxes.budget / cost
+				var path = fsm.planet.draw_path(road_start_point, node, max_length)
+				# warning-ignore:narrowing_conversion
 				fsm.update_build_info(curr_tool, max(1, path.size() - 1))
 			else:
 				fsm.update_build_info(curr_tool, 1)
