@@ -6,8 +6,12 @@ onready var sliders = {
 	Commodities.COMM_ALL[1]: find_node("ResourcesSlider"),
 	Commodities.COMM_ALL[2]: find_node("ProductsSlider"),
 }
-onready var auto_assign: CheckBox = find_node("AutoAssignCheckBox")
-onready var weights_display: Label = find_node("WeightsDisplay")
+onready var weights = {
+	Commodities.COMM_ALL[0]: find_node("FoodWeight"),
+	Commodities.COMM_ALL[1]: find_node("ResourcesWeight"),
+	Commodities.COMM_ALL[2]: find_node("ProductsWeight"),
+}
+onready var auto_assign: Button = find_node("AutoAssign")
 
 onready var grow_button: Button = find_node("GrowButton") 
 
@@ -123,14 +127,9 @@ func update_weights_display():
 		values.append(v)
 		sum += v
 	
-	var text = ""
 	for i in range(values.size()):
 		var v = round(100 * ((values[i] / sum) if sum > 0 else (1.0 / values.size())))
-		text += "%d%%" % v
-		if i < values.size()-1:
-			text += "/"
-	
-	weights_display.text = text
+		weights[Commodities.COMM_ALL[i]].text = "%3d%%" % v
 
 
 func get_land_use_tool():
