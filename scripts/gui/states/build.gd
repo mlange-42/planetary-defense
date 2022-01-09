@@ -22,7 +22,7 @@ func _ready():
 	var road_buttons: Container = find_node("RoadButtons")
 	
 	indicator = RangeIndicator.new()
-	indicator.material_override = preload("res://assets/materials/gradient/alpha_white.tres")
+	indicator.material_override = Materials.RANGE_BUILD
 	fsm.planet.add_child(indicator)
 	
 	button_group = ButtonGroup.new()
