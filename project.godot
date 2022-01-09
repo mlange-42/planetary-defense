@@ -423,8 +423,8 @@ config/windows_native_icon="res://assets/icons/app/icon.ico"
 
 [autoload]
 
-VegetationLandUse="*res://scripts/constants/land_use.gd"
 Settings="*res://scripts/settings.gd"
+VegetationLandUse="*res://scripts/constants/land_use.gd"
 
 [debug]
 

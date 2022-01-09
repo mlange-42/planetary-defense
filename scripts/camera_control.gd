@@ -14,6 +14,8 @@ onready var arm: Spatial = $Arm
 onready var arm2: Spatial = $Arm/Arm2
 onready var camera: Camera = $Arm/Arm2/Camera
 
+onready var settings: GameSettings = get_node("/root/Settings")
+
 var dragging: bool = false
 var zoom_target: float
 var rotation_x_target: float
@@ -39,9 +41,9 @@ func _unhandled_input(event) -> void:
 		if event.button_index == BUTTON_RIGHT:
 			dragging = event.pressed
 		elif event.button_index == BUTTON_WHEEL_UP:
-			zoom_target = clamp(zoom_target * (1.0 + zoom_increment), min_height, max_height)
+			zoom(true)
 		elif event.button_index == BUTTON_WHEEL_DOWN:
-			zoom_target = clamp(zoom_target / (1.0 + zoom_increment), min_height, max_height)
+			zoom(false)
 	
 	var sens = camera.translation.z / float(planet_radius)
 	
@@ -49,6 +51,14 @@ func _unhandled_input(event) -> void:
 		rotation_y_target += -event.relative.x * sens * horizontal_sensitivity
 		rotation_x_target = clamp(rotation_x_target - event.relative.y * sens * vertical_sensitivity, 
 									deg2rad(-89), deg2rad(89))
+
+
+func zoom(wheel_up: bool):
+	var factor = (1.0 + zoom_increment)
+	if wheel_up == settings.invert_zoom:
+		factor = 1.0 / factor
+	
+	zoom_target = clamp(zoom_target * factor, min_height, max_height)
 
 
 func _process(delta):

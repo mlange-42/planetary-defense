@@ -14,6 +14,7 @@
 * Sky color transition to blue when zooming in
 * Independent visibility settings for city and defense ranges
 * Animated turret rotation for air defense
+* In-game options for fullscreen and zoom inversion
 
 ### Changed
 

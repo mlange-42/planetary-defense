@@ -18,14 +18,13 @@ onready var options: GameOptions = find_node("Options")
 
 var files: Array
 
-var settings: GameSettings = find_node("/root/Settings")
-
-func _init():
-	load_options()
-	OS.window_fullscreen = settings.fullscreen
-
+onready var settings: GameSettings = get_node("/root/Settings")
 
 func _ready():
+	print(settings)
+	load_options()
+	OS.window_fullscreen = settings.fullscreen
+	
 	name_edit.grab_focus()
 	
 	files = list_saved_games()
@@ -146,8 +145,8 @@ func list_saved_games():
 
 
 func save_options():
-	settings.save("user://%s/options.cfg" % Consts.CONFIG_DIR)
+	settings.save(null)
 
 
 func load_options():
-	settings.read("user://%s/options.cfg" % Consts.CONFIG_DIR)
+	settings.read(null)
