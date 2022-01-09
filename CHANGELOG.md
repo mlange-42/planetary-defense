@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### GUI Rework
+
+A complete GUI rework with the following enhancements:
+
+* Reworked, clearer layout
+* Icons instead of text where adequate
+* Most information now accessible in any GUI state (city stats, land use/vegetation information, production and finance stats)
+* All modes accessible from everywhere (e.g. jump directly from city management to build mode)
+
 ### Added
 
 * Cheat to schedule an attack on a city for the next turn
@@ -15,7 +24,8 @@
 * Independent visibility settings for city and defense ranges
 * Animated turret rotation for air defense
 * In-game options for fullscreen and zoom inversion
-* Indicate defense dupply by range color
+* Info panel to show possible land uses and facility/city stats, in any state, and build costs when building
+* Indicate defense supply by range color
 
 ### Changed
 
@@ -29,8 +39,11 @@
   * Let cities grow up to 5 without requiring products
 * Reduced maintenance costs for ports, air defense, roads and transport
 * Reduced basic city growth probability from 25% to 20%
+* City supply state indicated by icon instead of color
+* Message levels indicated by icon instead of color
 
 ### Bug fixes
 
 * No more flickering city labels [#51]
 * Cities now regrowth after complete wipe out [#119]
+* City settings are now applied when switching between cities directly [#157]
