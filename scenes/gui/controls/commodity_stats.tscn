@@ -33,52 +33,26 @@ valign = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="."]
 margin_left = 54.0
-margin_right = 82.0
+margin_right = 86.0
 margin_bottom = 32.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer2"]
-margin_right = 28.0
-margin_bottom = 16.0
-
-[node name="Label2" type="Label" parent="VBoxContainer2/HBoxContainer"]
-margin_right = 8.0
-margin_bottom = 16.0
-size_flags_horizontal = 3
-text = "+"
-align = 2
-valign = 1
-
-[node name="Supply" type="Label" parent="VBoxContainer2/HBoxContainer"]
-margin_left = 12.0
-margin_right = 28.0
+[node name="Supply" type="Label" parent="VBoxContainer2"]
+margin_right = 32.0
 margin_bottom = 16.0
 hint_tooltip = "Potential production"
 mouse_filter = 0
-text = "36"
+text = " +36"
 valign = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer2"]
+[node name="Demand" type="Label" parent="VBoxContainer2"]
 margin_top = 16.0
-margin_right = 28.0
+margin_right = 32.0
 margin_bottom = 32.0
-
-[node name="Label3" type="Label" parent="VBoxContainer2/HBoxContainer2"]
-margin_right = 8.0
-margin_bottom = 16.0
-size_flags_horizontal = 3
-text = "-"
-align = 2
-valign = 1
-
-[node name="Demand" type="Label" parent="VBoxContainer2/HBoxContainer2"]
-margin_left = 12.0
-margin_right = 28.0
-margin_bottom = 16.0
 hint_tooltip = "Demand"
 mouse_filter = 0
-text = "25"
+text = " -25"
 valign = 1

@@ -6,14 +6,14 @@
 [node name="FacilityInfo" type="VBoxContainer"]
 margin_right = 192.0
 grow_vertical = 0
-rect_min_size = Vector2( 292, 52 )
+rect_min_size = Vector2( 460, 52 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="FacilityLabel" type="Label" parent="."]
-margin_right = 292.0
+margin_right = 460.0
 margin_bottom = 16.0
 text = "Nothing here"
 

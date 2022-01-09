@@ -14,9 +14,9 @@ func _ready():
 
 
 func set_values(source: int, sent: int, received: int, sink: int):
-	supply.text = str(source)
+	supply.text = "%+4d" % source
+	demand.text = "%+4d" % -sink
 	if sent < 0:
-		production.text = str(received)
+		production.text = "%3d" % received
 	else:
-		production.text = "%d/%d" % [sent, received]
-	demand.text = str(sink)
+		production.text = "%7s" % ("%d/%d" % [sent, received])
