@@ -4,7 +4,7 @@ extends Spatial
 export var min_dist: float = 0.0
 export var max_dist: float = 1000.0
 export var size: float = 1.0
-export var default_pixel_size: float = 0.005
+export var default_pixel_size: float = 0.006
 export var offset: Vector3
 
 onready var sprite: Sprite3D = $Sprite3D
