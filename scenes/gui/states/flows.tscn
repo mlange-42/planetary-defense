@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/gui/states/flows.gd" type="Script" id=1]
+[ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=2]
+[ext_resource path="res://assets/fonts/consolas_bold.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=4]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 1, 1, 1, 1, 0.63, 0.13, 0.94, 1 )
@@ -11,9 +14,9 @@ width = 512
 
 [node name="InspectFlows" type="MarginContainer"]
 anchor_bottom = 1.0
-margin_top = 132.0
+margin_top = 96.0
 margin_right = 148.0
-margin_bottom = -415.0
+margin_bottom = -431.0
 rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 script = ExtResource( 1 )
@@ -23,23 +26,45 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 margin_right = 148.0
-margin_bottom = 193.0
+margin_bottom = 221.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
 [node name="LegendContainer" type="PanelContainer" parent="Buttons"]
 margin_right = 148.0
-margin_bottom = 193.0
+margin_bottom = 221.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/LegendContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 189.0
+margin_bottom = 217.0
+
+[node name="BackControls" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
+margin_right = 140.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Buttons/LegendContainer/VBoxContainer/BackControls"]
+margin_top = 4.0
+margin_right = 112.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Flows"
+clip_text = true
+
+[node name="BackButton" type="Button" parent="Buttons/LegendContainer/VBoxContainer/BackControls"]
+margin_left = 116.0
+margin_right = 140.0
+margin_bottom = 24.0
+hint_tooltip = "Exit flows view"
+shortcut = ExtResource( 4 )
+icon = ExtResource( 2 )
 
 [node name="Commodities" type="ItemList" parent="Buttons/LegendContainer/VBoxContainer"]
+margin_top = 28.0
 margin_right = 140.0
-margin_bottom = 9.0
+margin_bottom = 37.0
 hint_tooltip = "Select commodity to view flow"
 custom_constants/icon_margin = 0
 custom_constants/hseparation = 2
@@ -48,15 +73,15 @@ max_columns = 4
 icon_mode = 0
 
 [node name="CommodityLabel" type="Label" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 13.0
+margin_top = 41.0
 margin_right = 140.0
-margin_bottom = 29.0
+margin_bottom = 57.0
 text = "Commodity"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 33.0
+margin_top = 61.0
 margin_right = 140.0
-margin_bottom = 55.0
+margin_bottom = 83.0
 
 [node name="MaxColorButton" type="ColorPickerButton" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer"]
 margin_right = 30.0
@@ -78,9 +103,9 @@ text = "100"
 align = 1
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 59.0
+margin_top = 87.0
 margin_right = 140.0
-margin_bottom = 159.0
+margin_bottom = 187.0
 
 [node name="Control" type="Control" parent="Buttons/LegendContainer/VBoxContainer/AspectRatioContainer"]
 margin_left = 20.0
@@ -101,9 +126,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 163.0
+margin_top = 191.0
 margin_right = 140.0
-margin_bottom = 185.0
+margin_bottom = 213.0
 
 [node name="MinColorButton" type="ColorPickerButton" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 30.0
@@ -124,6 +149,7 @@ size_flags_horizontal = 3
 text = "0"
 align = 1
 
+[connection signal="pressed" from="Buttons/LegendContainer/VBoxContainer/BackControls/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="item_selected" from="Buttons/LegendContainer/VBoxContainer/Commodities" to="." method="_on_Commodities_item_selected"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton" to="." method="_on_gradient_color_changed"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton" to="." method="_on_gradient_color_changed"]

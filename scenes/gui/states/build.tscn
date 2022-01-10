@@ -7,7 +7,7 @@
 [ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=5]
 
 [node name="Build" type="MarginContainer"]
-margin_top = 132.0
+margin_top = 96.0
 rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 script = ExtResource( 3 )

@@ -224,6 +224,7 @@ func _on_MainMenu_pressed():
 	push("game_menu", {})
 
 func _on_Settings_pressed():
+	pop_all()
 	push("settings", {})
 
 func _on_Messages_pressed():

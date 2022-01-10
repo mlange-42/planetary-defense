@@ -1,13 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/gui/states/cheats.gd" type="Script" id=1]
+[ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=2]
 [ext_resource path="res://assets/shortkeys/ctrl_c.tres" type="ShortCut" id=3]
+[ext_resource path="res://assets/fonts/consolas_bold.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=5]
 
 [node name="Cheats" type="MarginContainer"]
 anchor_bottom = 1.0
-margin_top = 132.0
+margin_top = 96.0
 margin_right = 148.0
-margin_bottom = -526.0
+margin_bottom = -562.0
 rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 script = ExtResource( 1 )
@@ -17,33 +20,56 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 margin_right = 148.0
-margin_bottom = 62.0
+margin_bottom = 90.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Buttons"]
 margin_right = 148.0
-margin_bottom = 62.0
+margin_bottom = 90.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/PanelContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 58.0
+margin_bottom = 86.0
+
+[node name="BackControls" type="HBoxContainer" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_right = 140.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Buttons/PanelContainer/VBoxContainer/BackControls"]
+margin_top = 4.0
+margin_right = 112.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 4 )
+text = "Cheats"
+clip_text = true
+
+[node name="BackButton" type="Button" parent="Buttons/PanelContainer/VBoxContainer/BackControls"]
+margin_left = 116.0
+margin_right = 140.0
+margin_bottom = 24.0
+hint_tooltip = "Exit cheats"
+shortcut = ExtResource( 5 )
+icon = ExtResource( 2 )
 
 [node name="Command" type="LineEdit" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 28.0
 margin_right = 140.0
-margin_bottom = 26.0
+margin_bottom = 54.0
 hint_tooltip = "Enter cheat command"
 placeholder_text = "Command"
 
 [node name="Cheat" type="Button" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 30.0
+margin_top = 58.0
 margin_right = 140.0
-margin_bottom = 54.0
+margin_bottom = 82.0
 hint_tooltip = "Execute cheat command"
 shortcut = ExtResource( 3 )
 text = "Cheat"
 
+[connection signal="pressed" from="Buttons/PanelContainer/VBoxContainer/BackControls/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="text_entered" from="Buttons/PanelContainer/VBoxContainer/Command" to="." method="_on_Command_text_entered"]
 [connection signal="pressed" from="Buttons/PanelContainer/VBoxContainer/Cheat" to="." method="_on_Cheat_pressed"]
