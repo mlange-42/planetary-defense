@@ -13,6 +13,7 @@
 ### Changed
 
 * Prevents duplicate city names now
+* Show city stats permanently when managing a city
 
 ### Bug fixes
 
