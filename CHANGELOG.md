@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Added
+
+* Show city growth and growth components in facility info panel
+* Show conversion outome in land use info panel
+* Land use "Irrigated crops"; allows cities in deserts
+
+### Changed
+
+* Prevents duplicate city names now
+
+### Bug fixes
+
 ## [v0.4.0]
 
 ### GUI Rework
