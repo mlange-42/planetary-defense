@@ -26,7 +26,3 @@ func on_planet_clicked(_node: int, _button: int):
 
 func on_next_turn():
 	pass
-
-func _unhandled_key_input(event):
-	if event.pressed and event.scancode == KEY_ESCAPE:
-		fsm.pop()

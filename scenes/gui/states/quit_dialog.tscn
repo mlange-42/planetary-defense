@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/gui/states/quit_dialog.gd" type="Script" id=1]
+[ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0901961, 0.0901961, 0.0901961, 0.509804 )
@@ -37,40 +38,41 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 213.0
-margin_bottom = 69.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 248.0
+margin_bottom = 76.0
 
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
-margin_right = 206.0
-margin_bottom = 14.0
+margin_right = 244.0
+margin_bottom = 16.0
 text = "Really quit the game?"
 align = 1
 
 [node name="BackButton" type="Button" parent="PanelContainer/VBoxContainer"]
-margin_top = 18.0
-margin_right = 206.0
-margin_bottom = 38.0
+margin_top = 20.0
+margin_right = 244.0
+margin_bottom = 44.0
+shortcut = ExtResource( 2 )
 text = "No, go back!"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_top = 42.0
-margin_right = 206.0
-margin_bottom = 62.0
+margin_top = 48.0
+margin_right = 244.0
+margin_bottom = 72.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="QuitButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
-margin_right = 101.0
-margin_bottom = 20.0
+margin_right = 120.0
+margin_bottom = 24.0
 text = "Yes, quit now!"
 
 [node name="SaveButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
-margin_left = 105.0
-margin_right = 206.0
-margin_bottom = 20.0
+margin_left = 124.0
+margin_right = 244.0
+margin_bottom = 24.0
 text = "Save and quit!"
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]
