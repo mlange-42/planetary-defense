@@ -163,6 +163,8 @@ func on_planet_clicked(node: int, button: int):
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
 			else:
 				fsm.show_message("No city name given!", Consts.MESSAGE_ERROR)
+		elif button == BUTTON_RIGHT:
+			inspect_button.pressed = true
 	else:
 		if road_tool != null:
 			if button == BUTTON_LEFT:
@@ -179,8 +181,11 @@ func on_planet_clicked(node: int, button: int):
 				else:
 					road_start_point = node
 			elif button == BUTTON_RIGHT:
-				road_start_point = -1
-				fsm.planet.clear_path()
+				if road_start_point >= 0:
+					road_start_point = -1
+					fsm.planet.clear_path()
+				else:
+					inspect_button.pressed = true
 
 
 func on_next_turn():
