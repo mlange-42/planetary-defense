@@ -67,7 +67,7 @@ func _init(params: Array):
 
 func _ready():
 	var material = preload("res://assets/materials/unlit_vertex_color.tres")
-	var material_roads = preload("res://assets/materials/planet/roads.tres")
+	var material_roads = preload("res://assets/materials/planet/roads_anim.tres")
 	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
 	
 	facilities = Spatial.new()
@@ -309,7 +309,7 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_geometry.draw_roads(planet_data, roads, Color(0.02, 0.02, 0.02), Color.red)
+	road_geometry.draw_roads(planet_data, roads)
 
 
 func _redraw_resources():

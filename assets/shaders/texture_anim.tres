@@ -1,0 +1,40 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform float Fps;
+uniform int Frames;
+uniform int Animations;
+uniform sampler2D Texture : hint_albedo;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+	int frame = int(TIME * Fps) mod Frames;
+	int animation = min(int(COLOR.r * float(Animations - 1)), Animations - 1);
+	
+	float tile_width = 1.0 / float(Frames);
+	float tile_height = 1.0 / float(Animations);
+	
+	vec3 uv_3d = vec3(UV, 0.0);
+	vec2 uv_scaled = vec2(
+		tile_width * UV.x + float(frame) * tile_width,
+		tile_height * UV.y + float(animation) * tile_height);
+	
+	vec4 tex_read = texture(Texture, uv_scaled);
+	
+	ALBEDO = tex_read.rgb;
+}
+
+void light() {
+// Output:0
+
+}
+"
