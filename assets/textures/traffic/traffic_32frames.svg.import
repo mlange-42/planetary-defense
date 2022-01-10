@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/roads_32frames.svg-16e51f6fff44171b7aa1bfdb37201ed5.s3tc.stex"
-path.etc2="res://.import/roads_32frames.svg-16e51f6fff44171b7aa1bfdb37201ed5.etc2.stex"
+path.s3tc="res://.import/traffic_32frames.svg-9e9fae51120a37c81b1cbc0d550bc9f7.s3tc.stex"
+path.etc2="res://.import/traffic_32frames.svg-9e9fae51120a37c81b1cbc0d550bc9f7.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/roads_32frames.svg"
-dest_files=[ "res://.import/roads_32frames.svg-16e51f6fff44171b7aa1bfdb37201ed5.s3tc.stex", "res://.import/roads_32frames.svg-16e51f6fff44171b7aa1bfdb37201ed5.etc2.stex" ]
+source_file="res://assets/textures/traffic/traffic_32frames.svg"
+dest_files=[ "res://.import/traffic_32frames.svg-9e9fae51120a37c81b1cbc0d550bc9f7.s3tc.stex", "res://.import/traffic_32frames.svg-9e9fae51120a37c81b1cbc0d550bc9f7.etc2.stex" ]
 
 [params]
 

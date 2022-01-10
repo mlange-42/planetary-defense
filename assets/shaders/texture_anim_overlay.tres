@@ -9,6 +9,7 @@ uniform int Frames;
 uniform int Animations;
 uniform int UsedAnimations;
 uniform sampler2D Texture : hint_albedo;
+uniform sampler2D Background : hint_albedo;
 
 
 
@@ -33,8 +34,9 @@ void fragment() {
 		tile_height * UV.y + float(animation) * tile_height);
 	
 	vec4 tex_read = texture(Texture, uv_scaled);
+	vec4 bg_read = texture(Background, vec2(UV.x, uv_scaled.y));
 	
-	ALBEDO = tex_read.rgb;
+	ALBEDO = bg_read.rgb * (1.0 - tex_read.a) + (tex_read.rgb * tex_read.a);
 }
 
 void light() {

@@ -6,16 +6,29 @@ func clear_all():
 	clear()
 
 
-func draw_roads(planet_data, roads: RoadNetwork):
+func draw_roads(planet_data, roads: RoadNetwork, land: bool):
 	clear()
 	begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	for node1 in roads.neighbors:
 		var n = roads.neighbors[node1]
-		var p1 = planet_data.get_position(node1)
+		var nd1 = planet_data.get_node(node1)
+		
+		if not land and not nd1.is_water:
+			continue
+		
+		var p1 = nd1.position
 		for node2 in n:
+			var nd2 = planet_data.get_node(node2)
+			
+			if not land and not nd2.is_water:
+				continue
+			
+			if land and nd1.is_water and nd2.is_water:
+				continue
+			
 			var edge = roads.edges[[node1, node2]]
-			var p2 = planet_data.get_position(node2)
+			var p2 = nd2.position
 			var direction = (p2 - p1).normalized()
 			var x_dir = direction.cross(p1).normalized()
 			var x_off = x_dir * Consts.ROAD_WIDTH
