@@ -41,12 +41,14 @@ func calc_is_supplied():
 	warning.set_shown(not is_supplied)
 	
 	if is_supplied:
+		range_indicator.material_override = Materials.RANGE_DEFENSE
 		if not anim_player.is_playing():
 			if randf() < 0.5:
 				anim_player.play(animation)
 			else:
 				anim_player.play_backwards(animation)
 	else:
+		range_indicator.material_override = Materials.RANGE_DEFENSE_UNSUPPLIED
 		if anim_player.is_playing():
 			anim_player.stop(false)
 

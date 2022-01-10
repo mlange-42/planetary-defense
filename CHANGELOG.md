@@ -15,6 +15,7 @@
 * Independent visibility settings for city and defense ranges
 * Animated turret rotation for air defense
 * In-game options for fullscreen and zoom inversion
+* Indicate defense dupply by range color
 
 ### Changed
 

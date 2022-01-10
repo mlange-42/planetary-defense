@@ -31,7 +31,7 @@ func init(the_fsm: Gui, args: Dictionary):
 	.init(the_fsm, args)
 	
 	indicator = RangeIndicator.new()
-	indicator.material_override = preload("res://assets/materials/gradient/alpha_yellow.tres")
+	indicator.material_override = Materials.RANGE_CITY_HIGHLIGHT
 	fsm.planet.add_child(indicator)
 	
 	pointer = Spatial.new()

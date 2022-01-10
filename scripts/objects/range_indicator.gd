@@ -1,6 +1,8 @@
 extends ImmediateGeometry
 class_name RangeIndicator
 
+export (float, 0.0, 2.0) var width: float = 1.0
+
 func draw_range(planet_data, center: int, cells: Dictionary, radius: int, color: Color):
 	var border_cells = []
 	
@@ -21,19 +23,23 @@ func draw_range(planet_data, center: int, cells: Dictionary, radius: int, color:
 	for i in range(border_cells.size()):
 		var p1 = border_cells[i]
 		var p2 = border_cells[(i + 1) % border_cells.size()]
+		
 		var n1 = (p1 - origin).normalized()
 		var n2 = (p2 - origin).normalized()
 		
-		self.set_uv(Vector2(0, 0))
-		self.add_vertex(self.to_local(p1 + 3 * Consts.DRAW_HEIGHT_OFFSET * p1.normalized() + rad * n1))
-		
-		self.set_uv(Vector2(1, 0))
-		self.add_vertex(self.to_local(p1 + 3 * Consts.DRAW_HEIGHT_OFFSET * p1.normalized()))
+		var norm1 = p1.normalized()
+		var norm2 = p2.normalized()
 		
 		self.set_uv(Vector2(0, 0))
-		self.add_vertex(self.to_local(p2 + 3 * Consts.DRAW_HEIGHT_OFFSET * p2.normalized() + rad * n2))
+		self.add_vertex(self.to_local(p1 + rad * n1 + 3 * Consts.DRAW_HEIGHT_OFFSET * norm1))
 		
 		self.set_uv(Vector2(1, 0))
-		self.add_vertex(self.to_local(p2 + 3 * Consts.DRAW_HEIGHT_OFFSET * p2.normalized()))
+		self.add_vertex(self.to_local(p1 + (1.0 - width) * rad * n1 + 3 * Consts.DRAW_HEIGHT_OFFSET * norm1))
+		
+		self.set_uv(Vector2(0, 0))
+		self.add_vertex(self.to_local(p2 + rad * n2 + 3 * Consts.DRAW_HEIGHT_OFFSET * norm2))
+		
+		self.set_uv(Vector2(1, 0))
+		self.add_vertex(self.to_local(p2 + (1.0 - width) * rad * n2 + 3 * Consts.DRAW_HEIGHT_OFFSET * norm2))
 	
 	self.end()
