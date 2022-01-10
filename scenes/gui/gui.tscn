@@ -62,22 +62,22 @@ toggle_mode = true
 shortcut = ExtResource( 17 )
 icon = ExtResource( 7 )
 
-[node name="Messages" type="Button" parent="Buttons/GridContainer"]
+[node name="Flows" type="Button" parent="Buttons/GridContainer"]
 margin_left = 72.0
 margin_right = 104.0
-margin_bottom = 32.0
-hint_tooltip = "Messages"
-shortcut = ExtResource( 16 )
-icon = ExtResource( 8 )
-
-[node name="Flows" type="Button" parent="Buttons/GridContainer"]
-margin_left = 108.0
-margin_right = 140.0
 margin_bottom = 32.0
 hint_tooltip = "View commodity flows"
 toggle_mode = true
 shortcut = ExtResource( 15 )
 icon = ExtResource( 9 )
+
+[node name="Messages" type="Button" parent="Buttons/GridContainer"]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+hint_tooltip = "Messages"
+shortcut = ExtResource( 16 )
+icon = ExtResource( 8 )
 
 [node name="ErrorContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
@@ -166,7 +166,7 @@ anchor_bottom = 1.0
 
 [connection signal="pressed" from="Buttons/GridContainer/MainMenu" to="." method="_on_MainMenu_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Settings" to="." method="_on_Settings_pressed"]
-[connection signal="pressed" from="Buttons/GridContainer/Messages" to="." method="_on_Messages_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Flows" to="." method="_on_Flows_pressed"]
+[connection signal="pressed" from="Buttons/GridContainer/Messages" to="." method="_on_Messages_pressed"]
 [connection signal="timeout" from="ErrorTimer" to="." method="_on_ErrorTimer_timeout"]
 [connection signal="go_to_pressed" from="MessageWindow" to="." method="_on_Messages_go_to_pressed"]
