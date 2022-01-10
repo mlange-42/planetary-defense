@@ -68,7 +68,15 @@ func state_exited():
 
 
 func set_random_name():
-	name_edit.text = names[randi() % names.size()]
+	var available = []
+	for n in names:
+		if fsm.planet.builder.city_name_available(n):
+			available.append(n)
+	if available.empty():
+		name_edit.text = ""
+		name_edit.placeholder_text = "Out of names"
+	else:
+		name_edit.text = available[randi() % available.size()]
 
 
 func get_facility_tool():
@@ -130,6 +138,11 @@ func on_planet_clicked(node: int, button: int):
 			var is_city = fac_tool == Facilities.FAC_CITY
 			if not is_city or not name_edit.text.empty():
 				var name = name_edit.text if is_city else fac_tool
+				
+				if is_city and not fsm.planet.builder.city_name_available(name):
+					fsm.show_message("There is already a city named %s!" % name, Consts.MESSAGE_ERROR)
+					return
+				
 				var fac_err = fsm.planet.add_facility(fac_tool, node, name)
 				if fac_err[0] != null:
 					if is_city:

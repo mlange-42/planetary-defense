@@ -10,6 +10,7 @@ var planet_data = null
 var taxes: TaxManager
 var parent_node: Spatial
 
+var city_names: Dictionary = {}
 
 # warning-ignore:shadowed_variable
 # warning-ignore:shadowed_variable
@@ -71,6 +72,10 @@ func grow_city(city: City):
 	return null
 
 
+func city_name_available(name: String) -> bool:
+	return not city_names.has(name)
+
+
 func add_facility(type: String, location: int, name: String):
 	if not Facilities.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
@@ -107,8 +112,10 @@ func add_facility_scene(facility: Facility, name: String):
 	
 	facility.on_ready(planet_data)
 	
-	return facility
+	if facility is City:
+		city_names[facility.name] = true
 	
+	return facility
 
 
 # Use land_use = LandUse.LU_NONE to ignore specific requirements
