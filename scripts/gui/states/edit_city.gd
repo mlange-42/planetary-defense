@@ -95,6 +95,7 @@ func state_entered():
 	for i in range(city.commodity_weights.size()):
 		sliders[Commodities.COMM_ALL[i]].value = city.commodity_weights[i]
 	
+	fsm.update_facility_info(city.node_id)
 	update_city_info()
 	update_weights_display()
 
@@ -107,6 +108,7 @@ func state_exited():
 
 func on_next_turn():
 	update_city_info()
+	fsm.update_facility_info(city.node_id)
 
 
 func update_city_info():
@@ -199,11 +201,17 @@ func move_pointer(node: int):
 			sub_pointer.material_override = preload("res://assets/materials/color/red.tres")
 
 
+func on_planet_entered(_node: int):
+	fsm.update_facility_info(city.node_id)
+	
 func on_planet_exited():
 	pointer.visible = false
+	fsm.update_facility_info(city.node_id)
 
 
 func on_planet_hovered(node: int):
+	fsm.update_facility_info(city.node_id)
+	
 	if not node in city.cells:
 		#fsm.update_land_use_info(-1)
 		pointer.visible = false
