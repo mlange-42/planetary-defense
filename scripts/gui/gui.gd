@@ -185,6 +185,7 @@ func log_message(node: int, message: String, message_level: int):
 
 func _on_next_turn():
 	planet.next_turn()
+	update_facility_info(get_current_node())
 	state().on_next_turn()
 	update_messages(true)
 	show_message("Next turn", Consts.MESSAGE_INFO)

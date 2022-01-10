@@ -174,6 +174,10 @@ func on_planet_clicked(node: int, button: int):
 				fsm.planet.clear_path()
 
 
+func on_next_turn():
+	on_planet_hovered(fsm.get_current_node())
+
+
 func _on_tool_changed(_button):
 	var curr_tool = get_facility_tool()
 	var road_tool = get_road_tool()

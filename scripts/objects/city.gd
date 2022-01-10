@@ -18,6 +18,14 @@ var _population: int = Cities.INITIAL_CITY_POP
 var commodity_weights: Array = [100, 100, 100]
 var auto_assign_workers: bool = true
 
+var growth_stats: GrowthStats = GrowthStats.new()
+
+class GrowthStats:
+	var total: int = 0
+	var supply_factor: int = 0
+	var employment_factor: int = 0
+	var space_factor: int = 0
+
 
 func on_ready(planet_data):
 	update_cells(planet_data)
@@ -54,9 +62,14 @@ func assign_workers(num: int):
 
 func save() -> Dictionary:
 	var lu = []
-	
 	for node in land_use:
 		lu.append([node, land_use[node]])
+	
+	var growth = {}
+	growth["total"] = growth_stats.total
+	growth["supply"] = growth_stats.supply_factor
+	growth["employment"] = growth_stats.employment_factor
+	growth["space"] = growth_stats.space_factor
 	
 	var dict = .save()
 	
@@ -65,6 +78,7 @@ func save() -> Dictionary:
 	dict["commodity_weights"] = commodity_weights
 	dict["auto_assign_workers"] = auto_assign_workers
 	dict["land_use"] = lu
+	dict["growth"] = growth
 	
 	return dict
 
@@ -84,6 +98,13 @@ func read(dict: Dictionary):
 	for lu in dict["land_use"]:
 		land_use[lu[0] as int] = lu[1] as int
 		_population += LandUse.LU_WORKERS[lu[1] as int]
+	
+	var growth = dict.get("growth", null)
+	if growth != null:
+		growth_stats.total = growth["total"]
+		growth_stats.supply_factor = growth["supply"]
+		growth_stats.employment_factor = growth["employment"]
+		growth_stats.space_factor = growth["space"]
 
 
 func can_build(planet_data, node) -> bool:
