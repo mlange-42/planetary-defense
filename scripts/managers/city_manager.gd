@@ -148,12 +148,19 @@ func post_update_city(city: City) -> float:
 	
 	var attractiveness = share_satisfied * space_growth * employment_growth
 	
+	city.growth_stats.total = int(round(attractiveness * 100))
+	city.growth_stats.supply_factor = int(round(share_satisfied * 100))
+	city.growth_stats.space_factor = int(round(space_growth * 100))
+	city.growth_stats.employment_factor = int(round(employment_growth * 100))
+	
 	if all_workers_supplied:
-		print("%s: food satified, products %d%%" % [city.name, round(share_satisfied*100)])
 		if randf() < Cities.CITY_GROWTH_PROB * attractiveness:
 			city.add_workers(1)
 			city.update_visuals(planet.planet_data)
 			planet.messages.add_message(city.node_id, "Population growth in [u]%s[/u]" % city.name, Consts.MESSAGE_INFO)
+	else:
+		city.growth_stats.total = 0
+		city.growth_stats.supply_factor = 0
 	
 	return attractiveness
 
