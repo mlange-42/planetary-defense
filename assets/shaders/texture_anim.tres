@@ -7,6 +7,7 @@ render_mode specular_schlick_ggx;
 uniform float Fps;
 uniform int Frames;
 uniform int Animations;
+uniform int UsedAnimations;
 uniform sampler2D Texture : hint_albedo;
 
 
@@ -18,7 +19,11 @@ void vertex() {
 
 void fragment() {
 	int frame = int(TIME * Fps) mod Frames;
-	int animation = min(int(COLOR.r * float(Animations - 1)), Animations - 1);
+	int animation = 0; 
+	
+	if(COLOR.r > 0.0) {
+		animation = min(int(COLOR.r * float(UsedAnimations - 1)) + 1, UsedAnimations - 1);
+	}
 	
 	float tile_width = 1.0 / float(Frames);
 	float tile_height = 1.0 / float(Animations);
