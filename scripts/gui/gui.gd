@@ -19,15 +19,14 @@ onready var error_panel: ErrorPanel = $ErrorContainer/ErrorPanel
 
 onready var error_timer = find_node("ErrorTimer")
 
+var mode_buttons: ButtonGroup
 var planet: Planet
 var states = []
 
 var _current_node: int = -1
 
 func _ready():
-	var mode_buttons = ButtonGroup.new()
-	find_node("Inspect").group = mode_buttons
-	find_node("Build").group = mode_buttons
+	mode_buttons = ButtonGroup.new()
 	find_node("Flows").group = mode_buttons
 	find_node("Settings").group = mode_buttons
 	
@@ -37,7 +36,7 @@ func _ready():
 
 func init():
 	error_container.visible = false
-	push("default", {})
+	push("build", {})
 	update_messages(true)
 	stats_bar.update_commodities(planet)
 
@@ -142,7 +141,8 @@ func pop():
 	new_state.state_entered()
 	
 	if states.size() == 1:
-		inspect_button.pressed = true
+		for button in mode_buttons.get_buttons():
+			button.pressed = false
 
 
 func pop_all():
@@ -236,6 +236,3 @@ func _on_Build_pressed():
 func _on_Flows_pressed():
 	pop_all()
 	push("flows", {})
-
-func _on_Inspect_pressed():
-	pop_all()

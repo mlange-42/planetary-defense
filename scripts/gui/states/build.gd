@@ -4,6 +4,7 @@ class_name BuildState
 var names = CityNames.GERMAN
 
 onready var name_edit: LineEdit = find_node("CityName")
+onready var inspect_button: Button = find_node("Inspect")
 
 var indicator: RangeIndicator
 
@@ -25,6 +26,7 @@ func _ready():
 	fsm.planet.add_child(indicator)
 	
 	button_group = ButtonGroup.new()
+	inspect_button.group = button_group
 	
 	for fac in Facilities.FACILITY_IN_CITY:
 		if not Facilities.FACILITY_IN_CITY[fac]:
@@ -56,6 +58,12 @@ func _ready():
 	
 	# warning-ignore:return_value_discarded
 	button_group.connect("pressed", self, "_on_tool_changed")
+
+
+func _unhandled_key_input(event: InputEventKey):
+	if event.pressed:
+		if event.scancode == KEY_C and event.control and event.shift:
+			fsm.push("cheats", {})
 
 
 func state_entered():
