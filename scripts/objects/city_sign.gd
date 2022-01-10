@@ -19,7 +19,7 @@ func _ready():
 
 
 func _process(_delta):
-	var height = get_viewport().size.y
+	var height = max(get_viewport().size.y, 200)
 	var cam = get_viewport().get_camera().global_transform.origin
 	var dist = global_transform.origin.distance_to(cam)
 	if dist < Cities.LABEL_MAX_DIST and dist > Cities.LABEL_MIN_DIST:

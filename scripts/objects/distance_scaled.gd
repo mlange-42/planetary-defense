@@ -17,7 +17,7 @@ func _ready():
 
 
 func _process(_delta):
-	var height = get_viewport().size.y
+	var height = max(get_viewport().size.y, 200)
 	var cam = get_viewport().get_camera().global_transform.origin
 	var dist = global_transform.origin.distance_to(cam)
 	if dist > min_dist and dist < max_dist:
