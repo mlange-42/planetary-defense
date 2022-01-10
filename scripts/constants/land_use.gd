@@ -171,7 +171,7 @@ const LU_REQUIREMENTS = {
 const LU_INFO = {
 	LU_NONE: "Clear land use.",
 	LU_CROPS: "Grow crops to harvest food.",
-	LU_IRRIGATED_CROPS: "Grow crops to harvest food.\nConsumes 1 resource.",
+	LU_IRRIGATED_CROPS: "Grow crops to harvest food.\n Consumes 1 resource.",
 	LU_FOREST: "Grow crops to harvest resources.",
 	LU_FISHERY: "Fishes for food.",
 	LU_FACTORY: "Transforms resources into products.",

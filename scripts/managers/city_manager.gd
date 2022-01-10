@@ -68,7 +68,7 @@ func pre_update_city(city: City):
 		var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
 					if extract_resource == null else res_data[extract_resource]
 		
-		if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
+		if not _is_food_producer(veg_data):
 			workers_to_feed += workers
 			if food_available >= workers:
 				food_available -= workers
@@ -121,7 +121,7 @@ func post_update_city(city: City) -> float:
 		var veg_data: LandUse.VegLandUse = lu_data[data.vegetation_type] \
 					if extract_resource == null else res_data[extract_resource]
 		
-		if veg_data.source == null or veg_data.source.commodity != Commodities.COMM_FOOD:
+		if not _is_food_producer(veg_data):
 			if food_available >= workers:
 				food_available -= workers
 			else:
@@ -163,6 +163,15 @@ func post_update_city(city: City) -> float:
 		city.growth_stats.supply_factor = 0
 	
 	return attractiveness
+
+
+func _is_food_producer(lu: LandUse.VegLandUse) -> bool:
+	if lu.source != null and lu.source.commodity == Commodities.COMM_FOOD:
+		return true
+	elif lu.conversion != null and lu.conversion.to == Commodities.COMM_FOOD:
+		return true
+	else:
+		return false
 
 
 func migrate(attractiveness: Dictionary):
