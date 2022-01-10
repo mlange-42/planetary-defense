@@ -47,3 +47,4 @@ A complete GUI rework with the following enhancements:
 * No more flickering city labels [#51]
 * Cities now regrowth after complete wipe out [#119]
 * City settings are now applied when switching between cities directly [#157]
+* Update build range although mouse did not move since entering the state
