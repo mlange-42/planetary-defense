@@ -292,7 +292,7 @@ _global_script_classes=[ {
 "base": "ImmediateGeometry",
 "class": "RangeIndicator",
 "language": "GDScript",
-"path": "res://scripts/objects/range_indicator.gd"
+"path": "res://scripts/geom/range_indicator.gd"
 }, {
 "base": "Reference",
 "class": "ResourceManager",
@@ -308,6 +308,11 @@ _global_script_classes=[ {
 "class": "RoadButton",
 "language": "GDScript",
 "path": "res://scripts/gui/controls/road_button.gd"
+}, {
+"base": "ImmediateGeometry",
+"class": "RoadGeometry",
+"language": "GDScript",
+"path": "res://scripts/geom/road_geometry.gd"
 }, {
 "base": "Reference",
 "class": "RoadNetwork",
@@ -415,6 +420,7 @@ _global_script_class_icons={
 "ResourceManager": "",
 "Resources": "",
 "RoadButton": "",
+"RoadGeometry": "",
 "RoadNetwork": "",
 "Roads": "",
 "SettingsState": "",
