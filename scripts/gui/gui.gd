@@ -22,6 +22,8 @@ onready var error_timer = find_node("ErrorTimer")
 var planet: Planet
 var states = []
 
+var _current_node: int = -1
+
 func _ready():
 	var mode_buttons = ButtonGroup.new()
 	find_node("Inspect").group = mode_buttons
@@ -49,14 +51,17 @@ func _unhandled_key_input(event: InputEventKey):
 
 
 func on_planet_entered(node: int):
+	_current_node = node
 	state().on_planet_entered(node)
 	
 func on_planet_exited():
+	_current_node = -1
 	update_land_use_info(-1)
 	update_facility_info(-1)
 	state().on_planet_exited()
 
 func on_planet_hovered(node: int):
+	_current_node = node
 	update_land_use_info(node)
 	update_facility_info(node)
 	state().on_planet_hovered(node)
@@ -185,6 +190,9 @@ func _on_next_turn():
 	show_message("Next turn", Consts.MESSAGE_INFO)
 	stats_bar.update_commodities(planet)
 
+
+func get_current_node():
+	return _current_node
 
 func go_to(location: Vector3):
 	emit_signal("go_to_location", location)

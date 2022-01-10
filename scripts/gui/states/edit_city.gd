@@ -19,7 +19,6 @@ var pointer_offset = -0.03
 var indicator: RangeIndicator
 var pointer: Spatial
 var sub_pointer: GeometryInstance
-var selected_node: int = -1
 
 var city_node: int
 var city: City
@@ -179,7 +178,7 @@ func set_pointer(lu_tool, facility_tool):
 	
 	child.translate(Vector3(0, pointer_offset, 0))
 	sub_pointer.add_child(child)
-	move_pointer(selected_node)
+	move_pointer(fsm.get_current_node())
 
 
 func move_pointer(node: int):
@@ -202,19 +201,16 @@ func move_pointer(node: int):
 
 func on_planet_exited():
 	pointer.visible = false
-	selected_node = -1
 
 
 func on_planet_hovered(node: int):
 	if not node in city.cells:
 		#fsm.update_land_use_info(-1)
 		pointer.visible = false
-		selected_node = -1
 		return
 	
 	#fsm.update_land_use_info(node)
 	pointer.visible = true
-	selected_node = node
 	move_pointer(node)
 
 
@@ -254,7 +250,7 @@ func on_planet_clicked(node: int, button: int):
 				else:
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
 	
-	move_pointer(selected_node)
+	move_pointer(fsm.get_current_node())
 
 
 func _on_GrowButton_pressed():

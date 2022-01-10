@@ -13,7 +13,6 @@ var cells: Dictionary = {}
 var radius: int = 0
 
 var road_start_point: int = -1
-var current_node: int = -1
 
 func _ready():
 	set_random_name()
@@ -65,7 +64,6 @@ func state_entered():
 
 func state_exited():
 	indicator.visible = false
-	current_node = -1
 	fsm.planet.clear_path()
 
 
@@ -96,6 +94,7 @@ func on_planet_entered(_node: int):
 func on_planet_exited():
 	indicator.visible = false
 	fsm.planet.clear_path()
+	fsm.update_facility_info(fsm.get_current_node())
 
 func on_planet_hovered(node: int):
 	self.current_node = node
@@ -169,9 +168,8 @@ func _on_tool_changed(_button):
 	var road_tool = get_road_tool()
 	if curr_tool != null:
 		radius = Facilities.FACILITY_RADIUS[curr_tool]
-		
 		fsm.planet.clear_path()
-		_update_range(current_node)
+		_update_range(fsm.get_current_node())
 		indicator.visible = true
 		
 		fsm.update_build_info(curr_tool, -1)
