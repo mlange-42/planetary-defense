@@ -40,3 +40,4 @@ func set_warning_level(level: int):
 		icon.visible = true
 	else:
 		icon.visible = false
+	label_panel.rect_size = Vector2(0, 1)
