@@ -71,21 +71,25 @@ const LU_FACTORY: int = 4
 const LU_MINES: int = 5
 const LU_OIL_RIG: int = 6
 const LU_OIL_WELL: int = 7
+const LU_IRRIGATED_CROPS: int = 8
 
-const LU_COLORS = {
-	LU_NONE: Color.gray,
-	LU_CROPS: Color.yellow,
-	LU_FOREST: Color.black,
-	LU_FISHERY: Color.aqua,
-	LU_FACTORY: Color.red,
-	LU_MINES: Color.magenta,
-	LU_OIL_RIG: Color.magenta,
-	LU_OIL_WELL: Color.magenta,
+# Also determined the order of the build options / icons
+const LU_NAMES = {
+	LU_NONE: "Clear",
+	LU_CROPS: "Crops",
+	LU_IRRIGATED_CROPS: "Irrigated crops",
+	LU_FOREST: "Forest",
+	LU_FISHERY: "Fishery",
+	LU_FACTORY: "Factory",
+	LU_MINES: "Mines",
+	LU_OIL_RIG: "Oil rig",
+	LU_OIL_WELL: "Oil well",
 }
 
 const LU_SCENES = {
 	LU_NONE: "res://assets/geom/clear.escn",
 	LU_CROPS: "res://assets/geom/crops.escn",
+	LU_IRRIGATED_CROPS: "res://assets/geom/irr_crops.escn",
 	LU_FOREST: "res://assets/geom/forest.escn",
 	LU_FISHERY: "res://assets/geom/fishery.escn",
 	LU_FACTORY: "res://assets/geom/factory.escn",
@@ -97,6 +101,7 @@ const LU_SCENES = {
 const LU_ICONS = {
 	LU_NONE: preload("res://assets/icons/land_use/clear.svg"),
 	LU_CROPS: preload("res://assets/icons/land_use/crops.svg"),
+	LU_IRRIGATED_CROPS: preload("res://assets/icons/land_use/irr_crops.svg"),
 	LU_FOREST: preload("res://assets/icons/land_use/forest.svg"),
 	LU_FISHERY: preload("res://assets/icons/land_use/fishery.svg"),
 	LU_FACTORY: preload("res://assets/icons/land_use/factory.svg"),
@@ -105,20 +110,10 @@ const LU_ICONS = {
 	LU_OIL_WELL: preload("res://assets/icons/land_use/oil_well.svg"),
 }
 
-const LU_NAMES = {
-	LU_NONE: "Clear",
-	LU_CROPS: "Crops",
-	LU_FOREST: "Forest",
-	LU_FISHERY: "Fishery",
-	LU_FACTORY: "Factory",
-	LU_MINES: "Mines",
-	LU_OIL_RIG: "Oil rig",
-	LU_OIL_WELL: "Oil well",
-}
-
 const LU_WORKERS = {
 	LU_NONE: 0,
 	LU_CROPS: 1,
+	LU_IRRIGATED_CROPS: 1,
 	LU_FOREST: 1,
 	LU_FISHERY: 1,
 	LU_FACTORY: 2,
@@ -130,6 +125,7 @@ const LU_WORKERS = {
 const LU_MAINTENANCE = {
 	LU_NONE: 0,
 	LU_CROPS: 0,
+	LU_IRRIGATED_CROPS: 0,
 	LU_FOREST: 0,
 	LU_FISHERY: 0,
 	LU_FACTORY: 1,
@@ -140,6 +136,7 @@ const LU_MAINTENANCE = {
 
 const LU_OUTPUT = {
 	LU_CROPS: Commodities.COMM_FOOD,
+	LU_IRRIGATED_CROPS: Commodities.COMM_FOOD,
 	LU_FOREST: Commodities.COMM_RESOURCES,
 	LU_FISHERY: Commodities.COMM_FOOD,
 	LU_FACTORY: Commodities.COMM_PRODUCTS,
@@ -150,6 +147,7 @@ const LU_OUTPUT = {
 
 const LU_RESOURCE = {
 	LU_CROPS: null,
+	LU_IRRIGATED_CROPS: null,
 	LU_FOREST: null,
 	LU_FISHERY: null,
 	LU_FACTORY: null,
@@ -161,6 +159,7 @@ const LU_RESOURCE = {
 const LU_REQUIREMENTS = {
 	LU_NONE: [],
 	LU_CROPS: [],
+	LU_IRRIGATED_CROPS: [],
 	LU_FOREST: [],
 	LU_FISHERY: [Facilities.FAC_PORT],
 	LU_FACTORY: [],
@@ -172,6 +171,7 @@ const LU_REQUIREMENTS = {
 const LU_INFO = {
 	LU_NONE: "Clear land use.",
 	LU_CROPS: "Grow crops to harvest food.",
+	LU_IRRIGATED_CROPS: "Grow crops to harvest food.\n Consumes 1 resource.",
 	LU_FOREST: "Grow crops to harvest resources.",
 	LU_FISHERY: "Fishes for food.",
 	LU_FACTORY: "Transforms resources into products.",
@@ -183,6 +183,7 @@ const LU_INFO = {
 const LU_KEYS = {
 	LU_NONE: KEY_R,
 	LU_CROPS: KEY_C,
+	LU_IRRIGATED_CROPS: KEY_G,
 	LU_FOREST: KEY_F,
 	LU_FISHERY: KEY_I,
 	LU_FACTORY: KEY_A,
@@ -201,6 +202,10 @@ var LU_MAPPING = {
 		VEG_TEMPERATE_FOREST: VegLandUse.new(Production.new(Commodities.COMM_FOOD, 2), null, null),
 		VEG_SUBTROPICAL_FOREST: VegLandUse.new(Production.new(Commodities.COMM_FOOD, 2), null, null),
 		VEG_TROPICAL_FOREST: VegLandUse.new(Production.new(Commodities.COMM_FOOD, 1), null, null),
+	},
+	LU_IRRIGATED_CROPS: {
+		VEG_DESERT: VegLandUse.new(null, null, Conversion.new(Commodities.COMM_RESOURCES, 1, Commodities.COMM_FOOD, 1, 1)),
+		VEG_STEPPE: VegLandUse.new(null, null, Conversion.new(Commodities.COMM_RESOURCES, 1, Commodities.COMM_FOOD, 2, 1)),
 	},
 	LU_FOREST: {
 		VEG_TAIGA: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 1), null, null),
@@ -227,6 +232,7 @@ var LU_MAPPING = {
 
 var LU_RESOURCES = {
 	LU_CROPS: {},
+	LU_IRRIGATED_CROPS: {},
 	LU_FOREST: {},
 	LU_FACTORY: {},
 	LU_FISHERY: {},

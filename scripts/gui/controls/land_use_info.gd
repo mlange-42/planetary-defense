@@ -28,7 +28,10 @@ func update_info(planet: Planet, consts: LandUse, node: int):
 	else:
 		resources_label.text = "%s (%s)" % [Resources.RES_NAMES[res_here[0]], res_here[1]]
 	
-	for lut in consts.LU_MAPPING:
+	for lut in consts.LU_NAMES:
+		if lut == LandUse.LU_NONE:
+			continue
+		
 		var lu: Dictionary = consts.LU_MAPPING[lut]
 		if veg in lu:
 			if lu[veg] == null:
@@ -36,7 +39,12 @@ func update_info(planet: Planet, consts: LandUse, node: int):
 			var prod: LandUse.VegLandUse = lu[veg]
 			var child = null
 			if prod.source == null:
-				child = LandUseEntry.new(lut, "", 0)
+				if prod.conversion == null:
+					child = LandUseEntry.new(lut, "", 0)
+				else:
+					var c = prod.conversion
+					# TODO: display consumed commodity
+					child = LandUseEntry.new(lut, c.to, (c.max_from_amount * c.to_amount) / c.from_amount)
 			else:
 				child = LandUseEntry.new(lut, prod.source.commodity, prod.source.amount)
 			
