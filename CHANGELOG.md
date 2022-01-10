@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [v0.4.0]
+
 ### GUI Rework
 
 A complete GUI rework with the following enhancements:
