@@ -23,6 +23,7 @@
 * Merge default and build GUI states; build is now the default
 * Auto-select land use when clearing (with right-click), and nothing is selected
 * Larger font for build cost info
+* Draw road indicator using a band instead of a line, changed colors for better visibility
 
 ### Bug fixes
 

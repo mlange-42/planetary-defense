@@ -70,7 +70,8 @@ func _init(params: Array):
 			self.set(key, par[key])
 
 func _ready():
-	var material = preload("res://assets/materials/unlit_vertex_color.tres")
+	var material = preload("res://assets/materials/vertex_color.tres")
+	var flow_material = preload("res://assets/materials/unlit_vertex_color.tres")
 	var material_roads = preload("res://assets/materials/traffic/roads.tres")
 	var material_sea_lines = preload("res://assets/materials/traffic/sea_lines.tres")
 	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
@@ -101,7 +102,7 @@ func _ready():
 	add_child(resource_debug)
 	
 	flows_graphs = FlowGraphs.new()
-	flows_graphs.material_override = material
+	flows_graphs.material_override = flow_material
 	add_child(flows_graphs)
 	
 	var planet_file = FileUtil.save_path(save_name, FileUtil.PLANET_EXTENSION)

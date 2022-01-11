@@ -39,30 +39,31 @@ func draw_path(points: Array, max_length: int, color1: Color, color2: Color):
 		
 		var direction = (p2 - p1).normalized()
 		var x_dir = direction.cross(p1).normalized()
-		var x_off = x_dir * Consts.ROAD_WIDTH
+		var x_off = 0.6 * x_dir * Consts.ROAD_WIDTH
+		var y_off = direction * (0.3 * Consts.ROAD_WIDTH)
 		var h_off = 2 * Consts.DRAW_HEIGHT_OFFSET * p1.normalized()
 		
 		var norm = x_dir.cross(direction)
 		set_normal(norm)
 		
 		set_uv(Vector2(1, 1))
-		add_vertex(p1 + h_off - x_off)
+		add_vertex(p1 + h_off - y_off - x_off)
 		
 		set_uv(Vector2(0, 1))
-		add_vertex(p2 + h_off - x_off)
+		add_vertex(p2 + h_off + y_off - x_off)
 		
 		set_uv(Vector2(0, 0))
-		add_vertex(p2 + h_off + x_off)
+		add_vertex(p2 + h_off + y_off + x_off)
 		
 		
 		set_uv(Vector2(0, 0))
-		add_vertex(p2 + h_off + x_off)
+		add_vertex(p2 + h_off + y_off + x_off)
 		
 		set_uv(Vector2(1, 0))
-		add_vertex(p1 + h_off + x_off)
+		add_vertex(p1 + h_off - y_off + x_off)
 		
 		set_uv(Vector2(1, 1))
-		add_vertex(p1 + h_off - x_off)
+		add_vertex(p1 + h_off - y_off - x_off)
 		
 		length += 1
 	
