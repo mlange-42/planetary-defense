@@ -120,7 +120,7 @@ func _ready():
 		noise_type, noise_period, noise_octaves, noise_seed, height_curve,
 		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed,
 		temperature_curve, precipitation_curve, atlas_size, atlas_margin,
-		Consts.ELEVATION_STEP / (max_height * Consts.ELEVATION_SCALE))
+		Consts.ELEVATION_STEP / float(Consts.ELEVATION_SCALE))
 	
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	
