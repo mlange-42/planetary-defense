@@ -275,7 +275,7 @@ func calc_point_path(from: int, to: int) -> Array:
 	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
 				else planet_data.NAV_LAND
 	
-	var path = planet_data.get_point_path(from, to, mode)
+	var path = planet_data.get_point_path(from, to, mode, Roads.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
@@ -283,7 +283,7 @@ func calc_id_path(from: int, to: int) -> Array:
 	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
 				else planet_data.NAV_LAND
 	
-	var path = planet_data.get_id_path(from, to, mode)
+	var path = planet_data.get_id_path(from, to, mode, Roads.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
