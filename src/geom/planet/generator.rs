@@ -1,5 +1,6 @@
 use gdnative::api::Curve;
 use gdnative::prelude::*;
+use std::cmp::Ordering::Equal;
 use std::f32::consts::PI;
 
 use noise::{
@@ -32,9 +33,11 @@ const VEG_SUBTROPICAL_FOREST: u32 = 6;
 const VEG_TROPICAL_FOREST: u32 = 7;
 #[allow(dead_code)]
 const VEG_WATER: u32 = 8;
+#[allow(dead_code)]
+const VEG_CLIFFS: u32 = 9;
 
 lazy_static! {
-    static ref VEG_COLORS: [Color; 9] = [
+    static ref VEG_COLORS: [Color; 10] = [
         Color::rgb(1.0, 1.0, 0.3),
         Color::rgb(1.0, 1.0, 1.0),
         Color::rgb(0.0, 0.9, 0.3),
@@ -44,6 +47,7 @@ lazy_static! {
         Color::rgb(0.0, 1.0, 0.0),
         Color::rgb(0.0, 0.5, 0.0),
         Color::rgb(1.0, 1.0, 0.5),
+        Color::rgb(0.5, 0.5, 0.5),
     ];
     static ref VEG_MATRIX: Vec<Vec<u32>> = str_to_vec(
         r#"
@@ -89,6 +93,8 @@ struct PlanetGeneratorParams {
     atlas_size: (u32, u32),
     atlas_margins: (f32, f32),
     contour_step: f32,
+    min_slope_cliffs: f32,
+    min_elevation_cliffs: f32,
 }
 
 #[derive(NativeClass)]
@@ -126,6 +132,8 @@ impl PlanetGenerator {
         atlas_size: (u32, u32),
         atlas_margins: (f32, f32),
         contour_step: f32,
+        min_slope_cliffs: f32,
+        min_elevation_cliffs: f32,
     ) {
         self.params = Some(PlanetGeneratorParams {
             radius,
@@ -146,6 +154,8 @@ impl PlanetGenerator {
             atlas_size,
             atlas_margins,
             contour_step,
+            min_slope_cliffs,
+            min_elevation_cliffs,
         })
     }
 
@@ -182,8 +192,7 @@ impl PlanetGenerator {
         let (mut vertices, faces) =
             IcoSphereGenerator::new(params.radius, params.subdivisions).generate();
 
-        let nodes = self.generate_terrain(&mut vertices);
-        let mut neighbors: Vec<_> = nodes.iter().map(|_| NodeNeighbors::default()).collect();
+        let mut neighbors: Vec<_> = vertices.iter().map(|_| NodeNeighbors::default()).collect();
 
         for face in faces.iter() {
             neighbors[face.0].neighbors.push(face.1);
@@ -202,6 +211,7 @@ impl PlanetGenerator {
                 .push((vertices[face.2].distance_to(vertices[face.0]) * DIST_FACTOR as f32) as u32);
         }
 
+        let nodes = self.generate_terrain(&mut vertices, &neighbors);
         let colors = self.generate_colors(&nodes);
 
         let radius = self.params.as_ref().unwrap().radius;
@@ -235,7 +245,11 @@ impl PlanetGenerator {
         arr
     }
 
-    fn generate_terrain(&self, vertices: &mut [Vector3]) -> Vec<NodeData> {
+    fn generate_terrain(
+        &self,
+        vertices: &mut [Vector3],
+        neighbors: &[NodeNeighbors],
+    ) -> Vec<NodeData> {
         let params = self.params.as_ref().unwrap();
 
         let noise = create_noise(
@@ -258,7 +272,7 @@ impl PlanetGenerator {
         let scale = 1.0 / (params.terrain_noise_period * params.radius);
         let climate_scale = 1.0 / (params.climate_noise_period * params.radius);
 
-        vertices
+        let mut nodes: Vec<_> = vertices
             .iter_mut()
             .map(|v| {
                 let normal = v.normalize();
@@ -297,35 +311,6 @@ impl PlanetGenerator {
                     .interpolate(1.0 - (lat_factor + alt_factor).clamp(0.0, 1.0) as f64)
                     as f32;
 
-                let m_index =
-                    (precipitation.clamp(0.0, 0.99999) * VEG_MATRIX.len() as f32) as usize;
-                let t_index =
-                    (temperature.clamp(0.0, 0.99999) * VEG_MATRIX[0].len() as f32) as usize;
-
-                let land_use = if is_water {
-                    VEG_WATER
-                } else {
-                    VEG_MATRIX[m_index][t_index]
-                };
-
-                /*let land_use = if temperature < 0.3 {
-                    VEG_GLACIER
-                } else if temperature < 0.35 {
-                    VEG_TUNDRA
-                } else if cl < 0.4 {
-                    VEG_DESERT
-                } else if cl < 0.45 {
-                    VEG_STEPPE
-                } else if temperature < 0.5 {
-                    VEG_TAIGA
-                } else if temperature < 0.75 {
-                    VEG_TEMPERATE_FOREST
-                } else if temperature < 0.80 {
-                    VEG_SUBTROPICAL_FOREST
-                } else {
-                    VEG_TROPICAL_FOREST
-                };*/
-
                 NodeData {
                     position: v_node,
                     elevation,
@@ -334,10 +319,56 @@ impl PlanetGenerator {
                     is_occupied: false,
                     temperature,
                     precipitation,
-                    vegetation_type: land_use,
+                    vegetation_type: VEG_GLACIER,
                 }
             })
-            .collect()
+            .collect();
+
+        let vegetation: Vec<_> = nodes
+            .iter()
+            .enumerate()
+            .map(|(i, node)| {
+                let m_index =
+                    (node.precipitation.clamp(0.0, 0.99999) * VEG_MATRIX.len() as f32) as usize;
+                let t_index =
+                    (node.temperature.clamp(0.0, 0.99999) * VEG_MATRIX[0].len() as f32) as usize;
+
+                let max_slope = neighbors[i]
+                    .neighbors
+                    .iter()
+                    .map(|idx| {
+                        let other = &nodes[*idx];
+                        if other.is_water {
+                            0.0
+                        } else {
+                            node.elevation - other.elevation
+                        }
+                    })
+                    .max_by(|a, b| a.partial_cmp(b).unwrap_or(Equal))
+                    .unwrap();
+
+                let mut vegetation = if node.is_water {
+                    VEG_WATER
+                } else {
+                    VEG_MATRIX[m_index][t_index]
+                };
+
+                if vegetation != VEG_GLACIER
+                    && (max_slope > params.min_slope_cliffs
+                        || node.elevation > params.min_elevation_cliffs)
+                {
+                    vegetation = VEG_CLIFFS;
+                }
+
+                vegetation
+            })
+            .collect();
+
+        for (node, veg) in nodes.iter_mut().zip(vegetation) {
+            node.vegetation_type = veg;
+        }
+
+        nodes
     }
 
     fn generate_colors(&self, nodes: &[NodeData]) -> ColorArray {
