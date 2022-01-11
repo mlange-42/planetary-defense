@@ -41,6 +41,13 @@ const FACILITY_RADIUS = {
 #	FAC_MISSILE_BASE: 0,
 }
 
+const FACILITY_RADIUS_FUNC = {
+	FAC_CITY: "constant_range",
+	FAC_PORT: "constant_range",
+	FAC_AIR_DEFENSE: "constant_range",
+#	FAC_MISSILE_BASE: "constant_range",
+}
+
 const FACILITY_COSTS = {
 	FAC_CITY: 100,
 	FAC_PORT: 50,
@@ -84,6 +91,13 @@ const FACILITY_CAN_BUILD_FUNC = {
 }
 
 class FacilityFunctions:
+	func can_build(type, planet_data, node) -> bool:
+		return self.call(FACILITY_CAN_BUILD_FUNC[type], planet_data, node)
+		
+	func calc_range(type, planet_data, node) -> bool:
+		return self.call(FACILITY_RADIUS_FUNC[type], planet_data, node, FACILITY_RADIUS[type])
+	
+	
 	func can_build_land(planet_data, node) -> bool:
 		return not planet_data.get_node(node).is_water
 
@@ -99,3 +113,8 @@ class FacilityFunctions:
 				return true
 		
 		return false
+	
+	
+	func constant_range(_planet_data, _node, radius) -> int:
+		return radius
+

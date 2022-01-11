@@ -12,6 +12,8 @@ var radius: int = 0
 
 var road_start_point: int = -1
 
+var facility_functions: Facilities.FacilityFunctions = Facilities.FacilityFunctions.new()
+
 func _ready():
 	var build_buttons: Container = find_node("BuildButtons")
 	var road_buttons: Container = find_node("RoadButtons")
@@ -103,6 +105,7 @@ func on_planet_hovered(node: int):
 	var curr_tool = get_facility_tool()
 	var road_tool = get_road_tool()
 	if curr_tool != null:
+		radius = Facilities.FacilityFunctions.new().calc_range(curr_tool, fsm.planet.planet_data, node)
 		_update_range(node)
 		fsm.update_build_info(curr_tool, -1)
 	elif road_tool != null:
@@ -177,7 +180,7 @@ func _on_tool_changed(_button):
 	if curr_tool != null:
 		road_start_point = -1
 		
-		radius = Facilities.FACILITY_RADIUS[curr_tool]
+		radius = Facilities.FacilityFunctions.new().calc_range(curr_tool, fsm.planet.planet_data, fsm.get_current_node())
 		fsm.planet.clear_path()
 		_update_range(fsm.get_current_node())
 		indicator.visible = true

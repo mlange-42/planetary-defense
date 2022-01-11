@@ -14,8 +14,6 @@ func _ready():
 		AirAttack: 0.75,
 	}
 	
-	radius = Facilities.FACILITY_RADIUS[type]
-	
 	if randf() < 0.5:
 		anim_player.play(animation)
 	else:
@@ -28,6 +26,8 @@ func _ready():
 
 
 func on_ready(planet_data):
+	radius = Facilities.FacilityFunctions.new().calc_range(type, planet_data, node_id)
+	
 	var temp_cells = planet_data.get_in_radius(node_id, radius)
 	for c in temp_cells:
 		cells[c[0]] = c[1]
