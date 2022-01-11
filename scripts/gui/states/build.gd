@@ -63,6 +63,7 @@ func _unhandled_key_input(event: InputEventKey):
 
 func state_entered():
 	indicator.visible = true
+	road_start_point = -1
 	var curr_tool = get_facility_tool()
 	if curr_tool != null:
 		_update_range(fsm.get_current_node())
@@ -174,6 +175,8 @@ func _on_tool_changed(_button):
 	var curr_tool = get_facility_tool()
 	var road_tool = get_road_tool()
 	if curr_tool != null:
+		road_start_point = -1
+		
 		radius = Facilities.FACILITY_RADIUS[curr_tool]
 		fsm.planet.clear_path()
 		_update_range(fsm.get_current_node())
@@ -186,6 +189,7 @@ func _on_tool_changed(_button):
 		indicator.visible = false
 		fsm.update_build_info(road_tool, 1)
 	else:
+		road_start_point = -1
 		indicator.visible = false
 		
 
