@@ -3,6 +3,7 @@ class_name BuildManager
 const ROAD_CAPACITY = 25
 
 var constants: LandUse
+var facility_functions: Facilities.FacilityFunctions = Facilities.FacilityFunctions.new()
 
 var network: RoadNetwork
 var resources: ResourceManager
@@ -88,10 +89,10 @@ func add_facility(type: String, location: int, name: String):
 	if costs > taxes.budget:
 		return [null, "Not enough money (requires %d)" % costs]
 	
-	var facility: Facility = load(Facilities.FACILITY_SCENES[type]).instance()
-	if not facility.can_build(planet_data, location):
-		facility.queue_free()
+	if not facility_functions.can_build(type, planet_data, location):
 		return [null, "Can't build this facility here"]
+	
+	var facility: Facility = load(Facilities.FACILITY_SCENES[type]).instance()
 	
 	facility.init(location, planet_data, type)
 	

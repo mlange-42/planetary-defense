@@ -41,6 +41,13 @@ const FACILITY_RADIUS = {
 #	FAC_MISSILE_BASE: 0,
 }
 
+const FACILITY_RADIUS_FUNC = {
+	FAC_CITY: "constant_range",
+	FAC_PORT: "constant_range",
+	FAC_AIR_DEFENSE: "air_defense_range",
+#	FAC_MISSILE_BASE: "constant_range",
+}
+
 const FACILITY_COSTS = {
 	FAC_CITY: 100,
 	FAC_PORT: 50,
@@ -75,3 +82,52 @@ const FACILITY_KEYS = {
 	FAC_AIR_DEFENSE: KEY_A,
 #	FAC_MISSILE_BASE: KEY_M,
 }
+
+const FACILITY_CAN_BUILD_FUNC = {
+	FAC_CITY: "can_build_land",
+	FAC_PORT: "can_build_port",
+	FAC_AIR_DEFENSE: "can_build_land",
+#	FAC_MISSILE_BASE: KEY_M,
+}
+
+class FacilityFunctions:
+	func can_build(type, planet_data, node) -> bool:
+		return self.call(FACILITY_CAN_BUILD_FUNC[type], planet_data, node)
+		
+	func calc_range(type, planet_data, node) -> bool:
+		return self.call(FACILITY_RADIUS_FUNC[type], planet_data, node, FACILITY_RADIUS[type])
+	
+	
+	func can_build_land(planet_data, node) -> bool:
+		return not planet_data.get_node(node).is_water
+
+	func can_build_port(planet_data, node) -> bool:
+		var nd = planet_data.get_node(node)
+		
+		if not nd.is_water:
+			return false
+		
+		var neigh = planet_data.get_neighbors(node)
+		for n in neigh:
+			if not planet_data.get_node(n).is_water:
+				return true
+		
+		return false
+	
+	
+	func constant_range(_planet_data, _node, radius) -> int:
+		return radius
+	
+	
+	func air_defense_range(planet_data, node, radius) -> int:
+		var ele_max = planet_data.get_max_elevation()
+		var nd = planet_data.get_node(node)
+		var ele = Consts.elevation(nd.elevation, ele_max)
+		
+		if ele < 1000:
+			return radius
+		elif ele < 2000:
+			return int(round(radius * 1.25))
+		else:
+			return int(round(radius * 1.5))
+

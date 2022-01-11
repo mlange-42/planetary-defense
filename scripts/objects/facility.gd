@@ -105,11 +105,6 @@ func get_missing_supply() -> Dictionary:
 	return res
 
 
-# warning-ignore:unused_argument
-# warning-ignore:unused_argument
-func can_build(planet_data, node) -> bool:
-	return false
-
 func add_source(commodity: String, amount: int):
 	if commodity in sources:
 		sources[commodity] += amount

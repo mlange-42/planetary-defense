@@ -15,21 +15,30 @@ margin_right = 192.0
 margin_bottom = 16.0
 
 [node name="LandUse" type="Label" parent="HBoxContainer"]
-margin_right = 94.0
+margin_right = 148.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
 text = "Land use"
+clip_text = true
 
-[node name="Resources" type="Label" parent="HBoxContainer"]
-margin_left = 98.0
+[node name="Elevation" type="Label" parent="HBoxContainer"]
+margin_left = 152.0
 margin_right = 192.0
 margin_bottom = 16.0
+text = "1000m"
+align = 2
+
+[node name="Resources" type="Label" parent="."]
+margin_top = 20.0
+margin_right = 192.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
+size_flags_vertical = 0
 text = "Resources"
 
 [node name="Entries" type="HBoxContainer" parent="."]
-margin_top = 20.0
+margin_top = 40.0
 margin_right = 192.0
-margin_bottom = 100.0
+margin_bottom = 120.0
 grow_vertical = 0
 rect_min_size = Vector2( 0, 80 )

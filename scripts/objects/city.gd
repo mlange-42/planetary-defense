@@ -107,10 +107,6 @@ func read(dict: Dictionary):
 		growth_stats.space_factor = growth["space"]
 
 
-func can_build(planet_data, node) -> bool:
-	return not planet_data.get_node(node).is_water
-
-
 func has_landuse_requirements(lu: int) -> bool:
 	for req in LandUse.LU_REQUIREMENTS[lu]:
 		var found = false

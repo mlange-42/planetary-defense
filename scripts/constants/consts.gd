@@ -2,6 +2,8 @@ class_name Consts
 
 const DEFAULT_VIEWPORT_HEIGHT: int = 720
 
+const ELEVATION_SCALE: int = 2500
+
 const INITIAL_BUDGET: int = 350
 
 const TRANSPORT_COST_1000: int = 25
@@ -37,3 +39,7 @@ const LAYER_RESOURCES: int = 4
 const LAYER_CITY_RANGES: int = 5
 const LAYER_DEFENSE_RANGES: int = 6
 const LAYER_EVENTS: int = 7
+
+
+static func elevation(ele: float, max_ele: float) -> int:
+	return int(round(ele * max_ele * ELEVATION_SCALE))
