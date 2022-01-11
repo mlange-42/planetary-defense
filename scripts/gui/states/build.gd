@@ -64,7 +64,6 @@ func _unhandled_key_input(event: InputEventKey):
 
 
 func state_entered():
-	indicator.visible = true
 	road_start_point = -1
 	var curr_tool = get_facility_tool()
 	if curr_tool != null:
@@ -145,7 +144,11 @@ func on_planet_clicked(node: int, button: int):
 	if fac_tool != null:
 		if button == BUTTON_LEFT:
 			if fac_tool == Facilities.FAC_CITY:
-				fsm.push("name_dialog", {"node": node})
+				var costs = Facilities.FACILITY_COSTS[fac_tool]
+				if costs > fsm.planet.taxes.budget:
+					fsm.show_message("Not enough money (requires %d)" % costs, Consts.MESSAGE_ERROR)
+				else:
+					fsm.push("name_dialog", {"node": node})
 			else:
 				var fac_err = fsm.planet.add_facility(fac_tool, node, fac_tool, null)
 				if fac_err[0] != null:
