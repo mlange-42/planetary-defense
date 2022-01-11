@@ -13,6 +13,7 @@ func _init(comm: String, amount: int):
 	icon = TextureRect.new()
 	icon.texture = Commodities.COMM_ICONS[comm]
 	icon.rect_min_size = Vector2(16, 16)
+	icon.size_flags_vertical = 0
 	icon.expand = true
 	
 	icon.hint_tooltip = commodity
@@ -21,6 +22,7 @@ func _init(comm: String, amount: int):
 	add_child(icon)
 	
 	label = Label.new()
+	label.add_font_override("font", preload("res://assets/fonts/consolas_20.tres"))
 	label.text = "%3d" % amount
 	
 	add_child(label)

@@ -22,6 +22,7 @@
 * Show city stats permanently when managing a city
 * Merge default and build GUI states; build is now the default
 * Auto-select land use when clearing (with right-click), and nothing is selected
+* Larger font for build cost info
 
 ### Bug fixes
 
