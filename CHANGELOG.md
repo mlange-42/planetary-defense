@@ -13,6 +13,7 @@
 * Elevation-dependent range of defenses
 * Elevation contours drawn on planet
 * Slope limit for building roads - maximum elevation difference 200m
+* Cliff vegetation type on steep and high ground
 * Possibility to remove facilities
 
 ### Changed

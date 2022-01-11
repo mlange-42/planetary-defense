@@ -11,7 +11,7 @@ export var random_seed: int = 0
 export var radius: float = 10.0
 
 export var max_height: float = 1.0
-export var height_step: float = 0.02
+export var height_step: float = 0.016
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
 		var noise_type: String = "fbm"
 export var noise_period: float = 0.7
@@ -295,7 +295,7 @@ func calc_id_path(from: int, to: int) -> Array:
 func draw_path(from: int, to: int, max_length: int) -> Array:
 	var path = calc_point_path(from, to)
 	if path.size() > 0:
-		path_debug.draw_path(path, max_length, Color.yellow, Color.magenta)
+		path_debug.draw_path(path, max_length, Color.black, Color.blueviolet)
 		return path
 	
 	path_debug.clear()
