@@ -154,11 +154,7 @@ impl PlanetGenerator {
         let colors = self.generate_colors(&data.nodes);
 
         let mesh = to_sub_mesh(
-            &data
-                .nodes
-                .iter()
-                .map(|n| n.vegetation_type)
-                .collect::<Vec<_>>(),
+            &data.nodes,
             &data.vertices,
             &data.faces,
             Some(colors),
@@ -217,11 +213,7 @@ impl PlanetGenerator {
         let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
         let mesh = to_sub_mesh(
-            &data
-                .nodes
-                .iter()
-                .map(|n| n.vegetation_type)
-                .collect::<Vec<_>>(),
+            &data.nodes,
             &data.vertices,
             &data.faces,
             Some(colors),
