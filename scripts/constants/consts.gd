@@ -42,5 +42,5 @@ const LAYER_DEFENSE_RANGES: int = 6
 const LAYER_EVENTS: int = 7
 
 
-static func elevation(ele: float, max_ele: float) -> int:
-	return int(round(ele * max_ele * ELEVATION_SCALE))
+static func elevation(ele: float) -> int:
+	return int(round(ele * ELEVATION_SCALE))

@@ -21,7 +21,7 @@ func update_info(planet: Planet, consts: LandUse, node: int):
 		return
 	
 	var nd = planet.planet_data.get_node(node)
-	var ele = Consts.elevation(nd.elevation, planet.planet_data.get_max_elevation())
+	var ele = Consts.elevation(nd.elevation)
 	
 	elevation_label.text = "%+dm" % ele
 	
