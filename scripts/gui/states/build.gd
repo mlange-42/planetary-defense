@@ -2,6 +2,7 @@ extends GuiState
 class_name BuildState
 
 onready var inspect_button: Button = find_node("Inspect")
+onready var remove_button: Button = find_node("Remove")
 
 var indicator: RangeIndicator
 
@@ -24,6 +25,7 @@ func _ready():
 	
 	button_group = ButtonGroup.new()
 	inspect_button.group = button_group
+	remove_button.group = button_group
 	
 	for fac in Facilities.FACILITY_IN_CITY:
 		if not Facilities.FACILITY_IN_CITY[fac]:
@@ -132,9 +134,15 @@ func on_planet_clicked(node: int, button: int):
 	
 	if button == BUTTON_LEFT and road_tool == null:
 		var facility: Facility = fsm.planet.get_facility(node)
-		if facility != null and facility is City:
-			fsm.push("edit_city", {"node": node})
-			return
+		if facility != null:
+			if button_group.get_pressed_button() == remove_button:
+				var err = fsm.planet.builder.remove_facility(facility)
+				if err != null:
+					fsm.show_message(err, Consts.MESSAGE_ERROR)
+				return
+			elif facility != null and facility is City:
+				fsm.push("edit_city", {"node": node})
+				return
 	
 	if fac_tool != null:
 		if button == BUTTON_LEFT:

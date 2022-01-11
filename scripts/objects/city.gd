@@ -164,6 +164,9 @@ func update_cells(planet_data):
 func add_facility(node: int, facility: Facility):
 	facilities[node] = facility
 
+func remove_facility(node: int):
+	assert(facilities.erase(node), "There is no a facility at node %s to remove" % node)
+
 
 func update_visuals(planet_data):
 	city_sign.set_text("%s (%d/%d)" % [name, workers(), population()])
@@ -188,3 +191,9 @@ func update_visuals(planet_data):
 
 func _draw_borders(planet_data):
 	borders_mesh.draw_range(planet_data, node_id, cells, radius, Color.red)
+
+
+func removed(planet):
+	var fac = facilities.values()
+	for f in fac:
+		planet.builder.remove_facility(f)
