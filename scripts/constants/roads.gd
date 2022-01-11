@@ -18,6 +18,11 @@ const ROAD_INFO = {
 	ROAD_ROAD: "Build roads",
 }
 
+const ROAD_CAPACITY = {
+	ROAD_CLEAR: 0,
+	ROAD_ROAD: 25,
+}
+
 const ROAD_KEYS = {
 	ROAD_CLEAR: KEY_E,
 	ROAD_ROAD: KEY_R,

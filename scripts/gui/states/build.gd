@@ -190,8 +190,7 @@ func _on_tool_changed(_button):
 			radius = Facilities.FacilityFunctions.new().calc_range(curr_tool, fsm.planet.planet_data, node)
 		
 		fsm.planet.clear_path()
-		_update_range(fsm.get_current_node())
-		indicator.visible = true
+		_update_range(node)
 		
 		fsm.update_build_info(curr_tool, -1)
 	elif road_tool != null:
