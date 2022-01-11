@@ -12,6 +12,7 @@
 * Display elevation in land use info
 * Elevation-dependent range of defenses
 * Elevation contours drawn on planet
+* Slope limit for building roads - maximum elevation difference 200m
 
 ### Changed
 

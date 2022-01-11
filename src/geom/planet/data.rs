@@ -215,8 +215,15 @@ impl PlanetData {
     }
 
     #[export]
-    fn get_id_path(&self, _owner: &Reference, from: usize, to: usize, nav_type: u32) -> Vec<usize> {
-        self.find_path(from, to, nav_type)
+    fn get_id_path(
+        &self,
+        _owner: &Reference,
+        from: usize,
+        to: usize,
+        nav_type: u32,
+        max_slope: f32,
+    ) -> Vec<usize> {
+        self.find_path(from, to, nav_type, max_slope)
             .map(|(v, _c)| v)
             .unwrap_or_else(Vec::new)
     }
@@ -228,23 +235,35 @@ impl PlanetData {
         from: usize,
         to: usize,
         nav_type: u32,
+        max_slope: f32,
     ) -> Vec<Vector3> {
-        self.find_path(from, to, nav_type)
+        self.find_path(from, to, nav_type, max_slope)
             .map(|(v, _c)| v.iter().map(|id| self.nodes[*id].position).collect())
             .unwrap_or_else(Vec::new)
     }
 
-    fn find_path(&self, from: usize, to: usize, nav_type: u32) -> Option<(Vec<usize>, u32)> {
+    fn find_path(
+        &self,
+        from: usize,
+        to: usize,
+        nav_type: u32,
+        max_slope: f32,
+    ) -> Option<(Vec<usize>, u32)> {
         let goal = self.nodes[to].position;
         astar(
             &from,
-            |id| self.get_successor(*id, nav_type),
+            |id| self.get_successor(*id, nav_type, max_slope),
             |id| (self.nodes[*id].position.distance_to(goal) * DIST_FACTOR as f32) as u32,
             |id| id == &to,
         )
     }
 
-    fn get_successor(&self, id: usize, nav_type: u32) -> impl Iterator<Item = (usize, u32)> + '_ {
+    fn get_successor(
+        &self,
+        id: usize,
+        nav_type: u32,
+        max_slope: f32,
+    ) -> impl Iterator<Item = (usize, u32)> + '_ {
         let neigh = &self.neighbors[id];
         let source = &self.nodes[id];
         neigh
@@ -255,6 +274,9 @@ impl PlanetData {
                 let target = &self.nodes[*n];
                 let nav_water = nav_type == self.NAV_WATER;
                 if !target.is_occupied
+                    && (nav_water
+                        || max_slope <= 0.0
+                        || (source.elevation - target.elevation).abs() <= max_slope)
                     && (nav_type == self.NAV_ALL
                         || (nav_water == source.is_water && nav_water == target.is_water)
                         || (nav_type == self.NAV_LAND

@@ -3,6 +3,8 @@ class_name Roads
 const ROAD_CLEAR: int = 0
 const ROAD_ROAD: int = 1
 
+const MAX_SLOPE: int = 200
+
 const ROAD_ICONS = {
 	ROAD_CLEAR: preload("res://assets/icons/facilities/clear_road.svg"),
 	ROAD_ROAD: preload("res://assets/icons/facilities/road.svg"),
