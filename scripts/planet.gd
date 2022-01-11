@@ -149,7 +149,7 @@ func _ready():
 		self.roads = RoadNetwork.new()
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data)
-		self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
+		self.builder = BuildManager.new(consts, self, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, self)
 		
@@ -239,7 +239,7 @@ func load_game():
 	self.resources = ResourceManager.new(planet_data)
 	self.resources.read(parse_json(resources_json))
 	
-	self.builder = BuildManager.new(consts, roads, resources, planet_data, taxes, facilities)
+	self.builder = BuildManager.new(consts, self, facilities)
 	self.flow = FlowManager.new(roads)
 	self.cities = CityManager.new(consts, self)
 	

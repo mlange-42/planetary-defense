@@ -34,7 +34,7 @@ Introduced finances, several features to visualize what is going on, and tile ma
 
 What's new:
 
-* Introduced finances: taxes, budget, build and maintainance costs
+* Introduced finances: taxes, budget, build and maintenance costs
 * Visualization of flows and (potential) production/consumption
 * Configurable planet generation: size, amount of water, humidity, temperature
 * Tile texture on planet, with new geometry generation
