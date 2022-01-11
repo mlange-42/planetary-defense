@@ -75,3 +75,27 @@ const FACILITY_KEYS = {
 	FAC_AIR_DEFENSE: KEY_A,
 #	FAC_MISSILE_BASE: KEY_M,
 }
+
+const FACILITY_CAN_BUILD_FUNC = {
+	FAC_CITY: "can_build_land",
+	FAC_PORT: "can_build_port",
+	FAC_AIR_DEFENSE: "can_build_land",
+#	FAC_MISSILE_BASE: KEY_M,
+}
+
+class FacilityFunctions:
+	func can_build_land(planet_data, node) -> bool:
+		return not planet_data.get_node(node).is_water
+
+	func can_build_port(planet_data, node) -> bool:
+		var nd = planet_data.get_node(node)
+		
+		if not nd.is_water:
+			return false
+		
+		var neigh = planet_data.get_neighbors(node)
+		for n in neigh:
+			if not planet_data.get_node(n).is_water:
+				return true
+		
+		return false

@@ -53,9 +53,5 @@ func calc_is_supplied():
 			anim_player.stop(false)
 
 
-func can_build(planet_data, node) -> bool:
-	return not planet_data.get_node(node).is_water
-
-
 func _draw_cells(planet_data): 
 	range_indicator.draw_range(planet_data, node_id, cells, radius, Color.magenta)
