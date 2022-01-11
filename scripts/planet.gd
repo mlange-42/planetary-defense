@@ -32,8 +32,8 @@ export (int, 0, 7) var subdivisions: int = 6
 export (int, 2, 48) var water_rings: int = 48
 export (int, 4, 96) var water_segments: int = 96
 export var smooth: bool = false
-export var atlas_size: int = 4
-export var atlas_margin: float = 32.0 / 1024.0
+export var atlas_size: Array = [4, 4]
+export var atlas_margin: Array = [32.0 / 2048.0, 32.0 / 1024.0]
 
 export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
 export var water_material: Material = preload("res://assets/materials/planet/water.tres")
@@ -119,7 +119,8 @@ func _ready():
 		radius, subdivisions, max_height, height_step, 
 		noise_type, noise_period, noise_octaves, noise_seed, height_curve,
 		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed,
-		temperature_curve, precipitation_curve, atlas_size, atlas_margin)
+		temperature_curve, precipitation_curve, atlas_size, atlas_margin,
+		Consts.ELEVATION_STEP / (max_height * Consts.ELEVATION_SCALE))
 	
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	

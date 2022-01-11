@@ -3,6 +3,7 @@ class_name Consts
 const DEFAULT_VIEWPORT_HEIGHT: int = 720
 
 const ELEVATION_SCALE: int = 2500
+const ELEVATION_STEP: int = 500
 
 const INITIAL_BUDGET: int = 350
 

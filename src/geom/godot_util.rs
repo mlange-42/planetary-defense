@@ -29,12 +29,13 @@ pub fn to_sub_mesh(
     vertices: &[Vector3],
     faces: &[(usize, usize, usize)],
     cols: Option<ColorArray>,
-    atlas_size: u32,
-    atlas_margins: f32,
+    atlas_size: (u32, u32),
+    atlas_margins: (f32, f32),
+    contour_step: f32,
 ) -> Ref<ArrayMesh, Unique> {
-    let uv_scale = 1.0 / atlas_size as f32;
+    let uv_scale = (1.0 / atlas_size.0 as f32, 1.0 / atlas_size.1 as f32);
 
-    let to_tile = |tp: u32| (tp % atlas_size, tp / atlas_size);
+    let to_tile = |tp: u32| (tp % atlas_size.0, tp / atlas_size.0);
 
     let mut verts = Vector3Array::new();
     let mut indices = Int32Array::new();
@@ -56,8 +57,8 @@ pub fn to_sub_mesh(
         verts.push(*vert);
         let (x, y) = to_tile(tex);
         uvs.push(Vector2::new(
-            (x as f32 + 0.5) * uv_scale,
-            (y as f32 + 0.5) * uv_scale,
+            (x as f32 + 0.5) * uv_scale.0,
+            (y as f32 + 0.5) * uv_scale.1,
         ));
 
         let p0 = face_centroid(faces[vert_faces[v][0]], vertices);
@@ -105,7 +106,9 @@ pub fn to_sub_mesh(
                 fn1.1
             };
 
-            let is_contour = ((nodes[common_node].elevation * 10.0) as u32) < ((ele * 10.0) as u32);
+            let is_contour = ((nodes[common_node].elevation / contour_step) as u32)
+                > ((ele / contour_step) as u32);
+
             let (uv_x_off, uv_off_flip) = if is_contour { (0, 1.0) } else { (1, -1.0) };
 
             verts.push(outer[idx1].0);
@@ -117,13 +120,13 @@ pub fn to_sub_mesh(
             indices.push(p2);
 
             uvs.push(Vector2::new(
-                (x + uv_x_off) as f32 * uv_scale + uv_off_flip * atlas_margins,
-                y as f32 * uv_scale + atlas_margins,
+                (x + uv_x_off) as f32 * uv_scale.0 + uv_off_flip * atlas_margins.0,
+                y as f32 * uv_scale.1 + atlas_margins.1,
             ));
 
             uvs.push(Vector2::new(
-                (x + uv_x_off) as f32 * uv_scale + uv_off_flip * atlas_margins,
-                (y + 1) as f32 * uv_scale - atlas_margins,
+                (x + uv_x_off) as f32 * uv_scale.0 + uv_off_flip * atlas_margins.0,
+                (y + 1) as f32 * uv_scale.1 - atlas_margins.1,
             ));
         }
 
