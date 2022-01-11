@@ -25,16 +25,17 @@ pub fn to_collision_shape(
 }
 
 pub fn to_sub_mesh(
-    tex_index: &[u32],
+    nodes: &[NodeData],
     vertices: &[Vector3],
     faces: &[(usize, usize, usize)],
     cols: Option<ColorArray>,
-    atlas_size: u32,
-    atlas_margins: f32,
+    atlas_size: (u32, u32),
+    atlas_margins: (f32, f32),
+    contour_step: f32,
 ) -> Ref<ArrayMesh, Unique> {
-    let uv_scale = 1.0 / atlas_size as f32;
+    let uv_scale = (1.0 / atlas_size.0 as f32, 1.0 / atlas_size.1 as f32);
 
-    let to_tile = |tp: u32| (tp % atlas_size, tp / atlas_size);
+    let to_tile = |tp: u32| (tp % atlas_size.0, tp / atlas_size.0);
 
     let mut verts = Vector3Array::new();
     let mut indices = Int32Array::new();
@@ -49,12 +50,15 @@ pub fn to_sub_mesh(
         vert_faces[face.2].push(i);
     }
 
-    for (v, (vert, tex)) in vertices.iter().zip(tex_index).enumerate() {
+    for (v, (vert, node)) in vertices.iter().zip(nodes).enumerate() {
+        let tex = node.vegetation_type;
+        let ele = node.elevation;
+
         verts.push(*vert);
-        let (x, y) = to_tile(*tex);
+        let (x, y) = to_tile(tex);
         uvs.push(Vector2::new(
-            x as f32 * uv_scale + atlas_margins,
-            (y as f32 + 0.5) * uv_scale,
+            (x as f32 + 0.5) * uv_scale.0,
+            (y as f32 + 0.5) * uv_scale.1,
         ));
 
         let p0 = face_centroid(faces[vert_faces[v][0]], vertices);
@@ -68,8 +72,16 @@ pub fn to_sub_mesh(
         let mut outer: Vec<_> = vert_faces[v]
             .iter()
             .map(|f| {
-                let v = face_centroid(faces[*f], vertices);
-                (v, angle_on_plane(v, origin, e1, e2))
+                let face = faces[*f];
+                let centroid = face_centroid(faces[*f], vertices);
+                let indices = if v == face.0 {
+                    (face.1, face.2)
+                } else if v == face.1 {
+                    (face.0, face.2)
+                } else {
+                    (face.0, face.1)
+                };
+                (centroid, angle_on_plane(centroid, origin, e1, e2), indices)
             })
             .collect();
 
@@ -79,22 +91,42 @@ pub fn to_sub_mesh(
         let count = outer.len() as i32;
 
         for i in 0..count {
-            verts.push(outer[i as usize].0);
-            verts.push(outer[(i + 1) as usize % count as usize].0);
+            let p0 = start_index - 1;
+            let p1 = start_index + (2 * i as i32 + 1) % (2 * count);
+            let p2 = start_index + 2 * i as i32;
 
-            indices.push(start_index - 1);
+            let idx1 = i as usize;
+            let idx2 = (i + 1) as usize % count as usize;
 
-            indices.push(start_index + (2 * i as i32 + 1) % (2 * count));
-            indices.push(start_index + 2 * i as i32);
+            let fn1 = outer[idx1].2;
+            let fn2 = outer[idx2].2;
+            let common_node = if fn1.0 == fn2.0 || fn1.0 == fn2.1 {
+                fn1.0
+            } else {
+                fn1.1
+            };
+
+            let is_contour = ((nodes[common_node].elevation / contour_step) as u32)
+                > ((ele / contour_step) as u32);
+
+            let (uv_x_off, uv_off_flip) = if is_contour { (0, 1.0) } else { (1, -1.0) };
+
+            verts.push(outer[idx1].0);
+            verts.push(outer[idx2].0);
+
+            indices.push(p0);
+
+            indices.push(p1);
+            indices.push(p2);
 
             uvs.push(Vector2::new(
-                (x + 1) as f32 * uv_scale - atlas_margins,
-                y as f32 * uv_scale + atlas_margins,
+                (x + uv_x_off) as f32 * uv_scale.0 + uv_off_flip * atlas_margins.0,
+                y as f32 * uv_scale.1 + atlas_margins.1,
             ));
 
             uvs.push(Vector2::new(
-                (x + 1) as f32 * uv_scale - atlas_margins,
-                (y + 1) as f32 * uv_scale - atlas_margins,
+                (x + uv_x_off) as f32 * uv_scale.0 + uv_off_flip * atlas_margins.0,
+                (y + 1) as f32 * uv_scale.1 - atlas_margins.1,
             ));
         }
 

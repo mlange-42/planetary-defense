@@ -86,8 +86,9 @@ struct PlanetGeneratorParams {
     climate_noise_seed: u32,
     temperature_curve: Ref<Curve>,
     precipitation_curve: Ref<Curve>,
-    atlas_size: u32,
-    atlas_margins: f32,
+    atlas_size: (u32, u32),
+    atlas_margins: (f32, f32),
+    contour_step: f32,
 }
 
 #[derive(NativeClass)]
@@ -122,8 +123,9 @@ impl PlanetGenerator {
         climate_noise_seed: u32,
         temperature_curve: Ref<Curve>,
         precipitation_curve: Ref<Curve>,
-        atlas_size: u32,
-        atlas_margins: f32,
+        atlas_size: (u32, u32),
+        atlas_margins: (f32, f32),
+        contour_step: f32,
     ) {
         self.params = Some(PlanetGeneratorParams {
             radius,
@@ -143,6 +145,7 @@ impl PlanetGenerator {
             precipitation_curve,
             atlas_size,
             atlas_margins,
+            contour_step,
         })
     }
 
@@ -154,16 +157,13 @@ impl PlanetGenerator {
         let colors = self.generate_colors(&data.nodes);
 
         let mesh = to_sub_mesh(
-            &data
-                .nodes
-                .iter()
-                .map(|n| n.vegetation_type)
-                .collect::<Vec<_>>(),
+            &data.nodes,
             &data.vertices,
             &data.faces,
             Some(colors),
             par.atlas_size,
             par.atlas_margins,
+            par.contour_step,
         );
         let shape = to_collision_shape(&data.nodes, &data.faces);
 
@@ -217,16 +217,13 @@ impl PlanetGenerator {
         let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
         let mesh = to_sub_mesh(
-            &data
-                .nodes
-                .iter()
-                .map(|n| n.vegetation_type)
-                .collect::<Vec<_>>(),
+            &data.nodes,
             &data.vertices,
             &data.faces,
             Some(colors),
             params.atlas_size,
             params.atlas_margins,
+            params.contour_step,
         );
         let shape = to_collision_shape(&data.nodes, &data.faces);
 

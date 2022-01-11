@@ -11,6 +11,7 @@
 * A different animated texture for sea lines
 * Display elevation in land use info
 * Elevation-dependent range of defenses
+* Elevation contours drawn on planet
 
 ### Changed
 
