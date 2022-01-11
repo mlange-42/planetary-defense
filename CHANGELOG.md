@@ -9,6 +9,8 @@
 * Land use "Irrigated crops"; allows cities in deserts
 * Animated textures to visualize traffic on roads
 * A different animated texture for sea lines
+* Display elevation in land use info
+* Elevation-dependent range of defenses
 
 ### Changed
 

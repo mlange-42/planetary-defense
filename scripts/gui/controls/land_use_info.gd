@@ -2,6 +2,7 @@ extends Control
 class_name LandUseInfo
 
 onready var land_use_label: Label = find_node("LandUse")
+onready var elevation_label: Label = find_node("Elevation")
 onready var resources_label: Label = find_node("Resources")
 onready var container: Container = find_node("Entries")
 
@@ -16,9 +17,15 @@ func update_info(planet: Planet, consts: LandUse, node: int):
 	if node < 0:
 		land_use_label.text = "Space"
 		resources_label.text = ""
+		elevation_label.text = ""
 		return
 	
-	var veg = planet.planet_data.get_node(node).vegetation_type
+	var nd = planet.planet_data.get_node(node)
+	var ele = Consts.elevation(nd.elevation, planet.planet_data.get_max_elevation())
+	
+	elevation_label.text = "%+dm" % ele
+	
+	var veg = nd.vegetation_type
 	var res_here = planet.resources.resources.get(node, null)
 	
 	land_use_label.text = LandUse.VEG_NAMES[veg]

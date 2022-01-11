@@ -120,7 +120,14 @@ class FacilityFunctions:
 	
 	
 	func air_defense_range(planet_data, node, radius) -> int:
+		var ele_max = planet_data.get_max_elevation()
 		var nd = planet_data.get_node(node)
-		var ele = max(nd.elevation, 0)
-		return int(floor(float(radius) * (1.0 + ele)))
+		var ele = Consts.elevation(nd.elevation, ele_max)
+		
+		if ele < 1000:
+			return radius
+		elif ele < 2000:
+			return int(round(radius * 1.25))
+		else:
+			return int(round(radius * 1.5))
 
