@@ -1,0 +1,106 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/gui/states/name_dialog.gd" type="Script" id=1]
+[ext_resource path="res://assets/icons/menu/randomize_16px.svg" type="Texture" id=2]
+[ext_resource path="res://assets/styles/panel_transparent.stylebox" type="StyleBox" id=3]
+[ext_resource path="res://assets/shortkeys/ctrl_r.tres" type="ShortCut" id=4]
+[ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=5]
+[ext_resource path="res://assets/shortkeys/enter.tres" type="ShortCut" id=6]
+
+[node name="NameDialog" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -9.0
+margin_top = -14.0
+margin_right = 9.0
+margin_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 154.0
+margin_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 150, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+margin_right = 150.0
+margin_bottom = 16.0
+text = "City name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 20.0
+margin_right = 150.0
+margin_bottom = 46.0
+
+[node name="CityName" type="LineEdit" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_right = 122.0
+margin_bottom = 26.0
+hint_tooltip = "Name for the new city (required)"
+size_flags_horizontal = 3
+placeholder_text = "City name"
+
+[node name="RandomNameButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 126.0
+margin_right = 150.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 20, 0 )
+hint_tooltip = "Random name"
+focus_mode = 0
+enabled_focus_mode = 0
+shortcut = ExtResource( 4 )
+icon = ExtResource( 2 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 50.0
+margin_right = 150.0
+margin_bottom = 74.0
+
+[node name="CancelName" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 73.0
+margin_bottom = 24.0
+hint_tooltip = "Cancel building city"
+size_flags_horizontal = 3
+shortcut = ExtResource( 5 )
+text = "Cancel"
+
+[node name="ConfirmName" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 77.0
+margin_right = 150.0
+margin_bottom = 24.0
+hint_tooltip = "Confirm and build city"
+size_flags_horizontal = 3
+shortcut = ExtResource( 6 )
+text = "Confirm"
+
+[connection signal="text_entered" from="PanelContainer/VBoxContainer/HBoxContainer/CityName" to="." method="_on_CityName_text_entered"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer/RandomNameButton" to="." method="set_random_name"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer2/CancelName" to="." method="_on_CancelName_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HBoxContainer2/ConfirmName" to="." method="_on_ConfirmName_pressed"]

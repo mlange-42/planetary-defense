@@ -1,9 +1,6 @@
 extends GuiState
 class_name BuildState
 
-var names = CityNames.GERMAN
-
-onready var name_edit: LineEdit = find_node("CityName")
 onready var inspect_button: Button = find_node("Inspect")
 
 var indicator: RangeIndicator
@@ -16,8 +13,6 @@ var radius: int = 0
 var road_start_point: int = -1
 
 func _ready():
-	set_random_name()
-	
 	var build_buttons: Container = find_node("BuildButtons")
 	var road_buttons: Container = find_node("RoadButtons")
 	
@@ -68,23 +63,14 @@ func _unhandled_key_input(event: InputEventKey):
 
 func state_entered():
 	indicator.visible = true
+	var curr_tool = get_facility_tool()
+	if curr_tool != null:
+		_update_range(fsm.get_current_node())
 
 
 func state_exited():
 	indicator.visible = false
 	fsm.planet.clear_path()
-
-
-func set_random_name():
-	var available = []
-	for n in names:
-		if fsm.planet.builder.city_name_available(n):
-			available.append(n)
-	if available.empty():
-		name_edit.text = ""
-		name_edit.placeholder_text = "Out of names"
-	else:
-		name_edit.text = available[randi() % available.size()]
 
 
 func get_facility_tool():
@@ -144,25 +130,17 @@ func on_planet_clicked(node: int, button: int):
 	
 	if fac_tool != null:
 		if button == BUTTON_LEFT:
-			var is_city = fac_tool == Facilities.FAC_CITY
-			if not is_city or not name_edit.text.empty():
-				var name = name_edit.text if is_city else fac_tool
-				
-				if is_city and not fsm.planet.builder.city_name_available(name):
-					fsm.show_message("There is already a city named %s!" % name, Consts.MESSAGE_ERROR)
-					return
-				
-				var fac_err = fsm.planet.add_facility(fac_tool, node, name)
+			if fac_tool == Facilities.FAC_CITY:
+				fsm.push("name_dialog", {"node": node})
+			else:
+				var fac_err = fsm.planet.add_facility(fac_tool, node, fac_tool)
 				if fac_err[0] != null:
-					if is_city:
-						set_random_name()
 					for button in button_group.get_buttons():
 						button.pressed = false
 					indicator.visible = false
 				else:
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
-			else:
-				fsm.show_message("No city name given!", Consts.MESSAGE_ERROR)
+		
 		elif button == BUTTON_RIGHT:
 			inspect_button.pressed = true
 	else:
@@ -238,3 +216,7 @@ func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		fsm.planet.remove_child(indicator)
 		indicator.queue_free()
+
+
+func set_random_name():
+	pass # Replace with function body.
