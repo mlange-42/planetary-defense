@@ -209,7 +209,7 @@ func _on_tool_changed(_button):
 	else:
 		road_start_point = -1
 		indicator.visible = false
-		
+		fsm.planet.clear_path()
 
 
 func _update_range(node: int):
