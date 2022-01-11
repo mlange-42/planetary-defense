@@ -44,7 +44,7 @@ const FACILITY_RADIUS = {
 const FACILITY_RADIUS_FUNC = {
 	FAC_CITY: "constant_range",
 	FAC_PORT: "constant_range",
-	FAC_AIR_DEFENSE: "constant_range",
+	FAC_AIR_DEFENSE: "air_defense_range",
 #	FAC_MISSILE_BASE: "constant_range",
 }
 
@@ -117,4 +117,10 @@ class FacilityFunctions:
 	
 	func constant_range(_planet_data, _node, radius) -> int:
 		return radius
+	
+	
+	func air_defense_range(planet_data, node, radius) -> int:
+		var nd = planet_data.get_node(node)
+		var ele = max(nd.elevation, 0)
+		return int(floor(float(radius) * (1.0 + ele)))
 
