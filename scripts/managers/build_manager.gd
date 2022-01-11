@@ -69,7 +69,7 @@ func city_name_available(name: String) -> bool:
 	return not city_names.has(name)
 
 
-func add_facility(type: String, location: int, name: String):
+func add_facility(type: String, location: int, name: String, owner):
 	if not Facilities.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
 		return [null, "WARNING: no scene resource found for %s" % type]
@@ -81,7 +81,7 @@ func add_facility(type: String, location: int, name: String):
 	if costs > planet.taxes.budget:
 		return [null, "Not enough money (requires %d)" % costs]
 	
-	if not facility_functions.can_build(type, planet.planet_data, location):
+	if not facility_functions.can_build(type, planet.planet_data, location, owner):
 		return [null, "Can't build this facility here"]
 	
 	var facility: Facility = load(Facilities.FACILITY_SCENES[type]).instance()

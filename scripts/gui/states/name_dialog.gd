@@ -39,7 +39,7 @@ func build_city():
 			fsm.show_message("There is already a city named %s!" % name, Consts.MESSAGE_ERROR)
 			return
 		
-		var fac_err = fsm.planet.add_facility(Facilities.FAC_CITY, node, name)
+		var fac_err = fsm.planet.add_facility(Facilities.FAC_CITY, node, name, null)
 		if fac_err[0] == null:
 			fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
 		

@@ -14,6 +14,7 @@ use crate::geom::planet::data::{
     NodeData, NodeNeighbors, PlanetData, PlanetProperties, DIST_FACTOR,
 };
 use crate::geom::planet::serialize::from_csv;
+use crate::geom::util::xyz_to_ll;
 
 #[allow(dead_code)]
 const VEG_DESERT: u32 = 0;
@@ -304,7 +305,8 @@ impl PlanetGenerator {
 
                 let is_water = elevation <= 0.0;
 
-                let lat = normal.y.asin().to_degrees().abs();
+                let lonlat = xyz_to_ll(normal);
+                let lat = lonlat.y.abs();
                 let lat_factor = lat / 90.0;
                 let alt_factor = (elevation / h_max).max(0.0);
                 let temperature = temperature_curve

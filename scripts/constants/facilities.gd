@@ -91,17 +91,17 @@ const FACILITY_CAN_BUILD_FUNC = {
 }
 
 class FacilityFunctions:
-	func can_build(type, planet_data, node) -> bool:
-		return self.call(FACILITY_CAN_BUILD_FUNC[type], planet_data, node)
+	func can_build(type, planet_data, node, owner) -> bool:
+		return self.call(FACILITY_CAN_BUILD_FUNC[type], planet_data, node, owner)
 		
 	func calc_range(type, planet_data, node) -> bool:
 		return self.call(FACILITY_RADIUS_FUNC[type], planet_data, node, FACILITY_RADIUS[type])
 	
 	
-	func can_build_land(planet_data, node) -> bool:
+	func can_build_land(planet_data, node, _owner) -> bool:
 		return not planet_data.get_node(node).is_water
 
-	func can_build_port(planet_data, node) -> bool:
+	func can_build_port(planet_data, node, _owner) -> bool:
 		var nd = planet_data.get_node(node)
 		
 		if not nd.is_water:

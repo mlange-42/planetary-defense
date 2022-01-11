@@ -13,8 +13,6 @@ var radius: int = 0
 
 var road_start_point: int = -1
 
-var facility_functions: Facilities.FacilityFunctions = Facilities.FacilityFunctions.new()
-
 func _ready():
 	var build_buttons: Container = find_node("BuildButtons")
 	var road_buttons: Container = find_node("RoadButtons")
@@ -149,7 +147,7 @@ func on_planet_clicked(node: int, button: int):
 			if fac_tool == Facilities.FAC_CITY:
 				fsm.push("name_dialog", {"node": node})
 			else:
-				var fac_err = fsm.planet.add_facility(fac_tool, node, fac_tool)
+				var fac_err = fsm.planet.add_facility(fac_tool, node, fac_tool, null)
 				if fac_err[0] != null:
 					for button in button_group.get_buttons():
 						button.pressed = false

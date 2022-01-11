@@ -336,8 +336,8 @@ func draw_flows(commodity: String, color1: Color, color2: Color) -> int:
 	return flows_graphs.draw_flows(planet_data, roads.pair_flows, commodity)
 
 
-func add_facility(type: String, location: int, name: String):
-	var fac_err = builder.add_facility(type, location, name)
+func add_facility(type: String, location: int, name: String, owner):
+	var fac_err = builder.add_facility(type, location, name, owner)
 	if fac_err[0] != null:
 		emit_budget()
 	return fac_err
