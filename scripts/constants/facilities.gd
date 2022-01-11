@@ -127,7 +127,7 @@ class FacilityFunctions:
 		if ele < 1000:
 			return radius
 		elif ele < 2000:
-			return int(round(radius * 1.25))
+			return int(round(radius * 1.4))
 		else:
-			return int(round(radius * 1.5))
+			return int(round(radius * 1.75))
 
