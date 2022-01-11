@@ -21,7 +21,7 @@ The aim of this project is a large-scale, turn-based economy and transport simul
 The player lands on an uninhabited planet and tries to build a well-fortified civilization defying planetary and extra-planetary threats.
 
 Build and grow cities.
-Manage their surrouding's land use to produce vitally needed food and resources.
+Manage their surrounding land use, to produce vitally needed food and resources.
 Build a transport network to supply cities and military facilities.
 Repel asteroids, alien invasions and other yet unknown dangers.
 

@@ -5,7 +5,7 @@
 ### Added
 
 * Show city growth and growth components in facility info panel
-* Show conversion outome in land use info panel
+* Show conversion outcome in land use info panel
 * Land use "Irrigated crops"; allows cities in deserts
 * Animated textures to visualize traffic on roads
 * A different animated texture for sea lines
