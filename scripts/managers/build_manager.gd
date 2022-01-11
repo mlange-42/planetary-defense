@@ -1,7 +1,5 @@
 class_name BuildManager
 
-const ROAD_CAPACITY = 25
-
 var constants: LandUse
 var facility_functions: Facilities.FacilityFunctions = Facilities.FacilityFunctions.new()
 
@@ -25,7 +23,7 @@ func _init(consts: LandUse, net: RoadNetwork, resources: ResourceManager, planet
 	self.parent_node = node
 
 
-func add_road(path: Array):
+func add_road(path: Array, road_type: int):
 	if path.size() == 0:
 		return "No path specified"
 	
@@ -33,15 +31,15 @@ func add_road(path: Array):
 	
 	var warn = null
 	for i in range(path.size()-1):
-		if taxes.budget < sum_cost + Roads.ROAD_COSTS[Roads.ROAD_ROAD]:
+		if taxes.budget < sum_cost + Roads.ROAD_COSTS[road_type]:
 			warn = "Road not completed - not enough money!"
 			break
 		
 		var p1 = path[i]
 		var p2 = path[i+1]
 		if not network.points_connected(p1, p2):
-			network.connect_points(p1, p2, ROAD_CAPACITY)
-			sum_cost += Roads.ROAD_COSTS[Roads.ROAD_ROAD]
+			network.connect_points(p1, p2, Roads.ROAD_CAPACITY[road_type])
+			sum_cost += Roads.ROAD_COSTS[road_type]
 	
 	taxes.budget -= sum_cost
 	

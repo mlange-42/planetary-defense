@@ -8,7 +8,7 @@ func _ready():
 	
 	self.icon = LandUse.LU_ICONS[land_use]
 	
-	var text = "%s\n %s\n Maintenance: %d\n Workers: %d" \
+	var text = "%s\n\n %s\n\n Maintenance: %d\n Workers: %d" \
 		% [
 			LandUse.LU_NAMES[land_use],
 			LandUse.LU_INFO[land_use],

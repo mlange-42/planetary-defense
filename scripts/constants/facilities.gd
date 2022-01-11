@@ -28,9 +28,9 @@ const FACILITY_ICONS = {
 }
 
 const FACILITY_INFO = {
-	FAC_CITY: "A city",
-	FAC_PORT: "Required for sea transport and fishery",
-	FAC_AIR_DEFENSE: "Defends an area agains air-borne attacks",
+	FAC_CITY: "Cities house workers and utilize the surrounding land.",
+	FAC_PORT: "Required for sea transport and fishery.",
+	FAC_AIR_DEFENSE: "Defends an area agains air-borne attacks.\n Range increases with elevation.",
 #	FAC_MISSILE_BASE: "Fires missiles against orbital targets",
 }
 
