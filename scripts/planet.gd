@@ -11,7 +11,7 @@ export var random_seed: int = 0
 export var radius: float = 10.0
 
 export var max_height: float = 1.0
-export var height_step: float = 0.025
+export var height_step: float = 0.02
 export (String, "", "basic", "billow", "hybrid", "fbm", "ridged", "open-simplex", "super-simplex", "perlin") \
 		var noise_type: String = "fbm"
 export var noise_period: float = 0.7
@@ -34,6 +34,9 @@ export (int, 4, 96) var water_segments: int = 96
 export var smooth: bool = false
 export var atlas_size: Array = [4, 4]
 export var atlas_margin: Array = [32.0 / 2048.0, 32.0 / 1024.0]
+
+export var min_slope_cliffs: int = Roads.MAX_SLOPE
+export var min_elevation_cliffs: int = int(Consts.ELEVATION_SCALE * 0.6)
 
 export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
 export var water_material: Material = preload("res://assets/materials/planet/water.tres")
@@ -120,7 +123,9 @@ func _ready():
 		noise_type, noise_period, noise_octaves, noise_seed, height_curve,
 		climate_noise_type, climate_noise_period, climate_noise_octaves, climate_noise_seed,
 		temperature_curve, precipitation_curve, atlas_size, atlas_margin,
-		Consts.ELEVATION_STEP / float(Consts.ELEVATION_SCALE))
+		Consts.ELEVATION_CONTOUR_STEP / float(Consts.ELEVATION_SCALE),
+		min_slope_cliffs / float(Consts.ELEVATION_SCALE),
+		min_elevation_cliffs / float(Consts.ELEVATION_SCALE))
 	
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	

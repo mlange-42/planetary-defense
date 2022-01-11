@@ -11,6 +11,7 @@ const VEG_TEMPERATE_FOREST: int = 5
 const VEG_SUBTROPICAL_FOREST: int = 6
 const VEG_TROPICAL_FOREST: int = 7
 const VEG_WATER: int = 8
+const VEG_CLIFFS: int = 9
 
 const VEG_NAMES = {
 	VEG_DESERT: "Desert",
@@ -22,6 +23,7 @@ const VEG_NAMES = {
 	VEG_SUBTROPICAL_FOREST: "Subtropical forest",
 	VEG_TROPICAL_FOREST: "Tropical forest",
 	VEG_WATER: "Water",
+	VEG_CLIFFS: "Cliffs",
 }
 
 
@@ -193,7 +195,8 @@ const LU_KEYS = {
 }
 
 var _res_all_land = {VEG_DESERT: null, VEG_TUNDRA: null, VEG_TAIGA: null, VEG_STEPPE: null,
-					VEG_TEMPERATE_FOREST: null, VEG_SUBTROPICAL_FOREST: null, VEG_TROPICAL_FOREST: null}
+					VEG_TEMPERATE_FOREST: null, VEG_SUBTROPICAL_FOREST: null, VEG_TROPICAL_FOREST: null,
+					VEG_CLIFFS: null}
 var _factory_lu = VegLandUse.new(null, null, Conversion.new(Commodities.COMM_RESOURCES, 1, Commodities.COMM_PRODUCTS, 1, 5))
 
 var LU_MAPPING = {
