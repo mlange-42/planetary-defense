@@ -9,6 +9,13 @@ pub fn ll_to_xyz(lon: f32, lat: f32) -> Vector3 {
     Vector3::new(x, y, z)
 }
 
+pub fn xyz_to_ll(norm: Vector3) -> Vector2 {
+    let lat = norm.y.asin().to_degrees();
+    let lon = norm.z.atan2(norm.x).to_degrees();
+
+    Vector2::new(lon, lat)
+}
+
 pub fn calc_normals_tuple(vertices: &[Vector3], faces: &[(usize, usize, usize)]) -> Vec<Vector3> {
     let mut result: Vec<Vector3> = vec![Default::default(); vertices.len()];
 

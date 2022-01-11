@@ -2,6 +2,7 @@ use std::collections::HashSet;
 use std::marker::PhantomData;
 
 use crate::geom::planet::serialize::to_csv;
+use crate::geom::util::xyz_to_ll;
 use euclid::UnknownUnit;
 use gdnative::prelude::*;
 use kdtree::{distance::squared_euclidean, KdTree};
@@ -53,6 +54,11 @@ pub struct NodeData {
 impl NodeData {
     #[export]
     fn _init(&mut self, _owner: &Reference) {}
+
+    #[export]
+    fn lon_lat(&self, _owner: &Reference) -> Vector2 {
+        xyz_to_ll(self.position.normalize())
+    }
 }
 
 #[derive(Default, Serialize, Deserialize)]
