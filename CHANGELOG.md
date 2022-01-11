@@ -21,6 +21,7 @@
 * Prevents duplicate city names now
 * Show city stats permanently when managing a city
 * Merge default and build GUI states; build is now the default
+* Auto-select land use when clearing (with right-click), and nothing is selected
 
 ### Bug fixes
 

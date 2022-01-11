@@ -234,7 +234,10 @@ func on_planet_clicked(node: int, button: int):
 			return
 	
 	if button == BUTTON_RIGHT:
-		# warning-ignore:return_value_discarded
+		if button_group.get_pressed_button() == null and city.land_use.has(node):
+			var lu = city.land_use[node]
+			select_land_use(lu)
+		
 		var err = fsm.planet.builder.set_land_use(city, node, LandUse.LU_NONE)
 		if err != null:
 			fsm.show_message(err, Consts.MESSAGE_ERROR)
@@ -261,6 +264,13 @@ func on_planet_clicked(node: int, button: int):
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
 	
 	move_pointer(fsm.get_current_node())
+
+
+func select_land_use(lu: int):
+	for button in button_group.get_buttons():
+		if button is LandUseButton and button.land_use == lu:
+			button.pressed = true
+			return
 
 
 func _on_GrowButton_pressed():
