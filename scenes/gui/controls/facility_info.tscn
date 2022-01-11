@@ -39,6 +39,7 @@ margin_bottom = 16.0
 margin_right = 16.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
+size_flags_vertical = 0
 texture = ExtResource( 3 )
 expand = true
 
@@ -62,6 +63,7 @@ margin_left = 68.0
 margin_right = 84.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
+size_flags_vertical = 0
 texture = ExtResource( 4 )
 expand = true
 
@@ -84,6 +86,7 @@ margin_left = 133.0
 margin_right = 149.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
+size_flags_vertical = 0
 texture = ExtResource( 5 )
 expand = true
 
@@ -106,6 +109,7 @@ margin_left = 198.0
 margin_right = 214.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
+size_flags_vertical = 0
 texture = ExtResource( 6 )
 expand = true
 
@@ -128,6 +132,7 @@ margin_left = 263.0
 margin_right = 279.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 16, 16 )
+size_flags_vertical = 0
 texture = ExtResource( 7 )
 expand = true
 
