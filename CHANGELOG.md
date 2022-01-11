@@ -24,6 +24,7 @@
 * Auto-select land use when clearing (with right-click), and nothing is selected
 * Larger font for build cost info
 * Draw road indicator using a band instead of a line, changed colors for better visibility
+* Make build indicators smaller than actual buildings, to chow a change when actually building
 
 ### Bug fixes
 
