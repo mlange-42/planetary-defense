@@ -46,3 +46,7 @@ func evaluate(cmd: String):
 func _on_Command_text_entered(new_text: String):
 	if evaluate(new_text):
 		command_edit.text = ""
+
+
+func _on_BackButton_pressed():
+	fsm.pop()

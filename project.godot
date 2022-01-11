@@ -89,11 +89,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/debug_draw.gd"
 }, {
-"base": "GuiState",
-"class": "DefaultState",
-"language": "GDScript",
-"path": "res://scripts/gui/states/default.gd"
-}, {
 "base": "Facility",
 "class": "Defense",
 "language": "GDScript",
@@ -254,6 +249,11 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
 }, {
+"base": "GuiState",
+"class": "NameDialogState",
+"language": "GDScript",
+"path": "res://scripts/gui/states/name_dialog.gd"
+}, {
 "base": "",
 "class": "NodeData",
 "language": "NativeScript",
@@ -376,7 +376,6 @@ _global_script_class_icons={
 "CommodityStatsSimple": "",
 "Consts": "",
 "DebugDraw": "",
-"DefaultState": "",
 "Defense": "",
 "EditCityState": "",
 "ErrorPanel": "",
@@ -409,6 +408,7 @@ _global_script_class_icons={
 "MissileBase": "",
 "Mouse": "",
 "MultiCommodityFlow": "",
+"NameDialogState": "",
 "NodeData": "",
 "Planet": "",
 "PlanetData": "",

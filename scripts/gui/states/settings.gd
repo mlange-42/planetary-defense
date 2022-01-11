@@ -28,3 +28,7 @@ func apply_settings():
 func _on_OkButton_pressed():
 	apply_settings()
 	fsm.pop()
+
+func _on_BackButton_pressed():
+	apply_settings()
+	fsm.pop()

@@ -1,9 +1,7 @@
 extends GuiState
 class_name BuildState
 
-var names = CityNames.GERMAN
-
-onready var name_edit: LineEdit = find_node("CityName")
+onready var inspect_button: Button = find_node("Inspect")
 
 var indicator: RangeIndicator
 
@@ -15,8 +13,6 @@ var radius: int = 0
 var road_start_point: int = -1
 
 func _ready():
-	set_random_name()
-	
 	var build_buttons: Container = find_node("BuildButtons")
 	var road_buttons: Container = find_node("RoadButtons")
 	
@@ -25,6 +21,7 @@ func _ready():
 	fsm.planet.add_child(indicator)
 	
 	button_group = ButtonGroup.new()
+	inspect_button.group = button_group
 	
 	for fac in Facilities.FACILITY_IN_CITY:
 		if not Facilities.FACILITY_IN_CITY[fac]:
@@ -58,25 +55,23 @@ func _ready():
 	button_group.connect("pressed", self, "_on_tool_changed")
 
 
+func _unhandled_key_input(event: InputEventKey):
+	if event.pressed:
+		if event.scancode == KEY_C and event.control and event.shift:
+			fsm.push("cheats", {})
+
+
 func state_entered():
 	indicator.visible = true
+	road_start_point = -1
+	var curr_tool = get_facility_tool()
+	if curr_tool != null:
+		_update_range(fsm.get_current_node())
 
 
 func state_exited():
 	indicator.visible = false
 	fsm.planet.clear_path()
-
-
-func set_random_name():
-	var available = []
-	for n in names:
-		if fsm.planet.builder.city_name_available(n):
-			available.append(n)
-	if available.empty():
-		name_edit.text = ""
-		name_edit.placeholder_text = "Out of names"
-	else:
-		name_edit.text = available[randi() % available.size()]
 
 
 func get_facility_tool():
@@ -106,21 +101,22 @@ func on_planet_exited():
 
 func on_planet_hovered(node: int):
 	var curr_tool = get_facility_tool()
+	var road_tool = get_road_tool()
 	if curr_tool != null:
 		_update_range(node)
 		fsm.update_build_info(curr_tool, -1)
+	elif road_tool != null:
+		if road_start_point >= 0:
+			# warning-ignore:return_value_discarded
+			var cost = Roads.ROAD_COSTS[road_tool]
+			var max_length = 9999 if cost == 0 else fsm.planet.taxes.budget / cost
+			var path = fsm.planet.draw_path(road_start_point, node, max_length)
+			# warning-ignore:narrowing_conversion
+			fsm.update_build_info(road_tool, max(1, path.size() - 1))
+		else:
+			fsm.update_build_info(road_tool, 1)
 	else:
-		curr_tool = get_road_tool()
-		if curr_tool != null:
-			if road_start_point >= 0:
-				# warning-ignore:return_value_discarded
-				var cost = Roads.ROAD_COSTS[curr_tool]
-				var max_length = 9999 if cost == 0 else fsm.planet.taxes.budget / cost
-				var path = fsm.planet.draw_path(road_start_point, node, max_length)
-				# warning-ignore:narrowing_conversion
-				fsm.update_build_info(curr_tool, max(1, path.size() - 1))
-			else:
-				fsm.update_build_info(curr_tool, 1)
+		indicator.visible = false
 
 
 func on_planet_clicked(node: int, button: int):
@@ -135,25 +131,19 @@ func on_planet_clicked(node: int, button: int):
 	
 	if fac_tool != null:
 		if button == BUTTON_LEFT:
-			var is_city = fac_tool == Facilities.FAC_CITY
-			if not is_city or not name_edit.text.empty():
-				var name = name_edit.text if is_city else fac_tool
-				
-				if is_city and not fsm.planet.builder.city_name_available(name):
-					fsm.show_message("There is already a city named %s!" % name, Consts.MESSAGE_ERROR)
-					return
-				
-				var fac_err = fsm.planet.add_facility(fac_tool, node, name)
+			if fac_tool == Facilities.FAC_CITY:
+				fsm.push("name_dialog", {"node": node})
+			else:
+				var fac_err = fsm.planet.add_facility(fac_tool, node, fac_tool)
 				if fac_err[0] != null:
-					if is_city:
-						set_random_name()
 					for button in button_group.get_buttons():
 						button.pressed = false
 					indicator.visible = false
 				else:
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
-			else:
-				fsm.show_message("No city name given!", Consts.MESSAGE_ERROR)
+		
+		elif button == BUTTON_RIGHT:
+			inspect_button.pressed = true
 	else:
 		if road_tool != null:
 			if button == BUTTON_LEFT:
@@ -170,8 +160,11 @@ func on_planet_clicked(node: int, button: int):
 				else:
 					road_start_point = node
 			elif button == BUTTON_RIGHT:
-				road_start_point = -1
-				fsm.planet.clear_path()
+				if road_start_point >= 0:
+					road_start_point = -1
+					fsm.planet.clear_path()
+				else:
+					inspect_button.pressed = true
 
 
 func on_next_turn():
@@ -182,6 +175,8 @@ func _on_tool_changed(_button):
 	var curr_tool = get_facility_tool()
 	var road_tool = get_road_tool()
 	if curr_tool != null:
+		road_start_point = -1
+		
 		radius = Facilities.FACILITY_RADIUS[curr_tool]
 		fsm.planet.clear_path()
 		_update_range(fsm.get_current_node())
@@ -193,6 +188,10 @@ func _on_tool_changed(_button):
 		
 		indicator.visible = false
 		fsm.update_build_info(road_tool, 1)
+	else:
+		road_start_point = -1
+		indicator.visible = false
+		
 
 
 func _update_range(node: int):
@@ -221,3 +220,7 @@ func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		fsm.planet.remove_child(indicator)
 		indicator.queue_free()
+
+
+func set_random_name():
+	pass # Replace with function body.

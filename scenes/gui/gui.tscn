@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://assets/default.theme" type="Theme" id=1]
 [ext_resource path="res://scripts/gui/gui.gd" type="Script" id=2]
@@ -9,11 +9,7 @@
 [ext_resource path="res://assets/icons/menu/settings.svg" type="Texture" id=7]
 [ext_resource path="res://assets/icons/menu/messages.svg" type="Texture" id=8]
 [ext_resource path="res://assets/icons/land_use/flows.svg" type="Texture" id=9]
-[ext_resource path="res://assets/icons/land_use/build.svg" type="Texture" id=10]
-[ext_resource path="res://assets/icons/menu/inspect.svg" type="Texture" id=11]
 [ext_resource path="res://assets/shortkeys/ctrl_m.tres" type="ShortCut" id=12]
-[ext_resource path="res://assets/shortkeys/ctrl_i.tres" type="ShortCut" id=13]
-[ext_resource path="res://assets/shortkeys/ctrl_b.tres" type="ShortCut" id=14]
 [ext_resource path="res://assets/shortkeys/ctrl_f.tres" type="ShortCut" id=15]
 [ext_resource path="res://assets/shortkeys/ctrl_n.tres" type="ShortCut" id=16]
 [ext_resource path="res://assets/shortkeys/ctrl_shift_s.tres" type="ShortCut" id=17]
@@ -47,7 +43,7 @@ __meta__ = {
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 72.0
+margin_bottom = 36.0
 columns = 4
 
 [node name="MainMenu" type="Button" parent="Buttons/GridContainer"]
@@ -66,49 +62,22 @@ toggle_mode = true
 shortcut = ExtResource( 17 )
 icon = ExtResource( 7 )
 
-[node name="Messages" type="Button" parent="Buttons/GridContainer"]
-margin_left = 72.0
-margin_right = 104.0
-margin_bottom = 32.0
-hint_tooltip = "Messages"
-shortcut = ExtResource( 16 )
-icon = ExtResource( 8 )
-
-[node name="Label" type="Label" parent="Buttons/GridContainer"]
-margin_left = 108.0
-margin_right = 140.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
-
-[node name="Inspect" type="Button" parent="Buttons/GridContainer"]
-margin_top = 36.0
-margin_right = 32.0
-margin_bottom = 68.0
-hint_tooltip = "Inspect"
-toggle_mode = true
-pressed = true
-shortcut = ExtResource( 13 )
-icon = ExtResource( 11 )
-
-[node name="Build" type="Button" parent="Buttons/GridContainer"]
-margin_left = 36.0
-margin_top = 36.0
-margin_right = 68.0
-margin_bottom = 68.0
-hint_tooltip = "Build cities, roads, etc."
-toggle_mode = true
-shortcut = ExtResource( 14 )
-icon = ExtResource( 10 )
-
 [node name="Flows" type="Button" parent="Buttons/GridContainer"]
 margin_left = 72.0
-margin_top = 36.0
 margin_right = 104.0
-margin_bottom = 68.0
+margin_bottom = 32.0
 hint_tooltip = "View commodity flows"
 toggle_mode = true
 shortcut = ExtResource( 15 )
 icon = ExtResource( 9 )
+
+[node name="Messages" type="Button" parent="Buttons/GridContainer"]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+hint_tooltip = "Messages"
+shortcut = ExtResource( 16 )
+icon = ExtResource( 8 )
 
 [node name="ErrorContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
@@ -197,9 +166,7 @@ anchor_bottom = 1.0
 
 [connection signal="pressed" from="Buttons/GridContainer/MainMenu" to="." method="_on_MainMenu_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Settings" to="." method="_on_Settings_pressed"]
-[connection signal="pressed" from="Buttons/GridContainer/Messages" to="." method="_on_Messages_pressed"]
-[connection signal="pressed" from="Buttons/GridContainer/Inspect" to="." method="_on_Inspect_pressed"]
-[connection signal="pressed" from="Buttons/GridContainer/Build" to="." method="_on_Build_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Flows" to="." method="_on_Flows_pressed"]
+[connection signal="pressed" from="Buttons/GridContainer/Messages" to="." method="_on_Messages_pressed"]
 [connection signal="timeout" from="ErrorTimer" to="." method="_on_ErrorTimer_timeout"]
 [connection signal="go_to_pressed" from="MessageWindow" to="." method="_on_Messages_go_to_pressed"]

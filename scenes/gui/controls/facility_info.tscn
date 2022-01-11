@@ -22,20 +22,13 @@ margin_right = 460.0
 margin_bottom = 16.0
 
 [node name="FacilityLabel" type="Label" parent="HBoxContainer"]
-margin_right = 96.0
+margin_right = 141.0
 margin_bottom = 16.0
 hint_tooltip = "Name / type"
 mouse_filter = 1
-text = "Nothing here"
-
-[node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 100.0
-margin_right = 141.0
-margin_bottom = 16.0
 size_flags_horizontal = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
+text = "Nothing here"
+clip_text = true
 
 [node name="CityStats" type="HBoxContainer" parent="HBoxContainer"]
 margin_left = 145.0

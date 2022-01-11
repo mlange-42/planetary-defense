@@ -11,9 +11,10 @@ onready var weights = {
 	Commodities.COMM_ALL[1]: find_node("ResourcesWeight"),
 	Commodities.COMM_ALL[2]: find_node("ProductsWeight"),
 }
+onready var city_label: Label = find_node("CityLabel")
+onready var grow_button: Button = find_node("GrowButton") 
 onready var auto_assign: Button = find_node("AutoAssign")
 
-onready var grow_button: Button = find_node("GrowButton") 
 
 var pointer_offset = -0.03
 var indicator: RangeIndicator
@@ -44,7 +45,6 @@ func init(the_fsm: Gui, args: Dictionary):
 	pointer.add_child(sub_pointer)
 	sub_pointer.translate(Vector3(0, 0, pointer_offset))
 	sub_pointer.rotate_x(deg2rad(-90))
-	
 	
 	
 	set_city(args["node"])
@@ -86,7 +86,8 @@ func init(the_fsm: Gui, args: Dictionary):
 func set_city(node):
 	city_node = node
 	city = fsm.planet.roads.get_facility(city_node) as City
-	
+	if city_label != null:
+		city_label.text = city.name
 	update_range()
 
 
@@ -95,6 +96,7 @@ func state_entered():
 	for i in range(city.commodity_weights.size()):
 		sliders[Commodities.COMM_ALL[i]].value = city.commodity_weights[i]
 	
+	city_label.text = city.name
 	fsm.update_facility_info(city.node_id)
 	update_city_info()
 	update_weights_display()
@@ -270,9 +272,14 @@ func _on_GrowButton_pressed():
 		fsm.show_message(err, Consts.MESSAGE_ERROR)
 
 
+func _on_BackButton_pressed():
+	fsm.pop()
+
+
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		fsm.planet.remove_child(indicator)
 		fsm.planet.remove_child(pointer)
 		indicator.queue_free()
 		pointer.queue_free()
+

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/gui/states/edit_city.gd" type="Script" id=1]
 [ext_resource path="res://assets/icons/menu/grow.svg" type="Texture" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://assets/icons/menu/auto_work_16px.svg" type="Texture" id=4]
 [ext_resource path="res://assets/icons/commodities/resources.svg" type="Texture" id=5]
 [ext_resource path="res://assets/icons/commodities/products.svg" type="Texture" id=6]
+[ext_resource path="res://assets/fonts/consolas_bold.tres" type="DynamicFont" id=7]
+[ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=8]
+[ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=9]
 
 [node name="EditCity" type="Control"]
 anchor_right = 1.0
@@ -18,9 +21,9 @@ __meta__ = {
 
 [node name="Margin" type="MarginContainer" parent="."]
 anchor_bottom = 1.0
-margin_top = 132.0
+margin_top = 96.0
 margin_right = 148.0
-margin_bottom = -304.0
+margin_bottom = -420.0
 rect_min_size = Vector2( 148, 0 )
 mouse_filter = 2
 __meta__ = {
@@ -29,7 +32,7 @@ __meta__ = {
 
 [node name="EditControls" type="VBoxContainer" parent="Margin"]
 margin_right = 148.0
-margin_bottom = 284.0
+margin_bottom = 232.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 __meta__ = {
@@ -38,47 +41,69 @@ __meta__ = {
 
 [node name="BuildPanel" type="PanelContainer" parent="Margin/EditControls"]
 margin_right = 148.0
-margin_bottom = 108.0
+margin_bottom = 136.0
 
 [node name="BuildControls" type="VBoxContainer" parent="Margin/EditControls/BuildPanel"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 104.0
+margin_bottom = 132.0
+
+[node name="BackControls" type="HBoxContainer" parent="Margin/EditControls/BuildPanel/BuildControls"]
+margin_right = 140.0
+margin_bottom = 24.0
+
+[node name="CityLabel" type="Label" parent="Margin/EditControls/BuildPanel/BuildControls/BackControls"]
+margin_top = 4.0
+margin_right = 112.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 7 )
+text = "City name"
+clip_text = true
+
+[node name="BackButton" type="Button" parent="Margin/EditControls/BuildPanel/BuildControls/BackControls"]
+margin_left = 116.0
+margin_right = 140.0
+margin_bottom = 24.0
+hint_tooltip = "Exit city management"
+shortcut = ExtResource( 9 )
+icon = ExtResource( 8 )
 
 [node name="LandUse" type="Label" parent="Margin/EditControls/BuildPanel/BuildControls"]
+margin_top = 28.0
 margin_right = 140.0
-margin_bottom = 16.0
+margin_bottom = 44.0
 text = "Land use"
 
 [node name="LuButtons" type="GridContainer" parent="Margin/EditControls/BuildPanel/BuildControls"]
-margin_top = 20.0
+margin_top = 48.0
 margin_right = 140.0
-margin_bottom = 20.0
+margin_bottom = 48.0
 columns = 4
 
 [node name="Facilities" type="Label" parent="Margin/EditControls/BuildPanel/BuildControls"]
-margin_top = 24.0
+margin_top = 52.0
 margin_right = 140.0
-margin_bottom = 40.0
+margin_bottom = 68.0
 text = "Facilities"
 
 [node name="FacilityButtons" type="GridContainer" parent="Margin/EditControls/BuildPanel/BuildControls"]
-margin_top = 44.0
+margin_top = 72.0
 margin_right = 140.0
-margin_bottom = 44.0
+margin_bottom = 72.0
 columns = 4
 
 [node name="Promote" type="Label" parent="Margin/EditControls/BuildPanel/BuildControls"]
-margin_top = 48.0
+margin_top = 76.0
 margin_right = 140.0
-margin_bottom = 64.0
+margin_bottom = 92.0
 text = "Promote"
 
 [node name="PromoteButtons" type="GridContainer" parent="Margin/EditControls/BuildPanel/BuildControls"]
-margin_top = 68.0
+margin_top = 96.0
 margin_right = 140.0
-margin_bottom = 100.0
+margin_bottom = 128.0
 columns = 4
 
 [node name="GrowButton" type="Button" parent="Margin/EditControls/BuildPanel/BuildControls/PromoteButtons"]
@@ -87,9 +112,9 @@ margin_bottom = 32.0
 icon = ExtResource( 2 )
 
 [node name="WeightPanel" type="PanelContainer" parent="Margin/EditControls"]
-margin_top = 112.0
+margin_top = 140.0
 margin_right = 148.0
-margin_bottom = 204.0
+margin_bottom = 232.0
 
 [node name="WeightControls" type="VBoxContainer" parent="Margin/EditControls/WeightPanel"]
 margin_left = 4.0
@@ -202,6 +227,7 @@ margin_right = 140.0
 margin_bottom = 16.0
 text = "100%"
 
+[connection signal="pressed" from="Margin/EditControls/BuildPanel/BuildControls/BackControls/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="pressed" from="Margin/EditControls/BuildPanel/BuildControls/PromoteButtons/GrowButton" to="." method="_on_GrowButton_pressed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/HBoxContainer2/FoodSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/HBoxContainer3/ResourcesSlider" to="." method="_on_weights_changed"]

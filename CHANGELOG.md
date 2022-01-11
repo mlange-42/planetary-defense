@@ -14,6 +14,7 @@
 
 * Prevents duplicate city names now
 * Show city stats permanently when managing a city
+* Merge default and build GUI states; build is now the default
 
 ### Bug fixes
 

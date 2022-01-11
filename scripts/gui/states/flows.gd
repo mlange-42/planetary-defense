@@ -71,3 +71,7 @@ func update_flows(index: int):
 
 func _on_gradient_color_changed(_color):
 	set_colors(min_color_button.color, max_color_button.color)
+
+
+func _on_BackButton_pressed():
+	fsm.pop()
