@@ -1,41 +1,50 @@
 class_name Network
 
-const ROAD_CLEAR: int = 0
-const ROAD_ROAD: int = 1
+const M_ROADS: int = 0
+const M_RAIL: int = 1
+const M_ELECTRIC: int = 2
+
+const T_CLEAR: int = 0
+const T_ROAD: int = 1
 
 const MAX_SLOPE: int = 200
 
-const ROAD_ICONS = {
-	ROAD_CLEAR: preload("res://assets/icons/facilities/clear_road.svg"),
-	ROAD_ROAD: preload("res://assets/icons/facilities/road.svg"),
+const TYPE_MODE = {
+	T_CLEAR: M_ROADS,
+	T_ROAD: M_ROADS,
 }
 
-const ROAD_NAMES = {
-	ROAD_CLEAR: "Clear roads",
-	ROAD_ROAD: "Roads",
+const TYPE_ICONS = {
+	T_CLEAR: preload("res://assets/icons/facilities/clear_road.svg"),
+	T_ROAD: preload("res://assets/icons/facilities/road.svg"),
 }
 
-const ROAD_INFO = {
-	ROAD_CLEAR: "Clear roads",
-	ROAD_ROAD: "Build roads",
+const TYPE_NAMES = {
+	T_CLEAR: "Clear roads",
+	T_ROAD: "Roads",
 }
 
-const ROAD_CAPACITY = {
-	ROAD_CLEAR: 0,
-	ROAD_ROAD: 25,
+const TYPE_INFO = {
+	T_CLEAR: "Clear roads",
+	T_ROAD: "Build roads",
 }
 
-const ROAD_KEYS = {
-	ROAD_CLEAR: KEY_E,
-	ROAD_ROAD: KEY_R,
+const TYPE_CAPACITY = {
+	T_CLEAR: 0,
+	T_ROAD: 25,
 }
 
-const ROAD_COSTS = {
-	ROAD_CLEAR: 0,
-	ROAD_ROAD: 5,
+const TYPE_KEYS = {
+	T_CLEAR: KEY_E,
+	T_ROAD: KEY_R,
 }
 
-const ROAD_MAINTENANCE_1000 = {
-	ROAD_CLEAR: 0,
-	ROAD_ROAD: 250,
+const TYPE_COSTS = {
+	T_CLEAR: 0,
+	T_ROAD: 5,
+}
+
+const TYPE_MAINTENANCE_1000 = {
+	T_CLEAR: 0,
+	T_ROAD: 250,
 }

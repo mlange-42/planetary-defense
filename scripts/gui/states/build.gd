@@ -40,14 +40,14 @@ func _ready():
 			build_buttons.add_child(button)
 	
 	
-	for road in Network.ROAD_INFO:
+	for road in Network.TYPE_INFO:
 		var button := RoadButton.new()
 		button.mode = road
 		button.group = button_group
 		
 		var evt = InputEventKey.new()
 		evt.pressed = true
-		evt.scancode = Network.ROAD_KEYS[road]
+		evt.scancode = Network.TYPE_KEYS[road]
 		button.shortcut = ShortCut.new()
 		button.shortcut.shortcut = evt
 		
@@ -114,7 +114,7 @@ func on_planet_hovered(node: int):
 	elif road_tool != null:
 		if road_start_point >= 0:
 			# warning-ignore:return_value_discarded
-			var cost = Network.ROAD_COSTS[road_tool]
+			var cost = Network.TYPE_COSTS[road_tool]
 			var max_length = 9999 if cost == 0 else fsm.planet.taxes.budget / cost
 			var path = fsm.planet.draw_path(road_start_point, node, max_length)
 			# warning-ignore:narrowing_conversion
@@ -164,7 +164,7 @@ func on_planet_clicked(node: int, button: int):
 		if road_tool != null:
 			if button == BUTTON_LEFT:
 				if road_start_point >= 0:
-					if road_tool == Network.ROAD_CLEAR:
+					if road_tool == Network.T_CLEAR:
 						fsm.planet.remove_road(road_start_point, node)
 					else:
 						var err = fsm.planet.add_road(road_start_point, node)

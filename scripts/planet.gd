@@ -306,7 +306,7 @@ func draw_path(from: int, to: int, max_length: int) -> Array:
 
 func add_road(from: int, to: int):
 	var path = calc_id_path(from, to)
-	var err = builder.add_road(path, Network.ROAD_ROAD)
+	var err = builder.add_road(path, Network.T_ROAD)
 	
 	_redraw_roads()
 	emit_budget()
