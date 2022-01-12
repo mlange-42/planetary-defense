@@ -167,7 +167,7 @@ func on_planet_clicked(node: int, button: int):
 					if road_tool == Network.T_CLEAR:
 						fsm.planet.remove_road(road_start_point, node)
 					else:
-						var err = fsm.planet.add_road(road_start_point, node)
+						var err = fsm.planet.add_road(road_start_point, node, road_tool)
 						if err != null:
 							fsm.show_message(err, Consts.MESSAGE_ERROR)
 					

@@ -20,7 +20,7 @@ func save() -> Dictionary:
 	var edge_data = []
 	for i in range(network.get_edge_count()):
 		var e = network.get_edge_at(i)
-		edge_data.append([e.from, e.to, e.capacity, e.flow])
+		edge_data.append([e.from, e.to, e.net_type, e.capacity, e.flow])
 	
 	dict["edge_data"] = edge_data
 	
@@ -45,10 +45,11 @@ func read(dict: Dictionary):
 	for edge in capacity:
 		var v1 = edge[0] as int
 		var v2 = edge[1] as int
-		var cap = edge[2] as int
-		var fl = edge[3] as int
+		var tp = edge[2] as int
+		var cap = edge[3] as int
+		var fl = edge[4] as int
 		
-		network.connect_points_directional(v1, v2, cap, fl)
+		network.connect_points_directional(v1, v2, tp, cap, fl)
 	
 	var p_flows = dict["pair_flows"]
 	for e in p_flows:
@@ -73,8 +74,8 @@ func read(dict: Dictionary):
 		total_sinks[comm] = t_sinks[comm] as int
 
 
-func connect_points(v1: int, v2: int, capacity: int):
-	network.connect_points(v1, v2, capacity)
+func connect_points(v1: int, v2: int, type: int, capacity: int):
+	network.connect_points(v1, v2, type, capacity)
 
 
 func disconnect_points(v1: int, v2: int):

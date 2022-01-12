@@ -3,13 +3,16 @@ extends Spatial
 var net = null
 
 func _ready():
+	var tp = 0
+	var cap = 25
+	
 	net = FlowNetwork.new()
 	
-	net.connect_points(2, 3, 25)
-	net.connect_points(1, 2, 25)
-	net.connect_points(0, 1, 25)
+	net.connect_points(2, 3, tp, cap)
+	net.connect_points(1, 2, tp, cap)
+	net.connect_points(0, 1, tp, cap)
 	
-	net.connect_points(2, 4, 25)
+	net.connect_points(2, 4, tp, cap)
 
 
 func _input(event: InputEvent):

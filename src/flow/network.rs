@@ -19,6 +19,8 @@ pub struct Edge {
     #[property]
     to: i32,
     #[property]
+    net_type: i32,
+    #[property]
     flow: u32,
     #[property]
     capacity: u32,
@@ -32,18 +34,20 @@ impl Edge {
 
 #[allow(dead_code)]
 impl Edge {
-    fn new(from: usize, to: usize, capacity: u32) -> Self {
+    fn new(from: usize, to: usize, net_type: usize, capacity: u32) -> Self {
         Self {
             from: from as i32,
             to: to as i32,
+            net_type: net_type as i32,
             flow: 0,
             capacity,
         }
     }
-    fn with_flow(from: usize, to: usize, capacity: u32, flow: u32) -> Self {
+    fn with_flow(from: usize, to: usize, net_type: usize, capacity: u32, flow: u32) -> Self {
         Self {
             from: from as i32,
             to: to as i32,
+            net_type: net_type as i32,
             flow,
             capacity,
         }
@@ -98,8 +102,15 @@ impl FlowNetwork {
     }
 
     #[export]
-    pub fn connect_points(&mut self, _owner: &Reference, v1: usize, v2: usize, capacity: u32) {
-        self.network.connect_points(v1, v2, capacity);
+    pub fn connect_points(
+        &mut self,
+        _owner: &Reference,
+        v1: usize,
+        v2: usize,
+        net_type: usize,
+        capacity: u32,
+    ) {
+        self.network.connect_points(v1, v2, net_type, capacity);
     }
 
     #[export]
@@ -108,11 +119,12 @@ impl FlowNetwork {
         _owner: &Reference,
         v1: usize,
         v2: usize,
+        net_type: usize,
         capacity: u32,
         flow: u32,
     ) {
         self.network
-            .connect_points_directional(v1, v2, capacity, flow);
+            .connect_points_directional(v1, v2, net_type, capacity, flow);
     }
 
     #[export]
@@ -178,23 +190,13 @@ impl FlowNetwork {
     }
 
     #[export]
-    fn to_base_id(&self, _owner: &Reference, id: usize) -> usize {
-        id % TYPE_OFFSET
-    }
-
-    #[export]
-    fn to_base_id_array(&self, _owner: &Reference, ids: &[usize]) -> Vec<usize> {
-        ids.iter().map(|id| self.to_base_id(_owner, *id)).collect()
+    fn to_base_id(&self, _owner: &Reference, id: i32) -> i32 {
+        id % TYPE_OFFSET as i32
     }
 
     #[export]
     fn to_type_id(&self, _owner: &Reference, id: usize, tp: usize) -> usize {
         (id % TYPE_OFFSET) + tp * TYPE_OFFSET
-    }
-
-    #[export]
-    fn to_type_id_array(&self, _owner: &Reference, ids: &[usize]) -> Vec<usize> {
-        ids.iter().map(|id| self.to_type_id(_owner, *id)).collect()
     }
 
     #[export]
@@ -247,13 +249,20 @@ impl Network {
         self.edges.contains_key(&(v1, v2))
     }
 
-    pub fn connect_points(&mut self, v1: usize, v2: usize, capacity: u32) {
-        self._connect(v1, v2, capacity, 0);
-        self._connect(v2, v1, capacity, 0);
+    pub fn connect_points(&mut self, v1: usize, v2: usize, net_type: usize, capacity: u32) {
+        self._connect(v1, v2, net_type, capacity, 0);
+        self._connect(v2, v1, net_type, capacity, 0);
     }
 
-    pub fn connect_points_directional(&mut self, v1: usize, v2: usize, capacity: u32, flow: u32) {
-        self._connect(v1, v2, capacity, flow);
+    pub fn connect_points_directional(
+        &mut self,
+        v1: usize,
+        v2: usize,
+        net_type: usize,
+        capacity: u32,
+        flow: u32,
+    ) {
+        self._connect(v1, v2, net_type, capacity, flow);
     }
 
     pub fn disconnect_points(&mut self, v1: usize, v2: usize) {
@@ -319,7 +328,7 @@ impl Network {
         }
     }
 
-    fn _connect(&mut self, v1: usize, v2: usize, capacity: u32, flow: u32) {
+    fn _connect(&mut self, v1: usize, v2: usize, net_type: usize, capacity: u32, flow: u32) {
         match self.neighbors.entry(v1) {
             Entry::Vacant(e) => {
                 e.insert(vec![v2]);
@@ -335,7 +344,7 @@ impl Network {
             }
         }
         self.edges
-            .insert((v1, v2), Edge::with_flow(v1, v2, capacity, flow));
+            .insert((v1, v2), Edge::with_flow(v1, v2, net_type, capacity, flow));
     }
 
     fn _disconnect(&mut self, v1: usize, v2: usize) {
@@ -375,22 +384,25 @@ mod tests {
 
     #[test]
     fn test_build_network() {
+        let tp = 0;
+        let cap = 10;
+
         let mut net = Network::default();
 
-        net.connect_points(0, 1, 10);
+        net.connect_points(0, 1, tp, cap);
         assert_eq!(net.edges.len(), 2);
         net.disconnect_points(0, 1);
         assert_eq!(net.edges.len(), 0);
-        net.connect_points(0, 1, 10);
+        net.connect_points(0, 1, tp, cap);
 
-        net.connect_points(1, 2, 10);
-        net.connect_points(2, 3, 10);
+        net.connect_points(1, 2, tp, cap);
+        net.connect_points(2, 3, tp, cap);
 
-        net.connect_points(3, 4, 10);
-        net.connect_points(4, 5, 10);
+        net.connect_points(3, 4, tp, cap);
+        net.connect_points(4, 5, tp, cap);
 
-        net.connect_points(3, 6, 10);
-        net.connect_points(6, 7, 10);
+        net.connect_points(3, 6, tp, cap);
+        net.connect_points(6, 7, tp, cap);
 
         net.set_facility(1, true);
         assert_eq!(net.facilities.len(), 1);
@@ -400,8 +412,10 @@ mod tests {
 
         let edges = net.get_collapsed_edges();
 
+        println!("{:?}", edges);
+
         assert_eq!(edges.len(), 8);
-        assert_eq!(edges[0].1, 10);
+        assert_eq!(edges[0].1, cap);
 
         assert_eq!(net.find_path(0, 7), Some((vec![0, 1, 2, 3, 6, 7], 5)));
         assert_eq!(net.find_path(0, 5), Some((vec![0, 1, 2, 3, 4, 5], 5)));
