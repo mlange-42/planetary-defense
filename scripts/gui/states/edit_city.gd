@@ -181,6 +181,7 @@ func set_pointer(lu_tool, facility_tool):
 		return
 	
 	child.translate(Vector3(0, pointer_offset, 0))
+	child.scale = Vector3(0.8, 0.8, 0.8)
 	sub_pointer.add_child(child)
 	move_pointer(fsm.get_current_node())
 
