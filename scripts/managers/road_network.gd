@@ -60,14 +60,14 @@ func save() -> Dictionary:
 
 func read(dict: Dictionary):
 	var neigh = dict["neighbors"]
-	self.neighbors = {}
+	self._neighbors = {}
 	for n in neigh:
 		var nn = n[1]
 		var arr = []
 		for node in nn:
 			arr.append(node as int)
 		
-		self.neighbors[n[0] as int] = arr
+		self._neighbors[n[0] as int] = arr
 	
 	var capacity = dict["edge_data"]
 	for edge in capacity:
@@ -113,6 +113,14 @@ func disconnect_points(v1: int, v2: int):
 	_disconnect(v2, v1)
 
 
+func neighbors() -> Dictionary:
+	return _neighbors
+
+
+func facilities() -> Dictionary:
+	return _facilities
+
+
 func add_facility(v: int, facility: Facility):
 	assert(not _facilities.has(v), "There is already a facility at node %s" % v)
 	_facilities[v] = facility
@@ -130,17 +138,23 @@ func is_road(v: int) -> bool:
 	return _neighbors.has(v)
 
 
-func get_facility(v: int):
-	if not _facilities.has(v):
-		return null
-	return _facilities[v]
+func get_facility(v: int) -> Facility:
+	return _facilities.get(v)
 
 
 func points_connected(v1: int, v2: int) -> bool:
 	return _edges.has([v1, v2])
 
 
-func get_edges():
+func edges() -> Dictionary:
+	return _edges
+
+
+func get_edge(key: Array) -> Edge:
+	return _edges.get(key)
+
+
+func get_collapsed_edges() -> Array:
 	var edge_list = []
 	
 	for key in _neighbors:

@@ -205,7 +205,7 @@ func get_node_info(node: int):
 	
 	var veg = planet.planet_data.get_node(node).vegetation_type
 	var res_here = planet.resources.resources.get(node, null)
-	var fac_here = planet.roads.facilities.get(node, null)
+	var fac_here = planet.roads.get_facility(node)
 	var text = LandUse.VEG_NAMES[veg]
 	if res_here != null:
 		text += "\n %s" % Resources.RES_NAMES[res_here[0]]

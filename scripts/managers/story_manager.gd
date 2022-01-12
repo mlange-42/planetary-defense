@@ -49,7 +49,7 @@ func do_event(new_event: Event):
 func _count_cities_pop():
 	var cities = 0
 	var pop = 0
-	var facilities = planet.roads.facilities
+	var facilities = planet.roads.facilities()
 	for node in facilities:
 		var fac = facilities[node]
 		if fac is City:

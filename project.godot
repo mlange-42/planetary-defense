@@ -144,6 +144,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/managers/flow_manager.gd"
 }, {
+"base": "Reference",
+"class": "FlowNetwork",
+"language": "NativeScript",
+"path": "res://scripts/native/flow_network.gdns"
+}, {
 "base": "GuiState",
 "class": "FlowsState",
 "language": "GDScript",
@@ -184,7 +189,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/geom/height_map.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "IcoSphere",
 "language": "NativeScript",
 "path": "res://scripts/native/ico_sphere.gdns"
@@ -244,7 +249,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -269,7 +274,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"
 }, {
-"base": "",
+"base": "Reference",
 "class": "PlanetGenerator",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_generator.gdns"
@@ -387,6 +392,7 @@ _global_script_class_icons={
 "FileUtil": "",
 "FlowGraphs": "",
 "FlowManager": "",
+"FlowNetwork": "",
 "FlowsState": "",
 "GameMenuState": "",
 "GameOptions": "",
