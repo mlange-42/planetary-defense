@@ -76,7 +76,6 @@ func pre_update_city(city: City):
 				continue
 		
 		if veg_data.source != null:
-			# TODO: extract resources only if they are really used!
 			var amount = veg_data.source.amount if extract_resource == null \
 							else planet.resources.can_extract_resource(node, extract_resource, veg_data.source.amount)
 			if amount != 0:
@@ -188,10 +187,10 @@ func mirgate_inhabitant(from: City, attractiveness: Dictionary):
 	
 	for city in attractiveness:
 		var attr = attractiveness[city]
-		# TODO: make dependent on existing network path between cities
 		if city != from and attr > curr_attr and attr > max_attr:
-			max_attr = attr
-			max_city = city
+			if planet.roads.path_exists(from.node_id, city.node_id):
+				max_attr = attr
+				max_city = city
 	
 	if max_city != null:
 		from.remove_workers(1)

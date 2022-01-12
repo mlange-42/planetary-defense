@@ -112,6 +112,18 @@ func points_connected(v1: int, v2: int) -> bool:
 	return network.points_connected(v1, v2)
 
 
+func get_id_path(v1: int, v2: int):
+	return network.get_id_path(v1, v2)
+
+
+func path_exists(v1: int, v2: int):
+	if network.is_road(v1) and network.is_road(v1):
+		var path = network.get_id_path(v1, v2)
+		if not path.empty():
+			return true
+	return false
+
+
 func get_edge(key: Array):
 	return network.get_edge(key)
 
