@@ -22,7 +22,7 @@ func evaluate(cmd: String):
 	elif cmd.find("attack ") == 0:
 		var city_name = cmd.trim_prefix("attack ")
 		var node = -1
-		var fac = fsm.planet.roads.facilities
+		var fac = fsm.planet.roads.facilities()
 		for n in fac:
 			var f = fac[n]
 			if f is City and f.name == city_name:

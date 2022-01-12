@@ -10,7 +10,7 @@ func init(node: int, planet_data, type: String):
 func removed(planet):
 	planet.planet_data.set_port(node_id, false)
 	
-	var neigh = planet.roads.neighbors.get(node_id, [])
+	var neigh = planet.roads.neighbors().get(node_id, [])
 	for n in neigh:
 		planet.roads.disconnect_points(node_id, n)
 

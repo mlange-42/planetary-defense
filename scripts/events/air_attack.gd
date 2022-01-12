@@ -33,8 +33,8 @@ func read(dict: Dictionary):
 
 func select_target(planet) -> bool:
 	var cities = []
-	for node in planet.roads.facilities:
-		var fac = planet.roads.facilities[node]
+	for node in planet.roads.facilities():
+		var fac = planet.roads.get_facility(node)
 		if fac is City:
 			cities.append(node)
 	
@@ -57,8 +57,8 @@ func init(planet):
 
 func do_effect(planet):
 	var defenses = []
-	for node in planet.roads.facilities:
-		var fac = planet.roads.facilities[node]
+	for node in planet.roads.facilities():
+		var fac = planet.roads.get_facility(node)
 		if not fac is Defense:
 			continue
 		
@@ -71,7 +71,7 @@ func do_effect(planet):
 			if self is type:
 				defenses.append([node, def, inter[type]])
 	
-	var city = planet.roads.facilities[node_id] as City
+	var city = planet.roads.get_facility(node_id) as City
 	var nodes = city.land_use.keys()
 	nodes.shuffle()
 	

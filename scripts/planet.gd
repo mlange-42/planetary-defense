@@ -203,8 +203,8 @@ func save_game():
 	var resources_json = to_json(resources.save())
 	file.store_line(resources_json)
 	
-	for node in roads.facilities:
-		var facility = roads.facilities[node]
+	for node in roads.facilities():
+		var facility = roads.get_facility(node)
 		
 		var city_json = to_json(facility.save())
 		file.store_line(city_json)
@@ -266,10 +266,12 @@ func load_game():
 			for node in facility.land_use:
 				planet_data.set_occupied(node, true)
 	
-	for node in roads.facilities:
-		var facility = roads.facilities[node]
+	var fac = roads.facilities()
+	
+	for node in fac:
+		var facility = fac[node]
 		if facility.city_node_id >= 0:
-			roads.facilities[facility.city_node_id].add_facility(node, facility)
+			roads.get_facility(facility.city_node_id).add_facility(node, facility)
 	
 	file.close()
 	
@@ -319,7 +321,7 @@ func remove_road(from: int, to: int):
 
 
 func get_facility(id: int):
-	return roads.facilities.get(id)
+	return roads.get_facility(id)
 
 
 func _redraw_roads():
@@ -397,7 +399,7 @@ func next_turn():
 	cities.assign_workers(builder)
 	
 	taxes.earn_taxes(roads.total_flows)
-	taxes.pay_costs(roads.facilities, roads.edges)
+	taxes.pay_costs(roads.facilities(), roads.edges())
 	
 	stats.update_turn()
 	

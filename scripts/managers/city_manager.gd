@@ -9,7 +9,7 @@ func _init(consts: LandUse, planet):
 	self.planet = planet
 
 func pre_update():
-	var facilities = planet.roads.facilities
+	var facilities = planet.roads.facilities()
 	
 	for fid in facilities:
 		var facility: Facility = facilities[fid]
@@ -20,7 +20,7 @@ func pre_update():
 
 
 func post_update():
-	var facilities = planet.roads.facilities
+	var facilities = planet.roads.facilities()
 	
 	var attractiveness = {}
 	
@@ -204,7 +204,7 @@ func mirgate_inhabitant(from: City, attractiveness: Dictionary):
 
 
 func assign_workers(builder: BuildManager):
-	var facilities = planet.roads.facilities
+	var facilities = planet.roads.facilities()
 	
 	for fid in facilities:
 		var facility = facilities[fid]

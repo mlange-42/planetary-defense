@@ -118,7 +118,7 @@ func remove_facility(facility: Facility):
 			return "Can't remove city with population > 1\nor active land use!"
 	
 	if facility.city_node_id >= 0:
-		var owner: City = planet.roads.facilities[facility.city_node_id] as City
+		var owner: City = planet.roads.get_facility(facility.city_node_id) as City
 		owner.remove_facility(facility.node_id)
 	
 	planet.roads.remove_facility(facility.node_id)
