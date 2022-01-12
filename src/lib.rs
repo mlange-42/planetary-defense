@@ -5,6 +5,7 @@ extern crate gdnative;
 mod flow;
 mod geom;
 
+pub use flow::network::Edge;
 pub use flow::network::FlowNetwork;
 pub use flow::path::MultiCommodityFlow;
 pub use geom::ico_sphere::IcoSphere;
@@ -17,6 +18,7 @@ use gdnative::prelude::*;
 fn init(handle: InitHandle) {
     handle.add_class::<MultiCommodityFlow>();
     handle.add_class::<FlowNetwork>();
+    handle.add_class::<Edge>();
     handle.add_class::<IcoSphere>();
     handle.add_class::<PlanetData>();
     handle.add_class::<NodeData>();

@@ -1,23 +1,38 @@
-use std::collections::btree_map::Entry;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 use gdnative::prelude::*;
 use gdnative::private::godot_object::Sealed;
 
+use indexmap::map::Entry;
+use indexmap::IndexMap;
+
 #[allow(dead_code)]
-struct Edge {
-    from: usize,
-    to: usize,
+#[derive(NativeClass, ToVariant)]
+#[no_constructor]
+#[inherit(Reference)]
+pub struct Edge {
+    #[property]
+    from: i32,
+    #[property]
+    to: i32,
+    #[property]
     flow: u32,
+    #[property]
     capacity: u32,
+}
+
+#[methods]
+impl Edge {
+    #[export]
+    fn _init(&mut self, _owner: &Reference) {}
 }
 
 #[allow(dead_code)]
 impl Edge {
     fn new(from: usize, to: usize, capacity: u32) -> Self {
         Self {
-            from,
-            to,
+            from: from as i32,
+            to: to as i32,
             flow: 0,
             capacity,
         }
@@ -76,6 +91,29 @@ impl FlowNetwork {
         self.network.disconnect_points(v1, v2);
     }
 
+    #[export]
+    pub fn get_node_count(&self, _owner: &Reference) -> usize {
+        self.network.neighbors.len()
+    }
+
+    #[export]
+    pub fn get_node_at(&self, _owner: &Reference, index: usize) -> Option<(&usize, &Vec<usize>)> {
+        self.network.neighbors.get_index(index)
+    }
+
+    #[export]
+    pub fn get_edge_count(&self, _owner: &Reference) -> usize {
+        self.network.edges.len()
+    }
+
+    #[export]
+    pub fn get_edge_at(&self, _owner: &Reference, index: usize) -> Option<(usize, usize, &Edge)> {
+        self.network
+            .edges
+            .get_index(index)
+            .map(|(k, v)| (k.0, k.1, v))
+    }
+
     pub fn network(&self) -> &Network {
         &self.network
     }
@@ -83,8 +121,8 @@ impl FlowNetwork {
 
 #[derive(Default)]
 pub struct Network {
-    neighbors: BTreeMap<usize, Vec<usize>>,
-    edges: BTreeMap<(usize, usize), Edge>,
+    neighbors: IndexMap<usize, Vec<usize>>,
+    edges: IndexMap<(usize, usize), Edge>,
     facilities: BTreeSet<usize>,
 }
 
