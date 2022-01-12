@@ -37,6 +37,14 @@ impl Edge {
             capacity,
         }
     }
+    fn with_flow(from: usize, to: usize, capacity: u32, flow: u32) -> Self {
+        Self {
+            from: from as i32,
+            to: to as i32,
+            flow,
+            capacity,
+        }
+    }
 }
 
 #[allow(dead_code)]
@@ -67,6 +75,11 @@ impl FlowNetwork {
     fn _init(&mut self, _owner: &Reference) {}
 
     #[export]
+    pub fn reset_flow(&mut self, _owner: &Reference) {
+        self.network.reset_flow();
+    }
+
+    #[export]
     pub fn set_facility(&mut self, _owner: &Reference, v: usize, is_facility: bool) {
         self.network.set_facility(v, is_facility);
     }
@@ -87,6 +100,19 @@ impl FlowNetwork {
     }
 
     #[export]
+    pub fn connect_points_directional(
+        &mut self,
+        _owner: &Reference,
+        v1: usize,
+        v2: usize,
+        capacity: u32,
+        flow: u32,
+    ) {
+        self.network
+            .connect_points_directional(v1, v2, capacity, flow);
+    }
+
+    #[export]
     pub fn disconnect_points(&mut self, _owner: &Reference, v1: usize, v2: usize) {
         self.network.disconnect_points(v1, v2);
     }
@@ -102,16 +128,38 @@ impl FlowNetwork {
     }
 
     #[export]
+    pub fn get_node(&self, _owner: &Reference, key: usize) -> Option<&Vec<usize>> {
+        self.network.neighbors.get(&key)
+    }
+
+    #[export]
     pub fn get_edge_count(&self, _owner: &Reference) -> usize {
         self.network.edges.len()
     }
 
     #[export]
-    pub fn get_edge_at(&self, _owner: &Reference, index: usize) -> Option<(usize, usize, &Edge)> {
-        self.network
-            .edges
-            .get_index(index)
-            .map(|(k, v)| (k.0, k.1, v))
+    pub fn get_edge_at(&self, _owner: &Reference, index: usize) -> Option<&Edge> {
+        self.network.edges.get_index(index).map(|(_k, v)| v)
+    }
+
+    #[export]
+    pub fn get_edge(&self, _owner: &Reference, key: (usize, usize)) -> Option<&Edge> {
+        self.network.edges.get(&key)
+    }
+
+    #[export]
+    pub fn set_edge_flow(&mut self, _owner: &Reference, from: usize, to: usize, flow: u32) {
+        self.network.edges.get_mut(&(from, to)).unwrap().flow = flow;
+    }
+
+    #[export]
+    pub fn get_collapsed_edges(&self, _owner: &Reference) -> Vec<(Vec<usize>, u32)> {
+        self.network.get_collapsed_edges()
+    }
+
+    #[export]
+    pub fn get_total_flow(&self, _owner: &Reference) -> u32 {
+        self.network.edges.iter().map(|(_, e)| e.flow).sum()
     }
 
     pub fn network(&self) -> &Network {
@@ -128,6 +176,12 @@ pub struct Network {
 
 #[allow(dead_code)]
 impl Network {
+    pub fn reset_flow(&mut self) {
+        for (_, edge) in self.edges.iter_mut() {
+            edge.flow = 0;
+        }
+    }
+
     pub fn set_facility(&mut self, v: usize, is_facility: bool) {
         assert_ne!(
             self.facilities.contains(&v),
@@ -153,8 +207,12 @@ impl Network {
     }
 
     pub fn connect_points(&mut self, v1: usize, v2: usize, capacity: u32) {
-        self._connect(v1, v2, capacity);
-        self._connect(v2, v1, capacity);
+        self._connect(v1, v2, capacity, 0);
+        self._connect(v2, v1, capacity, 0);
+    }
+
+    pub fn connect_points_directional(&mut self, v1: usize, v2: usize, capacity: u32, flow: u32) {
+        self._connect(v1, v2, capacity, flow);
     }
 
     pub fn disconnect_points(&mut self, v1: usize, v2: usize) {
@@ -162,7 +220,7 @@ impl Network {
         self._disconnect(v2, v1);
     }
 
-    pub fn get_edges(&self) -> Vec<(Vec<usize>, u32)> {
+    pub fn get_collapsed_edges(&self) -> Vec<(Vec<usize>, u32)> {
         let mut edge_list = vec![];
 
         for (key, n) in &self.neighbors {
@@ -212,7 +270,7 @@ impl Network {
         }
     }
 
-    fn _connect(&mut self, v1: usize, v2: usize, capacity: u32) {
+    fn _connect(&mut self, v1: usize, v2: usize, capacity: u32, flow: u32) {
         match self.neighbors.entry(v1) {
             Entry::Vacant(e) => {
                 e.insert(vec![v2]);
@@ -227,7 +285,8 @@ impl Network {
                 e.get_mut().push(v2);
             }
         }
-        self.edges.insert((v1, v2), Edge::new(v1, v2, capacity));
+        self.edges
+            .insert((v1, v2), Edge::with_flow(v1, v2, capacity, flow));
     }
 
     fn _disconnect(&mut self, v1: usize, v2: usize) {
@@ -290,7 +349,7 @@ mod tests {
         assert_eq!(net.facilities.len(), 0);
         net.set_facility(1, true);
 
-        let edges = net.get_edges();
+        let edges = net.get_collapsed_edges();
 
         assert_eq!(edges.len(), 8);
         assert_eq!(edges[0].1, 10);

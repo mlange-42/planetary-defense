@@ -399,7 +399,7 @@ func next_turn():
 	cities.assign_workers(builder)
 	
 	taxes.earn_taxes(roads.total_flows)
-	taxes.pay_costs(roads.facilities(), roads.edges())
+	taxes.pay_costs(roads.facilities(), roads.network)
 	
 	stats.update_turn()
 	

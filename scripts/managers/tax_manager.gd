@@ -18,7 +18,7 @@ func earn_taxes(total_flows: Dictionary):
 	budget += total
 
 
-func pay_costs(facilities: Dictionary, network_edges: Dictionary):
+func pay_costs(facilities: Dictionary, network):
 	maintenance_facilities = 0
 	maintenance_land_use = 0
 	for node in facilities:
@@ -35,13 +35,9 @@ func pay_costs(facilities: Dictionary, network_edges: Dictionary):
 			maintenance_facilities += Facilities.FACILITY_MAINTENANCE[type]
 	
 	# warning-ignore:integer_division
-	maintenance_roads = int(ceil((network_edges.size() / 2) * Roads.ROAD_MAINTENANCE_1000[Roads.ROAD_ROAD] / 1000.0))
+	maintenance_roads = int(ceil((network.get_edge_count() / 2) * Roads.ROAD_MAINTENANCE_1000[Roads.ROAD_ROAD] / 1000.0))
 	
-	var total = 0
-	for nn in network_edges:
-		total += network_edges[nn].flow
-	
-	maintenance_transport = int(ceil(total * Consts.TRANSPORT_COST_1000 / 1000.0))
+	maintenance_transport = int(ceil(network.get_total_flow() * Consts.TRANSPORT_COST_1000 / 1000.0))
 	
 	maintenance = maintenance_roads + maintenance_transport + maintenance_facilities + maintenance_land_use
 	budget -= maintenance

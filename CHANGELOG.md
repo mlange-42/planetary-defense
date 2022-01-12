@@ -25,6 +25,7 @@
 * Larger font for build cost info
 * Draw road indicator using a band instead of a line, changed colors for better visibility
 * Make build indicators smaller than actual buildings, to chow a change when actually building
+* Ported road network data structure and logic to Rust
 
 ### Bug fixes
 

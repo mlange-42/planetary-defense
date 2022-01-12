@@ -10,9 +10,10 @@ func init(node: int, planet_data, type: String):
 func removed(planet):
 	planet.planet_data.set_port(node_id, false)
 	
-	var neigh = planet.roads.neighbors().get(node_id, [])
-	for n in neigh:
-		planet.roads.disconnect_points(node_id, n)
+	var neigh = planet.roads.network.get_node(node_id)
+	if neigh != null:
+		for n in neigh[1]:
+			planet.roads.disconnect_points(node_id, n)
 
 
 func can_build(planet_data, node) -> bool:
