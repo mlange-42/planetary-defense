@@ -35,9 +35,9 @@ func update_info_facility(facility: String):
 
 
 func update_info_road(type: int, length: int):
-	type_label.text = "%s (%d)" % [Roads.ROAD_NAMES[type], length]
-	var cost = Roads.ROAD_COSTS[type] * length
-	var maint = Roads.ROAD_MAINTENANCE_1000[type] * length / 1000.0
+	type_label.text = "%s (%d)" % [Network.ROAD_NAMES[type], length]
+	var cost = Network.ROAD_COSTS[type] * length
+	var maint = Network.ROAD_MAINTENANCE_1000[type] * length / 1000.0
 	
 	cost_label.text = "%3d" % cost
 	maintenance_label.text = "%s" % maint

@@ -1,4 +1,4 @@
-class_name Roads
+class_name Network
 
 const ROAD_CLEAR: int = 0
 const ROAD_ROAD: int = 1

@@ -35,7 +35,7 @@ func pay_costs(facilities: Dictionary, network):
 			maintenance_facilities += Facilities.FACILITY_MAINTENANCE[type]
 	
 	# warning-ignore:integer_division
-	maintenance_roads = int(ceil((network.get_edge_count() / 2) * Roads.ROAD_MAINTENANCE_1000[Roads.ROAD_ROAD] / 1000.0))
+	maintenance_roads = int(ceil((network.get_edge_count() / 2) * Network.ROAD_MAINTENANCE_1000[Network.ROAD_ROAD] / 1000.0))
 	
 	maintenance_transport = int(ceil(network.get_total_flow() * Consts.TRANSPORT_COST_1000 / 1000.0))
 	

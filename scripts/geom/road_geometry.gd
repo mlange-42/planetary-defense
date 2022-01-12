@@ -6,7 +6,7 @@ func clear_all():
 	clear()
 
 
-func draw_roads(planet_data, roads: RoadNetwork, land: bool):
+func draw_roads(planet_data, roads: NetworkManager, land: bool):
 	clear()
 	begin(Mesh.PRIMITIVE_TRIANGLES)
 	

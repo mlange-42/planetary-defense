@@ -7,6 +7,8 @@ use indexmap::map::Entry;
 use indexmap::IndexMap;
 use pathfinding::prelude::dijkstra;
 
+const TYPE_OFFSET: usize = 1_000_000;
+
 #[allow(dead_code)]
 #[derive(NativeClass, ToVariant)]
 #[no_constructor]
@@ -173,6 +175,36 @@ impl FlowNetwork {
 
     pub fn network(&self) -> &Network {
         &self.network
+    }
+
+    #[export]
+    fn to_base_id(&self, _owner: &Reference, id: usize) -> usize {
+        id % TYPE_OFFSET
+    }
+
+    #[export]
+    fn to_base_id_array(&self, _owner: &Reference, ids: &[usize]) -> Vec<usize> {
+        ids.iter().map(|id| self.to_base_id(_owner, *id)).collect()
+    }
+
+    #[export]
+    fn to_type_id(&self, _owner: &Reference, id: usize, tp: usize) -> usize {
+        (id % TYPE_OFFSET) + tp * TYPE_OFFSET
+    }
+
+    #[export]
+    fn to_type_id_array(&self, _owner: &Reference, ids: &[usize]) -> Vec<usize> {
+        ids.iter().map(|id| self.to_type_id(_owner, *id)).collect()
+    }
+
+    #[export]
+    fn to_type(&self, _owner: &Reference, id: usize) -> usize {
+        id / TYPE_OFFSET
+    }
+
+    #[export]
+    fn type_offset(&self, _owner: &Reference) -> usize {
+        TYPE_OFFSET
     }
 }
 

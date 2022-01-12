@@ -35,7 +35,7 @@ export var smooth: bool = false
 export var atlas_size: Array = [4, 4]
 export var atlas_margin: Array = [32.0 / 2048.0, 32.0 / 1024.0]
 
-export var min_slope_cliffs: int = Roads.MAX_SLOPE
+export var min_slope_cliffs: int = Network.MAX_SLOPE
 export var min_elevation_cliffs: int = int(Consts.ELEVATION_SCALE * 0.6)
 
 export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
@@ -54,7 +54,7 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var planet_data = null
 
 var stats: StatsManager
-var roads: RoadNetwork
+var roads: NetworkManager
 var builder: BuildManager
 var flow: FlowManager
 var cities: CityManager
@@ -152,7 +152,7 @@ func _ready():
 		self.stats = StatsManager.new()
 		self.messages = MessageManager.new()
 		self.story = StoryManager.new(self)
-		self.roads = RoadNetwork.new()
+		self.roads = NetworkManager.new()
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data)
 		self.builder = BuildManager.new(consts, self, facilities)
@@ -234,7 +234,7 @@ func load_game():
 	self.story.read(parse_json(story_json))
 	
 	var roads_json = file.get_line()
-	self.roads = RoadNetwork.new()
+	self.roads = NetworkManager.new()
 	self.roads.read(parse_json(roads_json))
 	
 	var taxes_json = file.get_line()
@@ -283,7 +283,7 @@ func calc_point_path(from: int, to: int) -> Array:
 	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
 				else planet_data.NAV_LAND
 	
-	var path = planet_data.get_point_path(from, to, mode, Roads.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
+	var path = planet_data.get_point_path(from, to, mode, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
@@ -291,7 +291,7 @@ func calc_id_path(from: int, to: int) -> Array:
 	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
 				else planet_data.NAV_LAND
 	
-	var path = planet_data.get_id_path(from, to, mode, Roads.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
+	var path = planet_data.get_id_path(from, to, mode, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
@@ -306,7 +306,7 @@ func draw_path(from: int, to: int, max_length: int) -> Array:
 
 func add_road(from: int, to: int):
 	var path = calc_id_path(from, to)
-	var err = builder.add_road(path, Roads.ROAD_ROAD)
+	var err = builder.add_road(path, Network.ROAD_ROAD)
 	
 	_redraw_roads()
 	emit_budget()

@@ -8,6 +8,8 @@ var type: String
 var facility_id: int
 var node_id: int
 
+var network_ids: Array
+
 var sources: Dictionary
 var sinks: Dictionary
 var conversions: Dictionary
@@ -22,6 +24,8 @@ var is_supplied: bool = false
 func init(node: int, planet_data, type: String):
 	self.node_id = node
 	self.type = type
+	
+	self.network_ids = [self.node_id]
 	
 	var s = Facilities.FACILITY_SINKS[type]
 	if s != null:

@@ -8,10 +8,10 @@ var sink_cost: int = 25
 var load_depencence: float = 0.25
 var bidirectional: bool = false
 
-var network: RoadNetwork
+var network: NetworkManager
 var flow = MultiCommodityFlow.new()
 
-func _init(net: RoadNetwork):
+func _init(net: NetworkManager):
 	self.network = net
 
 
