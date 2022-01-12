@@ -5,6 +5,7 @@ use gdnative::private::godot_object::Sealed;
 
 use indexmap::map::Entry;
 use indexmap::IndexMap;
+use pathfinding::prelude::dijkstra;
 
 #[allow(dead_code)]
 #[derive(NativeClass, ToVariant)]
@@ -162,6 +163,14 @@ impl FlowNetwork {
         self.network.edges.iter().map(|(_, e)| e.flow).sum()
     }
 
+    #[export]
+    fn get_id_path(&self, _owner: &Reference, from: usize, to: usize) -> Vec<usize> {
+        self.network
+            .find_path(from, to)
+            .map(|(v, _c)| v)
+            .unwrap_or_else(Vec::new)
+    }
+
     pub fn network(&self) -> &Network {
         &self.network
     }
@@ -218,6 +227,14 @@ impl Network {
     pub fn disconnect_points(&mut self, v1: usize, v2: usize) {
         self._disconnect(v1, v2);
         self._disconnect(v2, v1);
+    }
+
+    pub fn find_path(&self, from: usize, to: usize) -> Option<(Vec<usize>, u32)> {
+        dijkstra(
+            &from,
+            |id| self.neighbors[id].iter().map(|node| (*node, 1)),
+            |id| id == &to,
+        )
     }
 
     pub fn get_collapsed_edges(&self) -> Vec<(Vec<usize>, u32)> {
@@ -353,5 +370,9 @@ mod tests {
 
         assert_eq!(edges.len(), 8);
         assert_eq!(edges[0].1, 10);
+
+        assert_eq!(net.find_path(0, 7), Some((vec![0, 1, 2, 3, 6, 7], 5)));
+        assert_eq!(net.find_path(0, 5), Some((vec![0, 1, 2, 3, 4, 5], 5)));
+        assert_eq!(net.find_path(5, 7), Some((vec![5, 4, 3, 6, 7], 4)));
     }
 }
