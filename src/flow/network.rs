@@ -28,9 +28,7 @@ impl Edge {
 #[derive(NativeClass, Default)]
 #[inherit(Reference)]
 pub struct FlowNetwork {
-    neighbors: BTreeMap<usize, Vec<usize>>,
-    edges: BTreeMap<(usize, usize), Edge>,
-    facilities: BTreeSet<usize>,
+    network: Network,
 }
 
 impl Sealed for FlowNetwork {}
@@ -55,6 +53,44 @@ impl FlowNetwork {
 
     #[export]
     pub fn set_facility(&mut self, _owner: &Reference, v: usize, is_facility: bool) {
+        self.network.set_facility(v, is_facility);
+    }
+
+    #[export]
+    pub fn is_road(&self, _owner: &Reference, v: usize) -> bool {
+        self.network.is_road(v)
+    }
+
+    #[export]
+    pub fn points_connected(&self, _owner: &Reference, v1: usize, v2: usize) -> bool {
+        self.network.points_connected(v1, v2)
+    }
+
+    #[export]
+    pub fn connect_points(&mut self, _owner: &Reference, v1: usize, v2: usize, capacity: u32) {
+        self.network.connect_points(v1, v2, capacity);
+    }
+
+    #[export]
+    pub fn disconnect_points(&mut self, _owner: &Reference, v1: usize, v2: usize) {
+        self.network.disconnect_points(v1, v2);
+    }
+
+    pub fn network(&self) -> &Network {
+        &self.network
+    }
+}
+
+#[derive(Default)]
+pub struct Network {
+    neighbors: BTreeMap<usize, Vec<usize>>,
+    edges: BTreeMap<(usize, usize), Edge>,
+    facilities: BTreeSet<usize>,
+}
+
+#[allow(dead_code)]
+impl Network {
+    pub fn set_facility(&mut self, v: usize, is_facility: bool) {
         assert_ne!(
             self.facilities.contains(&v),
             is_facility,
@@ -70,24 +106,20 @@ impl FlowNetwork {
         }
     }
 
-    #[export]
-    pub fn is_road(&self, _owner: &Reference, v: usize) -> bool {
+    pub fn is_road(&self, v: usize) -> bool {
         self.neighbors.contains_key(&v)
     }
 
-    #[export]
-    pub fn points_connected(&self, _owner: &Reference, v1: usize, v2: usize) -> bool {
+    pub fn points_connected(&self, v1: usize, v2: usize) -> bool {
         self.edges.contains_key(&(v1, v2))
     }
 
-    #[export]
-    pub fn connect_points(&mut self, _owner: &Reference, v1: usize, v2: usize, capacity: u32) {
+    pub fn connect_points(&mut self, v1: usize, v2: usize, capacity: u32) {
         self._connect(v1, v2, capacity);
         self._connect(v2, v1, capacity);
     }
 
-    #[export]
-    pub fn disconnect_points(&mut self, _owner: &Reference, v1: usize, v2: usize) {
+    pub fn disconnect_points(&mut self, v1: usize, v2: usize) {
         self._disconnect(v1, v2);
         self._disconnect(v2, v1);
     }
@@ -197,7 +229,7 @@ mod tests {
 
     #[test]
     fn test_build_network() {
-        let mut net = FlowNetwork::default();
+        let mut net = Network::default();
 
         net.connect_points(0, 1, 10);
         assert_eq!(net.edges.len(), 2);

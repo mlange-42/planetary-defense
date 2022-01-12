@@ -43,7 +43,7 @@ impl MultiCommodityFlow {
 
     #[export]
     fn add_network(&mut self, _owner: &Reference, net: Ref<FlowNetwork>) {
-        for (path, cap) in unsafe { net.assume_unique() }.get_edges() {
+        for (path, cap) in unsafe { net.assume_unique() }.network().get_edges() {
             self.builder.add_edge(
                 *path.first().unwrap(),
                 *path.last().unwrap(),
