@@ -10,10 +10,10 @@ func draw_roads(planet_data, roads: RoadNetwork, land: bool):
 	clear()
 	begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var neighbors = roads.neighbors()
-	
-	for node1 in neighbors:
-		var n = neighbors[node1]
+	for i in range(roads.network.get_node_count()):
+		var node = roads.network.get_node_at(i)
+		var node1 = node[0]
+		var n = node[1]
 		var nd1 = planet_data.get_node(node1)
 		
 		if not land and not nd1.is_water:

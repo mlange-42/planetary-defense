@@ -21,17 +21,11 @@ func clear():
 func solve():
 	flow.reset()
 	
-	var edges = network.get_collapsed_edges()
 	var facilities = network.facilities()
 	
-	for edge in edges:
-		var path = edge[0]
-		var p1 = path[0]
-		var p2 = path[path.size()-1]
-		var cost = path.size()-1
-		var capacity = edge[1]
-		flow.add_edge(p1, p2, capacity, cost)
-		
+	var edges = network.network.get_collapsed_edges()
+	flow.add_edges(edges)
+	
 	for fid in facilities:
 		var facility = facilities[fid]
 		for from_to_comm in facility.conversions:
@@ -72,8 +66,7 @@ func solve():
 		var amount = edge[2]
 		
 		for j in range(path.size()-1):
-			var net_edge = network.get_edge([path[j], path[j+1]])
-			net_edge.flow = amount
+			network.network.set_edge_flow(path[j], path[j+1], amount)
 		
 		i += 1
 	

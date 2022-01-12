@@ -2,19 +2,7 @@ class_name RoadNetwork
 
 const MAX_INT = 9223372036854775807
 
-class Edge:
-	var from: int
-	var to: int
-	var flow: int
-	var capacity: int
-	
-	func _init(from_id: int, to_id: int, cap: int):
-		self.from = from_id
-		self.to = to_id
-		self.capacity = cap
-
-var _neighbors: Dictionary = {}
-var _edges: Dictionary = {}
+var network = FlowNetwork.new()
 var _facilities: Dictionary = {}
 
 var total_flows: Dictionary = {}
@@ -29,16 +17,10 @@ func _init():
 func save() -> Dictionary:
 	var dict = {}
 	
-	var neigh = []
-	for n in _neighbors:
-		neigh.append([n, _neighbors[n]])
-	
-	dict["neighbors"] = neigh
-	
 	var edge_data = []
-	for edge in _edges:
-		var e = _edges[edge]
-		edge_data.append([edge[0], edge[1], e.capacity, e.flow])
+	for i in range(network.get_edge_count()):
+		var e = network.get_edge_at(i)
+		edge_data.append([e.from, e.to, e.capacity, e.flow])
 	
 	dict["edge_data"] = edge_data
 	
@@ -59,16 +41,6 @@ func save() -> Dictionary:
 
 
 func read(dict: Dictionary):
-	var neigh = dict["neighbors"]
-	self._neighbors = {}
-	for n in neigh:
-		var nn = n[1]
-		var arr = []
-		for node in nn:
-			arr.append(node as int)
-		
-		self._neighbors[n[0] as int] = arr
-	
 	var capacity = dict["edge_data"]
 	for edge in capacity:
 		var v1 = edge[0] as int
@@ -76,9 +48,7 @@ func read(dict: Dictionary):
 		var cap = edge[2] as int
 		var fl = edge[3] as int
 		
-		var e = Edge.new(v1, v2, cap)
-		e.flow = fl
-		_edges[[v1, v2]] = e
+		network.connect_points_directional(v1, v2, cap, fl)
 	
 	var p_flows = dict["pair_flows"]
 	for e in p_flows:
@@ -104,17 +74,11 @@ func read(dict: Dictionary):
 
 
 func connect_points(v1: int, v2: int, capacity: int):
-	_connect(v1, v2, capacity)
-	_connect(v2, v1, capacity)
+	network.connect_points(v1, v2, capacity)
 
 
 func disconnect_points(v1: int, v2: int):
-	_disconnect(v1, v2)
-	_disconnect(v2, v1)
-
-
-func neighbors() -> Dictionary:
-	return _neighbors
+	network.disconnect_points(v1, v2)
 
 
 func facilities() -> Dictionary:
@@ -124,10 +88,12 @@ func facilities() -> Dictionary:
 func add_facility(v: int, facility: Facility):
 	assert(not _facilities.has(v), "There is already a facility at node %s" % v)
 	_facilities[v] = facility
+	network.set_facility(v, true)
 
 
 func remove_facility(v: int):
 	assert(_facilities.erase(v), "There is no a facility at node %s to remove" % v)
+	network.set_facility(v, false)
 
 
 func has_facility(v: int) -> bool:
@@ -135,7 +101,7 @@ func has_facility(v: int) -> bool:
 
 
 func is_road(v: int) -> bool:
-	return _neighbors.has(v)
+	return network.is_road(v)
 
 
 func get_facility(v: int) -> Facility:
@@ -143,91 +109,15 @@ func get_facility(v: int) -> Facility:
 
 
 func points_connected(v1: int, v2: int) -> bool:
-	return _edges.has([v1, v2])
+	return network.points_connected(v1, v2)
 
 
-func edges() -> Dictionary:
-	return _edges
-
-
-func get_edge(key: Array) -> Edge:
-	return _edges.get(key)
-
-
-func get_collapsed_edges() -> Array:
-	var edge_list = []
-	
-	for key in _neighbors:
-		var n: Array = _neighbors[key]
-		if n.size() == 2 and not _facilities.has(key):
-			continue
-		
-		for i in range(n.size()):
-			var trace = _trace_edge(key, i)
-			if not trace.empty():
-				edge_list.append(trace)
-	
-	return edge_list
+func get_edge(key: Array):
+	return network.get_edge(key)
 
 
 func reset_flow():
-	for edge in _edges.values():
-		edge.flow = 0
+	network.reset_flow()
 	
 	for comm in Commodities.COMM_ALL:
 		total_flows[comm] = 0
-
-
-func _trace_edge(node: int, neighbor: int) -> Array:
-	var n: Array
-	var result = [node]
-	var first = node
-	var previous: int = node
-	var current: int = _neighbors[node][neighbor]
-	var capacity = MAX_INT
-	
-	while true:
-		if current == first: # dead-end loop -> omit
-			return []
-		
-		result.append(current)
-		var edge: Edge = _edges[[previous, current]]
-		if edge.capacity < capacity:
-			capacity = edge.capacity
-		
-		n = _neighbors[current]
-		if n.size() != 2 or _facilities.has(current):
-			return [result, capacity]
-		
-		var n0 = n[0]
-		var old = previous
-		previous = current
-		current = n0 if n0 != old else n[1]
-	
-	return [] # should never be reached
-
-
-func _connect(v1: int, v2: int, capacity: int):
-	if _neighbors.has(v1):
-		var n: Array = _neighbors[v1]
-		assert(not n.has(v2), "Points %d and %d are already connected" % [v1, v2])
-		
-		n.append(v2)
-	else:
-		_neighbors[v1] = [v2]
-	
-	_edges[[v1, v2]] = Edge.new(v1, v2, capacity)
-
-
-func _disconnect(v1: int, v2: int):
-	assert(_neighbors.has(v1), "Points %d and %d are not connected" % [v1, v2])
-	
-	var n: Array = _neighbors[v1]
-	var idx = n.find(v2)
-	assert(idx >= 0, "Points %d and %d are not connected" % [v1, v2])
-	
-	n.remove(idx)
-	assert(_edges.erase([v1, v2]), "Points %d and %d have no edge to remove" % [v1, v2])
-	
-	if n.empty():
-		assert(_neighbors.erase(v1), "Points %d and %d are not connected" % [v1, v2])

@@ -8,7 +8,6 @@ use std::iter;
 
 use pathfinding::directed::dijkstra::dijkstra;
 
-use crate::flow::network::FlowNetwork;
 use gdnative::api::Reference;
 use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
@@ -42,12 +41,12 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn add_network(&mut self, _owner: &Reference, net: Ref<FlowNetwork>) {
-        for (path, cap) in unsafe { net.assume_unique() }.network().get_edges() {
+    fn add_edges(&mut self, _owner: &Reference, edges: Vec<(Vec<usize>, u32)>) {
+        for (path, cap) in edges.iter() {
             self.builder.add_edge(
                 *path.first().unwrap(),
                 *path.last().unwrap(),
-                Capacity(cap as i32),
+                Capacity(*cap as i32),
                 Cost(path.len() as i32 - 1),
             );
         }
