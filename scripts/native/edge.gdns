@@ -3,6 +3,6 @@
 [ext_resource path="res://scripts/native/planetary_defense.gdnlib" type="GDNativeLibrary" id=1]
 
 [resource]
-class_name = "Edge"
+class_name = "EdgeData"
 library = ExtResource( 1 )
-script_class_name = "Edge"
+script_class_name = "EdgeData"
