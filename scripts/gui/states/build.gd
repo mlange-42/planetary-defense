@@ -25,7 +25,7 @@ func _ready():
 	inspect_button.group = button_group
 	remove_button.group = button_group
 	
-	for fac in Facilities.FACILITY_IN_CITY:
+	for fac in Facilities.FACILITY_ICONS:
 		if not Facilities.FACILITY_IN_CITY[fac]:
 			var button := FacilityButton.new()
 			button.facility = fac

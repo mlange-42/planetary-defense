@@ -6,109 +6,110 @@ const FAC_PORT: String = "Port"
 const FAC_AIR_DEFENSE: String = "Air Defense"
 const FAC_POWER_PLANT: String = "Power plant"
 
+# Also determines the order of tools
+const FACILITY_ICONS = {
+	FAC_CITY: preload("res://assets/icons/facilities/city.svg"),
+	FAC_PORT: preload("res://assets/icons/facilities/port.svg"),
+	FAC_POWER_PLANT: preload("res://assets/icons/facilities/power_plant.svg"),
+	FAC_AIR_DEFENSE: preload("res://assets/icons/facilities/air_defense.svg"),
+}
+
 const FACILITY_SCENES = {
 	FAC_CITY: "res://scenes/objects/city.tscn",
 	FAC_PORT: "res://scenes/objects/port.tscn",
-	FAC_AIR_DEFENSE: "res://scenes/objects/air_defense.tscn",
 	FAC_POWER_PLANT: "res://scenes/objects/power_plant.tscn",
+	FAC_AIR_DEFENSE: "res://scenes/objects/air_defense.tscn",
 }
 
 const FACILITY_POINTERS = {
 	FAC_CITY: "res://assets/geom/city.escn",
 	FAC_PORT: "res://assets/geom/port.escn",
-	FAC_AIR_DEFENSE: "res://assets/geom/air_defense.escn",
 	FAC_POWER_PLANT: "res://assets/geom/power_plant.escn",
-}
-
-const FACILITY_ICONS = {
-	FAC_CITY: preload("res://assets/icons/facilities/city.svg"),
-	FAC_PORT: preload("res://assets/icons/facilities/port.svg"),
-	FAC_AIR_DEFENSE: preload("res://assets/icons/facilities/air_defense.svg"),
-	FAC_POWER_PLANT: preload("res://assets/icons/facilities/power_plant.svg"),
+	FAC_AIR_DEFENSE: "res://assets/geom/air_defense.escn",
 }
 
 const FACILITY_INFO = {
 	FAC_CITY: "Cities house workers and utilize the surrounding land.",
 	FAC_PORT: "Required for sea transport and fishery.",
-	FAC_AIR_DEFENSE: "Defends an area agains air-borne attacks.\n Range increases with elevation.",
 	FAC_POWER_PLANT: "Converts resources to electricity",
+	FAC_AIR_DEFENSE: "Defends an area agains air-borne attacks.\n Range increases with elevation.",
 }
 
 const FACILITY_RADIUS = {
 	FAC_CITY: 1,
 	FAC_PORT: 0,
-	FAC_AIR_DEFENSE: 8,
 	FAC_POWER_PLANT: 0,
+	FAC_AIR_DEFENSE: 8,
 }
 
 const FACILITY_NETWORK_MODES = {
 	FAC_CITY: [Network.M_ROADS],
 	FAC_PORT: [Network.M_ROADS],
-	FAC_AIR_DEFENSE: [Network.M_ELECTRIC],
 	FAC_POWER_PLANT: [Network.M_ROADS, Network.M_ELECTRIC],
+	FAC_AIR_DEFENSE: [Network.M_ELECTRIC],
 }
 
 const FACILITY_RADIUS_FUNC = {
 	FAC_CITY: "constant_range",
 	FAC_PORT: "constant_range",
-	FAC_AIR_DEFENSE: "air_defense_range",
 	FAC_POWER_PLANT: "constant_range",
+	FAC_AIR_DEFENSE: "air_defense_range",
 }
 
 const FACILITY_COSTS = {
 	FAC_CITY: 100,
 	FAC_PORT: 50,
-	FAC_AIR_DEFENSE: 200,
 	FAC_POWER_PLANT: 100,
+	FAC_AIR_DEFENSE: 200,
 }
 
 const FACILITY_MAINTENANCE = {
 	FAC_CITY: 1,
 	FAC_PORT: 3,
-	FAC_AIR_DEFENSE: 8,
 	FAC_POWER_PLANT: 5,
+	FAC_AIR_DEFENSE: 8,
 }
 
 const FACILITY_SINKS = {
 	FAC_CITY: null,
 	FAC_PORT: null,
-	FAC_AIR_DEFENSE: [[Commodities.COMM_ELECTRICITY, 2]],
 	FAC_POWER_PLANT: null,
+	FAC_AIR_DEFENSE: [[Commodities.COMM_ELECTRICITY, 2]],
 }
 
 const FACILITY_SOURCES = {
 	FAC_CITY: null,
 	FAC_PORT: null,
-	FAC_AIR_DEFENSE: null,
 	FAC_POWER_PLANT: null,
+	FAC_AIR_DEFENSE: null,
 }
 
 const FACILITY_CONVERSIONS = {
 	FAC_CITY: null,
 	FAC_PORT: null,
-	FAC_AIR_DEFENSE: null,
 	FAC_POWER_PLANT: [[Commodities.COMM_RESOURCES, 1, Commodities.COMM_ELECTRICITY, 1, 5]],
+	FAC_AIR_DEFENSE: null,
 }
 
 const FACILITY_IN_CITY = {
 	FAC_CITY: false,
 	FAC_PORT: true,
-	FAC_AIR_DEFENSE: false,
 	FAC_POWER_PLANT: false,
+	FAC_AIR_DEFENSE: false,
 }
 
 const FACILITY_KEYS = {
 	FAC_CITY: KEY_C,
 	FAC_PORT: KEY_P,
-	FAC_AIR_DEFENSE: KEY_A,
 	FAC_POWER_PLANT: KEY_T,
+	FAC_AIR_DEFENSE: KEY_A,
 }
 
 const FACILITY_CAN_BUILD_FUNC = {
 	FAC_CITY: "can_build_land",
 	FAC_PORT: "can_build_port",
-	FAC_AIR_DEFENSE: "can_build_land",
 	FAC_POWER_PLANT: "can_build_land",
+	FAC_AIR_DEFENSE: "can_build_land",
 }
 
 class FacilityFunctions:
