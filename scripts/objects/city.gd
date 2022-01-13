@@ -5,11 +5,16 @@ onready var city_sign: Spatial = $CitySign
 onready var land_use_node: Spatial = $LandUse
 onready var borders_mesh: RangeIndicator = $RangeIndicator
 
+# key: node id, value: distance
 var cells: Dictionary = {}
+# key: node id, value: land use id
 var land_use: Dictionary = {}
+# key: node id, value: land use spatials
 var land_use_nodes: Dictionary = {}
 
+# key: node id, value: facility spatials
 var facilities: Dictionary = {}
+
 var radius: int = Cities.INITIAL_CITY_RADIUS
 
 var _workers: int = Cities.INITIAL_CITY_POP setget , workers

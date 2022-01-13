@@ -138,10 +138,15 @@ func post_update_city(city: City) -> float:
 					if not planet.resources.has_resource(node, extract_resource):
 						planet.messages.add_message(node, "%s depleted in %s" % [Resources.RES_NAMES[extract_resource], city.name], Consts.MESSAGE_WARNING)
 	
+	var occupied = 0
+	for node in city.cells:
+		if planet.planet_data.get_node(node).is_occupied or planet.roads.is_road(node):
+			occupied += 1
+	
 	var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
 	var demand = Cities.products_demand(city.population())
 	var share_satisfied = 1.0 if demand == 0 else clamp(products_available / float(demand), 0, 1)
-	var space_growth = clamp(1.0 - (city.population() / float(city.cells.size())), 0, 1)
+	var space_growth = clamp(1.0 - (occupied / float(city.cells.size())), 0, 1)
 	var unemployment = 0.0 if city.population() == 0 else (city.workers() / float(city.population()))
 	var employment_growth = clamp(1.0 - unemployment / Cities.UNEMPLOYMENT_NO_GROWTH, 0, 1)
 	
