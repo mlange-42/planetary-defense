@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/road.svg-64176a4348a93df492a23058d1b8a8ea.stex"
+path="res://.import/road.svg-30f6c1d2913a29b8726f8772f26a486f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/facilities/road.svg"
-dest_files=[ "res://.import/road.svg-64176a4348a93df492a23058d1b8a8ea.stex" ]
+source_file="res://assets/icons/network/road.svg"
+dest_files=[ "res://.import/road.svg-30f6c1d2913a29b8726f8772f26a486f.stex" ]
 
 [params]
 

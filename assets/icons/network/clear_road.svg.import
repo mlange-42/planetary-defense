@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/clear_road.svg-807dc04efd22dac57058e015a57d716d.stex"
+path="res://.import/clear_road.svg-6b01d2ffbfd990f6469e10f84ff2d805.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/facilities/clear_road.svg"
-dest_files=[ "res://.import/clear_road.svg-807dc04efd22dac57058e015a57d716d.stex" ]
+source_file="res://assets/icons/network/clear_road.svg"
+dest_files=[ "res://.import/clear_road.svg-6b01d2ffbfd990f6469e10f84ff2d805.stex" ]
 
 [params]
 
