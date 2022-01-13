@@ -18,3 +18,13 @@ const COMM_TAX_RATES = {
 	COMM_RESOURCES: 1,
 	COMM_PRODUCTS: 1,
 }
+
+const COMM_NETWORK_MODE = {
+	COMM_FOOD: Network.M_ROADS,
+	COMM_RESOURCES: Network.M_ROADS,
+	COMM_PRODUCTS: Network.M_ROADS,
+}
+
+static func to_mode_id(id: int, comm: String) -> int:
+	var mode = COMM_NETWORK_MODE[comm]
+	return Network.to_mode_id(id, mode)

@@ -41,6 +41,13 @@ const FACILITY_RADIUS = {
 #	FAC_MISSILE_BASE: 0,
 }
 
+const FACILITY_NETWORK_MODES = {
+	FAC_CITY: [Network.M_ROADS],
+	FAC_PORT: [Network.M_ROADS],
+	FAC_AIR_DEFENSE: [Network.M_ROADS],
+#	FAC_MISSILE_BASE: 0,
+}
+
 const FACILITY_RADIUS_FUNC = {
 	FAC_CITY: "constant_range",
 	FAC_PORT: "constant_range",

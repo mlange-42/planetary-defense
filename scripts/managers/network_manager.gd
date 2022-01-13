@@ -89,12 +89,15 @@ func facilities() -> Dictionary:
 func add_facility(v: int, facility: Facility):
 	assert(not _facilities.has(v), "There is already a facility at node %s" % v)
 	_facilities[v] = facility
-	network.set_facility(v, true)
+	for mode in Facilities.FACILITY_NETWORK_MODES[facility.type]:
+		network.set_facility(Network.to_mode_id(v, mode), true)
 
 
 func remove_facility(v: int):
+	var fac = _facilities.get(v)
 	assert(_facilities.erase(v), "There is no a facility at node %s to remove" % v)
-	network.set_facility(v, false)
+	for mode in Facilities.FACILITY_NETWORK_MODES[fac.type]:
+		network.set_facility(Network.to_mode_id(v, mode), false)
 
 
 func has_facility(v: int) -> bool:

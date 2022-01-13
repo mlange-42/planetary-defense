@@ -93,6 +93,7 @@ impl MultiCommodityFlow {
     }
 
     #[export]
+    #[allow(clippy::too_many_arguments)]
     pub fn set_converter(
         &mut self,
         _owner: &Reference,
@@ -101,9 +102,10 @@ impl MultiCommodityFlow {
         from_amount: u32,
         to: String,
         to_amount: u32,
+        target_node: usize,
     ) {
         self.builder
-            .set_converter(vertex, from, from_amount, to, to_amount);
+            .set_converter(vertex, from, from_amount, to, to_amount, target_node);
     }
 
     #[export]
@@ -252,6 +254,7 @@ struct CommodityConversion {
     to_amount: u32,
     storage: u32,
     source: Option<usize>,
+    target_node: usize,
 }
 
 impl NodeData {
@@ -438,6 +441,7 @@ impl Graph {
             let receiver = &mut self.nodes[receiver_idx];
             if let Some(convert) = &mut receiver.convert {
                 if convert.from == commodity {
+                    let target_idx = convert.target_node;
                     convert.storage += amount;
                     let mut total_amount = 0;
                     while convert.storage >= convert.from_amount {
@@ -449,7 +453,7 @@ impl Graph {
                         .expect("No source node for converter node found!");
                     let edge = self.out_edges[source]
                         .iter()
-                        .find(|e| self.edges[**e].b.0 == receiver_idx)
+                        .find(|e| self.edges[**e].b.0 == target_idx)
                         .expect("No connection to source for converter node found!");
                     Some((source, *edge, convert.to, total_amount))
                 } else {
@@ -501,13 +505,13 @@ impl Graph {
 }
 
 type EdgeList<T, U> = Vec<(Vertex<T, U>, Vertex<T, U>, Capacity, Cost)>;
-type Converter<U> = (U, u32, U, u32);
+type Converter<T, U> = (U, u32, U, u32, Vertex<T, U>);
 type PairFlows<T, U> = BTreeMap<(Vertex<T, U>, Vertex<T, U>), Vec<(U, u32)>>;
 
 #[allow(dead_code)]
 pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
     edge_list: EdgeList<T, U>,
-    converters: Vec<(Vertex<T, U>, Converter<U>)>,
+    converters: Vec<(Vertex<T, U>, Converter<T, U>)>,
     flows: Option<Vec<Flow<T, U>>>,
     pair_flows: Option<PairFlows<T, U>>,
     nodes: Option<BTreeMap<Vertex<T, U>, NodeData>>,
@@ -564,14 +568,17 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         from_amount: u32,
         to: U,
         to_amount: u32,
+        target_node: A,
     ) {
         assert!(
             self.flows.is_none(),
             "Cannot modify an already solved graph."
         );
 
-        self.converters
-            .push((vertex.into(), (from, from_amount, to, to_amount)));
+        self.converters.push((
+            vertex.into(),
+            (from, from_amount, to, to_amount, target_node.into()),
+        ));
     }
 
     fn solve(&mut self, bidirectional: bool, load_dependence: f32) {
@@ -645,6 +652,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
                 to_amount: conv.3,
                 storage: 0,
                 source: None,
+                target_node: index_mapper[&conv.4],
             })
         }
 
@@ -858,7 +866,7 @@ mod tests {
         builder.add_edge("ConvAB", Vertex::Sink("A"), Capacity(10), Cost(0));
         builder.add_edge("SinkB", Vertex::Sink("B"), Capacity(10), Cost(0));
 
-        builder.set_converter("ConvAB", "A", 1, "B", 1);
+        builder.set_converter("ConvAB", "A", 1, "B", 1, "ConvAB");
 
         builder.solve(false, 0.2);
         let flows = builder.get_flows();
