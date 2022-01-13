@@ -2,6 +2,13 @@ extends ImmediateGeometry
 class_name RoadGeometry
 
 
+var road_width: float
+
+
+func _init(width: float):
+	road_width = width
+
+
 func clear_all():
 	clear()
 
@@ -29,7 +36,7 @@ func draw_simple(planet_data, roads: NetworkManager, mode: int, color1: Color, c
 			var p2 = nd2.position
 			var direction = (p2 - p1).normalized()
 			var x_dir = direction.cross(p1).normalized()
-			var x_off = x_dir * 0.4 * Consts.ROAD_WIDTH
+			var x_off = x_dir * 0.4 * road_width
 			var h_off = 10 * Consts.DRAW_HEIGHT_OFFSET * p1.normalized()
 			
 			set_color(color1.linear_interpolate(color2, edge.flow / float(edge.capacity)))
@@ -67,8 +74,8 @@ func draw_roads(planet_data, roads: NetworkManager, mode: int):
 			var p2 = nd2.position
 			var direction = (p2 - p1).normalized()
 			var x_dir = direction.cross(p1).normalized()
-			var x_off = x_dir * Consts.ROAD_WIDTH
-			var y_off = direction * (0.1 * Consts.ROAD_WIDTH)
+			var x_off = x_dir * road_width
+			var y_off = direction * (0.1 * road_width)
 			var h_off = Consts.DRAW_HEIGHT_OFFSET * p1.normalized()
 			
 			var norm = x_dir.cross(direction)

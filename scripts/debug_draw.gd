@@ -6,26 +6,11 @@ func clear_all():
 	clear()
 
 
-func draw_path_simple(points: Array, max_length: int, color1: Color, color2: Color):
-	clear()
-	begin(Mesh.PRIMITIVE_LINE_STRIP)
-	
-	set_color(color1)
-	
-	var length: int = 0
-	for p in points:
-		add_vertex(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized())
-		if length == max_length:
-			set_color(color2)
-			add_vertex(p + 2 * Consts.DRAW_HEIGHT_OFFSET * p.normalized())
-		length += 1
-	
-	end()
-
-
 func draw_path(points: Array, max_length: int, color1: Color, color2: Color):
 	clear()
 	begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var width = Network.TYPE_DRAW_WIDTH[Network.T_ROAD]
 	
 	set_color(color1)
 	
@@ -39,8 +24,8 @@ func draw_path(points: Array, max_length: int, color1: Color, color2: Color):
 		
 		var direction = (p2 - p1).normalized()
 		var x_dir = direction.cross(p1).normalized()
-		var x_off = 0.6 * x_dir * Consts.ROAD_WIDTH
-		var y_off = direction * (0.3 * Consts.ROAD_WIDTH)
+		var x_off = 0.6 * x_dir * width
+		var y_off = direction * (0.3 * width)
 		var h_off = 2 * Consts.DRAW_HEIGHT_OFFSET * p1.normalized()
 		
 		var norm = x_dir.cross(direction)

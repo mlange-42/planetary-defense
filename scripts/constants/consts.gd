@@ -2,6 +2,8 @@ class_name Consts
 
 const DEFAULT_VIEWPORT_HEIGHT: int = 720
 
+const DRAW_HEIGHT_OFFSET: float = 0.01
+
 const ELEVATION_SCALE: int = 3125
 const ELEVATION_CONTOUR_STEP: int = 1000
 
@@ -27,9 +29,6 @@ const MESSAGE_ICONS_LARGE = {
 
 const SAVEGAME_DIR = "save"
 const CONFIG_DIR = "config"
-
-const DRAW_HEIGHT_OFFSET: float = 0.01
-const ROAD_WIDTH: float = 0.03
 
 
 const LAYER_BASE: int = 0
