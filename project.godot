@@ -304,6 +304,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/port.gd"
 }, {
+"base": "Facility",
+"class": "PowerPlant",
+"language": "GDScript",
+"path": "res://scripts/objects/power_plant.gd"
+}, {
 "base": "GuiState",
 "class": "QuitDialog",
 "language": "GDScript",
@@ -429,6 +434,7 @@ _global_script_class_icons={
 "PlanetGenerator": "",
 "PlanetSettings": "",
 "Port": "",
+"PowerPlant": "",
 "QuitDialog": "",
 "RangeIndicator": "",
 "ResourceManager": "",

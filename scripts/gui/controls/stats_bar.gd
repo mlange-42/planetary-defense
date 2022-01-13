@@ -12,6 +12,7 @@ onready var turn_label = find_node("TurnLabel")
 onready var food: CommodityStats = find_node("Food")
 onready var resources: CommodityStats = find_node("Resources")
 onready var products: CommodityStats = find_node("Products")
+onready var electricity: CommodityStats = find_node("Electricity")
 
 var infos: Dictionary
 
@@ -20,6 +21,7 @@ func _ready():
 		Commodities.COMM_FOOD: food,
 		Commodities.COMM_RESOURCES: resources,
 		Commodities.COMM_PRODUCTS: products,
+		Commodities.COMM_ELECTRICITY: electricity,
 	}
 
 

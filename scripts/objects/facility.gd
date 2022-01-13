@@ -27,6 +27,16 @@ func init(node: int, planet_data, type: String):
 	if s != null:
 		for sink in s:
 			add_sink(sink[0], sink[1])
+			
+	s = Facilities.FACILITY_SOURCES[type]
+	if s != null:
+		for source in s:
+			add_source(source[0], source[1])
+
+	s = Facilities.FACILITY_CONVERSIONS[type]
+	if s != null:
+		for conv in s:
+			add_conversion(conv[0], conv[1], conv[2], conv[3], conv[4])
 
 
 # warning-ignore:unused_argument

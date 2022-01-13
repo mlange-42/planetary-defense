@@ -6,7 +6,6 @@
 [ext_resource path="res://scripts/geom/range_indicator.gd" type="Script" id=5]
 [ext_resource path="res://scenes/objects/signs/error_sign.tscn" type="PackedScene" id=6]
 
-
 [node name="AirDefense" type="Spatial"]
 script = ExtResource( 1 )
 

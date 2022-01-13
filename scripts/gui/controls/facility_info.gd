@@ -6,6 +6,7 @@ onready var container: Container = find_node("Entries")
 onready var food: CommodityStats = find_node("Food")
 onready var resources: CommodityStats = find_node("Resources")
 onready var products: CommodityStats = find_node("Products")
+onready var electricity: CommodityStats = find_node("Electricity")
 
 onready var city_stats: Container = find_node("CityStats")
 onready var city_workers: Label = find_node("WorkersLabel")
@@ -21,6 +22,7 @@ func _ready():
 		Commodities.COMM_FOOD: food,
 		Commodities.COMM_RESOURCES: resources,
 		Commodities.COMM_PRODUCTS: products,
+		Commodities.COMM_ELECTRICITY: electricity,
 	}
 
 func update_info(facility):
