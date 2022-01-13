@@ -20,7 +20,8 @@ func save() -> Dictionary:
 	var edge_data = []
 	for i in range(network.get_edge_count()):
 		var e = network.get_edge_at(i)
-		edge_data.append([e.from, e.to, e.net_type, e.capacity, e.flow])
+		if Network.get_mode(e.from) == Network.get_mode(e.to):
+			edge_data.append([e.from, e.to, e.net_type, e.capacity, e.flow])
 	
 	dict["edge_data"] = edge_data
 	

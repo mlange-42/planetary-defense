@@ -92,7 +92,7 @@ func add_facility(type: String, location: int, name: String, owner):
 	
 	var facility: Facility = load(Facilities.FACILITY_SCENES[type]).instance()
 	
-	facility.init(location, planet.planet_data, type)
+	facility.init(location, planet, type)
 	
 	planet.taxes.budget -= costs
 	

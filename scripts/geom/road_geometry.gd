@@ -45,7 +45,7 @@ func draw_simple(planet_data, roads: NetworkManager, mode: int, color1: Color, c
 	end()
 
 
-func draw_roads(planet_data, roads: NetworkManager, mode: int, land: bool):
+func draw_roads(planet_data, roads: NetworkManager, mode: int):
 	clear()
 	begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -55,9 +55,6 @@ func draw_roads(planet_data, roads: NetworkManager, mode: int, land: bool):
 		var n = node[1]
 		var nd1 = planet_data.get_node(node1)
 		
-		if not land and not nd1.is_water:
-			continue
-		
 		var p1 = nd1.position
 		for node2 in n:
 			var edge = roads.get_edge([node1, node2])
@@ -66,12 +63,6 @@ func draw_roads(planet_data, roads: NetworkManager, mode: int, land: bool):
 				continue
 			
 			var nd2 = planet_data.get_node(node2)
-			
-			if not land and not nd2.is_water:
-				continue
-			
-			if land and nd1.is_water and nd2.is_water:
-				continue
 			
 			var p2 = nd2.position
 			var direction = (p2 - p1).normalized()

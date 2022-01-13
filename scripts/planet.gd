@@ -267,7 +267,7 @@ func load_game():
 		
 		var fac_json = parse_json(line)
 		var facility: Facility = load(Facilities.FACILITY_SCENES[fac_json["type"]]).instance()
-		facility.init(fac_json["node_id"] as int, planet_data, fac_json["type"])
+		facility.init(fac_json["node_id"] as int, self, fac_json["type"])
 		facility.read(fac_json)
 		
 		builder.add_facility_scene(facility, facility.name)
@@ -338,8 +338,8 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_geometry.draw_roads(planet_data, roads, Network.M_ROADS, true)
-	sea_lines_geometry.draw_roads(planet_data, roads, Network.M_ROADS, false)
+	road_geometry.draw_roads(planet_data, roads, Network.M_ROADS)
+	sea_lines_geometry.draw_roads(planet_data, roads, Network.M_SEA)
 	power_lines_geometry.draw_simple(planet_data, roads, Network.M_ELECTRIC, Color.black, Color.red)
 
 

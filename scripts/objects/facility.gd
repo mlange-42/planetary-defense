@@ -19,7 +19,7 @@ var is_supplied: bool = false
 
 # warning-ignore:shadowed_variable
 # warning-ignore:unused_argument
-func init(node: int, planet_data, type: String):
+func init(node: int, planet, type: String):
 	self.node_id = node
 	self.type = type
 	
