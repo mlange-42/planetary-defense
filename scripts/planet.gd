@@ -267,7 +267,7 @@ func load_game():
 		
 		var fac_json = parse_json(line)
 		var facility: Facility = load(Facilities.FACILITY_SCENES[fac_json["type"]]).instance()
-		facility.init(fac_json["node_id"] as int, planet_data, fac_json["type"])
+		facility.init(fac_json["node_id"] as int, self, fac_json["type"])
 		facility.read(fac_json)
 		
 		builder.add_facility_scene(facility, facility.name)
@@ -289,24 +289,25 @@ func load_game():
 	_redraw_resources()
 
 
-func calc_point_path(from: int, to: int) -> Array:
-	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
-				else planet_data.NAV_LAND
+func calc_point_path(from: int, to: int, nav: int) -> Array:
+	#var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
+	#			else planet_data.NAV_LAND
 	
-	var path = planet_data.get_point_path(from, to, mode, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
+	var path = planet_data.get_point_path(from, to, nav, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
-func calc_id_path(from: int, to: int) -> Array:
-	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
-				else planet_data.NAV_LAND
+func calc_id_path(from: int, to: int, nav: int) -> Array:
+	#var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
+	#			else planet_data.NAV_LAND
 	
-	var path = planet_data.get_id_path(from, to, mode, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
+	var path = planet_data.get_id_path(from, to, nav, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
-func draw_path(from: int, to: int, max_length: int) -> Array:
-	var path = calc_point_path(from, to)
+func draw_path(from: int, to: int, type: int, max_length: int) -> Array:
+	var nav = Network.MODE_NAV[Network.TYPE_MODES[type]]
+	var path = calc_point_path(from, to, nav)
 	if path.size() > 0:
 		path_debug.draw_path(path, max_length, Color.blue, Color.red)
 	else:
@@ -315,7 +316,8 @@ func draw_path(from: int, to: int, max_length: int) -> Array:
 
 
 func add_road(from: int, to: int, type: int):
-	var path = calc_id_path(from, to)
+	var nav = Network.MODE_NAV[Network.TYPE_MODES[type]]
+	var path = calc_id_path(from, to, nav)
 	var err = builder.add_road(path, type)
 	
 	_redraw_roads()
@@ -324,8 +326,9 @@ func add_road(from: int, to: int, type: int):
 	return err
 
 
-func remove_road(from: int, to: int):
-	var path = calc_id_path(from, to)
+func remove_road(from: int, to: int, type: int):
+	var nav = Network.MODE_NAV[Network.TYPE_MODES[type]]
+	var path = calc_id_path(from, to, nav)
 	if builder.remove_road(path):
 		_redraw_roads()
 
@@ -335,8 +338,8 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_geometry.draw_roads(planet_data, roads, Network.M_ROADS, true)
-	sea_lines_geometry.draw_roads(planet_data, roads, Network.M_ROADS, false)
+	road_geometry.draw_roads(planet_data, roads, Network.M_ROADS)
+	sea_lines_geometry.draw_roads(planet_data, roads, Network.M_SEA)
 	power_lines_geometry.draw_simple(planet_data, roads, Network.M_ELECTRIC, Color.black, Color.red)
 
 

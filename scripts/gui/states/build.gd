@@ -4,6 +4,8 @@ class_name BuildState
 onready var inspect_button: Button = find_node("Inspect")
 onready var remove_button: Button = find_node("Remove")
 
+var clear_button: Button
+
 var indicator: RangeIndicator
 
 var button_group: ButtonGroup
@@ -25,7 +27,7 @@ func _ready():
 	inspect_button.group = button_group
 	remove_button.group = button_group
 	
-	for fac in Facilities.FACILITY_IN_CITY:
+	for fac in Facilities.FACILITY_ICONS:
 		if not Facilities.FACILITY_IN_CITY[fac]:
 			var button := FacilityButton.new()
 			button.facility = fac
@@ -43,7 +45,11 @@ func _ready():
 	for road in Network.TYPE_INFO:
 		var button := RoadButton.new()
 		button.mode = road
-		button.group = button_group
+		
+		if road == Network.T_CLEAR:
+			clear_button = button
+		else:
+			button.group = button_group
 		
 		var evt = InputEventKey.new()
 		evt.pressed = true
@@ -85,7 +91,7 @@ func get_facility_tool():
 
 func get_road_tool():
 	var button = button_group.get_pressed_button()
-	if button == null or not button is RoadButton:
+	if button == null or not button is RoadButton or button.mode == Network.T_CLEAR:
 		return null
 	else:
 		return button.mode
@@ -116,7 +122,7 @@ func on_planet_hovered(node: int):
 			# warning-ignore:return_value_discarded
 			var cost = Network.TYPE_COSTS[road_tool]
 			var max_length = 9999 if cost == 0 else fsm.planet.taxes.budget / cost
-			var path = fsm.planet.draw_path(road_start_point, node, max_length)
+			var path = fsm.planet.draw_path(road_start_point, node, road_tool, max_length)
 			# warning-ignore:narrowing_conversion
 			fsm.update_build_info(road_tool, max(1, path.size() - 1))
 		else:
@@ -164,8 +170,8 @@ func on_planet_clicked(node: int, button: int):
 		if road_tool != null:
 			if button == BUTTON_LEFT:
 				if road_start_point >= 0:
-					if road_tool == Network.T_CLEAR:
-						fsm.planet.remove_road(road_start_point, node)
+					if clear_button.pressed:
+						fsm.planet.remove_road(road_start_point, node, road_tool)
 					else:
 						var err = fsm.planet.add_road(road_start_point, node, road_tool)
 						if err != null:

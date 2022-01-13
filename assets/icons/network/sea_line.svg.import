@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/power_line.svg-cfdaaad0d4022c87c6da25ca7637035b.stex"
+path="res://.import/sea_line.svg-7109cab375991e449022becb6256f4dc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/facilities/power_line.svg"
-dest_files=[ "res://.import/power_line.svg-cfdaaad0d4022c87c6da25ca7637035b.stex" ]
+source_file="res://assets/icons/network/sea_line.svg"
+dest_files=[ "res://.import/sea_line.svg-7109cab375991e449022becb6256f4dc.stex" ]
 
 [params]
 
