@@ -45,6 +45,7 @@ onready var facilities: Spatial
 
 onready var road_geometry: RoadGeometry
 onready var sea_lines_geometry: RoadGeometry
+onready var power_lines_geometry: RoadGeometry
 onready var path_debug: DebugDraw
 onready var resource_debug: DebugDraw
 onready var flows_graphs: FlowGraphs
@@ -72,8 +73,11 @@ func _init(params: Array):
 func _ready():
 	var material = preload("res://assets/materials/vertex_color.tres")
 	var flow_material = preload("res://assets/materials/unlit_vertex_color.tres")
+	
 	var material_roads = preload("res://assets/materials/traffic/roads.tres")
 	var material_sea_lines = preload("res://assets/materials/traffic/sea_lines.tres")
+	var material_power_lines = preload("res://assets/materials/unlit_vertex_color.tres")
+	
 	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
 	
 	facilities = Spatial.new()
@@ -90,6 +94,12 @@ func _ready():
 	sea_lines_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
 	sea_lines_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
 	add_child(sea_lines_geometry)
+	
+	power_lines_geometry = RoadGeometry.new()
+	power_lines_geometry.material_override = material_power_lines
+	power_lines_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
+	power_lines_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
+	add_child(power_lines_geometry)
 	
 	path_debug = DebugDraw.new()
 	path_debug.material_override = material
@@ -325,8 +335,9 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_geometry.draw_roads(planet_data, roads, true)
-	sea_lines_geometry.draw_roads(planet_data, roads, false)
+	road_geometry.draw_roads(planet_data, roads, Network.M_ROADS, true)
+	sea_lines_geometry.draw_roads(planet_data, roads, Network.M_ROADS, false)
+	power_lines_geometry.draw_simple(planet_data, roads, Network.M_ELECTRIC, Color.black, Color.red)
 
 
 func _redraw_resources():
