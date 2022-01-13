@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Network modes
+
+Added the possibility for different network modes (roads, rail, power lines, ...) and sub-types.
+* Electricity as commodity, with power plants as producers and defenses as consumers
+* Power lines to transport electricity
+* Railways as high capacity network type
+* Train stations as connectors between rail and road
+
 ### Added
 
 * Show city growth and growth components in facility info panel
@@ -15,6 +23,8 @@
 * Slope limit for building roads - maximum elevation difference 200m
 * Cliff vegetation type on steep and high ground
 * Possibility to remove facilities
+* Added power lines, railways and sea lines
+* Added power plant and train station facilities
 
 ### Changed
 
@@ -27,6 +37,7 @@
 * Make build indicators smaller than actual buildings, to chow a change when actually building
 * Ported road network data structure and logic to Rust
 * No more migration to unconnected cities
+* Air defenses now consume electricity instead of products
 
 ### Bug fixes
 
