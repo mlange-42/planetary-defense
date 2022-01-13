@@ -123,7 +123,7 @@ func add_flows(f: Dictionary):
 		var v = f[key]
 		if flows.has(key):
 			var old = flows[key]
-			flows[key] += [old[0] + v[0], old[1] + v[1]]
+			flows[key] = [old[0] + v[0], old[1] + v[1]]
 		else:
 			flows[key] = v
 

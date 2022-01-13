@@ -48,12 +48,13 @@ func solve():
 	flow.solve(bidirectional, load_depencence)
 	
 	for fid in facilities:
-		facilities[fid].clear_flows()
+		var facility = facilities[fid]
+		facility.clear_flows()
 		for mode in Network.ALL_MODES:
 			var mode_id = Network.to_mode_id(fid, mode)
 			var f = flow.get_node_flows(mode_id)
 			if f != null:
-				facilities[fid].add_flows(f)
+				facility.add_flows(f)
 	
 	self.clear()
 	
