@@ -34,15 +34,24 @@ func add_road(path: Array, road_type: int):
 		var p1 = Network.to_mode_id(path[i], mode)
 		var p2 = Network.to_mode_id(path[i+1], mode)
 		if not planet.roads.points_connected(p1, p2):
-			planet.roads.connect_points(p1, p2, road_type, Network.TYPE_CAPACITY[road_type])
-			sum_cost += Network.TYPE_COSTS[road_type]
+			var conn = false
+			for block in Network.MODE_BLOCK[mode]:
+				var pp1 = Network.to_mode_id(p1, block)
+				var pp2 = Network.to_mode_id(p2, block)
+				if planet.roads.points_connected(pp1, pp2):
+					conn = true
+					break
+			
+			if not conn:
+				planet.roads.connect_points(p1, p2, road_type, Network.TYPE_CAPACITY[road_type])
+				sum_cost += Network.TYPE_COSTS[road_type]
 	
 	planet.taxes.budget -= sum_cost
 	
 	return warn
 
 
-func remove_road(path: Array) -> bool:
+func remove_road(path: Array, mode: int) -> bool:
 	if path.size() == 0:
 		return false
 	
@@ -50,11 +59,10 @@ func remove_road(path: Array) -> bool:
 		var p1 = path[i]
 		var p2 = path[i+1]
 		
-		for mode in Network.ALL_MODES:
-			var pp1 = Network.to_mode_id(p1, mode)
-			var pp2 = Network.to_mode_id(p2, mode)
-			if planet.roads.points_connected(pp1, pp2):
-				planet.roads.disconnect_points(pp1, pp2)
+		var pp1 = Network.to_mode_id(p1, mode)
+		var pp2 = Network.to_mode_id(p2, mode)
+		if planet.roads.points_connected(pp1, pp2):
+			planet.roads.disconnect_points(pp1, pp2)
 	
 	return true
 

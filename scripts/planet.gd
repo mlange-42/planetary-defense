@@ -327,9 +327,10 @@ func add_road(from: int, to: int, type: int):
 
 
 func remove_road(from: int, to: int, type: int):
-	var nav = Network.MODE_NAV[Network.TYPE_MODES[type]]
+	var mode = Network.TYPE_MODES[type]
+	var nav = Network.MODE_NAV[mode]
 	var path = calc_id_path(from, to, nav)
-	if builder.remove_road(path):
+	if builder.remove_road(path, mode):
 		_redraw_roads()
 
 

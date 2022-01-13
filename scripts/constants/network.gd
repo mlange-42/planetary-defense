@@ -22,6 +22,13 @@ const MODE_NAV = {
 	M_SEA: NAV_WATER,
 }
 
+const MODE_BLOCK = {
+	M_ROADS: [M_RAIL],
+	M_RAIL: [M_ROADS],
+	M_ELECTRIC: [],
+	M_SEA: [],
+}
+
 
 const T_CLEAR: int = 0
 const T_ROAD: int = 1
