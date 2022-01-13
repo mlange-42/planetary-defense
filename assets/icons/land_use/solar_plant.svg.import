@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/build.svg-a009d284932262da5ab4d644bfc7685a.stex"
+path="res://.import/solar_plant.svg-8c701a7d1d6a6306042fea366db9bee4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/land_use/build.svg"
-dest_files=[ "res://.import/build.svg-a009d284932262da5ab4d644bfc7685a.stex" ]
+source_file="res://assets/icons/land_use/solar_plant.svg"
+dest_files=[ "res://.import/solar_plant.svg-8c701a7d1d6a6306042fea366db9bee4.stex" ]
 
 [params]
 

@@ -110,7 +110,7 @@ const LU_ICONS = {
 	LU_FOREST: preload("res://assets/icons/land_use/forest.svg"),
 	LU_FISHERY: preload("res://assets/icons/land_use/fishery.svg"),
 	LU_FACTORY: preload("res://assets/icons/land_use/factory.svg"),
-	LU_SOLAR_PLANT: preload("res://assets/icons/land_use/factory.svg"),
+	LU_SOLAR_PLANT: preload("res://assets/icons/land_use/solar_plant.svg"),
 	LU_MINES: preload("res://assets/icons/land_use/mines.svg"),
 	LU_OIL_RIG: preload("res://assets/icons/land_use/oil_rig.svg"),
 	LU_OIL_WELL: preload("res://assets/icons/land_use/oil_well.svg"),
