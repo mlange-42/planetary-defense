@@ -476,6 +476,7 @@ window/dpi/allow_hidpi=true
 
 theme/custom="res://assets/default.theme"
 theme/custom_font="res://assets/fonts/consolas.tres"
+timers/tooltip_delay_sec=0.25
 
 [physics]
 
