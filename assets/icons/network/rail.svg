@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24"
+   height="24"
+   viewBox="0 0 23.999999 23.999999"
+   version="1.1"
+   id="svg1103"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="rail.svg">
+  <defs
+     id="defs1097" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#818181"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="103.57361"
+     inkscape:cy="-9.2888861"
+     inkscape:document-units="px"
+     inkscape:current-layer="g1836"
+     inkscape:document-rotation="0"
+     showgrid="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     units="px"
+     borderlayer="true"
+     inkscape:showpageshadow="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:lockguides="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-nodes="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-center="false"
+     inkscape:snap-global="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1666"
+       empspacing="4" />
+    <sodipodi:guide
+       position="0,23.999999"
+       orientation="0,-1"
+       id="guide1668"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,0"
+       orientation="0,-1"
+       id="guide1670"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="0,31.999999"
+       orientation="1,0"
+       id="guide1672"
+       inkscape:locked="true" />
+    <sodipodi:guide
+       position="23.999999,23.999999"
+       orientation="1,0"
+       id="guide1674"
+       inkscape:locked="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata1100">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1836"
+       transform="translate(-1)">
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 5,22 C 13,14 12,8 18,2"
+         id="path845"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 21,22 C 21,14 18,10 22,2"
+         id="path847"
+         sodipodi:nodetypes="cc" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0;stroke-linecap:round;stop-color:#000000"
+         id="rect16"
+         width="18"
+         height="2.5648527"
+         x="8.2774916"
+         y="17.738823"
+         ry="0.97837126"
+         rx="0.99999994"
+         transform="matrix(1,0,-0.17230687,0.98504332,0,0)" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0;stroke-linecap:round;stop-color:#000000"
+         id="rect16-5"
+         width="14"
+         height="2"
+         x="9"
+         y="12"
+         ry="1"
+         rx="1" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0;stroke-linecap:round;stop-color:#000000"
+         id="rect16-5-7"
+         width="11.223214"
+         height="1.3348213"
+         x="11"
+         y="8"
+         ry="0.66741067"
+         rx="0.77678567" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0;stroke-linecap:round;stop-color:#000000"
+         id="rect16-5-7-6"
+         width="9.7321424"
+         height="1"
+         x="13"
+         y="5"
+         ry="1"
+         rx="0.6651786" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0;stroke-linecap:round;stop-color:#000000"
+         id="rect16-5-7-6-0"
+         width="8.7767859"
+         height="1"
+         x="15"
+         y="2"
+         ry="1"
+         rx="0.64285713" />
+    </g>
+  </g>
+</svg>
