@@ -44,7 +44,7 @@ const FACILITY_RADIUS = {
 const FACILITY_NETWORK_MODES = {
 	FAC_CITY: [Network.M_ROADS],
 	FAC_PORT: [Network.M_ROADS],
-	FAC_AIR_DEFENSE: [Network.M_ROADS],
+	FAC_AIR_DEFENSE: [Network.M_ELECTRIC],
 	FAC_POWER_PLANT: [Network.M_ROADS, Network.M_ELECTRIC],
 }
 
@@ -72,7 +72,7 @@ const FACILITY_MAINTENANCE = {
 const FACILITY_SINKS = {
 	FAC_CITY: null,
 	FAC_PORT: null,
-	FAC_AIR_DEFENSE: [[Commodities.COMM_PRODUCTS, 2]],
+	FAC_AIR_DEFENSE: [[Commodities.COMM_ELECTRICITY, 2]],
 	FAC_POWER_PLANT: null,
 }
 

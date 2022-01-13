@@ -77,12 +77,15 @@ func solve():
 		total_flows[comm] = 0
 	
 	var pair_flows = flow.get_pair_flows()
+	var res_pair_flows = {}
 	for edge in pair_flows:
 		var edge_flow = pair_flows[edge]
+		res_pair_flows[[Network.to_base_id(edge[0]), Network.to_base_id(edge[1])]] = edge_flow
 		for comm in edge_flow:
 			total_flows[comm] += edge_flow[comm]
 	
-	network.pair_flows = pair_flows
+	
+	network.pair_flows = res_pair_flows
 	network.total_flows = total_flows
 	network.total_sources = flow.get_total_sources()
 	network.total_sinks = flow.get_total_sinks()

@@ -253,7 +253,7 @@ struct CommodityConversion {
     to: usize,
     to_amount: u32,
     storage: u32,
-    source: Option<usize>,
+    source: usize,
     target_node: usize,
 }
 
@@ -448,14 +448,11 @@ impl Graph {
                         total_amount += convert.to_amount;
                         convert.storage -= convert.from_amount;
                     }
-                    let source = convert
-                        .source
-                        .expect("No source node for converter node found!");
-                    let edge = self.out_edges[source]
+                    let edge = self.out_edges[convert.source]
                         .iter()
                         .find(|e| self.edges[**e].b.0 == target_idx)
                         .expect("No connection to source for converter node found!");
-                    Some((source, *edge, convert.to, total_amount))
+                    Some((convert.source, *edge, convert.to, total_amount))
                 } else {
                     None
                 }
@@ -645,13 +642,14 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
                 g.nodes[idx].convert.is_none(),
                 "Only one converter allowed per node!"
             );
+
             g.nodes[idx].convert = Some(CommodityConversion {
                 from: commodity_mapper[&conv.0],
                 from_amount: conv.1,
                 to: commodity_mapper[&conv.2],
                 to_amount: conv.3,
                 storage: 0,
-                source: None,
+                source: index_mapper[&Vertex::Source(conv.2.clone())],
                 target_node: index_mapper[&conv.4],
             })
         }
@@ -660,17 +658,11 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             let node_a = Node(*index_mapper.get(&a).unwrap());
             let node_b = Node(*index_mapper.get(&b).unwrap());
             if let Vertex::Source(comm) = a {
-                let comm_id = commodity_mapper[comm];
                 g.delta_supply(
                     Node(*index_mapper.get(&a).unwrap()),
                     *commodity_mapper.get(comm).unwrap(),
                     cap.0,
                 );
-                if let Some(convert) = &mut g.nodes[node_b.0].convert {
-                    if convert.to == comm_id {
-                        convert.source = Some(node_a.0);
-                    }
-                }
             }
             if let Vertex::Sink(comm) = b {
                 g.delta_supply(

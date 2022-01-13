@@ -18,7 +18,7 @@ const NAV_WATER: u32 = 2;
 /// ID offset between different transport modes
 const TYPE_OFFSET: usize = 1_000_000;
 
-fn to_base_id(id: usize) -> usize {
+pub fn to_base_id(id: usize) -> usize {
     id % TYPE_OFFSET
 }
 
