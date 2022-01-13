@@ -5,11 +5,13 @@ onready var sliders = {
 	Commodities.COMM_ALL[0]: find_node("FoodSlider"),
 	Commodities.COMM_ALL[1]: find_node("ResourcesSlider"),
 	Commodities.COMM_ALL[2]: find_node("ProductsSlider"),
+	Commodities.COMM_ALL[3]: find_node("ElectricitySlider"),
 }
 onready var weights = {
 	Commodities.COMM_ALL[0]: find_node("FoodWeight"),
 	Commodities.COMM_ALL[1]: find_node("ResourcesWeight"),
 	Commodities.COMM_ALL[2]: find_node("ProductsWeight"),
+	Commodities.COMM_ALL[3]: find_node("ElectricityWeight"),
 }
 onready var city_label: Label = find_node("CityLabel")
 onready var grow_button: Button = find_node("GrowButton") 
