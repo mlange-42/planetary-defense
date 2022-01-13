@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/air_defense.escn-8a9532136e07b2c8402adefb2fec0d51.scn"
+path="res://.import/port.escn-8667b94974a79b4d5a3daf8172cb5f8a.scn"
 
 [deps]
 
-source_file="res://assets/geom/air_defense.escn"
-dest_files=[ "res://.import/air_defense.escn-8a9532136e07b2c8402adefb2fec0d51.scn" ]
+source_file="res://assets/geom/facilities/port.escn"
+dest_files=[ "res://.import/port.escn-8667b94974a79b4d5a3daf8172cb5f8a.scn" ]
 
 [params]
 
@@ -29,7 +29,7 @@ meshes/lightmap_texel_size=0.1
 skins/use_named_skins=true
 external_files/store_in_subdir=false
 animation/import=true
-animation/fps=15.0
+animation/fps=15
 animation/filter_script=""
 animation/storage=false
 animation/keep_custom_tracks=false

@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/factory.escn-2868f2d525f2e4aa763c5f5b0550340f.scn"
+path="res://.import/oil_rig.escn-ac760c3aa03c19e06d4e910160ed24e4.scn"
 
 [deps]
 
-source_file="res://assets/geom/factory.escn"
-dest_files=[ "res://.import/factory.escn-2868f2d525f2e4aa763c5f5b0550340f.scn" ]
+source_file="res://assets/geom/land_use/oil_rig.escn"
+dest_files=[ "res://.import/oil_rig.escn-ac760c3aa03c19e06d4e910160ed24e4.scn" ]
 
 [params]
 

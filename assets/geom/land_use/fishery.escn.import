@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/city.escn-dcc28d4336162181b8b4d7a1ee13a2bf.scn"
+path="res://.import/fishery.escn-1dc38da48da9e3f14f09b1d97afae778.scn"
 
 [deps]
 
-source_file="res://assets/geom/city.escn"
-dest_files=[ "res://.import/city.escn-dcc28d4336162181b8b4d7a1ee13a2bf.scn" ]
+source_file="res://assets/geom/land_use/fishery.escn"
+dest_files=[ "res://.import/fishery.escn-1dc38da48da9e3f14f09b1d97afae778.scn" ]
 
 [params]
 

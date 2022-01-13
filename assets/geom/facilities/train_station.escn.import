@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/power_plant.escn-0c944720b5f83ed446aa594627370319.scn"
+path="res://.import/train_station.escn-412a84a52b34250e14ba988cfac32b25.scn"
 
 [deps]
 
-source_file="res://assets/geom/power_plant.escn"
-dest_files=[ "res://.import/power_plant.escn-0c944720b5f83ed446aa594627370319.scn" ]
+source_file="res://assets/geom/facilities/train_station.escn"
+dest_files=[ "res://.import/train_station.escn-412a84a52b34250e14ba988cfac32b25.scn" ]
 
 [params]
 

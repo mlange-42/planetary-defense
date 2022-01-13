@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/oil_well.escn-e70391dfb0a692b4d41e74844ddb18f9.scn"
+path="res://.import/city.escn-5d28c75f1516d38c201cde2e6093614a.scn"
 
 [deps]
 
-source_file="res://assets/geom/oil_well.escn"
-dest_files=[ "res://.import/oil_well.escn-e70391dfb0a692b4d41e74844ddb18f9.scn" ]
+source_file="res://assets/geom/facilities/city.escn"
+dest_files=[ "res://.import/city.escn-5d28c75f1516d38c201cde2e6093614a.scn" ]
 
 [params]
 

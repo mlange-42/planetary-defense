@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/train_station.escn-44b648436c7226467875f47c54727958.scn"
+path="res://.import/air_defense.escn-73510eed2c2701c93a37889eef567f2a.scn"
 
 [deps]
 
-source_file="res://assets/geom/train_station.escn"
-dest_files=[ "res://.import/train_station.escn-44b648436c7226467875f47c54727958.scn" ]
+source_file="res://assets/geom/facilities/air_defense.escn"
+dest_files=[ "res://.import/air_defense.escn-73510eed2c2701c93a37889eef567f2a.scn" ]
 
 [params]
 
@@ -29,7 +29,7 @@ meshes/lightmap_texel_size=0.1
 skins/use_named_skins=true
 external_files/store_in_subdir=false
 animation/import=true
-animation/fps=15
+animation/fps=15.0
 animation/filter_script=""
 animation/storage=false
 animation/keep_custom_tracks=false

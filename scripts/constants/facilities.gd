@@ -25,11 +25,11 @@ const FACILITY_SCENES = {
 }
 
 const FACILITY_POINTERS = {
-	FAC_CITY: "res://assets/geom/city.escn",
-	FAC_PORT: "res://assets/geom/port.escn",
-	FAC_TRAIN_STATION: "res://assets/geom/train_station.escn",
-	FAC_POWER_PLANT: "res://assets/geom/power_plant.escn",
-	FAC_AIR_DEFENSE: "res://assets/geom/air_defense.escn",
+	FAC_CITY: "res://assets/geom/facilities/city.escn",
+	FAC_PORT: "res://assets/geom/facilities/port.escn",
+	FAC_TRAIN_STATION: "res://assets/geom/facilities/train_station.escn",
+	FAC_POWER_PLANT: "res://assets/geom/facilities/power_plant.escn",
+	FAC_AIR_DEFENSE: "res://assets/geom/facilities/air_defense.escn",
 }
 
 const FACILITY_INFO = {
@@ -48,8 +48,9 @@ const FACILITY_RADIUS = {
 	FAC_AIR_DEFENSE: 8,
 }
 
+# TODO: check - place all facilities in all modes?
 const FACILITY_NETWORK_MODES = {
-	FAC_CITY: [Network.M_ROADS],
+	FAC_CITY: [Network.M_ROADS, Network.M_ELECTRIC],
 	FAC_PORT: [Network.M_ROADS, Network.M_SEA],
 	FAC_TRAIN_STATION: [Network.M_ROADS, Network.M_RAIL],
 	FAC_POWER_PLANT: [Network.M_ROADS, Network.M_ELECTRIC],

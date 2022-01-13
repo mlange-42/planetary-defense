@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/mines.escn-fb4ed0471af90d82d6e21d585c2a88d0.scn"
+path="res://.import/mines.escn-c46f20a6e8beb81602c521ff7097124a.scn"
 
 [deps]
 
-source_file="res://assets/geom/mines.escn"
-dest_files=[ "res://.import/mines.escn-fb4ed0471af90d82d6e21d585c2a88d0.scn" ]
+source_file="res://assets/geom/land_use/mines.escn"
+dest_files=[ "res://.import/mines.escn-c46f20a6e8beb81602c521ff7097124a.scn" ]
 
 [params]
 

@@ -74,6 +74,7 @@ const LU_MINES: int = 5
 const LU_OIL_RIG: int = 6
 const LU_OIL_WELL: int = 7
 const LU_IRRIGATED_CROPS: int = 8
+const LU_SOLAR_PLANT: int = 9
 
 # Also determined the order of the build options / icons
 const LU_NAMES = {
@@ -83,21 +84,23 @@ const LU_NAMES = {
 	LU_FOREST: "Forest",
 	LU_FISHERY: "Fishery",
 	LU_FACTORY: "Factory",
+	LU_SOLAR_PLANT: "Solar plant",
 	LU_MINES: "Mines",
 	LU_OIL_RIG: "Oil rig",
 	LU_OIL_WELL: "Oil well",
 }
 
 const LU_SCENES = {
-	LU_NONE: "res://assets/geom/clear.escn",
-	LU_CROPS: "res://assets/geom/crops.escn",
-	LU_IRRIGATED_CROPS: "res://assets/geom/irr_crops.escn",
-	LU_FOREST: "res://assets/geom/forest.escn",
-	LU_FISHERY: "res://assets/geom/fishery.escn",
-	LU_FACTORY: "res://assets/geom/factory.escn",
-	LU_MINES: "res://assets/geom/mines.escn",
-	LU_OIL_RIG: "res://assets/geom/oil_rig.escn",
-	LU_OIL_WELL: "res://assets/geom/oil_well.escn",
+	LU_NONE: "res://assets/geom/land_use/clear.escn",
+	LU_CROPS: "res://assets/geom/land_use/crops.escn",
+	LU_IRRIGATED_CROPS: "res://assets/geom/land_use/irr_crops.escn",
+	LU_FOREST: "res://assets/geom/land_use/forest.escn",
+	LU_FISHERY: "res://assets/geom/land_use/fishery.escn",
+	LU_FACTORY: "res://assets/geom/land_use/factory.escn",
+	LU_SOLAR_PLANT: "res://assets/geom/land_use/solar_plant.escn",
+	LU_MINES: "res://assets/geom/land_use/mines.escn",
+	LU_OIL_RIG: "res://assets/geom/land_use/oil_rig.escn",
+	LU_OIL_WELL: "res://assets/geom/land_use/oil_well.escn",
 }
 
 const LU_ICONS = {
@@ -107,6 +110,7 @@ const LU_ICONS = {
 	LU_FOREST: preload("res://assets/icons/land_use/forest.svg"),
 	LU_FISHERY: preload("res://assets/icons/land_use/fishery.svg"),
 	LU_FACTORY: preload("res://assets/icons/land_use/factory.svg"),
+	LU_SOLAR_PLANT: preload("res://assets/icons/land_use/factory.svg"),
 	LU_MINES: preload("res://assets/icons/land_use/mines.svg"),
 	LU_OIL_RIG: preload("res://assets/icons/land_use/oil_rig.svg"),
 	LU_OIL_WELL: preload("res://assets/icons/land_use/oil_well.svg"),
@@ -119,6 +123,7 @@ const LU_WORKERS = {
 	LU_FOREST: 1,
 	LU_FISHERY: 1,
 	LU_FACTORY: 2,
+	LU_SOLAR_PLANT: 0,
 	LU_MINES: 3,
 	LU_OIL_RIG: 3,
 	LU_OIL_WELL: 2,
@@ -131,6 +136,7 @@ const LU_MAINTENANCE = {
 	LU_FOREST: 0,
 	LU_FISHERY: 0,
 	LU_FACTORY: 1,
+	LU_SOLAR_PLANT: 1,
 	LU_MINES: 1,
 	LU_OIL_RIG: 2,
 	LU_OIL_WELL: 1,
@@ -142,6 +148,7 @@ const LU_OUTPUT = {
 	LU_FOREST: Commodities.COMM_RESOURCES,
 	LU_FISHERY: Commodities.COMM_FOOD,
 	LU_FACTORY: Commodities.COMM_PRODUCTS,
+	LU_SOLAR_PLANT: Commodities.COMM_ELECTRICITY,
 	LU_MINES: Commodities.COMM_RESOURCES,
 	LU_OIL_RIG: Commodities.COMM_RESOURCES,
 	LU_OIL_WELL: Commodities.COMM_RESOURCES,
@@ -153,6 +160,7 @@ const LU_RESOURCE = {
 	LU_FOREST: null,
 	LU_FISHERY: null,
 	LU_FACTORY: null,
+	LU_SOLAR_PLANT: null,
 	LU_MINES: Resources.RES_METAL,
 	LU_OIL_RIG: Resources.RES_OIL,
 	LU_OIL_WELL: Resources.RES_OIL,
@@ -165,6 +173,7 @@ const LU_REQUIREMENTS = {
 	LU_FOREST: [],
 	LU_FISHERY: [Facilities.FAC_PORT],
 	LU_FACTORY: [],
+	LU_SOLAR_PLANT: [],
 	LU_MINES: [],
 	LU_OIL_RIG: [Facilities.FAC_PORT],
 	LU_OIL_WELL: [],
@@ -177,6 +186,7 @@ const LU_INFO = {
 	LU_FOREST: "Grow trees to harvest resources.",
 	LU_FISHERY: "Fishes for food.",
 	LU_FACTORY: "Transforms resources into products.",
+	LU_SOLAR_PLANT: "Generates electricity fom sun light.",
 	LU_MINES: "Mines for metal resources.",
 	LU_OIL_RIG: "Drills for oil resources off-shore.",
 	LU_OIL_WELL: "Drills for oil resources on land.",
@@ -189,6 +199,7 @@ const LU_KEYS = {
 	LU_FOREST: KEY_F,
 	LU_FISHERY: KEY_I,
 	LU_FACTORY: KEY_A,
+	LU_SOLAR_PLANT: KEY_T,
 	LU_MINES: KEY_M,
 	LU_OIL_RIG: KEY_O,
 	LU_OIL_WELL: KEY_W,
@@ -228,6 +239,12 @@ var LU_MAPPING = {
 		VEG_SUBTROPICAL_FOREST: _factory_lu,
 		VEG_TROPICAL_FOREST: _factory_lu,
 	},
+	LU_SOLAR_PLANT: {
+		VEG_DESERT: VegLandUse.new(Production.new(Commodities.COMM_ELECTRICITY, 2), null, null),
+		VEG_STEPPE: VegLandUse.new(Production.new(Commodities.COMM_ELECTRICITY, 2), null, null),
+		VEG_SUBTROPICAL_FOREST: VegLandUse.new(Production.new(Commodities.COMM_ELECTRICITY, 2), null, null),
+		VEG_TEMPERATE_FOREST: VegLandUse.new(Production.new(Commodities.COMM_ELECTRICITY, 1), null, null),
+	},
 	LU_MINES: _res_all_land,
 	LU_OIL_RIG: {VEG_WATER: null},
 	LU_OIL_WELL: _res_all_land,
@@ -238,6 +255,7 @@ var LU_RESOURCES = {
 	LU_IRRIGATED_CROPS: {},
 	LU_FOREST: {},
 	LU_FACTORY: {},
+	LU_SOLAR_PLANT: {},
 	LU_FISHERY: {},
 	LU_MINES: {
 		Resources.RES_METAL: VegLandUse.new(Production.new(Commodities.COMM_RESOURCES, 10), null, null),

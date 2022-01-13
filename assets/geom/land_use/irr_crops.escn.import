@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/forest.escn-86a8394d9e8b07907d07476ad46405b0.scn"
+path="res://.import/irr_crops.escn-86604231800976aa0a94fdf0eed76ee9.scn"
 
 [deps]
 
-source_file="res://assets/geom/forest.escn"
-dest_files=[ "res://.import/forest.escn-86a8394d9e8b07907d07476ad46405b0.scn" ]
+source_file="res://assets/geom/land_use/irr_crops.escn"
+dest_files=[ "res://.import/irr_crops.escn-86604231800976aa0a94fdf0eed76ee9.scn" ]
 
 [params]
 

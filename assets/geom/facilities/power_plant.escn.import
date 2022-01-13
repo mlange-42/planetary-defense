@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/irr_crops.escn-941549e76763f257cf9a851a23972974.scn"
+path="res://.import/power_plant.escn-0997e0232ad08af2d2625c53e4dc2c6a.scn"
 
 [deps]
 
-source_file="res://assets/geom/irr_crops.escn"
-dest_files=[ "res://.import/irr_crops.escn-941549e76763f257cf9a851a23972974.scn" ]
+source_file="res://assets/geom/facilities/power_plant.escn"
+dest_files=[ "res://.import/power_plant.escn-0997e0232ad08af2d2625c53e4dc2c6a.scn" ]
 
 [params]
 
