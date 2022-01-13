@@ -371,7 +371,9 @@ impl Graph {
             if let Some((path, _cost)) = result {
                 self.apply_path(&path, *comm, 1);
                 total_transported[*comm] += 1;
-                crowded[*comm] = false;
+                for cr in crowded.iter_mut() {
+                    *cr = false;
+                }
             } else {
                 crowded[*comm] = true;
             }
@@ -607,8 +609,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
                     commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
-            }
-            if let Vertex::Sink(comm) = vertex {
+            } else if let Vertex::Sink(comm) = vertex {
                 if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
                     commodities.push(comm.clone());
