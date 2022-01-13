@@ -115,6 +115,18 @@ func get_missing_supply() -> Dictionary:
 	return res
 
 
+func clear_flows():
+	flows.clear()
+
+func add_flows(f: Dictionary):
+	for key in f:
+		var v = f[key]
+		if flows.has(key):
+			var old = flows[key]
+			flows[key] += [old[0] + v[0], old[1] + v[1]]
+		else:
+			flows[key] = v
+
 func add_source(commodity: String, amount: int):
 	if commodity in sources:
 		sources[commodity] += amount
