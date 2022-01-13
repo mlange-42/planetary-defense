@@ -93,6 +93,7 @@ impl MultiCommodityFlow {
     }
 
     #[export]
+    #[allow(clippy::too_many_arguments)]
     pub fn set_converter(
         &mut self,
         _owner: &Reference,
@@ -101,9 +102,10 @@ impl MultiCommodityFlow {
         from_amount: u32,
         to: String,
         to_amount: u32,
+        target_node: usize,
     ) {
         self.builder
-            .set_converter(vertex, from, from_amount, to, to_amount);
+            .set_converter(vertex, from, from_amount, to, to_amount, target_node);
     }
 
     #[export]
@@ -251,7 +253,8 @@ struct CommodityConversion {
     to: usize,
     to_amount: u32,
     storage: u32,
-    source: Option<usize>,
+    source: usize,
+    target_node: usize,
 }
 
 impl NodeData {
@@ -368,7 +371,9 @@ impl Graph {
             if let Some((path, _cost)) = result {
                 self.apply_path(&path, *comm, 1);
                 total_transported[*comm] += 1;
-                crowded[*comm] = false;
+                for cr in crowded.iter_mut() {
+                    *cr = false;
+                }
             } else {
                 crowded[*comm] = true;
             }
@@ -438,20 +443,18 @@ impl Graph {
             let receiver = &mut self.nodes[receiver_idx];
             if let Some(convert) = &mut receiver.convert {
                 if convert.from == commodity {
+                    let target_idx = convert.target_node;
                     convert.storage += amount;
                     let mut total_amount = 0;
                     while convert.storage >= convert.from_amount {
                         total_amount += convert.to_amount;
                         convert.storage -= convert.from_amount;
                     }
-                    let source = convert
-                        .source
-                        .expect("No source node for converter node found!");
-                    let edge = self.out_edges[source]
+                    let edge = self.out_edges[convert.source]
                         .iter()
-                        .find(|e| self.edges[**e].b.0 == receiver_idx)
+                        .find(|e| self.edges[**e].b.0 == target_idx)
                         .expect("No connection to source for converter node found!");
-                    Some((source, *edge, convert.to, total_amount))
+                    Some((convert.source, *edge, convert.to, total_amount))
                 } else {
                     None
                 }
@@ -501,13 +504,13 @@ impl Graph {
 }
 
 type EdgeList<T, U> = Vec<(Vertex<T, U>, Vertex<T, U>, Capacity, Cost)>;
-type Converter<U> = (U, u32, U, u32);
+type Converter<T, U> = (U, u32, U, u32, Vertex<T, U>);
 type PairFlows<T, U> = BTreeMap<(Vertex<T, U>, Vertex<T, U>), Vec<(U, u32)>>;
 
 #[allow(dead_code)]
 pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
     edge_list: EdgeList<T, U>,
-    converters: Vec<(Vertex<T, U>, Converter<U>)>,
+    converters: Vec<(Vertex<T, U>, Converter<T, U>)>,
     flows: Option<Vec<Flow<T, U>>>,
     pair_flows: Option<PairFlows<T, U>>,
     nodes: Option<BTreeMap<Vertex<T, U>, NodeData>>,
@@ -564,14 +567,17 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         from_amount: u32,
         to: U,
         to_amount: u32,
+        target_node: A,
     ) {
         assert!(
             self.flows.is_none(),
             "Cannot modify an already solved graph."
         );
 
-        self.converters
-            .push((vertex.into(), (from, from_amount, to, to_amount)));
+        self.converters.push((
+            vertex.into(),
+            (from, from_amount, to, to_amount, target_node.into()),
+        ));
     }
 
     fn solve(&mut self, bidirectional: bool, load_dependence: f32) {
@@ -603,8 +609,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
                     commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
-            }
-            if let Vertex::Sink(comm) = vertex {
+            } else if let Vertex::Sink(comm) = vertex {
                 if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
                     commodities.push(comm.clone());
@@ -638,13 +643,15 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
                 g.nodes[idx].convert.is_none(),
                 "Only one converter allowed per node!"
             );
+
             g.nodes[idx].convert = Some(CommodityConversion {
                 from: commodity_mapper[&conv.0],
                 from_amount: conv.1,
                 to: commodity_mapper[&conv.2],
                 to_amount: conv.3,
                 storage: 0,
-                source: None,
+                source: index_mapper[&Vertex::Source(conv.2.clone())],
+                target_node: index_mapper[&conv.4],
             })
         }
 
@@ -652,17 +659,11 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             let node_a = Node(*index_mapper.get(&a).unwrap());
             let node_b = Node(*index_mapper.get(&b).unwrap());
             if let Vertex::Source(comm) = a {
-                let comm_id = commodity_mapper[comm];
                 g.delta_supply(
                     Node(*index_mapper.get(&a).unwrap()),
                     *commodity_mapper.get(comm).unwrap(),
                     cap.0,
                 );
-                if let Some(convert) = &mut g.nodes[node_b.0].convert {
-                    if convert.to == comm_id {
-                        convert.source = Some(node_a.0);
-                    }
-                }
             }
             if let Vertex::Sink(comm) = b {
                 g.delta_supply(
@@ -858,7 +859,7 @@ mod tests {
         builder.add_edge("ConvAB", Vertex::Sink("A"), Capacity(10), Cost(0));
         builder.add_edge("SinkB", Vertex::Sink("B"), Capacity(10), Cost(0));
 
-        builder.set_converter("ConvAB", "A", 1, "B", 1);
+        builder.set_converter("ConvAB", "A", 1, "B", 1, "ConvAB");
 
         builder.solve(false, 0.2);
         let flows = builder.get_flows();

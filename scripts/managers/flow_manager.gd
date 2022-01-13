@@ -8,10 +8,10 @@ var sink_cost: int = 25
 var load_depencence: float = 0.25
 var bidirectional: bool = false
 
-var network: RoadNetwork
+var network: NetworkManager
 var flow = MultiCommodityFlow.new()
 
-func _init(net: RoadNetwork):
+func _init(net: NetworkManager):
 	self.network = net
 
 
@@ -34,23 +34,27 @@ func solve():
 			var conv = facility.conversions[from_to_comm]
 			
 			if facility.sinks.has(from):
-				flow.add_source_edge(facility.node_id, to, 0, source_cost)
-				flow.set_converter(facility.node_id, from, conv[0], to, conv[1])
+				flow.add_source_edge(Commodities.to_mode_id(facility.node_id, to), to, 0, source_cost)
+				flow.set_converter(Commodities.to_mode_id(facility.node_id, from), \
+									from, conv[0], to, conv[1],\
+									Commodities.to_mode_id(facility.node_id, to))
 		
 		for source in facility.sources:
-			flow.add_source_edge(facility.node_id, source, facility.sources[source], source_cost)
+			flow.add_source_edge(Commodities.to_mode_id(facility.node_id, source), source, facility.sources[source], source_cost)
 			
 		for sink in facility.sinks:
-			flow.add_sink_edge(facility.node_id, sink, facility.sinks[sink], sink_cost)
+			flow.add_sink_edge(Commodities.to_mode_id(facility.node_id, sink), sink, facility.sinks[sink], sink_cost)
 	
 	flow.solve(bidirectional, load_depencence)
 	
 	for fid in facilities:
-		var f = flow.get_node_flows(fid)
-		if f == null:
-			facilities[fid].flows.clear()
-		else:
-			facilities[fid].flows = f
+		var facility = facilities[fid]
+		facility.clear_flows()
+		for mode in Network.ALL_MODES:
+			var mode_id = Network.to_mode_id(fid, mode)
+			var f = flow.get_node_flows(mode_id)
+			if f != null:
+				facility.add_flows(f)
 	
 	self.clear()
 	
@@ -75,12 +79,15 @@ func solve():
 		total_flows[comm] = 0
 	
 	var pair_flows = flow.get_pair_flows()
+	var res_pair_flows = {}
 	for edge in pair_flows:
 		var edge_flow = pair_flows[edge]
+		res_pair_flows[[Network.to_base_id(edge[0]), Network.to_base_id(edge[1])]] = edge_flow
 		for comm in edge_flow:
 			total_flows[comm] += edge_flow[comm]
 	
-	network.pair_flows = pair_flows
+	
+	network.pair_flows = res_pair_flows
 	network.total_flows = total_flows
 	network.total_sources = flow.get_total_sources()
 	network.total_sinks = flow.get_total_sinks()

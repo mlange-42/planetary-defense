@@ -1,0 +1,2 @@
+extends Facility
+class_name PowerPlant

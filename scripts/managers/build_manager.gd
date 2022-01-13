@@ -21,19 +21,21 @@ func add_road(path: Array, road_type: int):
 	if path.size() == 0:
 		return "No path specified"
 	
+	var mode = Network.TYPE_MODES[road_type]
+	
 	var sum_cost = 0
 	
 	var warn = null
 	for i in range(path.size()-1):
-		if planet.taxes.budget < sum_cost + Roads.ROAD_COSTS[road_type]:
+		if planet.taxes.budget < sum_cost + Network.TYPE_COSTS[road_type]:
 			warn = "Road not completed - not enough money!"
 			break
 		
-		var p1 = path[i]
-		var p2 = path[i+1]
+		var p1 = Network.to_mode_id(path[i], mode)
+		var p2 = Network.to_mode_id(path[i+1], mode)
 		if not planet.roads.points_connected(p1, p2):
-			planet.roads.connect_points(p1, p2, Roads.ROAD_CAPACITY[road_type])
-			sum_cost += Roads.ROAD_COSTS[road_type]
+			planet.roads.connect_points(p1, p2, road_type, Network.TYPE_CAPACITY[road_type])
+			sum_cost += Network.TYPE_COSTS[road_type]
 	
 	planet.taxes.budget -= sum_cost
 	
@@ -47,8 +49,12 @@ func remove_road(path: Array) -> bool:
 	for i in range(path.size()-1):
 		var p1 = path[i]
 		var p2 = path[i+1]
-		if planet.roads.points_connected(p1, p2):
-			planet.roads.disconnect_points(p1, p2)
+		
+		for mode in Network.ALL_MODES:
+			var pp1 = Network.to_mode_id(p1, mode)
+			var pp2 = Network.to_mode_id(p2, mode)
+			if planet.roads.points_connected(pp1, pp2):
+				planet.roads.disconnect_points(pp1, pp2)
 	
 	return true
 

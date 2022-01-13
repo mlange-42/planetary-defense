@@ -35,7 +35,7 @@ export var smooth: bool = false
 export var atlas_size: Array = [4, 4]
 export var atlas_margin: Array = [32.0 / 2048.0, 32.0 / 1024.0]
 
-export var min_slope_cliffs: int = Roads.MAX_SLOPE
+export var min_slope_cliffs: int = Network.MAX_SLOPE
 export var min_elevation_cliffs: int = int(Consts.ELEVATION_SCALE * 0.6)
 
 export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
@@ -45,6 +45,7 @@ onready var facilities: Spatial
 
 onready var road_geometry: RoadGeometry
 onready var sea_lines_geometry: RoadGeometry
+onready var power_lines_geometry: RoadGeometry
 onready var path_debug: DebugDraw
 onready var resource_debug: DebugDraw
 onready var flows_graphs: FlowGraphs
@@ -54,7 +55,7 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var planet_data = null
 
 var stats: StatsManager
-var roads: RoadNetwork
+var roads: NetworkManager
 var builder: BuildManager
 var flow: FlowManager
 var cities: CityManager
@@ -72,8 +73,11 @@ func _init(params: Array):
 func _ready():
 	var material = preload("res://assets/materials/vertex_color.tres")
 	var flow_material = preload("res://assets/materials/unlit_vertex_color.tres")
+	
 	var material_roads = preload("res://assets/materials/traffic/roads.tres")
 	var material_sea_lines = preload("res://assets/materials/traffic/sea_lines.tres")
+	var material_power_lines = preload("res://assets/materials/unlit_vertex_color.tres")
+	
 	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
 	
 	facilities = Spatial.new()
@@ -90,6 +94,12 @@ func _ready():
 	sea_lines_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
 	sea_lines_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
 	add_child(sea_lines_geometry)
+	
+	power_lines_geometry = RoadGeometry.new()
+	power_lines_geometry.material_override = material_power_lines
+	power_lines_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
+	power_lines_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
+	add_child(power_lines_geometry)
 	
 	path_debug = DebugDraw.new()
 	path_debug.material_override = material
@@ -152,7 +162,7 @@ func _ready():
 		self.stats = StatsManager.new()
 		self.messages = MessageManager.new()
 		self.story = StoryManager.new(self)
-		self.roads = RoadNetwork.new()
+		self.roads = NetworkManager.new()
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data)
 		self.builder = BuildManager.new(consts, self, facilities)
@@ -234,7 +244,7 @@ func load_game():
 	self.story.read(parse_json(story_json))
 	
 	var roads_json = file.get_line()
-	self.roads = RoadNetwork.new()
+	self.roads = NetworkManager.new()
 	self.roads.read(parse_json(roads_json))
 	
 	var taxes_json = file.get_line()
@@ -283,7 +293,7 @@ func calc_point_path(from: int, to: int) -> Array:
 	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
 				else planet_data.NAV_LAND
 	
-	var path = planet_data.get_point_path(from, to, mode, Roads.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
+	var path = planet_data.get_point_path(from, to, mode, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
@@ -291,7 +301,7 @@ func calc_id_path(from: int, to: int) -> Array:
 	var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
 				else planet_data.NAV_LAND
 	
-	var path = planet_data.get_id_path(from, to, mode, Roads.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
+	var path = planet_data.get_id_path(from, to, mode, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
@@ -304,9 +314,9 @@ func draw_path(from: int, to: int, max_length: int) -> Array:
 	return path
 
 
-func add_road(from: int, to: int):
+func add_road(from: int, to: int, type: int):
 	var path = calc_id_path(from, to)
-	var err = builder.add_road(path, Roads.ROAD_ROAD)
+	var err = builder.add_road(path, type)
 	
 	_redraw_roads()
 	emit_budget()
@@ -325,8 +335,9 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_geometry.draw_roads(planet_data, roads, true)
-	sea_lines_geometry.draw_roads(planet_data, roads, false)
+	road_geometry.draw_roads(planet_data, roads, Network.M_ROADS, true)
+	sea_lines_geometry.draw_roads(planet_data, roads, Network.M_ROADS, false)
+	power_lines_geometry.draw_simple(planet_data, roads, Network.M_ELECTRIC, Color.black, Color.red)
 
 
 func _redraw_resources():

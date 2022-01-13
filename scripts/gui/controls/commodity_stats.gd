@@ -1,7 +1,7 @@
 extends Control
 class_name CommodityStats
 
-export (String, "Food", "Resources", "Products") var commodity: String = "Food"
+export (String, "Food", "Resources", "Products", "Electricity") var commodity: String = "Food"
 
 onready var icon: TextureRect = find_node("Icon")
 onready var production: Label = find_node("Production")

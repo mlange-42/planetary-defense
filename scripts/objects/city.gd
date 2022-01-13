@@ -15,7 +15,7 @@ var radius: int = Cities.INITIAL_CITY_RADIUS
 var _workers: int = Cities.INITIAL_CITY_POP setget , workers
 var _population: int = Cities.INITIAL_CITY_POP
 
-var commodity_weights: Array = [100, 100, 100]
+var commodity_weights: Array = [100, 100, 100, 0]
 var auto_assign_workers: bool = true
 
 var growth_stats: GrowthStats = GrowthStats.new()

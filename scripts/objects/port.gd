@@ -14,17 +14,3 @@ func removed(planet):
 	if neigh != null:
 		for n in neigh[1]:
 			planet.roads.disconnect_points(node_id, n)
-
-
-func can_build(planet_data, node) -> bool:
-	var nd = planet_data.get_node(node)
-	
-	if not nd.is_water:
-		return false
-	
-	var neigh = planet_data.get_neighbors(node)
-	for n in neigh:
-		if not planet_data.get_node(n).is_water:
-			return true
-	
-	return false

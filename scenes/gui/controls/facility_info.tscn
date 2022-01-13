@@ -145,31 +145,42 @@ mouse_filter = 1
 text = "100%"
 
 [node name="Entries" type="HBoxContainer" parent="."]
-visible = false
 margin_top = 20.0
-margin_right = 282.0
+margin_right = 460.0
 margin_bottom = 52.0
 
 [node name="Food" parent="Entries" instance=ExtResource( 1 )]
+margin_right = 86.0
 
 [node name="Control" type="Control" parent="Entries"]
-margin_left = 86.0
-margin_right = 96.0
+margin_left = 90.0
+margin_right = 100.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 10, 0 )
 
 [node name="Resources" parent="Entries" instance=ExtResource( 1 )]
-margin_left = 100.0
-margin_right = 182.0
+margin_left = 104.0
+margin_right = 190.0
 commodity = "Resources"
 
 [node name="Control2" type="Control" parent="Entries"]
-margin_left = 186.0
-margin_right = 196.0
+margin_left = 194.0
+margin_right = 204.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 10, 0 )
 
 [node name="Products" parent="Entries" instance=ExtResource( 1 )]
-margin_left = 200.0
-margin_right = 282.0
+margin_left = 208.0
+margin_right = 294.0
 commodity = "Products"
+
+[node name="Control3" type="Control" parent="Entries"]
+margin_left = 298.0
+margin_right = 308.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 10, 0 )
+
+[node name="Electricity" parent="Entries" instance=ExtResource( 1 )]
+margin_left = 312.0
+margin_right = 398.0
+commodity = "Electricity"

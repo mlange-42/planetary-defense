@@ -1,4 +1,4 @@
-class_name RoadNetwork
+class_name NetworkManager
 
 const MAX_INT = 9223372036854775807
 
@@ -20,7 +20,7 @@ func save() -> Dictionary:
 	var edge_data = []
 	for i in range(network.get_edge_count()):
 		var e = network.get_edge_at(i)
-		edge_data.append([e.from, e.to, e.capacity, e.flow])
+		edge_data.append([e.from, e.to, e.net_type, e.capacity, e.flow])
 	
 	dict["edge_data"] = edge_data
 	
@@ -45,10 +45,11 @@ func read(dict: Dictionary):
 	for edge in capacity:
 		var v1 = edge[0] as int
 		var v2 = edge[1] as int
-		var cap = edge[2] as int
-		var fl = edge[3] as int
+		var tp = edge[2] as int
+		var cap = edge[3] as int
+		var fl = edge[4] as int
 		
-		network.connect_points_directional(v1, v2, cap, fl)
+		network.connect_points_directional(v1, v2, tp, cap, fl)
 	
 	var p_flows = dict["pair_flows"]
 	for e in p_flows:
@@ -73,8 +74,8 @@ func read(dict: Dictionary):
 		total_sinks[comm] = t_sinks[comm] as int
 
 
-func connect_points(v1: int, v2: int, capacity: int):
-	network.connect_points(v1, v2, capacity)
+func connect_points(v1: int, v2: int, type: int, capacity: int):
+	network.connect_points(v1, v2, type, capacity)
 
 
 func disconnect_points(v1: int, v2: int):
@@ -88,12 +89,15 @@ func facilities() -> Dictionary:
 func add_facility(v: int, facility: Facility):
 	assert(not _facilities.has(v), "There is already a facility at node %s" % v)
 	_facilities[v] = facility
-	network.set_facility(v, true)
+	for mode in Facilities.FACILITY_NETWORK_MODES[facility.type]:
+		network.set_facility(Network.to_mode_id(v, mode), true)
 
 
 func remove_facility(v: int):
+	var fac = _facilities.get(v)
 	assert(_facilities.erase(v), "There is no a facility at node %s to remove" % v)
-	network.set_facility(v, false)
+	for mode in Facilities.FACILITY_NETWORK_MODES[fac.type]:
+		network.set_facility(Network.to_mode_id(v, mode), false)
 
 
 func has_facility(v: int) -> bool:

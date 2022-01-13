@@ -27,6 +27,16 @@ func init(node: int, planet_data, type: String):
 	if s != null:
 		for sink in s:
 			add_sink(sink[0], sink[1])
+			
+	s = Facilities.FACILITY_SOURCES[type]
+	if s != null:
+		for source in s:
+			add_source(source[0], source[1])
+
+	s = Facilities.FACILITY_CONVERSIONS[type]
+	if s != null:
+		for conv in s:
+			add_conversion(conv[0], conv[1], conv[2], conv[3], conv[4])
 
 
 # warning-ignore:unused_argument
@@ -104,6 +114,18 @@ func get_missing_supply() -> Dictionary:
 	
 	return res
 
+
+func clear_flows():
+	flows.clear()
+
+func add_flows(f: Dictionary):
+	for key in f:
+		var v = f[key]
+		if flows.has(key):
+			var old = flows[key]
+			flows[key] = [old[0] + v[0], old[1] + v[1]]
+		else:
+			flows[key] = v
 
 func add_source(commodity: String, amount: int):
 	if commodity in sources:
