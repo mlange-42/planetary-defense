@@ -19,7 +19,7 @@ const FACILITY_ICONS = {
 const FACILITY_SCENES = {
 	FAC_CITY: "res://scenes/objects/city.tscn",
 	FAC_PORT: "res://scenes/objects/port.tscn",
-	FAC_TRAIN_STATION: "res://scenes/objects/port.tscn",
+	FAC_TRAIN_STATION: "res://scenes/objects/train_station.tscn",
 	FAC_POWER_PLANT: "res://scenes/objects/power_plant.tscn",
 	FAC_AIR_DEFENSE: "res://scenes/objects/air_defense.tscn",
 }
@@ -27,7 +27,7 @@ const FACILITY_SCENES = {
 const FACILITY_POINTERS = {
 	FAC_CITY: "res://assets/geom/city.escn",
 	FAC_PORT: "res://assets/geom/port.escn",
-	FAC_TRAIN_STATION: "res://assets/geom/port.escn",
+	FAC_TRAIN_STATION: "res://assets/geom/train_station.escn",
 	FAC_POWER_PLANT: "res://assets/geom/power_plant.escn",
 	FAC_AIR_DEFENSE: "res://assets/geom/air_defense.escn",
 }
