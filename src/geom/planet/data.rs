@@ -15,6 +15,13 @@ const NAV_ALL: u32 = 0;
 const NAV_LAND: u32 = 1;
 const NAV_WATER: u32 = 2;
 
+/// ID offset between different transport modes
+const TYPE_OFFSET: usize = 1_000_000;
+
+fn to_base_id(id: usize) -> usize {
+    id % TYPE_OFFSET
+}
+
 #[derive(Serialize, Deserialize)]
 #[serde(remote = "Vector3")]
 struct Vector3Def {
@@ -147,27 +154,27 @@ impl PlanetData {
 
     #[export]
     fn get_position(&self, _owner: &Reference, idx: usize) -> Vector3 {
-        self.nodes[idx].position
+        self.nodes[to_base_id(idx)].position
     }
 
     #[export]
     fn get_neighbors(&self, _owner: &Reference, idx: usize) -> &[usize] {
-        &self.neighbors[idx].neighbors
+        &self.neighbors[to_base_id(idx)].neighbors
     }
 
     #[export]
     fn get_node(&self, _owner: &Reference, idx: usize) -> &NodeData {
-        &self.nodes[idx]
+        &self.nodes[to_base_id(idx)]
     }
 
     #[export]
     fn set_occupied(&mut self, _owner: &Reference, idx: usize, occ: bool) {
-        self.nodes[idx].is_occupied = occ;
+        self.nodes[to_base_id(idx)].is_occupied = occ;
     }
 
     #[export]
     fn set_port(&mut self, _owner: &Reference, idx: usize, port: bool) {
-        self.nodes[idx].is_port = port;
+        self.nodes[to_base_id(idx)].is_port = port;
     }
 
     #[export]
@@ -179,6 +186,7 @@ impl PlanetData {
 
     #[export]
     fn has_point(&self, _owner: &Reference, id: usize, nav_type: u32) -> bool {
+        let id = to_base_id(id);
         if id < self.nodes.len() {
             nav_type == self.NAV_ALL || self.nodes[id].is_water == (nav_type == self.NAV_WATER)
         } else {
@@ -188,10 +196,13 @@ impl PlanetData {
 
     #[export]
     fn get_in_radius(&self, _owner: &Reference, id: usize, radius: u32) -> Vec<(usize, u32)> {
+        let id = to_base_id(id);
         self.get_nodes_in_radius(id, radius)
     }
 
     fn get_nodes_in_radius(&self, id: usize, radius: u32) -> Vec<(usize, u32)> {
+        let id = to_base_id(id);
+
         let mut vec = Vec::new();
         let mut visited = HashSet::new();
         let mut open = HashSet::new();
@@ -229,6 +240,8 @@ impl PlanetData {
         nav_type: u32,
         max_slope: f32,
     ) -> Vec<usize> {
+        let from = to_base_id(from);
+        let to = to_base_id(to);
         self.find_path(from, to, nav_type, max_slope)
             .map(|(v, _c)| v)
             .unwrap_or_else(Vec::new)
@@ -243,6 +256,8 @@ impl PlanetData {
         nav_type: u32,
         max_slope: f32,
     ) -> Vec<Vector3> {
+        let from = to_base_id(from);
+        let to = to_base_id(to);
         self.find_path(from, to, nav_type, max_slope)
             .map(|(v, _c)| v.iter().map(|id| self.nodes[*id].position).collect())
             .unwrap_or_else(Vec::new)

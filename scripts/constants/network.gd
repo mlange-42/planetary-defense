@@ -6,6 +6,8 @@ const M_ROADS: int = 0
 const M_RAIL: int = 1
 const M_ELECTRIC: int = 2
 
+const ALL_MODES: Array = [M_ROADS, M_RAIL, M_ELECTRIC]
+
 const T_CLEAR: int = 0
 const T_ROAD: int = 1
 const T_POWER_LINE: int = 20
@@ -60,12 +62,12 @@ const TYPE_MAINTENANCE_1000 = {
 	T_POWER_LINE: 250,
 }
 
-func to_base_id(id: int) -> int:
+static func to_base_id(id: int) -> int:
 	return id % MODE_OFFSET
 
-func to_mode_id(id: int, tp: int) -> int:
+static func to_mode_id(id: int, tp: int) -> int:
 	return (id % MODE_OFFSET) + tp * MODE_OFFSET
 
-func get_mode(id: int) -> int:
+static func get_mode(id: int) -> int:
 	# warning-ignore:integer_division
 	return id / MODE_OFFSET
