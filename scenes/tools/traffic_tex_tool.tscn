@@ -30,3 +30,30 @@ __meta__ = {
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+margin_right = 96.0
+margin_bottom = 32.0
+grow_horizontal = 0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 92.0
+margin_bottom = 28.0
+grow_horizontal = 0
+
+[node name="SaveButton" type="Button" parent="MarginContainer/PanelContainer/HBoxContainer"]
+margin_right = 88.0
+margin_bottom = 24.0
+text = "Save image"
+
+[connection signal="pressed" from="MarginContainer/PanelContainer/HBoxContainer/SaveButton" to="." method="_on_SaveButton_pressed"]

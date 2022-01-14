@@ -1,5 +1,7 @@
 extends Control
 
+export var background: Color = Color.transparent
+
 export var texture_size: Vector2 = Vector2(1024, 1024)
 export var tiles: Vector2 = Vector2(8, 32)
 export var vehicle_size: Vector2 = Vector2(8, 8)
@@ -19,7 +21,7 @@ var overlay: Image
 func _ready():
 	image = Image.new()
 	image.create(int(texture_size.x), int(texture_size.y), false, Image.FORMAT_RGBA8)
-	image.fill(Color.black)
+	image.fill(background)
 	
 	draw_animations()
 	
@@ -83,3 +85,8 @@ func draw_overlay():
 	var tex = ImageTexture.new()
 	tex.create_from_image(overlay)
 	overlay_rect.texture = tex
+
+
+func _on_SaveButton_pressed():
+	if image.save_png("texture.png") != OK:
+		print("Error saving image")
