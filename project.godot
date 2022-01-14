@@ -254,7 +254,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -289,7 +289,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"
 }, {
-"base": "",
+"base": "Reference",
 "class": "PlanetGenerator",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_generator.gdns"

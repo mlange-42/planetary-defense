@@ -26,15 +26,18 @@ void fragment() {
 		animation = min(int(COLOR.r * float(UsedAnimations - 1)) + 1, UsedAnimations - 1);
 	}
 	
-	float tile_width = 1.0 / float(Frames);
-	float tile_height = 1.0 / float(Animations);
+	float tile_width = 1.0 / float(Animations);
+	float tile_height = 1.0 / float(Frames);
 	
 	vec2 uv_scaled = vec2(
-		tile_width * UV.x + float(frame) * tile_width,
-		tile_height * UV.y + float(animation) * tile_height);
+		tile_width * UV.x + float(animation) * tile_width,
+		tile_height * UV.y + float(frame) * tile_height);
+	
+	float bg_tile_height = 1.0 / float(Animations);
+	float bg_uv_y = bg_tile_height * UV.y + float(animation) * bg_tile_height;
 	
 	vec4 tex_read = texture(Texture, uv_scaled);
-	vec4 bg_read = texture(Background, vec2(UV.x, uv_scaled.y));
+	vec4 bg_read = texture(Background, vec2(UV.x, bg_uv_y));
 	
 	ALBEDO = bg_read.rgb * (1.0 - tex_read.a) + (tex_read.rgb * tex_read.a);
 }
