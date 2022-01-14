@@ -38,6 +38,7 @@ Added the possibility for different network modes (roads, rail, power lines, ...
 * Ported road network data structure and logic to Rust
 * No more migration to unconnected cities
 * Air defenses now consume electricity instead of products
+* Limit city growth by occupied area instead of population
 
 ### Bug fixes
 
