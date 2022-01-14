@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/objects/train_station.gd" type="Script" id=1]
-[ext_resource path="res://assets/geom/train_station.escn" type="PackedScene" id=2]
+[ext_resource path="res://assets/geom/facilities/train_station.escn" type="PackedScene" id=2]
 
 [node name="TrainStation" type="Spatial"]
 script = ExtResource( 1 )

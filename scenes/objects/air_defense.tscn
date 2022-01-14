@@ -1,10 +1,11 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/objects/air_defense.gd" type="Script" id=1]
-[ext_resource path="res://assets/geom/air_defense.escn" type="PackedScene" id=2]
+[ext_resource path="res://assets/geom/facilities/air_defense.escn" type="PackedScene" id=2]
 [ext_resource path="res://assets/materials/indicators/range_defense.tres" type="Material" id=3]
 [ext_resource path="res://scripts/geom/range_indicator.gd" type="Script" id=5]
 [ext_resource path="res://scenes/objects/signs/error_sign.tscn" type="PackedScene" id=6]
+
 
 [node name="AirDefense" type="Spatial"]
 script = ExtResource( 1 )

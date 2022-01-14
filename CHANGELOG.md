@@ -23,8 +23,10 @@ Added the possibility for different network modes (roads, rail, power lines, ...
 * Slope limit for building roads - maximum elevation difference 200m
 * Cliff vegetation type on steep and high ground
 * Possibility to remove facilities
-* Added power lines, railways and sea lines
-* Added power plant and train station facilities
+* Power lines, railways and sea lines
+* Power plant (non-city) and train station (city) facilities
+* Solar plant land use
+
 
 ### Changed
 

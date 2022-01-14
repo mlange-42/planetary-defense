@@ -213,6 +213,7 @@ func _on_tool_changed(_button):
 		
 		indicator.visible = false
 		fsm.update_build_info(road_tool, 1)
+		on_planet_hovered(fsm.get_current_node())
 	else:
 		road_start_point = -1
 		indicator.visible = false
