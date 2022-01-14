@@ -110,8 +110,10 @@ func has_facility(v: int) -> bool:
 
 
 func is_road(v: int) -> bool:
-	# TODO: currently only covers mode roads
-	return network.is_road(v)
+	for mode in Network.ALL_MODES:
+		if network.is_road(Network.to_mode_id(v, mode)):
+			return true
+	return false
 
 
 func get_facility(v: int) -> Facility:
