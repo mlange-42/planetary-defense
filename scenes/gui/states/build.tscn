@@ -63,3 +63,5 @@ margin_top = 36.0
 margin_right = 140.0
 margin_bottom = 36.0
 columns = 4
+
+[connection signal="pressed" from="Build/PanelContainer/Buttons/BuildButtons/Inspect" to="." method="_on_Inspect_pressed"]

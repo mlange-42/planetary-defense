@@ -187,6 +187,7 @@ func on_planet_clicked(node: int, button: int):
 					fsm.planet.clear_path()
 				else:
 					inspect_button.pressed = true
+					clear_button.pressed = false
 
 
 func on_next_turn():
@@ -198,6 +199,8 @@ func _on_tool_changed(_button):
 	var road_tool = get_road_tool()
 	if curr_tool != null:
 		road_start_point = -1
+		clear_button.pressed = false
+		
 		var node = fsm.get_current_node()
 		if node < 0:
 			radius = 0
@@ -248,5 +251,5 @@ func _notification(what):
 		indicator.queue_free()
 
 
-func set_random_name():
-	pass # Replace with function body.
+func _on_Inspect_pressed():
+	clear_button.pressed = false
