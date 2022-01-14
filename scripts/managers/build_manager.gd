@@ -25,6 +25,10 @@ func add_road(path: Array, road_type: int):
 	
 	var sum_cost = 0
 	
+	var capacity = Network.TYPE_CAPACITY[road_type]
+	var cost = Network.TYPE_COSTS[road_type]
+	var t_cost = Network.TYPE_TRANSPORT_COST_1000[road_type]
+	
 	var warn = null
 	for i in range(path.size()-1):
 		if planet.taxes.budget < sum_cost + Network.TYPE_COSTS[road_type]:
@@ -43,8 +47,8 @@ func add_road(path: Array, road_type: int):
 					break
 			
 			if not conn:
-				planet.roads.connect_points(p1, p2, road_type, Network.TYPE_CAPACITY[road_type])
-				sum_cost += Network.TYPE_COSTS[road_type]
+				planet.roads.connect_points(p1, p2, road_type, capacity, t_cost)
+				sum_cost += cost
 	
 	planet.taxes.budget -= sum_cost
 	

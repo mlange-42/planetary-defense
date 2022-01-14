@@ -41,13 +41,13 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn add_edges(&mut self, _owner: &Reference, edges: Vec<(Vec<usize>, u32)>) {
-        for (path, cap) in edges.iter() {
+    fn add_edges(&mut self, _owner: &Reference, edges: Vec<(Vec<usize>, u32, u32)>) {
+        for (path, cap, cost) in edges.iter() {
             self.builder.add_edge(
                 *path.first().unwrap(),
                 *path.last().unwrap(),
                 Capacity(*cap as i32),
-                Cost(path.len() as i32 - 1),
+                Cost(*cost as i32),
             );
         }
     }

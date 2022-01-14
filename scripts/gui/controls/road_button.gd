@@ -8,12 +8,13 @@ func _ready():
 	
 	self.icon = Network.TYPE_ICONS[mode]
 	
-	var text = "%s\n\n Capacity: %d\n Costs: %d, Maintenance: %s" \
+	var text = "%s\n\n Capacity: %d\n Costs: %d\n Maintenance: %s\n Transport cost/1000: %d" \
 		% [
 			Network.TYPE_INFO[mode], 
 			Network.TYPE_CAPACITY[mode],
 			Network.TYPE_COSTS[mode], 
-			Network.TYPE_MAINTENANCE_1000[mode] / 1000.0
+			Network.TYPE_MAINTENANCE_1000[mode] / 1000.0,
+			Network.TYPE_TRANSPORT_COST_1000[mode],
 		]
 	
 	self.hint_tooltip = text

@@ -6,7 +6,7 @@ func init(node: int, planet, type: String):
 	
 	var p1 = Network.to_mode_id(self.node_id, Network.M_ROADS)
 	var p2 = Network.to_mode_id(self.node_id, Network.M_RAIL)
-	planet.roads.connect_points(p1, p2, Network.T_RAIL, Network.TYPE_CAPACITY[Network.T_RAIL])
+	planet.roads.connect_points(p1, p2, Network.T_RAIL, Network.TYPE_CAPACITY[Network.T_RAIL], 0)
 
 
 func removed(planet):
