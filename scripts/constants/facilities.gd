@@ -33,7 +33,7 @@ const FACILITY_POINTERS = {
 }
 
 const FACILITY_INFO = {
-	FAC_CITY: "Cities house workers and utilize the surrounding land.",
+	FAC_CITY: "Cities house workers and utilize the\n surrounding land.",
 	FAC_PORT: "Required for sea transport and fishery.",
 	FAC_TRAIN_STATION: "Connects roads and railways.",
 	FAC_POWER_PLANT: "Converts resources to electricity",
