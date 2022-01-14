@@ -83,15 +83,7 @@ const TYPE_CAPACITY = {
 	T_ROAD: 25,
 	T_RAIL: 100,
 	T_SEA_LINE: 25,
-	T_POWER_LINE: 25,
-}
-
-const TYPE_KEYS = {
-	T_CLEAR: KEY_E,
-	T_ROAD: KEY_O,
-	T_RAIL: KEY_R,
-	T_SEA_LINE: KEY_S,
-	T_POWER_LINE: KEY_P,
+	T_POWER_LINE: 50,
 }
 
 const TYPE_COSTS = {
@@ -102,12 +94,28 @@ const TYPE_COSTS = {
 	T_POWER_LINE: 5,
 }
 
+const TYPE_TRANSPORT_COST_1000 = {
+	T_CLEAR: 0,
+	T_ROAD: 50,
+	T_RAIL: 25,
+	T_SEA_LINE: 25,
+	T_POWER_LINE: 50,
+}
+
 const TYPE_MAINTENANCE_1000 = {
 	T_CLEAR: 0,
 	T_ROAD: 250,
 	T_RAIL: 250,
 	T_SEA_LINE: 100,
 	T_POWER_LINE: 250,
+}
+
+const TYPE_KEYS = {
+	T_CLEAR: KEY_E,
+	T_ROAD: KEY_O,
+	T_RAIL: KEY_R,
+	T_SEA_LINE: KEY_S,
+	T_POWER_LINE: KEY_P,
 }
 
 static func to_base_id(id: int) -> int:

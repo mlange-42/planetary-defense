@@ -3,8 +3,8 @@ class_name FlowManager
 var MultiCommodityFlow = preload("res://scripts/native/multi_commodity.gdns")
 
 
-var source_cost: int = 25
-var sink_cost: int = 25
+var source_cost_base: int = 25
+var sink_cost_base: int = 25
 var load_depencence: float = 0.25
 var bidirectional: bool = false
 
@@ -21,10 +21,16 @@ func clear():
 func solve():
 	flow.reset()
 	
+	var t_cost = 0
+	
 	var facilities = network.facilities()
 	
 	var edges = network.network.get_collapsed_edges()
 	flow.add_edges(edges)
+	
+	var base_cost = Network.TYPE_TRANSPORT_COST_1000[Network.T_ROAD]
+	var source_cost = source_cost_base * base_cost
+	var sink_cost = sink_cost_base * base_cost
 	
 	for fid in facilities:
 		var facility = facilities[fid]
@@ -70,7 +76,11 @@ func solve():
 		var amount = edge[2]
 		
 		for j in range(path.size()-1):
-			network.network.set_edge_flow(path[j], path[j+1], amount)
+			var p1 = path[j]
+			var p2 = path[j+1]
+			var cost = network.get_edge([p1, p2]).cost
+			network.network.set_edge_flow(p1, p2, amount)
+			t_cost += amount * cost
 		
 		i += 1
 	
@@ -87,6 +97,7 @@ func solve():
 			total_flows[comm] += edge_flow[comm]
 	
 	
+	network.total_cost = t_cost
 	network.pair_flows = res_pair_flows
 	network.total_flows = total_flows
 	network.total_sources = flow.get_total_sources()

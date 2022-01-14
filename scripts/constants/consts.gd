@@ -9,8 +9,6 @@ const ELEVATION_CONTOUR_STEP: int = 1000
 
 const INITIAL_BUDGET: int = 350
 
-const TRANSPORT_COST_1000: int = 25
-
 const MESSAGE_INFO: int = 0
 const MESSAGE_WARNING: int = 1
 const MESSAGE_ERROR: int = 2

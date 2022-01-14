@@ -22,6 +22,8 @@ pub struct Edge {
     flow: u32,
     #[property]
     capacity: u32,
+    #[property]
+    cost: u32,
 }
 
 #[methods]
@@ -32,21 +34,30 @@ impl Edge {
 
 #[allow(dead_code)]
 impl Edge {
-    fn new(from: usize, to: usize, net_type: usize, capacity: u32) -> Self {
+    fn new(from: usize, to: usize, net_type: usize, capacity: u32, cost: u32) -> Self {
         Self {
             from: from as i32,
             to: to as i32,
             net_type: net_type as i32,
-            flow: 0,
             capacity,
+            cost,
+            flow: 0,
         }
     }
-    fn with_flow(from: usize, to: usize, net_type: usize, capacity: u32, flow: u32) -> Self {
+    fn with_flow(
+        from: usize,
+        to: usize,
+        net_type: usize,
+        capacity: u32,
+        cost: u32,
+        flow: u32,
+    ) -> Self {
         Self {
             from: from as i32,
             to: to as i32,
             net_type: net_type as i32,
             flow,
+            cost,
             capacity,
         }
     }
@@ -107,11 +118,14 @@ impl FlowNetwork {
         v2: usize,
         net_type: usize,
         capacity: u32,
+        cost: u32,
     ) {
-        self.network.connect_points(v1, v2, net_type, capacity);
+        self.network
+            .connect_points(v1, v2, net_type, capacity, cost);
     }
 
     #[export]
+    #[allow(clippy::too_many_arguments)]
     pub fn connect_points_directional(
         &mut self,
         _owner: &Reference,
@@ -119,10 +133,11 @@ impl FlowNetwork {
         v2: usize,
         net_type: usize,
         capacity: u32,
+        cost: u32,
         flow: u32,
     ) {
         self.network
-            .connect_points_directional(v1, v2, net_type, capacity, flow);
+            .connect_points_directional(v1, v2, net_type, capacity, cost, flow);
     }
 
     #[export]
@@ -166,7 +181,7 @@ impl FlowNetwork {
     }
 
     #[export]
-    pub fn get_collapsed_edges(&self, _owner: &Reference) -> Vec<(Vec<usize>, u32)> {
+    pub fn get_collapsed_edges(&self, _owner: &Reference) -> Vec<(Vec<usize>, u32, u32)> {
         self.network.get_collapsed_edges()
     }
 
@@ -227,9 +242,16 @@ impl Network {
         self.edges.contains_key(&(v1, v2))
     }
 
-    pub fn connect_points(&mut self, v1: usize, v2: usize, net_type: usize, capacity: u32) {
-        self._connect(v1, v2, net_type, capacity, 0);
-        self._connect(v2, v1, net_type, capacity, 0);
+    pub fn connect_points(
+        &mut self,
+        v1: usize,
+        v2: usize,
+        net_type: usize,
+        capacity: u32,
+        cost: u32,
+    ) {
+        self._connect(v1, v2, net_type, capacity, cost, 0);
+        self._connect(v2, v1, net_type, capacity, cost, 0);
     }
 
     pub fn connect_points_directional(
@@ -238,9 +260,10 @@ impl Network {
         v2: usize,
         net_type: usize,
         capacity: u32,
+        cost: u32,
         flow: u32,
     ) {
-        self._connect(v1, v2, net_type, capacity, flow);
+        self._connect(v1, v2, net_type, capacity, cost, flow);
     }
 
     pub fn disconnect_points(&mut self, v1: usize, v2: usize) {
@@ -256,7 +279,7 @@ impl Network {
         )
     }
 
-    pub fn get_collapsed_edges(&self) -> Vec<(Vec<usize>, u32)> {
+    pub fn get_collapsed_edges(&self) -> Vec<(Vec<usize>, u32, u32)> {
         let mut edge_list = vec![];
 
         for (key, n) in &self.neighbors {
@@ -275,13 +298,14 @@ impl Network {
         edge_list
     }
 
-    fn trace_edge(&self, node: usize, neighbor: usize) -> Option<(Vec<usize>, u32)> {
+    fn trace_edge(&self, node: usize, neighbor: usize) -> Option<(Vec<usize>, u32, u32)> {
         let mut result = vec![node];
 
         let first = node;
         let mut previous = node;
         let mut current = self.neighbors[&node][neighbor];
         let mut capacity = u32::MAX;
+        let mut cost = 0;
 
         loop {
             if current == first {
@@ -290,13 +314,14 @@ impl Network {
 
             result.push(current);
             let edge = &self.edges[&(previous, current)];
+            cost += edge.cost;
             if edge.capacity < capacity {
                 capacity = edge.capacity;
             }
 
             let n = &self.neighbors[&current];
             if n.len() != 2 || self.facilities.contains(&current) {
-                return Some((result, capacity));
+                return Some((result, capacity, cost));
             }
 
             let n0 = n[0];
@@ -306,7 +331,15 @@ impl Network {
         }
     }
 
-    fn _connect(&mut self, v1: usize, v2: usize, net_type: usize, capacity: u32, flow: u32) {
+    fn _connect(
+        &mut self,
+        v1: usize,
+        v2: usize,
+        net_type: usize,
+        capacity: u32,
+        cost: u32,
+        flow: u32,
+    ) {
         match self.neighbors.entry(v1) {
             Entry::Vacant(e) => {
                 e.insert(vec![v2]);
@@ -321,8 +354,10 @@ impl Network {
                 e.get_mut().push(v2);
             }
         }
-        self.edges
-            .insert((v1, v2), Edge::with_flow(v1, v2, net_type, capacity, flow));
+        self.edges.insert(
+            (v1, v2),
+            Edge::with_flow(v1, v2, net_type, capacity, cost, flow),
+        );
     }
 
     fn _disconnect(&mut self, v1: usize, v2: usize) {
@@ -364,23 +399,24 @@ mod tests {
     fn test_build_network() {
         let tp = 0;
         let cap = 10;
+        let cost = 1;
 
         let mut net = Network::default();
 
-        net.connect_points(0, 1, tp, cap);
+        net.connect_points(0, 1, tp, cap, cost);
         assert_eq!(net.edges.len(), 2);
         net.disconnect_points(0, 1);
         assert_eq!(net.edges.len(), 0);
-        net.connect_points(0, 1, tp, cap);
+        net.connect_points(0, 1, tp, cap, cost);
 
-        net.connect_points(1, 2, tp, cap);
-        net.connect_points(2, 3, tp, cap);
+        net.connect_points(1, 2, tp, cap, cost);
+        net.connect_points(2, 3, tp, cap, cost);
 
-        net.connect_points(3, 4, tp, cap);
-        net.connect_points(4, 5, tp, cap);
+        net.connect_points(3, 4, tp, cap, cost);
+        net.connect_points(4, 5, tp, cap, cost);
 
-        net.connect_points(3, 6, tp, cap);
-        net.connect_points(6, 7, tp, cap);
+        net.connect_points(3, 6, tp, cap, cost);
+        net.connect_points(6, 7, tp, cap, cost);
 
         net.set_facility(1, true);
         assert_eq!(net.facilities.len(), 1);
