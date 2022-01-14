@@ -258,6 +258,7 @@ text = "100%"
 
 [connection signal="pressed" from="Margin/EditControls/BuildPanel/BuildControls/BackControls/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="pressed" from="Margin/EditControls/BuildPanel/BuildControls/PromoteButtons/GrowButton" to="." method="_on_GrowButton_pressed"]
+[connection signal="pressed" from="Margin/EditControls/WeightPanel/WeightControls/HBoxContainer/AutoAssign" to="." method="_on_AutoAssign_pressed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/HBoxContainer2/FoodSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/HBoxContainer3/ResourcesSlider" to="." method="_on_weights_changed"]
 [connection signal="value_changed" from="Margin/EditControls/WeightPanel/WeightControls/HBoxContainer4/ProductsSlider" to="." method="_on_weights_changed"]

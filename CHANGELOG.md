@@ -41,8 +41,11 @@ Added the possibility for different network modes (roads, rail, power lines, ...
 * No more migration to unconnected cities
 * Air defenses now consume electricity instead of products
 * Limit city growth by occupied area instead of population
+* Auto-assign workers based on production rather than number of workers
 
 ### Bug fixes
+
+* Apply city settings on any change, not only on changing/leaving mode
 
 ## [v0.4.0]
 
