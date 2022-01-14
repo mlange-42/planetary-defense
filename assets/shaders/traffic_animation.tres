@@ -10,6 +10,9 @@ uniform int Animations;
 uniform int UsedAnimations;
 uniform sampler2D Texture : hint_albedo;
 uniform sampler2D Background : hint_albedo;
+uniform int tex_width;
+uniform int tex_height;
+uniform int margin;
 
 
 
@@ -19,6 +22,12 @@ void vertex() {
 }
 
 void fragment() {
+	float mar_x = float(margin) / float(tex_width);
+	float mar_y = float(margin) / float(tex_height);
+	
+	float mar_x_bg = mar_x * float(Animations);
+	float mar_y_bg = mar_y * float(Frames) / float(Animations);
+	
 	int frame = int(TIME * Fps) mod Frames;
 	int animation = 0; 
 	
@@ -26,18 +35,26 @@ void fragment() {
 		animation = min(int(COLOR.r * float(UsedAnimations - 1)) + 1, UsedAnimations - 1);
 	}
 	
-	float tile_width = 1.0 / float(Animations);
-	float tile_height = 1.0 / float(Frames);
+	float dx = 1.0 / float(Animations);
+	float dy = 1.0 / float(Frames);
+	float tile_width = dx - 2.0 * mar_x;
+	float tile_height = dy - 2.0 * mar_y;
 	
 	vec2 uv_scaled = vec2(
-		tile_width * UV.x + float(animation) * tile_width,
-		tile_height * UV.y + float(frame) * tile_height);
+		mar_x + tile_width * UV.x + float(animation) * dx,
+		mar_y + tile_height * UV.y + float(frame) * dy
+	);
 	
-	float bg_tile_height = 1.0 / float(Animations);
-	float bg_uv_y = bg_tile_height * UV.y + float(animation) * bg_tile_height;
+	float dy_bg = 1.0 / float(Animations);
+	float tile_width_bg = 1.0 - 2.0 * mar_x_bg;
+	float tile_height_bg = dy_bg - 2.0 * mar_y_bg;
+	vec2 uv_scaled_bg = vec2(
+		mar_x_bg + tile_width_bg * UV.x,
+		mar_y_bg + tile_height_bg * UV.y + float(animation) * dy_bg
+	);
 	
 	vec4 tex_read = texture(Texture, uv_scaled);
-	vec4 bg_read = texture(Background, vec2(UV.x, bg_uv_y));
+	vec4 bg_read = texture(Background, uv_scaled_bg);
 	
 	ALBEDO = bg_read.rgb * (1.0 - tex_read.a) + (tex_read.rgb * tex_read.a);
 }

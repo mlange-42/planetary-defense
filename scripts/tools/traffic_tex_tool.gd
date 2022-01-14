@@ -2,8 +2,9 @@ extends Control
 
 export var background: Color = Color.transparent
 
-export var texture_size: Vector2 = Vector2(1024, 1024)
+export var tile_size: Vector2 = Vector2(128, 32)
 export var tiles: Vector2 = Vector2(8, 32)
+export var tile_margin: int = 4
 export var vehicle_size: Vector2 = Vector2(8, 8)
 export var vehicle_y_offset: int = 0
 
@@ -15,10 +16,14 @@ export (Array, Color) var colors: Array = []
 onready var tex_rect = $TextureRect
 onready var overlay_rect = $OverlayRect
 
+var texture_size: Vector2
 var image: Image
 var overlay: Image
 
 func _ready():
+	texture_size = Vector2((tile_size.x + 2 * tile_margin) * tiles.x, \
+						(tile_size.y + 2 * tile_margin) * tiles.y)
+	
 	image = Image.new()
 	image.create(int(texture_size.x), int(texture_size.y), false, Image.FORMAT_RGBA8)
 	image.fill(background)
@@ -38,18 +43,17 @@ func draw_animations():
 
 
 func draw_animation(col: int):
-	var dx = texture_size.x / tiles.x
-	var dy = texture_size.y / tiles.y
+	var dx = tile_size.x + 2 * tile_margin
+	var dy = tile_size.y + 2 * tile_margin
 	
-	var x0 = int(col * dx)
-	print("anim %d" % col)
+	var x0 = col * dx + tile_margin
 	for row in range(tiles.y):
-		var y0 = int(row * dy)
+		var y0 = row * dy + tile_margin
 		var xoff = velocities[col] * row
 		var n = num_vehicles[col]
-		var x_dist = dx / n if n > 0 else 0
+		var x_dist = tile_size.x / float(n) if n > 0 else 0.0
 		for i in range(n):
-			draw_rect_wrap(image, Vector2(xoff + i * x_dist, vehicle_y_offset), vehicle_size, Vector2(x0, y0), dx, colors[col])
+			draw_rect_wrap(image, Vector2(xoff + i * x_dist, vehicle_y_offset), vehicle_size, Vector2(x0, y0), int(tile_size.x), colors[col])
 
 
 func draw_rect_wrap(img: Image, pos: Vector2, size: Vector2, origin: Vector2, width: int, color: Color):
@@ -69,16 +73,20 @@ func draw_overlay():
 	overlay.fill(Color.transparent)
 	overlay.lock()
 	
-	var dx = texture_size.x / tiles.x
-	var dy = texture_size.y / tiles.y
-	for i in range(1, tiles.x):
-		var x = int(i * dx)
+	var dx = tile_size.x + 2 * tile_margin
+	var dy = tile_size.y + 2 * tile_margin
+	for i in range(0, tiles.x - 1):
+		var x1 = i * dx + tile_margin
+		var x2 = (i+1) * dx - tile_margin
 		for y in range(texture_size.y):
-			overlay.set_pixel(x, y, Color.dimgray)
+			overlay.set_pixel(x1, y, Color.dimgray)
+			overlay.set_pixel(x2, y, Color.dimgray)
 	for i in range(1, tiles.y):
-		var y = int(i * dy)
+		var y1 = i * dy + tile_margin
+		var y2 = (i+1) * dy - tile_margin
 		for x in range(texture_size.x):
-			overlay.set_pixel(x, y, Color.dimgray)
+			overlay.set_pixel(x, y1, Color.dimgray)
+			overlay.set_pixel(x, y2, Color.dimgray)
 	
 	overlay.unlock()
 	
