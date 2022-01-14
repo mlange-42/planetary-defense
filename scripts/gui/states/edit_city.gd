@@ -105,14 +105,17 @@ func state_entered():
 
 
 func state_exited():
-	city.auto_assign_workers = auto_assign.pressed
-	for i in range(city.commodity_weights.size()):
-		city.commodity_weights[i] = sliders[Commodities.COMM_ALL[i]].value
-
+	apply_city_settings()
 
 func on_next_turn():
 	update_city_info()
 	fsm.update_facility_info(city.node_id)
+
+
+func apply_city_settings():
+	city.auto_assign_workers = auto_assign.pressed
+	for i in range(city.commodity_weights.size()):
+		city.commodity_weights[i] = sliders[Commodities.COMM_ALL[i]].value
 
 
 func update_city_info():
@@ -155,6 +158,7 @@ func get_facility_tool():
 
 func _on_weights_changed(_value: float):
 	update_weights_display()
+	apply_city_settings()
 
 
 func _on_tool_changed(_button):
@@ -284,6 +288,8 @@ func _on_GrowButton_pressed():
 	else:
 		fsm.show_message(err, Consts.MESSAGE_ERROR)
 
+func _on_AutoAssign_pressed():
+	apply_city_settings()
 
 func _on_BackButton_pressed():
 	fsm.pop()
@@ -295,4 +301,5 @@ func _notification(what):
 		fsm.planet.remove_child(pointer)
 		indicator.queue_free()
 		pointer.queue_free()
+
 

@@ -237,28 +237,21 @@ func assign_city_workers(city: City, builder: BuildManager):
 	for i in range(Commodities.COMM_ALL.size()):
 		comm_map[Commodities.COMM_ALL[i]] = i
 	
-	while city.workers() > 0:
-		var total_workers = city.workers()
-		var comm_workers = []
-		comm_workers.resize(Commodities.COMM_ALL.size())
-		for i in range(comm_workers.size()):
-			comm_workers[i] = 0
+	if city.workers() > 0:
+		var sources = city.get_total_sources()
+		var total_source = 0
+		for comm in sources:
+			total_source += sources.get(comm, 0)
 		
-		for node in city.land_use:
-			var lu: int = city.land_use[node]
-			var workers: int = LandUse.LU_WORKERS[lu]
-			var comm: String = LandUse.LU_OUTPUT[lu]
-			var comm_id: int = comm_map[comm]
-			comm_workers[comm_id] += workers
-			total_workers += workers
-		
-		var target_workers = []
 		var max_diff = 0
 		var best_commodity = -1
-		target_workers.resize(Commodities.COMM_ALL.size())
-		for i in range(Commodities.COMM_ALL.size()):
-			target_workers[i] = total_workers * rel_weights[i]
-			var diff = target_workers[i] - comm_workers[i]
+		var target_sources = []
+		target_sources.resize(Commodities.COMM_ALL.size())
+		
+		for comm in Commodities.COMM_ALL:
+			var i = comm_map[comm]
+			target_sources[i] = (total_source + 1) * rel_weights[i]
+			var diff = target_sources[i] - sources.get(comm, 0)
 			if diff > max_diff:
 				max_diff = diff
 				best_commodity = i
@@ -297,10 +290,16 @@ func assign_city_workers(city: City, builder: BuildManager):
 						max_solution = [node, lu]
 			
 		if max_solution[0] < 0:
-			break
-		if builder.set_land_use(city, max_solution[0], max_solution[1]) != null:
+			return
+		#	break
+		
+		var node = max_solution[0]
+		var lu = max_solution[1]
+		planet.messages.add_message(node, "%s assigned %d worker(s) to %s" \
+					% [city.name, LandUse.LU_WORKERS[lu], LandUse.LU_NAMES[lu]], Consts.MESSAGE_INFO)
+		if builder.set_land_use(city, node, lu) != null:
 			print("Warning: unable to auto-assign land use")
-			break
+		#	break
 	
 
 

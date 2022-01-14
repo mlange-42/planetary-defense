@@ -8,8 +8,11 @@ var type: String
 var facility_id: int
 var node_id: int
 
+# key: comm id, value: amount
 var sources: Dictionary
+# key: comm id, value: amount
 var sinks: Dictionary
+# key: [from comm, to comm], value: [from amount, to amount, max from amount]
 var conversions: Dictionary
 
 var flows: Dictionary
@@ -90,7 +93,7 @@ func read(dict: Dictionary):
 	var co = dict["conversions"]
 	for comm in co:
 		var c = comm[1]
-		conversions[comm[0]] = [c[0] as int, c[1] as int]
+		conversions[comm[0]] = [c[0] as int, c[1] as int, c[2]]
 
 
 func calc_is_supplied():
@@ -111,6 +114,26 @@ func get_missing_supply() -> Dictionary:
 		var flow = flows.get(comm, [0, 0])
 		if flow[1] < sinks[comm]:
 			res[comm] = res.get(comm, 0) + sinks[comm] - flow[1]
+	
+	return res
+
+
+func get_total_sources() -> Dictionary:
+	var res = {}
+	for s in sources:
+		if res.has(s):
+			res[s] += sources[s]
+		else:
+			res[s] = sources[s]
+	
+	for c in conversions:
+		var to = c[1]
+		var amount = conversions[c]
+		var out_value = (amount[2] * amount[1]) / amount[0]
+		if res.has(to):
+			res[to] += out_value
+		else:
+			res[to] = out_value
 	
 	return res
 
@@ -140,5 +163,5 @@ func add_sink(commodity: String, amount: int):
 		sinks[commodity] = amount
 
 func add_conversion(from: String, from_amount: int, to: String, to_amount: int, max_amount):
-	conversions[[from, to]] = [from_amount, to_amount]
+	conversions[[from, to]] = [from_amount, to_amount, max_amount]
 	add_sink(from, max_amount)
