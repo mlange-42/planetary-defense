@@ -89,7 +89,8 @@ func text_entered(text: String):
 		return
 	
 	controls.visible = false
-	progress.text = "Loading planet..." if FileUtil.save_path_exists(text, FileUtil.PLANET_EXTENSION) else "Generating planet..."
+	progress.text = ("Loading planet %s..." if FileUtil.save_path_exists(text, FileUtil.PLANET_EXTENSION) \
+					else "Generating planet %s...") % text
 	progress.visible = true
 	
 	self.call_deferred("change_scene", text)
