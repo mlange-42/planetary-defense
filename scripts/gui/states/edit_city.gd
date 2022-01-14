@@ -96,7 +96,11 @@ func set_city(node):
 func state_entered():
 	auto_assign.pressed = city.auto_assign_workers
 	for i in range(city.commodity_weights.size()):
-		sliders[Commodities.COMM_ALL[i]].value = city.commodity_weights[i]
+		var slider: Slider = sliders[Commodities.COMM_ALL[i]]
+		slider.disconnect("value_changed", self, "_on_weights_changed")
+		slider.value = city.commodity_weights[i]
+		# warning-ignore:return_value_discarded
+		slider.connect("value_changed", self, "_on_weights_changed")
 	
 	city_label.text = city.name
 	fsm.update_facility_info(city.node_id)
@@ -154,23 +158,6 @@ func get_facility_tool():
 		return null
 	else:
 		return button.facility
-
-
-func _on_weights_changed(_value: float):
-	update_weights_display()
-	apply_city_settings()
-
-
-func _on_tool_changed(_button):
-	var curr_tool = get_land_use_tool()
-	if curr_tool != null:
-		set_pointer(curr_tool, null)
-	else:
-		curr_tool = get_facility_tool()
-		if curr_tool != null:
-			set_pointer(null, curr_tool)
-		else:
-			set_pointer(null, null)
 
 
 func set_pointer(lu_tool, facility_tool):
@@ -280,6 +267,18 @@ func select_land_use(lu: int):
 			return
 
 
+func _on_tool_changed(_button):
+	var curr_tool = get_land_use_tool()
+	if curr_tool != null:
+		set_pointer(curr_tool, null)
+	else:
+		curr_tool = get_facility_tool()
+		if curr_tool != null:
+			set_pointer(null, curr_tool)
+		else:
+			set_pointer(null, null)
+
+
 func _on_GrowButton_pressed():
 	var err = fsm.planet.grow_city(city)
 	if err == null:
@@ -288,8 +287,15 @@ func _on_GrowButton_pressed():
 	else:
 		fsm.show_message(err, Consts.MESSAGE_ERROR)
 
+
+func _on_weights_changed(_value: float):
+	update_weights_display()
+	apply_city_settings()
+
+
 func _on_AutoAssign_pressed():
 	apply_city_settings()
+
 
 func _on_BackButton_pressed():
 	fsm.pop()
