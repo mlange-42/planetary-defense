@@ -38,6 +38,8 @@ func init():
 	error_container.visible = false
 	push("build", {})
 	update_messages(true)
+	
+	stats_bar.set_planet_name(planet.save_name)
 	stats_bar.update_commodities(planet)
 
 

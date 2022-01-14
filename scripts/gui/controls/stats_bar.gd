@@ -3,6 +3,7 @@ class_name StatsBar
 
 signal next_turn
 
+onready var planet_label = find_node("PlanetLabel")
 onready var budget_label = find_node("BudgetLabel")
 onready var taxes_label = find_node("TaxesLabel")
 onready var maintenance_label = find_node("MaintenanceLabel")
@@ -23,6 +24,10 @@ func _ready():
 		Commodities.COMM_PRODUCTS: products,
 		Commodities.COMM_ELECTRICITY: electricity,
 	}
+
+
+func set_planet_name(n: String):
+	planet_label.text = n
 
 
 func update_finances(planet: Planet):
