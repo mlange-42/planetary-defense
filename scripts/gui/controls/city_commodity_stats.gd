@@ -2,6 +2,7 @@ extends Control
 class_name CityCommodityStats
 
 export (String, "Food", "Resources", "Products", "Electricity") var commodity: String = "Food"
+export var dim_color: Color = Color.dimgray
 
 onready var icon: TextureRect = find_node("Icon")
 
@@ -29,9 +30,7 @@ func set_values(source: int, sent: int, received: int, sink: int):
 	consumption_label.text = "%3d" % received
 	sink_label.text = "%3d" % sink
 	
-#	supply.text = "%+4d" % source
-#	demand.text = "%+4d" % -sink
-#	if sent < 0:
-#		production.text = "%3d" % received
-#	else:
-#		production.text = "%7s" % ("%d/%d" % [sent, received])
+	if source + sent + received + sink == 0:
+		modulate = dim_color
+	else:
+		modulate = Color.white
