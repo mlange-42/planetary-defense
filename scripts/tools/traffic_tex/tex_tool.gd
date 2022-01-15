@@ -66,13 +66,13 @@ func draw_overlay():
 	var tm = set.tile_margin
 	var dx = set.tile_size.x + 2 * tm
 	var dy = set.tile_size.y + 2 * tm
-	for i in range(0, set.tiles.x - 1):
+	for i in range(0, set.tiles.x):
 		var x1 = i * dx + tm
 		var x2 = (i+1) * dx - tm
 		for y in range(texture_size.y):
 			overlay.set_pixel(x1, y, Color.dimgray)
 			overlay.set_pixel(x2, y, Color.dimgray)
-	for i in range(0, set.tiles.y - 1):
+	for i in range(0, set.tiles.y):
 		var y1 = i * dy + tm
 		var y2 = (i+1) * dy - tm
 		for x in range(texture_size.x):

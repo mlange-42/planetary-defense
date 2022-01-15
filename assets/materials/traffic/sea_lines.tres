@@ -6,7 +6,7 @@
 
 [resource]
 shader = ExtResource( 2 )
-shader_param/Fps = 15.0
+shader_param/Fps = 20.0
 shader_param/Frames = 32
 shader_param/Animations = 8
 shader_param/UsedAnimations = 7

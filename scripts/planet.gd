@@ -78,7 +78,7 @@ func _ready():
 	var material_roads = preload("res://assets/materials/traffic/roads.tres")
 	var material_rails = preload("res://assets/materials/traffic/rails.tres")
 	var material_sea_lines = preload("res://assets/materials/traffic/sea_lines.tres")
-	var material_power_lines = preload("res://assets/materials/unlit_vertex_color.tres")
+	var material_power_lines = preload("res://assets/materials/traffic/power_lines.tres")
 	
 	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
 	
@@ -298,17 +298,11 @@ func load_game():
 
 
 func calc_point_path(from: int, to: int, nav: int) -> Array:
-	#var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
-	#			else planet_data.NAV_LAND
-	
 	var path = planet_data.get_point_path(from, to, nav, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
 
 func calc_id_path(from: int, to: int, nav: int) -> Array:
-	#var mode = planet_data.NAV_WATER if planet_data.get_node(from).is_water and planet_data.get_node(to).is_water \
-	#			else planet_data.NAV_LAND
-	
 	var path = planet_data.get_id_path(from, to, nav, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
 	return path
 
@@ -350,7 +344,7 @@ func _redraw_roads():
 	road_geometry.draw_roads(planet_data, roads, Network.M_ROADS)
 	rail_geometry.draw_roads(planet_data, roads, Network.M_RAIL)
 	sea_lines_geometry.draw_roads(planet_data, roads, Network.M_SEA)
-	power_lines_geometry.draw_simple(planet_data, roads, Network.M_ELECTRIC, Color.black, Color.red)
+	power_lines_geometry.draw_power_lines(planet_data, roads, Network.M_ELECTRIC)
 
 
 func _redraw_resources():
