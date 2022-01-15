@@ -5,6 +5,7 @@ export var size: float = 0.1
 export var default_pixel_size: float = 0.0055
 
 onready var sprite: Sprite3D = $Sprite3D
+onready var viewport: Viewport = $Sprite3D/Viewport
 onready var label_panel: Control = $Sprite3D/Viewport/Label
 onready var icon: TextureRect = $Sprite3D/Viewport/Label/Container/Icon
 onready var label: Control = $Sprite3D/Viewport/Label/Container/Label
@@ -33,6 +34,9 @@ func _process(_delta):
 func set_text(text: String):
 	label.text = text
 	label_panel.rect_size = Vector2(0, 0)
+	
+	call_deferred("_resize_viewport")
+
 
 func set_warning_level(level: int):
 	if level > Consts.MESSAGE_INFO:
@@ -40,4 +44,9 @@ func set_warning_level(level: int):
 		icon.visible = true
 	else:
 		icon.visible = false
-	label_panel.rect_size = Vector2(0, 1)
+	label_panel.rect_size = Vector2(0, 0)
+	
+	call_deferred("_resize_viewport")
+
+func _resize_viewport():
+	viewport.size = label_panel.rect_size
