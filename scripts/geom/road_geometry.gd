@@ -41,14 +41,18 @@ func draw_simple(planet_data, roads: NetworkManager, mode: int, color1: Color, c
 			
 			set_color(color1.linear_interpolate(color2, edge.flow / float(edge.capacity)))
 			
-			add_vertex(p1 + h_off + x_off)
-			add_vertex(p2 + h_off + x_off)
+			#add_vertex(p1 + h_off + x_off)
+			#add_vertex(p2 + h_off + x_off)
 			
-			add_vertex(p1)
-			add_vertex(p1 + h_off)
+			draw_pipe(p1 + h_off + x_off, p2 + h_off + x_off, 0.005)
 			
-			add_vertex(p1 + h_off + x_off)
-			add_vertex(p1 + h_off - x_off)
+			draw_pipe(p1, p1 + h_off, 0.005)
+			
+			#add_vertex(p1)
+			#add_vertex(p1 + h_off)
+			
+			#add_vertex(p1 + h_off + x_off)
+			#add_vertex(p1 + h_off - x_off)
 	end()
 
 
@@ -106,3 +110,27 @@ func draw_roads(planet_data, roads: NetworkManager, mode: int):
 			add_vertex(p1 + h_off - y_off)
 	
 	end()
+
+
+func draw_pipe(from: Vector3, to: Vector3, radius: float):
+	var direction = (to - from).normalized()
+	var x_dir = direction.cross(from).normalized()
+	if x_dir == Vector3.ZERO:
+		x_dir = direction.cross(Vector3.AXIS_Y).normalized()
+	var y_dir = direction.cross(x_dir)
+	
+	var dx = x_dir * radius
+	var dy = y_dir * radius
+	
+	add_vertex(from + dx + dy)
+	add_vertex(to + dx + dy)
+	
+	add_vertex(from + dx - dy)
+	add_vertex(to + dx - dy)
+	
+	add_vertex(from - dx + dy)
+	add_vertex(to - dx + dy)
+	
+	add_vertex(from - dx - dy)
+	add_vertex(to - dx - dy)
+	
