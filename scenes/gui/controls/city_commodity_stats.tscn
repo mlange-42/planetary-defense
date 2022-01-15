@@ -51,6 +51,7 @@ rect_min_size = Vector2( 32, 12 )
 hint_tooltip = "Production / potential"
 size_flags_vertical = 4
 script = ExtResource( 4 )
+upper_color = Color( 0.388235, 0.709804, 0.333333, 1 )
 
 [node name="SourceLabel" type="Label" parent="VBoxContainer/HBoxContainer"]
 margin_left = 64.0
