@@ -73,7 +73,7 @@ const TYPE_INFO = {
 const TYPE_DRAW_WIDTH = {
 	T_CLEAR: 0.03,
 	T_ROAD: 0.03,
-	T_RAIL: 0.04,
+	T_RAIL: 0.02,
 	T_SEA_LINE: 0.03,
 	T_POWER_LINE: 0.03,
 }

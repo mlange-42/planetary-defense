@@ -254,7 +254,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -289,7 +289,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"
 }, {
-"base": "Reference",
+"base": "",
 "class": "PlanetGenerator",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_generator.gdns"
@@ -363,6 +363,11 @@ _global_script_classes=[ {
 "class": "TaxManager",
 "language": "GDScript",
 "path": "res://scripts/managers/tax_manager.gd"
+}, {
+"base": "Node",
+"class": "TexSettings",
+"language": "GDScript",
+"path": "res://scripts/tools/traffic_tex/tex_settings.gd"
 }, {
 "base": "Facility",
 "class": "TrainStation",
@@ -451,6 +456,7 @@ _global_script_class_icons={
 "StatsManager": "",
 "StoryManager": "",
 "TaxManager": "",
+"TexSettings": "",
 "TrainStation": "",
 "UvSphere": "",
 "VisibilityButtons": ""

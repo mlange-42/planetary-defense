@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/rail_bg.svg-ea9efe2b785053dd7ac3cca86c76febb.s3tc.stex"
-path.etc2="res://.import/rail_bg.svg-ea9efe2b785053dd7ac3cca86c76febb.etc2.stex"
+path.s3tc="res://.import/rails_bg.svg-f4bc95fa7d0c446d0d14138beb44bb17.s3tc.stex"
+path.etc2="res://.import/rails_bg.svg-f4bc95fa7d0c446d0d14138beb44bb17.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/traffic/rail_bg.svg"
-dest_files=[ "res://.import/rail_bg.svg-ea9efe2b785053dd7ac3cca86c76febb.s3tc.stex", "res://.import/rail_bg.svg-ea9efe2b785053dd7ac3cca86c76febb.etc2.stex" ]
+source_file="res://assets/textures/traffic/rails_bg.svg"
+dest_files=[ "res://.import/rails_bg.svg-f4bc95fa7d0c446d0d14138beb44bb17.s3tc.stex", "res://.import/rails_bg.svg-f4bc95fa7d0c446d0d14138beb44bb17.etc2.stex" ]
 
 [params]
 

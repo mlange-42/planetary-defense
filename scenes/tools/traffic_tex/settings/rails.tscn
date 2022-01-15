@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/tools/traffic_tex/tex_settings.gd" type="Script" id=1]
+
+[node name="SettingsRails" type="Node"]
+script = ExtResource( 1 )
+output_file = "res://assets/textures/traffic/rails_anim.png"
+vehicle_y_offset = 6
+vehicle_width = 20
+num_vehicles = [ 0, 1, 1, 1, 2, 3, 4, 0 ]
+vehicle_lengths = [ 16, 16, 20, 24, 24, 24, 24, 16 ]
+velocities = [ 0.0, 4.0, 4.0, 4.0, 2.0, 1.333, 1.0, 0.0 ]
+colors = [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.890196, 0, 1 ), Color( 1, 0.501961, 0, 1 ), Color( 1, 0.0588235, 0, 1 ), Color( 0, 0, 0, 1 ) ]
