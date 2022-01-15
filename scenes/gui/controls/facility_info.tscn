@@ -11,18 +11,18 @@
 [node name="FacilityInfo" type="VBoxContainer"]
 margin_right = 192.0
 grow_vertical = 0
-rect_min_size = Vector2( 460, 52 )
+rect_min_size = Vector2( 518, 52 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 460.0
+margin_right = 518.0
 margin_bottom = 16.0
 
 [node name="FacilityLabel" type="Label" parent="HBoxContainer"]
-margin_right = 141.0
+margin_right = 199.0
 margin_bottom = 16.0
 hint_tooltip = "Name / type"
 mouse_filter = 1
@@ -31,8 +31,8 @@ text = "Nothing here"
 clip_text = true
 
 [node name="CityStats" type="HBoxContainer" parent="HBoxContainer"]
-margin_left = 145.0
-margin_right = 460.0
+margin_left = 203.0
+margin_right = 518.0
 margin_bottom = 16.0
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/CityStats"]
@@ -146,41 +146,41 @@ text = "100%"
 
 [node name="Entries" type="HBoxContainer" parent="."]
 margin_top = 20.0
-margin_right = 460.0
+margin_right = 518.0
 margin_bottom = 52.0
 
 [node name="Food" parent="Entries" instance=ExtResource( 8 )]
-margin_right = 100.0
+margin_right = 116.0
 
 [node name="Control" type="Control" parent="Entries"]
-margin_left = 104.0
-margin_right = 114.0
+margin_left = 120.0
+margin_right = 130.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 10, 0 )
 
 [node name="Resources" parent="Entries" instance=ExtResource( 8 )]
-margin_left = 118.0
-margin_right = 218.0
+margin_left = 134.0
+margin_right = 250.0
 commodity = "Resources"
 
 [node name="Control2" type="Control" parent="Entries"]
-margin_left = 222.0
-margin_right = 232.0
+margin_left = 254.0
+margin_right = 264.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 10, 0 )
 
 [node name="Products" parent="Entries" instance=ExtResource( 8 )]
-margin_left = 236.0
-margin_right = 336.0
+margin_left = 268.0
+margin_right = 384.0
 commodity = "Products"
 
 [node name="Control3" type="Control" parent="Entries"]
-margin_left = 340.0
-margin_right = 350.0
+margin_left = 388.0
+margin_right = 398.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 10, 0 )
 
 [node name="Electricity" parent="Entries" instance=ExtResource( 8 )]
-margin_left = 354.0
-margin_right = 454.0
+margin_left = 402.0
+margin_right = 518.0
 commodity = "Electricity"
