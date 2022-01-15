@@ -4,15 +4,16 @@
 code = "shader_type spatial;
 render_mode specular_schlick_ggx;
 
-uniform float Fps;
-uniform int Frames;
-uniform int Animations;
-uniform int UsedAnimations;
+uniform float Fps = 24;
+uniform uint Frames = 32;
+uniform uint Animations = 8;
+uniform uint UsedAnimations = 7;
 uniform sampler2D Texture : hint_albedo;
 uniform sampler2D Background : hint_albedo;
-uniform int tex_width;
-uniform int tex_height;
-uniform int margin;
+uniform float AnimationBlend: hint_range(0, 1) = 1.0;
+uniform uint tex_width;
+uniform uint tex_height;
+uniform uint margin;
 
 
 
@@ -32,7 +33,7 @@ void fragment() {
 	int animation = 0; 
 	
 	if(COLOR.r > 0.0) {
-		animation = min(int(COLOR.r * float(UsedAnimations - 1)) + 1, UsedAnimations - 1);
+		animation = min(int(COLOR.r * float(int(UsedAnimations) - 1)) + 1, int(UsedAnimations) - 1);
 	}
 	
 	float dx = 1.0 / float(Animations);
@@ -56,7 +57,9 @@ void fragment() {
 	vec4 tex_read = texture(Texture, uv_scaled);
 	vec4 bg_read = texture(Background, uv_scaled_bg);
 	
-	ALBEDO = bg_read.rgb * (1.0 - tex_read.a) + (tex_read.rgb * tex_read.a);
+	float mix_amount = COLOR.g * AnimationBlend;
+	float alpha = tex_read.a * mix_amount;
+	ALBEDO = bg_read.rgb * (1.0 - alpha) + (tex_read.rgb * alpha);
 }
 
 void light() {

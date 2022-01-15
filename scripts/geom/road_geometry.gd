@@ -82,7 +82,7 @@ func draw_roads(planet_data, roads: NetworkManager, mode: int):
 			
 			#set_color(color1.linear_interpolate(color2, edge.flow/float(edge.capacity)))
 			
-			set_color(Color(edge.flow/float(edge.capacity), 0.0, 0.0))
+			set_color(Color(edge.flow/float(edge.capacity), 1.0, 0.0))
 			
 			set_normal(norm)
 			
