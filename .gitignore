@@ -19,3 +19,8 @@ build/
 # Added by cargo
 
 /target
+
+# Top-level image output
+
+*.png
+*.png.import
