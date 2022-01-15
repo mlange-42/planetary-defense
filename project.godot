@@ -149,7 +149,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/managers/flow_manager.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "FlowNetwork",
 "language": "NativeScript",
 "path": "res://scripts/native/flow_network.gdns"
@@ -364,6 +364,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/managers/tax_manager.gd"
 }, {
+"base": "Node",
+"class": "TexSettings",
+"language": "GDScript",
+"path": "res://scripts/tools/traffic_tex/tex_settings.gd"
+}, {
 "base": "Facility",
 "class": "TrainStation",
 "language": "GDScript",
@@ -451,6 +456,7 @@ _global_script_class_icons={
 "StatsManager": "",
 "StoryManager": "",
 "TaxManager": "",
+"TexSettings": "",
 "TrainStation": "",
 "UvSphere": "",
 "VisibilityButtons": ""

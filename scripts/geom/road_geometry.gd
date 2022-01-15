@@ -86,23 +86,23 @@ func draw_roads(planet_data, roads: NetworkManager, mode: int):
 			
 			set_normal(norm)
 			
-			set_uv(Vector2(1, 1))
+			set_uv(Vector2(0, 0))
 			add_vertex(p1 + h_off - y_off)
 			
-			set_uv(Vector2(0, 1))
+			set_uv(Vector2(1, 0))
 			add_vertex(p2 + h_off + y_off)
 			
-			set_uv(Vector2(0, 0))
+			set_uv(Vector2(1, 1))
 			add_vertex(p2 + h_off + y_off + x_off)
 			
-			
-			set_uv(Vector2(0, 0))
-			add_vertex(p2 + h_off + y_off + x_off)
-			
-			set_uv(Vector2(1, 0))
-			add_vertex(p1 + h_off - y_off + x_off)
 			
 			set_uv(Vector2(1, 1))
+			add_vertex(p2 + h_off + y_off + x_off)
+			
+			set_uv(Vector2(0, 1))
+			add_vertex(p1 + h_off - y_off + x_off)
+			
+			set_uv(Vector2(0, 0))
 			add_vertex(p1 + h_off - y_off)
 	
 	end()

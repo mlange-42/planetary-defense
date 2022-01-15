@@ -1,14 +1,17 @@
 [gd_resource type="ShaderMaterial" load_steps=4 format=2]
 
-[ext_resource path="res://assets/shaders/texture_anim_overlay.tres" type="Shader" id=1]
-[ext_resource path="res://assets/textures/traffic/traffic_32frames.svg" type="Texture" id=2]
+[ext_resource path="res://assets/textures/traffic/roads_anim.png" type="Texture" id=1]
+[ext_resource path="res://assets/shaders/traffic_animation.tres" type="Shader" id=2]
 [ext_resource path="res://assets/textures/traffic/sea_lines_bg.svg" type="Texture" id=3]
 
 [resource]
-shader = ExtResource( 1 )
+shader = ExtResource( 2 )
 shader_param/Fps = 15.0
 shader_param/Frames = 32
 shader_param/Animations = 8
 shader_param/UsedAnimations = 7
-shader_param/Texture = ExtResource( 2 )
+shader_param/tex_width = 1088
+shader_param/tex_height = 1280
+shader_param/margin = 4
+shader_param/Texture = ExtResource( 1 )
 shader_param/Background = ExtResource( 3 )
