@@ -54,6 +54,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/city.gd"
 }, {
+"base": "Control",
+"class": "CityCommodityStats",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/city_commodity_stats.gd"
+}, {
 "base": "Reference",
 "class": "CityManager",
 "language": "GDScript",
@@ -254,7 +259,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -289,7 +294,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"
 }, {
-"base": "",
+"base": "Reference",
 "class": "PlanetGenerator",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_generator.gdns"
@@ -308,6 +313,11 @@ _global_script_classes=[ {
 "class": "PowerPlant",
 "language": "GDScript",
 "path": "res://scripts/objects/power_plant.gd"
+}, {
+"base": "Control",
+"class": "ProductionBar",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/production_bar.gd"
 }, {
 "base": "GuiState",
 "class": "QuitDialog",
@@ -374,6 +384,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/train_station.gd"
 }, {
+"base": "Control",
+"class": "TwoValueBar",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/two_value_bar.gd"
+}, {
 "base": "Reference",
 "class": "UvSphere",
 "language": "GDScript",
@@ -394,6 +409,7 @@ _global_script_class_icons={
 "CheatsState": "",
 "Cities": "",
 "City": "",
+"CityCommodityStats": "",
 "CityManager": "",
 "CityNames": "",
 "Commodities": "",
@@ -445,6 +461,7 @@ _global_script_class_icons={
 "PlanetSettings": "",
 "Port": "",
 "PowerPlant": "",
+"ProductionBar": "",
 "QuitDialog": "",
 "RangeIndicator": "",
 "ResourceManager": "",
@@ -458,6 +475,7 @@ _global_script_class_icons={
 "TaxManager": "",
 "TexSettings": "",
 "TrainStation": "",
+"TwoValueBar": "",
 "UvSphere": "",
 "VisibilityButtons": ""
 }
