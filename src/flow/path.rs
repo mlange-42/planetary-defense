@@ -109,8 +109,8 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn solve(&mut self, _owner: &Reference, bidiretional: bool, load_dependence: f32) {
-        self.builder.solve(bidiretional, load_dependence);
+    fn solve(&mut self, _owner: &Reference, load_dependence: f32) {
+        self.builder.solve(load_dependence);
     }
 
     #[export]
@@ -300,7 +300,6 @@ pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
 }
 
 struct Graph {
-    bidirectional: bool,
     commodities: usize,
     load_dependence: f32,
     nodes: Vec<NodeData>,
@@ -323,16 +322,10 @@ impl Graph {
     pub fn delta_supply(&mut self, node: Node, commodity: usize, amount: i32) {
         self.nodes[node.0].supply[commodity] += amount;
     }
-    pub fn new_default(
-        num_vertices: usize,
-        commodities: usize,
-        bidirectional: bool,
-        load_dependence: f32,
-    ) -> Self {
+    pub fn new_default(num_vertices: usize, commodities: usize, load_dependence: f32) -> Self {
         let nodes = vec![NodeData::new(commodities); num_vertices];
         let out_edges = vec![vec![]; num_vertices];
         Graph {
-            bidirectional,
             commodities,
             load_dependence,
             nodes,
@@ -412,9 +405,6 @@ impl Graph {
             let n1 = path[i];
             let n2 = path[i + 1];
             self.apply_to_edge(n1, n2, amount);
-            if self.bidirectional && i > 0 && i < path.len() - 2 {
-                self.apply_to_edge(n2, n1, amount);
-            }
         }
         self.nodes[path[0]].supply[commodity] -= amount as i32;
         self.nodes[path[path.len() - 1]].supply[commodity] += amount as i32;
@@ -580,7 +570,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         ));
     }
 
-    fn solve(&mut self, bidirectional: bool, load_dependence: f32) {
+    fn solve(&mut self, load_dependence: f32) {
         assert!(
             self.flows.is_none(),
             "Cannot re-evaluate an already solved graph."
@@ -619,12 +609,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         }
 
         let num_vertices = next_id;
-        let mut g = Graph::new_default(
-            num_vertices,
-            commodity_mapper.len(),
-            bidirectional,
-            load_dependence,
-        );
+        let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
 
         for comm in commodities.iter() {
             let comm_id = commodity_mapper[&comm];
