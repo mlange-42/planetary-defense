@@ -82,7 +82,7 @@ rect_min_size = Vector2( 32, 12 )
 hint_tooltip = "Consumption / potential"
 size_flags_vertical = 4
 script = ExtResource( 4 )
-upper_color = Color( 1, 0.286275, 0.286275, 1 )
+upper_color = Color( 1, 0.298039, 0.298039, 1 )
 
 [node name="SinkLabel" type="Label" parent="VBoxContainer/HBoxContainer2"]
 margin_left = 64.0

@@ -1,4 +1,5 @@
 extends Control
+class_name ProductionBar
 
 export var margin: int = 1
 export var frame_color: Color = Color.white

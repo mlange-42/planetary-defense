@@ -314,6 +314,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/power_plant.gd"
 }, {
+"base": "Control",
+"class": "ProductionBar",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/production_bar.gd"
+}, {
 "base": "GuiState",
 "class": "QuitDialog",
 "language": "GDScript",
@@ -378,6 +383,11 @@ _global_script_classes=[ {
 "class": "TrainStation",
 "language": "GDScript",
 "path": "res://scripts/objects/train_station.gd"
+}, {
+"base": "Control",
+"class": "TwoValueBar",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/two_value_bar.gd"
 }, {
 "base": "Reference",
 "class": "UvSphere",
@@ -451,6 +461,7 @@ _global_script_class_icons={
 "PlanetSettings": "",
 "Port": "",
 "PowerPlant": "",
+"ProductionBar": "",
 "QuitDialog": "",
 "RangeIndicator": "",
 "ResourceManager": "",
@@ -464,6 +475,7 @@ _global_script_class_icons={
 "TaxManager": "",
 "TexSettings": "",
 "TrainStation": "",
+"TwoValueBar": "",
 "UvSphere": "",
 "VisibilityButtons": ""
 }
