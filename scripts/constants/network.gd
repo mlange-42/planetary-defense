@@ -87,7 +87,7 @@ const TYPE_CAPACITY = {
 const TYPE_MAX_SLOPE = {
 	T_CLEAR: 0,
 	T_ROAD: 200,
-	T_RAIL: 100,
+	T_RAIL: 120,
 	T_SEA_LINE: 200,
 	T_POWER_LINE: 200,
 }
