@@ -55,6 +55,14 @@ const TYPE_ICONS = {
 	T_POWER_LINE: preload("res://assets/icons/network/power_line.svg"),
 }
 
+const TYPE_MATERIALS = {
+	T_ROAD: preload("res://assets/materials/traffic/roads.tres"),
+	T_HIGHWAY: preload("res://assets/materials/traffic/highways.tres"),
+	T_RAIL: preload("res://assets/materials/traffic/rails.tres"),
+	T_SEA_LINE: preload("res://assets/materials/traffic/sea_lines.tres"),
+	T_POWER_LINE: preload("res://assets/materials/traffic/power_lines.tres"),
+}
+
 const TYPE_NAMES = {
 	T_CLEAR: "Clear roads",
 	T_ROAD: "Roads",

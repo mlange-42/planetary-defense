@@ -41,15 +41,13 @@ export var min_elevation_cliffs: int = int(Consts.ELEVATION_SCALE * 0.6)
 export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
 export var water_material: Material = preload("res://assets/materials/planet/water.tres")
 
-onready var facilities: Spatial
+var facilities: Spatial
 
-onready var road_geometry: RoadGeometry
-onready var rail_geometry: RoadGeometry
-onready var sea_lines_geometry: RoadGeometry
-onready var power_lines_geometry: RoadGeometry
-onready var path_debug: DebugDraw
-onready var resource_debug: DebugDraw
-onready var flows_graphs: FlowGraphs
+var network_geometries: Dictionary = {}
+
+var path_debug: DebugDraw
+var resource_debug: DebugDraw
+var flows_graphs: FlowGraphs
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
@@ -75,39 +73,20 @@ func _ready():
 	var material = preload("res://assets/materials/vertex_color.tres")
 	var flow_material = preload("res://assets/materials/unlit_vertex_color.tres")
 	
-	var material_roads = preload("res://assets/materials/traffic/roads.tres")
-	var material_rails = preload("res://assets/materials/traffic/rails.tres")
-	var material_sea_lines = preload("res://assets/materials/traffic/sea_lines.tres")
-	var material_power_lines = preload("res://assets/materials/traffic/power_lines.tres")
-	
 	var material_resources = preload("res://assets/materials/unlit_vertex_color_large.tres")
 	
 	facilities = Spatial.new()
 	add_child(facilities)
 	
-	road_geometry = RoadGeometry.new(Network.TYPE_DRAW_WIDTH[Network.T_ROAD])
-	road_geometry.material_override = material_roads
-	road_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
-	road_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
-	add_child(road_geometry)
-	
-	rail_geometry = RoadGeometry.new(Network.TYPE_DRAW_WIDTH[Network.T_RAIL])
-	rail_geometry.material_override = material_rails
-	rail_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
-	rail_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
-	add_child(rail_geometry)
-	
-	sea_lines_geometry = RoadGeometry.new(Network.TYPE_DRAW_WIDTH[Network.T_SEA_LINE])
-	sea_lines_geometry.material_override = material_sea_lines
-	sea_lines_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
-	sea_lines_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
-	add_child(sea_lines_geometry)
-	
-	power_lines_geometry = RoadGeometry.new(Network.TYPE_DRAW_WIDTH[Network.T_POWER_LINE])
-	power_lines_geometry.material_override = material_power_lines
-	power_lines_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
-	power_lines_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
-	add_child(power_lines_geometry)
+	for tp in Network.TYPE_MATERIALS:
+		var mat = Network.TYPE_MATERIALS[tp]
+		var road_geometry = RoadGeometry.new(Network.TYPE_DRAW_WIDTH[tp])
+		road_geometry.material_override = mat
+		road_geometry.set_layer_mask_bit(Consts.LAYER_BASE, false)
+		road_geometry.set_layer_mask_bit(Consts.LAYER_ROADS, true)
+		add_child(road_geometry)
+		
+		network_geometries[tp] = road_geometry
 	
 	path_debug = DebugDraw.new()
 	path_debug.material_override = material
@@ -340,10 +319,8 @@ func get_facility(id: int):
 
 
 func _redraw_roads():
-	road_geometry.draw_roads(planet_data, roads, Network.M_ROADS)
-	rail_geometry.draw_roads(planet_data, roads, Network.M_RAIL)
-	sea_lines_geometry.draw_roads(planet_data, roads, Network.M_SEA)
-	power_lines_geometry.draw_power_lines(planet_data, roads, Network.M_ELECTRIC)
+	for tp in network_geometries:
+		network_geometries[tp].draw_type(planet_data, roads, tp)
 
 
 func _redraw_resources():
