@@ -1,5 +1,27 @@
 # Development Log
 
+## 2022/01/16 -- Two weeks of development
+
+[2bf927b]
+
+Two and a half release later, a lot has happened.
+
+* "Real" graphics with geometries for everything
+* Electricity as fourth commodity
+* Multiple network types: roads, rails, power lines, and more
+* Animated textures to visualize network flow
+* A complete GUI rework
+
+![Screenshot](https://user-images.githubusercontent.com/44003176/149679901-83983d4a-ab2f-4247-8895-ec8817013095.png)
+
+See the [CHANGELOG](changelog.md) for details.
+
+### What's next?
+
+* Testing, testing, testing...
+* Think about the big picture: What should that all be about?
+* Find out how to improve player incentives and keep the player interested
+
 ## 2022/01/01 -- Usability improvements
 
 [v0.2.0]
