@@ -6,8 +6,7 @@ use std::fmt::Debug;
 use std::hash::{Hash, Hasher};
 use std::iter;
 
-use pathfinding::directed::dijkstra::dijkstra;
-
+use crate::flow::dijkstra::dijkstra;
 use gdnative::api::Reference;
 use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
@@ -500,7 +499,7 @@ impl Graph {
                 self.out_edges[from].contains(&edge.1),
             );
         }
-        e.data.flow += amount as i32;
+        self.edges[edge.1].data.flow += amount as i32;
     }
 
     fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<PathNode>, u32)> {

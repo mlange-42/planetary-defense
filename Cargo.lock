@@ -685,11 +685,14 @@ dependencies = [
  "euclid",
  "gdnative",
  "indexmap",
+ "itertools",
  "kdtree",
  "lazy_static",
  "noise",
+ "num-traits",
  "pathfinding",
  "rand 0.8.4",
+ "rustc-hash",
  "serde",
 ]
 
