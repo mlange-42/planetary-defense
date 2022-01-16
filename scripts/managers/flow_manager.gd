@@ -6,7 +6,6 @@ var MultiCommodityFlow = preload("res://scripts/native/multi_commodity.gdns")
 var source_cost_base: int = 25
 var sink_cost_base: int = 25
 var load_depencence: float = 0.25
-var bidirectional: bool = false
 
 var network: NetworkManager
 var flow = MultiCommodityFlow.new()
@@ -51,7 +50,7 @@ func solve():
 		for sink in facility.sinks:
 			flow.add_sink_edge(Commodities.to_mode_id(facility.node_id, sink), sink, facility.sinks[sink], sink_cost)
 	
-	flow.solve(bidirectional, load_depencence)
+	flow.solve(load_depencence)
 	
 	for fid in facilities:
 		var facility = facilities[fid]

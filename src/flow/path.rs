@@ -3,11 +3,10 @@ use std::collections::btree_map::Entry as BEntry;
 use std::collections::hash_map::Entry;
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Debug;
-use std::hash::Hash;
+use std::hash::{Hash, Hasher};
 use std::iter;
 
-use pathfinding::directed::dijkstra::dijkstra;
-
+use crate::flow::dijkstra::dijkstra;
 use gdnative::api::Reference;
 use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
@@ -109,8 +108,8 @@ impl MultiCommodityFlow {
     }
 
     #[export]
-    fn solve(&mut self, _owner: &Reference, bidiretional: bool, load_dependence: f32) {
-        self.builder.solve(bidiretional, load_dependence);
+    fn solve(&mut self, _owner: &Reference, load_dependence: f32) {
+        self.builder.solve(load_dependence);
     }
 
     #[export]
@@ -299,8 +298,24 @@ pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
     pub capacity: i32,
 }
 
+#[derive(Clone)]
+struct PathNode(pub usize, pub Option<usize>);
+
+impl PartialEq<Self> for PathNode {
+    fn eq(&self, other: &Self) -> bool {
+        self.0 == other.0
+    }
+}
+
+impl std::cmp::Eq for PathNode {}
+
+impl Hash for PathNode {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.0.hash(state)
+    }
+}
+
 struct Graph {
-    bidirectional: bool,
     commodities: usize,
     load_dependence: f32,
     nodes: Vec<NodeData>,
@@ -323,16 +338,10 @@ impl Graph {
     pub fn delta_supply(&mut self, node: Node, commodity: usize, amount: i32) {
         self.nodes[node.0].supply[commodity] += amount;
     }
-    pub fn new_default(
-        num_vertices: usize,
-        commodities: usize,
-        bidirectional: bool,
-        load_dependence: f32,
-    ) -> Self {
+    pub fn new_default(num_vertices: usize, commodities: usize, load_dependence: f32) -> Self {
         let nodes = vec![NodeData::new(commodities); num_vertices];
         let out_edges = vec![vec![]; num_vertices];
         Graph {
-            bidirectional,
             commodities,
             load_dependence,
             nodes,
@@ -407,21 +416,16 @@ impl Graph {
             })
     }
 
-    fn apply_path(&mut self, path: &[usize], commodity: usize, amount: u32) {
-        for i in 0..(path.len() - 1) {
-            let n1 = path[i];
-            let n2 = path[i + 1];
-            self.apply_to_edge(n1, n2, amount);
-            if self.bidirectional && i > 0 && i < path.len() - 2 {
-                self.apply_to_edge(n2, n1, amount);
-            }
+    fn apply_path(&mut self, path: &[PathNode], commodity: usize, amount: u32) {
+        for p in path.iter().skip(1) {
+            self.apply_to_edge(p.1.unwrap(), amount);
         }
-        self.nodes[path[0]].supply[commodity] -= amount as i32;
-        self.nodes[path[path.len() - 1]].supply[commodity] += amount as i32;
+        self.nodes[path[0].0].supply[commodity] -= amount as i32;
+        self.nodes[path[path.len() - 1].0].supply[commodity] += amount as i32;
 
         if path.len() > 2 {
-            let p1 = path[1];
-            let p2 = path[path.len() - 2];
+            let p1 = path[1].0;
+            let p2 = path[path.len() - 2].0;
             self.nodes[p1].sent[commodity] += amount as i32;
             self.nodes[p2].received[commodity] += amount as i32;
 
@@ -439,7 +443,7 @@ impl Graph {
 
         // Converters
         let result = {
-            let receiver_idx = path[path.len() - 2];
+            let receiver_idx = path[path.len() - 2].0;
             let receiver = &mut self.nodes[receiver_idx];
             if let Some(convert) = &mut receiver.convert {
                 if convert.from == commodity {
@@ -468,27 +472,24 @@ impl Graph {
         }
     }
 
-    fn apply_to_edge(&mut self, from: usize, to: usize, amount: u32) {
-        let edge_idx = self.out_edges[from]
-            .iter()
-            .find(|id| self.edges[**id].b.0 == to)
-            .unwrap();
-
-        self.edges[*edge_idx].data.flow += amount as i32;
+    fn apply_to_edge(&mut self, edge: usize, amount: u32) {
+        self.edges[edge].data.flow += amount as i32;
     }
 
-    fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<usize>, u32)> {
+    fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<PathNode>, u32)> {
         dijkstra(
-            &start,
-            |id| self.get_successor(*id),
-            |id| self.nodes[*id].supply[commodity] < 0,
+            &PathNode(start, None),
+            |id| self.get_successor(id),
+            |id| self.nodes[id.0].supply[commodity] < 0,
         )
     }
 
-    fn get_successor(&self, id: usize) -> impl Iterator<Item = (usize, u32)> + '_ {
-        self.out_edges[id].iter().filter_map(|edge_id| {
+    fn get_successor(&self, id: &PathNode) -> impl Iterator<Item = (PathNode, u32)> + '_ {
+        let id = id.0;
+        self.out_edges[id].iter().filter_map(move |edge_id| {
             let edge = &self.edges[*edge_id];
-            self.calc_cost(edge).map(|c| (edge.b.0, c))
+            self.calc_cost(edge)
+                .map(|c| (PathNode(edge.b.0, Some(*edge_id)), c))
         })
     }
 
@@ -580,7 +581,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         ));
     }
 
-    fn solve(&mut self, bidirectional: bool, load_dependence: f32) {
+    fn solve(&mut self, load_dependence: f32) {
         assert!(
             self.flows.is_none(),
             "Cannot re-evaluate an already solved graph."
@@ -619,12 +620,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         }
 
         let num_vertices = next_id;
-        let mut g = Graph::new_default(
-            num_vertices,
-            commodity_mapper.len(),
-            bidirectional,
-            load_dependence,
-        );
+        let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
 
         for comm in commodities.iter() {
             let comm_id = commodity_mapper[&comm];
@@ -861,7 +857,7 @@ mod tests {
 
         builder.set_converter("ConvAB", "A", 1, "B", 1, "ConvAB");
 
-        builder.solve(false, 0.2);
+        builder.solve(0.2);
         let flows = builder.get_flows();
         let map: HashMap<_, _> = flows.iter().map(|f| ((f.a, f.b), f.amount)).collect();
 

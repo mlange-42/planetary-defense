@@ -1,4 +1,5 @@
 use std::collections::BTreeSet;
+use std::hash::BuildHasherDefault;
 
 use gdnative::prelude::*;
 use gdnative::private::godot_object::Sealed;
@@ -6,6 +7,9 @@ use gdnative::private::godot_object::Sealed;
 use indexmap::map::Entry;
 use indexmap::IndexMap;
 use pathfinding::prelude::dijkstra;
+use rustc_hash::FxHasher;
+
+type FxIndexMap<K, V> = IndexMap<K, V, BuildHasherDefault<FxHasher>>;
 
 #[allow(dead_code)]
 #[derive(NativeClass, ToVariant)]
@@ -205,8 +209,8 @@ impl FlowNetwork {
 
 #[derive(Default)]
 pub struct Network {
-    neighbors: IndexMap<usize, Vec<usize>>,
-    edges: IndexMap<(usize, usize), Edge>,
+    neighbors: FxIndexMap<usize, Vec<usize>>,
+    edges: FxIndexMap<(usize, usize), Edge>,
     facilities: BTreeSet<usize>,
 }
 
