@@ -117,7 +117,7 @@ icon = ExtResource( 2 )
 margin_left = 36.0
 margin_right = 68.0
 margin_bottom = 32.0
-hint_tooltip = "Merge cities into this city"
+hint_tooltip = "Merge nearby cities into this city"
 toggle_mode = true
 icon = ExtResource( 11 )
 

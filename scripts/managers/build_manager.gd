@@ -87,7 +87,7 @@ func city_name_available(name: String) -> bool:
 	return not city_names.has(name)
 
 
-func add_facility(type: String, location: int, name: String, owner):
+func add_facility(type: String, location: int, name: String, owner, pay: bool = true):
 	if not Facilities.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
 		return [null, "WARNING: no scene resource found for %s" % type]
@@ -96,7 +96,7 @@ func add_facility(type: String, location: int, name: String, owner):
 		return [null, "Location already occupied"]
 	
 	var costs = Facilities.FACILITY_COSTS[type]
-	if costs > planet.taxes.budget:
+	if pay and costs > planet.taxes.budget:
 		return [null, "Not enough money (requires %d)" % costs]
 	
 	if not facility_functions.can_build(type, planet.planet_data, location, owner):
@@ -108,7 +108,8 @@ func add_facility(type: String, location: int, name: String, owner):
 	if owner != null:
 		facility.city_node_id = owner.node_id
 	
-	planet.taxes.budget -= costs
+	if pay:
+		planet.taxes.budget -= costs
 	
 	return [add_facility_scene(facility, name), null]
 
@@ -176,6 +177,14 @@ func merge_cities(target: City, other: City):
 	for node in new_lu:
 		var lu = new_lu[node]
 		set_land_use(target, node, lu)
+	
+	
+	for node in other.facilities.keys():
+		var fac = other.facilities[node]
+		remove_facility(fac)
+		
+		if target.cells.has(node):
+			var _fac_err = add_facility(fac.type, node, fac.type, target, false)
 	
 	remove_facility(other)
 	
