@@ -107,6 +107,9 @@ func on_planet_exited():
 	fsm.update_facility_info(fsm.get_current_node())
 
 func on_planet_hovered(node: int):
+	if node < 0:
+		return
+	
 	var curr_tool = get_facility_tool()
 	var road_tool = get_road_tool()
 	if curr_tool != null:
