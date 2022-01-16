@@ -35,7 +35,7 @@ export var smooth: bool = false
 export var atlas_size: Array = [4, 4]
 export var atlas_margin: Array = [32.0 / 2048.0, 32.0 / 1024.0]
 
-export var min_slope_cliffs: int = Network.MAX_SLOPE
+export var min_slope_cliffs: int = Network.TYPE_MAX_SLOPE[Network.T_ROAD]
 export var min_elevation_cliffs: int = int(Consts.ELEVATION_SCALE * 0.6)
 
 export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
@@ -297,19 +297,20 @@ func load_game():
 	_redraw_resources()
 
 
-func calc_point_path(from: int, to: int, nav: int) -> Array:
-	var path = planet_data.get_point_path(from, to, nav, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
+func calc_point_path(from: int, to: int, type: int) -> Array:
+	var nav = Network.MODE_NAV[Network.TYPE_MODES[type]]
+	var path = planet_data.get_point_path(from, to, nav, Network.TYPE_MAX_SLOPE[type] / float(Consts.ELEVATION_SCALE))
 	return path
 
 
-func calc_id_path(from: int, to: int, nav: int) -> Array:
-	var path = planet_data.get_id_path(from, to, nav, Network.MAX_SLOPE / float(Consts.ELEVATION_SCALE))
+func calc_id_path(from: int, to: int, type: int) -> Array:
+	var nav = Network.MODE_NAV[Network.TYPE_MODES[type]]
+	var path = planet_data.get_id_path(from, to, nav, Network.TYPE_MAX_SLOPE[type] / float(Consts.ELEVATION_SCALE))
 	return path
 
 
 func draw_path(from: int, to: int, type: int, max_length: int) -> Array:
-	var nav = Network.MODE_NAV[Network.TYPE_MODES[type]]
-	var path = calc_point_path(from, to, nav)
+	var path = calc_point_path(from, to, type)
 	if path.size() > 0:
 		path_debug.draw_path(path, max_length, Color.blue, Color.red)
 	else:
@@ -318,8 +319,7 @@ func draw_path(from: int, to: int, type: int, max_length: int) -> Array:
 
 
 func add_road(from: int, to: int, type: int):
-	var nav = Network.MODE_NAV[Network.TYPE_MODES[type]]
-	var path = calc_id_path(from, to, nav)
+	var path = calc_id_path(from, to, type)
 	var err = builder.add_road(path, type)
 	
 	_redraw_roads()
@@ -330,8 +330,7 @@ func add_road(from: int, to: int, type: int):
 
 func remove_road(from: int, to: int, type: int):
 	var mode = Network.TYPE_MODES[type]
-	var nav = Network.MODE_NAV[mode]
-	var path = calc_id_path(from, to, nav)
+	var path = calc_id_path(from, to, type)
 	if builder.remove_road(path, mode):
 		_redraw_roads()
 

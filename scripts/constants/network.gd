@@ -36,8 +36,6 @@ const T_RAIL: int = 10
 const T_POWER_LINE: int = 20
 const T_SEA_LINE: int = 30
 
-const MAX_SLOPE: int = 200
-
 const TYPE_MODES = {
 	T_CLEAR: M_ROADS,
 	T_ROAD: M_ROADS,
@@ -84,6 +82,14 @@ const TYPE_CAPACITY = {
 	T_RAIL: 100,
 	T_SEA_LINE: 50,
 	T_POWER_LINE: 50,
+}
+
+const TYPE_MAX_SLOPE = {
+	T_CLEAR: 0,
+	T_ROAD: 200,
+	T_RAIL: 120,
+	T_SEA_LINE: 200,
+	T_POWER_LINE: 200,
 }
 
 const TYPE_COSTS = {
