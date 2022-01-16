@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/clear.escn-4760dea9717ef0a961fbfc365c4f94ca.scn"
+path="res://.import/clear.escn-46db04f7ca54047239c3c618370c14e9.scn"
 
 [deps]
 
-source_file="res://assets/geom/facilities/clear.escn"
-dest_files=[ "res://.import/clear.escn-4760dea9717ef0a961fbfc365c4f94ca.scn" ]
+source_file="res://assets/geom/land_use/clear.escn"
+dest_files=[ "res://.import/clear.escn-46db04f7ca54047239c3c618370c14e9.scn" ]
 
 [params]
 
