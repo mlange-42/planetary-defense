@@ -13,7 +13,7 @@ const M_RAIL: int = 1
 const M_ELECTRIC: int = 2
 const M_SEA: int = 3
 
-const ALL_MODES: Array = [M_ROADS, M_RAIL, M_ELECTRIC]
+const ALL_MODES: Array = [M_ROADS, M_RAIL, M_ELECTRIC, M_SEA]
 
 const MODE_NAV = {
 	M_ROADS: NAV_LAND,
