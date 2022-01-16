@@ -299,7 +299,7 @@ pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
 }
 
 #[derive(Clone)]
-struct PathNode(pub usize, pub Option<(usize, usize)>);
+struct PathNode(pub usize, pub Option<usize>);
 
 impl PartialEq<Self> for PathNode {
     fn eq(&self, other: &Self) -> bool {
@@ -352,10 +352,6 @@ impl Graph {
     }
 
     fn solve(&mut self) {
-        for (i, edge) in self.edges.iter().enumerate() {
-            godot_print!("{}: {:?}", i, edge);
-        }
-
         let mut sources = vec![None; self.commodities];
         let mut sinks = vec![None; self.commodities];
         for (i, n) in self.nodes.iter().enumerate() {
@@ -421,11 +417,8 @@ impl Graph {
     }
 
     fn apply_path(&mut self, path: &[PathNode], commodity: usize, amount: u32) {
-        for i in 0..(path.len() - 1) {
-            let p2 = &path[i + 1];
-            let n1 = path[i].0;
-            let n2 = p2.0;
-            self.apply_to_edge(n1, n2, p2.1.unwrap(), amount);
+        for p in path.iter().skip(1) {
+            self.apply_to_edge(p.1.unwrap(), amount);
         }
         self.nodes[path[0].0].supply[commodity] -= amount as i32;
         self.nodes[path[path.len() - 1].0].supply[commodity] += amount as i32;
@@ -479,27 +472,8 @@ impl Graph {
         }
     }
 
-    fn apply_to_edge(&mut self, from: usize, to: usize, edge: (usize, usize), amount: u32) {
-        let edge_idx = self.out_edges[from]
-            .iter()
-            .find(|id| self.edges[**id].b.0 == to)
-            .unwrap();
-
-        let e = &mut self.edges[*edge_idx];
-        if *edge_idx != edge.1 {
-            godot_print!(
-                "Edge: {} - {} ({} -> {}), ({} -> {})  {} {}",
-                edge_idx,
-                edge.1,
-                from,
-                to,
-                e.a.0,
-                e.b.0,
-                self.out_edges[edge.0].contains(&edge.1),
-                self.out_edges[from].contains(&edge.1),
-            );
-        }
-        self.edges[edge.1].data.flow += amount as i32;
+    fn apply_to_edge(&mut self, edge: usize, amount: u32) {
+        self.edges[edge].data.flow += amount as i32;
     }
 
     fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<PathNode>, u32)> {
@@ -515,7 +489,7 @@ impl Graph {
         self.out_edges[id].iter().filter_map(move |edge_id| {
             let edge = &self.edges[*edge_id];
             self.calc_cost(edge)
-                .map(|c| (PathNode(edge.b.0, Some((id, *edge_id))), c))
+                .map(|c| (PathNode(edge.b.0, Some(*edge_id)), c))
         })
     }
 
@@ -696,8 +670,6 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             }
             g.add_edge(node_a, node_b, EdgeData::new(cost, cap));
         }
-
-        godot_print!("{:#?}", node_mapper);
 
         g.solve();
 

@@ -25,8 +25,6 @@ func solve():
 	var facilities = network.facilities()
 	
 	var edges = network.network.get_collapsed_edges()
-	print(edges)
-	print(facilities)
 	flow.add_edges(edges)
 	
 	var base_cost = Network.TYPE_TRANSPORT_COST_1000[Network.T_ROAD]
