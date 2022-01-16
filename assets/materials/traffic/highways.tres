@@ -1,8 +1,8 @@
 [gd_resource type="ShaderMaterial" load_steps=4 format=2]
 
-[ext_resource path="res://assets/textures/traffic/roads_anim.png" type="Texture" id=1]
+[ext_resource path="res://assets/textures/traffic/highways_anim.png" type="Texture" id=1]
 [ext_resource path="res://assets/shaders/traffic_animation.tres" type="Shader" id=2]
-[ext_resource path="res://assets/textures/traffic/roads_bg.svg" type="Texture" id=3]
+[ext_resource path="res://assets/textures/traffic/highways_bg.svg" type="Texture" id=3]
 
 [resource]
 shader = ExtResource( 2 )
