@@ -134,6 +134,9 @@ func remove_facility(facility: Facility):
 		var city: City = facility as City
 		if city.population() > 1 or not city.land_use.empty():
 			return "Can't remove city with population > 1\nor active land use!"
+		
+		for fac in city.facilities.values():
+			remove_facility(fac)
 	
 	if facility.city_node_id >= 0:
 		var owner: City = planet.roads.get_facility(facility.city_node_id) as City
@@ -144,6 +147,35 @@ func remove_facility(facility: Facility):
 	
 	parent_node.remove_child(facility)
 	facility.queue_free()
+	
+	return null
+
+
+func merge_cities(target: City, other: City):
+	if not target.cells.has(other.node_id):
+		return "Can't merge: city not in range."
+	if other.population() >= target.population():
+		return "Can only merge smaller city into larger one."
+	
+	# Clear land use
+	var new_lu = {}
+	for node in other.land_use.keys():
+		var lu = other.land_use[node]
+		if target.cells.has(node) and can_set_land_use(target, node, lu):
+			new_lu[node] = lu
+		
+		set_land_use(other, node, LandUse.LU_NONE)
+	
+	# Move workers
+	target.add_workers(other.population())
+	other.add_workers(-other.population())
+	
+	# Move land use
+	for node in new_lu:
+		var lu = new_lu[node]
+		set_land_use(target, node, lu)
+	
+	remove_facility(other)
 	
 	return null
 
