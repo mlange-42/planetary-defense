@@ -261,7 +261,6 @@ func on_planet_clicked(node: int, button: int):
 			if curr_tool != null:
 				var fac_err = fsm.planet.add_facility(curr_tool, node, curr_tool, city)
 				if fac_err[0] != null:
-					fac_err[0].city_node_id = city.node_id
 					city.add_facility(node, fac_err[0])
 				else:
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
