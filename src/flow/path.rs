@@ -3,7 +3,7 @@ use std::collections::btree_map::Entry as BEntry;
 use std::collections::hash_map::Entry;
 use std::collections::{BTreeMap, HashMap};
 use std::fmt::Debug;
-use std::hash::Hash;
+use std::hash::{Hash, Hasher};
 use std::iter;
 
 use pathfinding::directed::dijkstra::dijkstra;
@@ -299,6 +299,23 @@ pub struct Flow<T: Clone + Ord, U: Clone + Ord> {
     pub capacity: i32,
 }
 
+#[derive(Clone)]
+struct PathNode(pub usize, pub Option<usize>);
+
+impl PartialEq<Self> for PathNode {
+    fn eq(&self, other: &Self) -> bool {
+        self.0 == other.0
+    }
+}
+
+impl std::cmp::Eq for PathNode {}
+
+impl Hash for PathNode {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.0.hash(state)
+    }
+}
+
 struct Graph {
     commodities: usize,
     load_dependence: f32,
@@ -400,18 +417,19 @@ impl Graph {
             })
     }
 
-    fn apply_path(&mut self, path: &[usize], commodity: usize, amount: u32) {
+    fn apply_path(&mut self, path: &[PathNode], commodity: usize, amount: u32) {
         for i in 0..(path.len() - 1) {
-            let n1 = path[i];
-            let n2 = path[i + 1];
-            self.apply_to_edge(n1, n2, amount);
+            let p2 = &path[i + 1];
+            let n1 = path[i].0;
+            let n2 = p2.0;
+            self.apply_to_edge(n1, n2, p2.1.unwrap(), amount);
         }
-        self.nodes[path[0]].supply[commodity] -= amount as i32;
-        self.nodes[path[path.len() - 1]].supply[commodity] += amount as i32;
+        self.nodes[path[0].0].supply[commodity] -= amount as i32;
+        self.nodes[path[path.len() - 1].0].supply[commodity] += amount as i32;
 
         if path.len() > 2 {
-            let p1 = path[1];
-            let p2 = path[path.len() - 2];
+            let p1 = path[1].0;
+            let p2 = path[path.len() - 2].0;
             self.nodes[p1].sent[commodity] += amount as i32;
             self.nodes[p2].received[commodity] += amount as i32;
 
@@ -429,7 +447,7 @@ impl Graph {
 
         // Converters
         let result = {
-            let receiver_idx = path[path.len() - 2];
+            let receiver_idx = path[path.len() - 2].0;
             let receiver = &mut self.nodes[receiver_idx];
             if let Some(convert) = &mut receiver.convert {
                 if convert.from == commodity {
@@ -458,27 +476,29 @@ impl Graph {
         }
     }
 
-    fn apply_to_edge(&mut self, from: usize, to: usize, amount: u32) {
+    fn apply_to_edge(&mut self, from: usize, to: usize, edge: usize, amount: u32) {
         let edge_idx = self.out_edges[from]
             .iter()
             .find(|id| self.edges[**id].b.0 == to)
             .unwrap();
 
+        godot_print!("Edge: {} - {}", edge_idx, edge);
         self.edges[*edge_idx].data.flow += amount as i32;
     }
 
-    fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<usize>, u32)> {
+    fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<PathNode>, u32)> {
         dijkstra(
-            &start,
-            |id| self.get_successor(*id),
-            |id| self.nodes[*id].supply[commodity] < 0,
+            &PathNode(start, None),
+            |id| self.get_successor(id),
+            |id| self.nodes[id.0].supply[commodity] < 0,
         )
     }
 
-    fn get_successor(&self, id: usize) -> impl Iterator<Item = (usize, u32)> + '_ {
-        self.out_edges[id].iter().filter_map(|edge_id| {
+    fn get_successor(&self, id: &PathNode) -> impl Iterator<Item = (PathNode, u32)> + '_ {
+        self.out_edges[id.0].iter().filter_map(|edge_id| {
             let edge = &self.edges[*edge_id];
-            self.calc_cost(edge).map(|c| (edge.b.0, c))
+            self.calc_cost(edge)
+                .map(|c| (PathNode(edge.b.0, Some(*edge_id)), c))
         })
     }
 
@@ -846,7 +866,7 @@ mod tests {
 
         builder.set_converter("ConvAB", "A", 1, "B", 1, "ConvAB");
 
-        builder.solve(false, 0.2);
+        builder.solve(0.2);
         let flows = builder.get_flows();
         let map: HashMap<_, _> = flows.iter().map(|f| ((f.a, f.b), f.amount)).collect();
 
