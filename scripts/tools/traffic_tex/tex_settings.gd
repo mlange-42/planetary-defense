@@ -9,6 +9,7 @@ export var tile_size: Vector2 = Vector2(128, 32)
 export var tiles: Vector2 = Vector2(8, 32)
 export var tile_margin: int = 4
 export var vehicle_y_offset: int = 0
+export var vehicle_y_offset_2: int = 8
 
 export var vehicle_width: int = 8
 
@@ -16,3 +17,7 @@ export (Array, int) var num_vehicles: Array = []
 export (Array, int) var vehicle_lengths: Array = []
 export (Array, float) var velocities: Array = []
 export (Array, Color) var colors: Array = []
+
+export (Array, int) var num_vehicles_2: Array = []
+export (Array, int) var vehicle_lengths_2: Array = []
+export (Array, float) var velocities_2: Array = []

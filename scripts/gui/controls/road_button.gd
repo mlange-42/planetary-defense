@@ -8,9 +8,10 @@ func _ready():
 	
 	self.icon = Network.TYPE_ICONS[mode]
 	
-	var text = "%s\n\n Capacity: %d\n Costs: %d\n Maintenance: %s\n Transport cost/1000: %d\n Max. slope: %d" \
+	var text = "%s\n %s\n\n Capacity: %d\n Costs: %d\n Maintenance: %s\n Transport cost/1000: %d\n Max. slope: %d" \
 		% [
-			Network.TYPE_INFO[mode], 
+			Network.TYPE_NAMES[mode],
+			Network.TYPE_INFO[mode],
 			Network.TYPE_CAPACITY[mode],
 			Network.TYPE_COSTS[mode], 
 			Network.TYPE_MAINTENANCE_1000[mode] / 1000.0,

@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/tools/traffic_tex/tex_settings.gd" type="Script" id=1]
+
+[node name="SettingsHighways" type="Node"]
+script = ExtResource( 1 )
+output_file = "res://assets/textures/traffic/highways_anim.png"
+vehicle_y_offset = 19
+vehicle_y_offset_2 = 5
+vehicle_width = 6
+num_vehicles = [ 0, 1, 2, 3, 4, 5, 6, 0 ]
+vehicle_lengths = [ 8, 8, 8, 8, 8, 8, 8, 8 ]
+velocities = [ 0.0, 4.0, 4.0, 4.0, 3.0, 1.6, 1.333, 0.0 ]
+colors = [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0.890196, 0, 1 ), Color( 1, 0.501961, 0, 1 ), Color( 1, 0.0588235, 0, 1 ), Color( 0, 0, 0, 1 ) ]
+num_vehicles_2 = [ 0, 0, 1, 2, 3, 4, 5, 0 ]
+vehicle_lengths_2 = [ 8, 8, 8, 8, 8, 8, 8, 8 ]
+velocities_2 = [ 0.0, 4.0, 4.0, 4.0, 4.0, 3.0, 1.6, 0.0 ]

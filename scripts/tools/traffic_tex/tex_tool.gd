@@ -44,6 +44,17 @@ func draw_animation(col: int):
 			draw_rect_wrap(image, Vector2(xoff + i * x_dist, set.vehicle_y_offset), \
 								Vector2(set.vehicle_lengths[col], set.vehicle_width), \
 								Vector2(x0, y0), int(set.tile_size.x), set.colors[col])
+		
+		if set.num_vehicles_2.empty():
+			continue
+		
+		xoff = set.velocities_2[col] * row
+		n = set.num_vehicles_2[col]
+		x_dist = set.tile_size.x / float(n) if n > 0 else 0.0
+		for i in range(n):
+			draw_rect_wrap(image, Vector2(xoff + i * x_dist, set.vehicle_y_offset_2), \
+								Vector2(set.vehicle_lengths[col], set.vehicle_width), \
+								Vector2(x0, y0), int(set.tile_size.x), set.colors[col])
 
 
 func draw_rect_wrap(img: Image, pos: Vector2, size: Vector2, origin: Vector2, width: int, color: Color):
