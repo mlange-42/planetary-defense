@@ -26,7 +26,7 @@ Added the possibility for different network modes (roads, rail, power lines, ...
 * Power lines, railways and sea lines
 * Power plant (non-city) and train station (city) facilities
 * Solar plant land use
-
+* Link type specific transport costs
 
 ### Changed
 
@@ -42,10 +42,13 @@ Added the possibility for different network modes (roads, rail, power lines, ...
 * Air defenses now consume electricity instead of products
 * Limit city growth by occupied area instead of population
 * Auto-assign workers based on production rather than number of workers
+* Display facility and total production stats using bar chart visualization
 
 ### Bug fixes
 
 * Apply city settings on any change, not only on changing/leaving mode
+* No more occlusion through transparent city label parts [#240]
+* Correct handling of parallel edges in flow solver
 
 ## [v0.4.0]
 

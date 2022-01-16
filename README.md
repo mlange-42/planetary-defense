@@ -32,7 +32,7 @@ Repel asteroids, alien invasions and other yet unknown dangers.
 * Configurable planet characteristics
 * Macro-scale economy and logistics
 * Cities with automated of manual land use management and production
-* Multiple commodities: food, resourced, products and energy (TODO)
+* Multiple commodities: food, resourced, products and electricity
 * No storage of commodities: everything must be produced just when needed (i.e. static state economy)
 * Transport network with agent-based solver to mediate supply and demand on network with limited capacity
 * Almost everything needs supplies, so transport infrastructure is critical
