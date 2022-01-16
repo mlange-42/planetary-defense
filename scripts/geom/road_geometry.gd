@@ -113,7 +113,7 @@ func draw_pipe(from: Vector3, to: Vector3, radius: float, end_cap: bool = false)
 	var direction = (to - from).normalized()
 	var x_dir = direction.cross(from).normalized()
 	if x_dir == Vector3.ZERO:
-		x_dir = direction.cross(Vector3.AXIS_Y).normalized()
+		x_dir = direction.cross(Vector3.UP).normalized()
 	var y_dir = direction.cross(x_dir)
 	
 	var dx = x_dir * radius
