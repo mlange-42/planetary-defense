@@ -87,7 +87,7 @@ func city_name_available(name: String) -> bool:
 	return not city_names.has(name)
 
 
-func add_facility(type: String, location: int, name: String, owner):
+func add_facility(type: String, location: int, name: String, owner, pay: bool = true):
 	if not Facilities.FACILITY_SCENES.has(type):
 		print("WARNING: no scene resource found for %s" % type)
 		return [null, "WARNING: no scene resource found for %s" % type]
@@ -96,7 +96,7 @@ func add_facility(type: String, location: int, name: String, owner):
 		return [null, "Location already occupied"]
 	
 	var costs = Facilities.FACILITY_COSTS[type]
-	if costs > planet.taxes.budget:
+	if pay and costs > planet.taxes.budget:
 		return [null, "Not enough money (requires %d)" % costs]
 	
 	if not facility_functions.can_build(type, planet.planet_data, location, owner):
@@ -105,8 +105,11 @@ func add_facility(type: String, location: int, name: String, owner):
 	var facility: Facility = load(Facilities.FACILITY_SCENES[type]).instance()
 	
 	facility.init(location, planet, type)
+	if owner != null:
+		facility.city_node_id = owner.node_id
 	
-	planet.taxes.budget -= costs
+	if pay:
+		planet.taxes.budget -= costs
 	
 	return [add_facility_scene(facility, name), null]
 
@@ -134,6 +137,9 @@ func remove_facility(facility: Facility):
 		var city: City = facility as City
 		if city.population() > 1 or not city.land_use.empty():
 			return "Can't remove city with population > 1\nor active land use!"
+		
+		for fac in city.facilities.values():
+			remove_facility(fac)
 	
 	if facility.city_node_id >= 0:
 		var owner: City = planet.roads.get_facility(facility.city_node_id) as City
@@ -144,6 +150,43 @@ func remove_facility(facility: Facility):
 	
 	parent_node.remove_child(facility)
 	facility.queue_free()
+	
+	return null
+
+
+func merge_cities(target: City, other: City):
+	if not target.cells.has(other.node_id):
+		return "Can't merge: city not in range."
+	if other.population() >= target.population():
+		return "Can only merge smaller city into larger one."
+	
+	# Clear land use
+	var new_lu = {}
+	for node in other.land_use.keys():
+		var lu = other.land_use[node]
+		if target.cells.has(node) and can_set_land_use(target, node, lu):
+			new_lu[node] = lu
+		
+		set_land_use(other, node, LandUse.LU_NONE)
+	
+	# Move workers
+	target.add_workers(other.population())
+	other.add_workers(-other.population())
+	
+	# Move land use
+	for node in new_lu:
+		var lu = new_lu[node]
+		set_land_use(target, node, lu)
+	
+	
+	for node in other.facilities.keys():
+		var fac = other.facilities[node]
+		remove_facility(fac)
+		
+		if target.cells.has(node):
+			var _fac_err = add_facility(fac.type, node, fac.type, target, false)
+	
+	remove_facility(other)
 	
 	return null
 

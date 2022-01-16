@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/gui/states/edit_city.gd" type="Script" id=1]
 [ext_resource path="res://assets/icons/menu/grow.svg" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=8]
 [ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=9]
 [ext_resource path="res://assets/icons/commodities/electricity.svg" type="Texture" id=10]
+[ext_resource path="res://assets/icons/menu/merge.svg" type="Texture" id=11]
 
 [node name="EditCity" type="Control"]
 anchor_right = 1.0
@@ -111,6 +112,14 @@ columns = 4
 margin_right = 32.0
 margin_bottom = 32.0
 icon = ExtResource( 2 )
+
+[node name="MergeButton" type="Button" parent="Margin/EditControls/BuildPanel/BuildControls/PromoteButtons"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+hint_tooltip = "Merge nearby cities into this city"
+toggle_mode = true
+icon = ExtResource( 11 )
 
 [node name="WeightPanel" type="PanelContainer" parent="Margin/EditControls"]
 margin_top = 140.0

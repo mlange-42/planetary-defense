@@ -17,6 +17,7 @@ onready var city_label: Label = find_node("CityLabel")
 onready var grow_button: Button = find_node("GrowButton") 
 onready var auto_assign: Button = find_node("AutoAssign")
 
+var merge_button: Button
 
 var pointer_offset = -0.03
 var indicator: RangeIndicator
@@ -81,6 +82,8 @@ func init(the_fsm: Gui, args: Dictionary):
 			
 			fac_buttons.add_child(button)
 	
+	merge_button = find_node("MergeButton") 
+	merge_button.group = button_group
 	# warning-ignore:return_value_discarded
 	button_group.connect("pressed", self, "_on_tool_changed")
 
@@ -222,9 +225,15 @@ func on_planet_clicked(node: int, button: int):
 	if button == BUTTON_LEFT:
 		var facility: Facility = fsm.planet.get_facility(node)
 		if facility != null and facility is City and facility != city:
-			state_exited()
-			set_city(node)
-			state_entered()
+			if merge_button.pressed:
+				var err = fsm.planet.builder.merge_cities(city, facility as City)
+				if err != null:
+					fsm.show_message(err, Consts.MESSAGE_ERROR)
+				state_entered()
+			else:
+				state_exited()
+				set_city(node)
+				state_entered()
 			return
 	
 	if button == BUTTON_RIGHT:
@@ -252,7 +261,6 @@ func on_planet_clicked(node: int, button: int):
 			if curr_tool != null:
 				var fac_err = fsm.planet.add_facility(curr_tool, node, curr_tool, city)
 				if fac_err[0] != null:
-					fac_err[0].city_node_id = city.node_id
 					city.add_facility(node, fac_err[0])
 				else:
 					fsm.show_message(fac_err[1], Consts.MESSAGE_ERROR)
