@@ -59,7 +59,7 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Controls/VBoxContainer"]
 margin_right = 312.0
-margin_bottom = 266.0
+margin_bottom = 314.0
 grow_horizontal = 2
 grow_vertical = 2
 __meta__ = {
@@ -68,7 +68,7 @@ __meta__ = {
 
 [node name="GenerateContainer" type="VBoxContainer" parent="Controls/VBoxContainer/HBoxContainer"]
 margin_right = 140.0
-margin_bottom = 266.0
+margin_bottom = 314.0
 rect_min_size = Vector2( 140, 0 )
 
 [node name="Label" type="Label" parent="Controls/VBoxContainer/HBoxContainer/GenerateContainer"]
@@ -118,24 +118,36 @@ margin_right = 140.0
 margin_bottom = 188.0
 text = "Humidity"
 
-[node name="Label2" type="Label" parent="Controls/VBoxContainer/HBoxContainer/GenerateContainer"]
+[node name="ResourcesLabel" type="Label" parent="Controls/VBoxContainer/HBoxContainer/GenerateContainer"]
 margin_top = 192.0
 margin_right = 140.0
 margin_bottom = 208.0
+text = "Resources"
+
+[node name="Resources" type="OptionButton" parent="Controls/VBoxContainer/HBoxContainer/GenerateContainer"]
+margin_top = 212.0
+margin_right = 140.0
+margin_bottom = 236.0
+text = "Resources"
+
+[node name="Label2" type="Label" parent="Controls/VBoxContainer/HBoxContainer/GenerateContainer"]
+margin_top = 240.0
+margin_right = 140.0
+margin_bottom = 256.0
 text = "Planet name"
 
 [node name="LineEdit" type="LineEdit" parent="Controls/VBoxContainer/HBoxContainer/GenerateContainer"]
-margin_top = 212.0
+margin_top = 260.0
 margin_right = 140.0
-margin_bottom = 238.0
+margin_bottom = 286.0
 hint_tooltip = "Name for a new or existing planet"
 focus_next = NodePath("../GenerateButton")
 placeholder_text = "Planet name"
 
 [node name="GenerateButton" type="Button" parent="Controls/VBoxContainer/HBoxContainer/GenerateContainer"]
-margin_top = 242.0
+margin_top = 290.0
 margin_right = 140.0
-margin_bottom = 266.0
+margin_bottom = 314.0
 focus_previous = NodePath("../LineEdit")
 text = "Generate planet"
 __meta__ = {
@@ -145,24 +157,24 @@ __meta__ = {
 [node name="VSeparator" type="VSeparator" parent="Controls/VBoxContainer/HBoxContainer"]
 margin_left = 144.0
 margin_right = 168.0
-margin_bottom = 266.0
+margin_bottom = 314.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="LoadContainer" type="VBoxContainer" parent="Controls/VBoxContainer/HBoxContainer"]
 margin_left = 172.0
 margin_right = 312.0
-margin_bottom = 266.0
+margin_bottom = 314.0
 rect_min_size = Vector2( 140, 0 )
 
 [node name="FileList" type="ItemList" parent="Controls/VBoxContainer/HBoxContainer/LoadContainer"]
 margin_right = 140.0
-margin_bottom = 238.0
+margin_bottom = 286.0
 size_flags_vertical = 3
 
 [node name="LoadButton" type="Button" parent="Controls/VBoxContainer/HBoxContainer/LoadContainer"]
-margin_top = 242.0
+margin_top = 290.0
 margin_right = 140.0
-margin_bottom = 266.0
+margin_bottom = 314.0
 focus_previous = NodePath("../../GenerateContainer/LineEdit")
 text = "Load game"
 __meta__ = {
@@ -170,15 +182,15 @@ __meta__ = {
 }
 
 [node name="HSeparator" type="HSeparator" parent="Controls/VBoxContainer"]
-margin_top = 270.0
+margin_top = 318.0
 margin_right = 312.0
-margin_bottom = 282.0
+margin_bottom = 330.0
 rect_min_size = Vector2( 0, 12 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Controls/VBoxContainer"]
-margin_top = 286.0
+margin_top = 334.0
 margin_right = 312.0
-margin_bottom = 310.0
+margin_bottom = 358.0
 
 [node name="OptionsButton" type="Button" parent="Controls/VBoxContainer/HBoxContainer2"]
 margin_right = 154.0

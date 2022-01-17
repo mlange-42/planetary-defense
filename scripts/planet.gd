@@ -38,6 +38,8 @@ export var atlas_margin: Array = [32.0 / 2048.0, 32.0 / 1024.0]
 export var min_slope_cliffs: int = Network.TYPE_MAX_SLOPE[Network.T_ROAD]
 export var min_elevation_cliffs: int = int(Consts.ELEVATION_SCALE * 0.6)
 
+export var resource_abundance: int = PlanetSettings.RESOURCE_ABUNDANCE["normal"]
+
 export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
 export var water_material: Material = preload("res://assets/materials/planet/water.tres")
 
@@ -151,7 +153,7 @@ func _ready():
 		self.story = StoryManager.new(self)
 		self.roads = NetworkManager.new()
 		self.taxes = TaxManager.new()
-		self.resources = ResourceManager.new(planet_data)
+		self.resources = ResourceManager.new(planet_data, resource_abundance)
 		self.builder = BuildManager.new(consts, self, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, self)
@@ -239,7 +241,7 @@ func load_game():
 	self.taxes.read(parse_json(taxes_json))
 	
 	var resources_json = file.get_line()
-	self.resources = ResourceManager.new(planet_data)
+	self.resources = ResourceManager.new(planet_data, resource_abundance)
 	self.resources.read(parse_json(resources_json))
 	
 	self.builder = BuildManager.new(consts, self, facilities)

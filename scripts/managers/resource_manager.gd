@@ -1,12 +1,15 @@
 class_name ResourceManager
 
 var planet_data = null
+var abundance: int = PlanetSettings.RESOURCE_ABUNDANCE["normal"]
 
 var resources: Dictionary = {}
 
 # warning-ignore:shadowed_variable
-func _init(planet_data):
+# warning-ignore:shadowed_variable
+func _init(planet_data, abundance):
 	self.planet_data = planet_data
+	self.abundance = abundance
 
 
 func generate_resources():
@@ -27,21 +30,23 @@ func generate_resources():
 		
 		for veg in entries:
 			var params = entries[veg]
-			var rad = params["radius"]
+			var rad = params["radius"][abundance]
 			var amount = params["amount"]
-			var prob = params["probability"]
+			var prob = params["probability"][abundance]
 			var height = params["elevation"]
 			var all_nodes = veg_nodes[veg]
-			var nodes = []
-			for ne in all_nodes:
-				if ne[1] > height[0] and ne[1] < height[1]:
-					nodes.append(ne[0])
 			
-			nodes.shuffle()
-			var expected = int(ceil(nodes.size() * prob))
-			
-			for i in range(min(expected, nodes.size())):
-				add_resources(nodes[i], rad, res, amount)
+			if prob > 0:
+				var nodes = []
+				for ne in all_nodes:
+					if ne[1] > height[0] and ne[1] < height[1]:
+						nodes.append(ne[0])
+				
+				nodes.shuffle()
+				var expected = int(ceil(nodes.size() * prob))
+				
+				for i in range(min(expected, nodes.size())):
+					add_resources(nodes[i], rad, res, amount)
 
 
 func add_resources(node: int, radius: int, type: int, amount: int):

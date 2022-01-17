@@ -19,13 +19,20 @@ const TEMPERATURE_CURVES = {
 	"warm": preload("res://assets/params/temperature_curve_high.tres"),
 }
 
+const RESOURCE_ABUNDANCE = {
+	"none": 0,
+	"rare": 1,
+	"normal": 2,
+	"plenty": 3,
+	"excess": 4,
+}
+
 const PLANET_SIZES = {
 	"tiny": {
 		"radius": 2.5,
 		"max_height": 0.33,
 		"subdivisions": 4,
 		"noise_period": 0.9,
-		
 	},
 	"small": {
 		"radius": 5,

@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+* Provide different resource abundance settings for planet generation
+
+### Changed
+
+* Increased resource abundance for the default settings
+
 ## [v0.5.0]
 
 ### Network modes
