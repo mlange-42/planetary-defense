@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [v0.5.0]
+
 ### Network modes
 
 Added the possibility for different network modes (roads, rail, power lines, ...) and sub-types.
