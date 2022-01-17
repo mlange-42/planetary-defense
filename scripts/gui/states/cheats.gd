@@ -14,10 +14,15 @@ func _on_Cheat_pressed():
 
 
 func evaluate(cmd: String):
-	if cmd == "gold":
+	if cmd == "cash":
 		fsm.planet.taxes.budget += 1000
 		fsm.planet.emit_budget()
 		fsm.show_message("Added 1000 to budget", Consts.MESSAGE_INFO)
+		return true
+	elif cmd == "prospect":
+		fsm.planet.resources.reveal_all()
+		fsm.planet._redraw_resources()
+		fsm.show_message("Revealed all resources", Consts.MESSAGE_INFO)
 		return true
 	elif cmd.find("attack ") == 0:
 		var city_name = cmd.trim_prefix("attack ")

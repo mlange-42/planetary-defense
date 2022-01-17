@@ -91,6 +91,13 @@ func reveal_random_resources(proportion: float, trials: int) -> Array:
 	return revealed
 
 
+func reveal_all():
+	for node in hidden_resources:
+		resources[node] = hidden_resources[node]
+	
+	hidden_resources.clear()
+
+
 func has_resource(node: int, type: int) -> bool:
 	if resources.has(node):
 		var res = resources[node]
