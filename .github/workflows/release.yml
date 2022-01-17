@@ -52,10 +52,13 @@ jobs:
         run: |
           mkdir -v -p ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
-      - name: Reimport Assets
-        run: |
-          godot --quiet --editor scenes/tools/fix_imports/fix_imports.tscn
-          godot --quiet --editor scenes/tools/fix_imports/fix_imports.tscn
+      - name: Reimport Assets 1
+        run: godot --quiet --editor scenes/tools/fix_imports/fix_imports.tscn
+        timeout-minutes: 2
+        continue-on-error: true
+      - name: Reimport Assets 2
+        run: godot --quiet --editor scenes/tools/fix_imports/fix_imports.tscn
+        timeout-minutes: 2
         continue-on-error: true
       - name: Godot Linux Build
         run: |
@@ -118,10 +121,13 @@ jobs:
         run: |
           mkdir -v -p ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
-      - name: Reimport Assets
-        run: |
-          godot --quiet --editor scenes/tools/fix_imports/fix_imports.tscn
-          godot --quiet --editor scenes/tools/fix_imports/fix_imports.tscn
+      - name: Reimport Assets 1
+        run: godot --quiet --editor scenes/tools/fix_imports/fix_imports.tscn
+        timeout-minutes: 2
+        continue-on-error: true
+      - name: Reimport Assets 2
+        run: godot --quiet --editor scenes/tools/fix_imports/fix_imports.tscn
+        timeout-minutes: 2
         continue-on-error: true
       - name: Godot Windows Build
         run: |
