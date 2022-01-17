@@ -30,6 +30,7 @@ func post_update():
 			var city = facility as City
 			var attr = post_update_city(city)
 			attractiveness[city] = attr
+			reveal_resources(city)
 		
 		facility.calc_is_supplied()
 		if not facility.is_supplied:
@@ -39,6 +40,17 @@ func post_update():
 			planet.messages.add_message(facility.node_id, "[u]%s[/u] not supplied\n  Missing: %s" % [name, miss_text], Consts.MESSAGE_WARNING)
 	
 	migrate(attractiveness)
+
+
+func reveal_resources(city: City):
+	var revealed = {}
+	for cell in city.cells:
+		var res = planet.resources.reveal_resource(cell)
+		if res != null:
+			revealed[res] = cell
+	
+	for res in revealed:
+		planet.messages.add_message(revealed[res], "%s deposit discovered near %s" % [Resources.RES_NAMES[res], city.name], Consts.MESSAGE_INFO)
 
 
 func pre_update_city(city: City):
