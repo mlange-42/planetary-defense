@@ -2,9 +2,9 @@
 
 ## 2022/01/16 -- Two weeks of development
 
-[2bf927b]
+[v0.5.0]
 
-Two and a half release later, a lot has happened.
+Tree release later, and a lot has happened.
 
 * "Real" graphics with geometries for everything
 * Electricity as fourth commodity
@@ -12,7 +12,10 @@ Two and a half release later, a lot has happened.
 * Animated textures to visualize network flow
 * A complete GUI rework
 
-![Screenshot](https://user-images.githubusercontent.com/44003176/149679901-83983d4a-ab2f-4247-8895-ec8817013095.png)
+<p align="center">
+  <img alt="Screenshot" src="https://user-images.githubusercontent.com/44003176/149753990-7eb8929d-61ec-4da1-931e-b870d78dba06.png" width="49%">
+  <img alt="Screenshot" src="https://user-images.githubusercontent.com/44003176/149754010-adcd3923-3601-4627-ad63-d882966a8ea8.png" width="49%">
+</p>
 
 See the [CHANGELOG](changelog.md) for details.
 
