@@ -30,34 +30,34 @@ const VEG_NAMES = {
 const VEG_RESOURCES = {
 	Resources.RES_METAL: {
 		VEG_DESERT: {
-			"probability": 0.005,
-			"radius": 0,
+			"probability": [0.0, 0.004, 0.007, 0.01, 0.01],
+			"radius": [0, 0, 0, 0, 1],
 			"amount": 2500,
 			"elevation": [0.0, 1.0],
 		},
 		VEG_TAIGA: {
-			"probability": 0.01,
-			"radius": 0,
+			"probability": [0.0, 0.008, 0.015, 0.02, 0.02],
+			"radius": [0, 0, 0, 0, 1],
 			"amount": 2500,
 			"elevation": [0.2, 1.0],
 		},
 		VEG_STEPPE: {
-			"probability": 0.01,
-			"radius": 0,
+			"probability": [0.0, 0.008, 0.015, 0.02, 0.02],
+			"radius": [0, 0, 0, 0, 1],
 			"amount": 2500,
 			"elevation": [0.2, 1.0],
 		},
 	},
 	Resources.RES_OIL: {
 		VEG_DESERT: {
-			"probability": 0.001,
-			"radius": 1,
+			"probability": [0.0, 0.0008, 0.0015, 0.0025, 0.0025],
+			"radius": [1, 1, 1, 1, 2],
 			"amount": 1000,
 			"elevation": [0.0, 0.1],
 		},
 		VEG_WATER: {
-			"probability": 0.002,
-			"radius": 1,
+			"probability": [0.0, 0.0016, 0.003, 0.005, 0.005],
+			"radius": [1, 1, 1, 1, 2],
 			"amount": 1000,
 			"elevation": [-0.2, 0.0],
 		},

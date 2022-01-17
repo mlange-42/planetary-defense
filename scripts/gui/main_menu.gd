@@ -13,6 +13,7 @@ onready var size_list: OptionButton = find_node("PlanetSizes")
 onready var profile_list: OptionButton = find_node("Profiles")
 onready var temperature_list: OptionButton = find_node("Temperatures")
 onready var humidity_list: OptionButton = find_node("Humidities")
+onready var resources_list: OptionButton = find_node("Resources")
 
 onready var options: GameOptions = find_node("Options")
 
@@ -49,6 +50,10 @@ func _ready():
 	for key in PlanetSettings.PRECIPITATION_CURVES:
 		humidity_list.add_item(key)
 	humidity_list.select(1)
+	
+	for key in PlanetSettings.RESOURCE_ABUNDANCE:
+		resources_list.add_item(key)
+	resources_list.select(2)
 
 
 func _on_GenerateButton_pressed():
@@ -105,6 +110,7 @@ func change_scene(name: String):
 	var profile = profile_list.get_item_text(int(max(profile_list.selected, 0)))
 	var temperature = temperature_list.get_item_text(int(max(temperature_list.selected, 0)))
 	var humidity = humidity_list.get_item_text(int(max(humidity_list.selected, 0)))
+	var resources = resources_list.get_item_text(int(max(resources_list.selected, 0)))
 	
 	var world = load("res://scenes/world.tscn").instance()
 	world.planet_params = [
@@ -113,6 +119,7 @@ func change_scene(name: String):
 			"height_curve": PlanetSettings.HEIGHT_CURVES[profile],
 			"precipitation_curve": PlanetSettings.PRECIPITATION_CURVES[humidity],
 			"temperature_curve": PlanetSettings.TEMPERATURE_CURVES[temperature],
+			"resource_abundance": PlanetSettings.RESOURCE_ABUNDANCE[resources],
 		}
 	]
 	world.save_name = name
