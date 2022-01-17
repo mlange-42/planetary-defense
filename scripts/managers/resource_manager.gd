@@ -3,6 +3,7 @@ class_name ResourceManager
 var planet_data = null
 var abundance: int = PlanetSettings.RESOURCE_ABUNDANCE["normal"]
 
+var hidden_resources: Dictionary = {}
 var resources: Dictionary = {}
 
 # warning-ignore:shadowed_variable
@@ -52,8 +53,42 @@ func generate_resources():
 func add_resources(node: int, radius: int, type: int, amount: int):
 	var nodes = planet_data.get_in_radius(node, radius)
 	for n in nodes:
-		if not resources.has(n[0]):
-			resources[n[0]] = [type, amount]
+		if not (resources.has(n[0]) or hidden_resources.has(n[0])):
+			hidden_resources[n[0]] = [type, amount]
+
+
+func reveal_resource(node: int):
+	if hidden_resources.has(node):
+		var res = hidden_resources[node]
+		resources[node] = res
+		# warning-ignore:return_value_discarded
+		hidden_resources.erase(node)
+		return res[0]
+	
+	return null
+
+
+func reveal_random_resources(proportion: float, trials: int) -> Array:
+	if proportion == 0.0 or trials == 0 or hidden_resources.empty():
+		return []
+	
+	var total = resources.size() + hidden_resources.size()
+	var total_prop = 1.0 - pow(1.0 - proportion, trials)
+	var expected = min(MathUtil.round_random(total_prop * float(total), randf()),\
+						hidden_resources.size())
+	
+	if expected == 0:
+		return []
+	
+	var move = hidden_resources.keys()
+	move.shuffle()
+	
+	var revealed = []
+	for i in range(expected):
+		if reveal_resource(move[i]) != null:
+			revealed.append(move[i])
+	
+	return revealed
 
 
 func has_resource(node: int, type: int) -> bool:
@@ -95,13 +130,19 @@ func can_extract_resource(node: int, type: int, amount: int) -> int:
 
 func save() -> Dictionary:
 	return {
-		"resources": resources
+		"resources": resources,
+		"hidden_resources": hidden_resources,
 	}
 
 
 func read(dict: Dictionary):
 	var res = dict["resources"] as Dictionary
+	var hres = dict["hidden_resources"] as Dictionary
 	
 	for node in res:
 		var val = res[node]
 		self.resources[node as int] = [val[0] as int, val[1] as int]
+	
+	for node in hres:
+		var val = hres[node]
+		self.hidden_resources[node as int] = [val[0] as int, val[1] as int]

@@ -162,10 +162,10 @@ func _ready():
 		self.builder = BuildManager.new(consts, self, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, self)
-		self.space = SpaceManager.new(sky_geometry.mesh)
+		self.space = SpaceManager.new(self, sky_geometry.mesh)
 		
 		self.resources.generate_resources()
-		self.space.update_coverage(self)
+		self.space.update_coverage()
 		_redraw_resources()
 		_redraw_sky()
 		
@@ -257,7 +257,7 @@ func load_game():
 	self.cities = CityManager.new(consts, self)
 	
 	
-	self.space = SpaceManager.new(sky_geometry.mesh)
+	self.space = SpaceManager.new(self, sky_geometry.mesh)
 	
 	
 	while not file.eof_reached():
@@ -286,7 +286,7 @@ func load_game():
 	
 	file.close()
 	
-	self.space.update_coverage(self)
+	self.space.update_coverage()
 	
 	_redraw_roads()
 	_redraw_resources()
@@ -413,11 +413,10 @@ func next_turn():
 	cities.post_update()
 	cities.assign_workers(builder)
 	
-	space.update_coverage(self)
-	
 	taxes.earn_taxes(roads.total_flows)
 	taxes.pay_costs(roads.facilities(), roads)
 	
+	space.update_turn()
 	stats.update_turn()
 	
 	_redraw_roads()

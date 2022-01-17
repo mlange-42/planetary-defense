@@ -1,5 +1,6 @@
 class_name SpaceManager
 
+var planet
 
 var sky_nodes: Array
 var covered: Array
@@ -7,7 +8,10 @@ var covered: Array
 var coverage: int = 0
 
 
-func _init(mesh: ArrayMesh):
+# warning-ignore:shadowed_variable
+func _init(planet, mesh: ArrayMesh):
+	self.planet = planet
+	
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(mesh, 0)
 	
@@ -19,7 +23,18 @@ func _init(mesh: ArrayMesh):
 		covered.append(false)
 
 
-func update_coverage(planet):
+func update_turn():
+	update_coverage()
+	
+	var prop = Resources.MAX_REVEAL_PROPORTION * coverage / 100.0
+	if prop > 0:
+		var revealed = planet.resources.reveal_random_resources(prop, 1)
+		for node in revealed:
+			var res = planet.resources.resources[node][0]
+			planet.messages.add_message(node, "%s deposit prospected" % [Resources.RES_NAMES[res]], Consts.MESSAGE_INFO)
+
+
+func update_coverage():
 	var stations = []
 	
 	var facis = planet.roads.facilities()
