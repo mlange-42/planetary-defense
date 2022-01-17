@@ -8,7 +8,9 @@ A game about planetary colonization and defense, with a focus on infrastructure 
 
 **[Read the tutorial](docs/tutorial.md)** for getting started.
 
-![Screenshot](https://user-images.githubusercontent.com/44003176/148706037-14bef694-38a0-4245-89a0-8e61736be1ad.png)
+![Screenshot](https://user-images.githubusercontent.com/44003176/149753990-7eb8929d-61ec-4da1-931e-b870d78dba06.png)
+
+![Screenshot](https://user-images.githubusercontent.com/44003176/149754010-adcd3923-3601-4627-ad63-d882966a8ea8.png)
 
 Made with [Godot](https://godotengine.org/) and :crab: [Rust](https://rust-lang.org).
 
@@ -22,7 +24,7 @@ The player lands on an uninhabited planet and tries to build a well-fortified ci
 
 Build and grow cities.
 Manage their surrounding land use, to produce vitally needed food and resources.
-Build a transport network to supply cities and military facilities.
+Build a transport network or roads, railways, power lines and more to supply cities and military facilities.
 Repel asteroids, alien invasions and other yet unknown dangers.
 
 ## Features
