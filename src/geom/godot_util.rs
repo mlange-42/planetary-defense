@@ -187,6 +187,7 @@ pub fn to_mesh(
     vertices: &[Vector3],
     faces: &[(usize, usize, usize)],
     colors: Option<ColorArray>,
+    invert_normals: bool,
 ) -> Ref<ArrayMesh, Unique> {
     let mut verts = Vector3Array::new();
     let mut indices = Int32Array::new();
@@ -196,13 +197,18 @@ pub fn to_mesh(
 
     for (v, n) in vertices.iter().zip(norm) {
         verts.push(*v);
-        normals.push(n);
+        normals.push(if invert_normals { -n } else { n });
     }
 
     for face in faces {
         indices.push(face.0 as i32);
-        indices.push(face.1 as i32);
-        indices.push(face.2 as i32);
+        if invert_normals {
+            indices.push(face.2 as i32);
+            indices.push(face.1 as i32);
+        } else {
+            indices.push(face.1 as i32);
+            indices.push(face.2 as i32);
+        }
     }
 
     let arr = VariantArray::new_shared();

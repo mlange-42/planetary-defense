@@ -46,6 +46,7 @@ export var water_material: Material = preload("res://assets/materials/planet/wat
 var facilities: Spatial
 
 var network_geometries: Dictionary = {}
+var sky_geometry: SkyGeometry
 
 var path_debug: DebugDraw
 var resource_debug: DebugDraw
@@ -141,6 +142,9 @@ func _ready():
 	var collision = _create_collision(result[2])
 	add_child(collision)
 	
+	sky_geometry = SkyGeometry.new(self)
+	add_child(sky_geometry)
+	
 	if not smooth:
 		GeoUtil.split_unsmooth(ground.mesh)
 	
@@ -160,6 +164,7 @@ func _ready():
 		
 		self.resources.generate_resources()
 		_redraw_resources()
+		_redraw_sky()
 		
 		if not load_planet:
 			FileUtil.create_user_dir(Consts.SAVEGAME_DIR)
@@ -276,6 +281,7 @@ func load_game():
 	
 	_redraw_roads()
 	_redraw_resources()
+	_redraw_sky()
 
 
 func calc_point_path(from: int, to: int, type: int) -> Array:
@@ -327,6 +333,10 @@ func _redraw_roads():
 
 func _redraw_resources():
 	resource_debug.draw_resources(planet_data, resources)
+
+
+func _redraw_sky():
+	sky_geometry.update_coverage()
 
 
 func draw_flows(commodity: String, color1: Color, color2: Color) -> int:

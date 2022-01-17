@@ -1,5 +1,7 @@
+use gdnative::api::ArrayMesh;
 use std::collections::HashMap;
 
+use crate::geom::godot_util::to_mesh;
 use gdnative::prelude::*;
 
 use crate::geom::util::ll_to_xyz;
@@ -15,6 +17,9 @@ impl IcoSphere {
     }
 
     #[export]
+    fn _init(&mut self, _owner: &Reference) {}
+
+    #[export]
     pub fn create_ico_sphere(
         &self,
         _owner: &Reference,
@@ -22,6 +27,19 @@ impl IcoSphere {
         subdivisions: u32,
     ) -> (Vec<Vector3>, Vec<(usize, usize, usize)>) {
         IcoSphereGenerator::new(radius, subdivisions).generate()
+    }
+
+    #[export]
+    pub fn create_ico_sphere_mesh(
+        &self,
+        _owner: &Reference,
+        radius: f32,
+        subdivisions: u32,
+        invert_normals: bool,
+    ) -> Ref<ArrayMesh, Unique> {
+        let res = IcoSphereGenerator::new(radius, subdivisions).generate();
+
+        to_mesh(&res.0, &res.1, None, invert_normals)
     }
 }
 
