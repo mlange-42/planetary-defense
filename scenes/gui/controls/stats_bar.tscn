@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/styles/panel_stats_bar.stylebox" type="StyleBox" id=1]
 [ext_resource path="res://assets/fonts/consolas_20.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/icons/menu/next_turn.svg" type="Texture" id=4]
 [ext_resource path="res://assets/shortkeys/ctrl_t.tres" type="ShortCut" id=5]
 [ext_resource path="res://scenes/gui/controls/commodity_stats.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/icons/facilities/ground_station.svg" type="Texture" id=7]
 [ext_resource path="res://assets/icons/commodities/money.svg" type="Texture" id=9]
 
 [node name="StatsBar" type="PanelContainer"]
@@ -187,8 +188,43 @@ custom_fonts/font = ExtResource( 2 )
 text = "1000"
 valign = 1
 
-[node name="Control" type="Control" parent="HBoxContainer"]
+[node name="Dummy3" type="Control" parent="HBoxContainer"]
 margin_left = 862.0
+margin_right = 886.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 24, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CoverageInfos" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 890.0
+margin_right = 940.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect5" type="TextureRect" parent="HBoxContainer/CoverageInfos"]
+margin_top = 4.0
+margin_right = 24.0
+margin_bottom = 28.0
+size_flags_vertical = 4
+texture = ExtResource( 7 )
+
+[node name="CoverageLabel" type="Label" parent="HBoxContainer/CoverageInfos"]
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 50.0
+margin_bottom = 26.0
+hint_tooltip = "Sky communication coverage"
+mouse_filter = 0
+custom_fonts/font = ExtResource( 2 )
+text = "0%"
+valign = 1
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_left = 944.0
 margin_right = 1188.0
 margin_bottom = 32.0
 size_flags_horizontal = 3

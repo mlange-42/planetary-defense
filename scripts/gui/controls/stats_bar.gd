@@ -8,6 +8,7 @@ onready var budget_label = find_node("BudgetLabel")
 onready var taxes_label = find_node("TaxesLabel")
 onready var maintenance_label = find_node("MaintenanceLabel")
 onready var net_label = find_node("NetLabel")
+onready var coverage_label = find_node("CoverageLabel")
 onready var turn_label = find_node("TurnLabel")
 
 onready var food: CommodityStats = find_node("Food")
@@ -48,6 +49,10 @@ func update_commodities(planet: Planet):
 		var info = infos[comm]
 		var f = planet.roads.total_flows.get(comm, 0)
 		info.set_values(planet.roads.total_sources.get(comm, 0), f, planet.roads.total_sinks.get(comm, 0))
+
+
+func update_coverage(space: SpaceManager):
+	coverage_label.text = "%d%%" % space.coverage
 
 
 func _on_NextTurnButton_pressed():
