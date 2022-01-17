@@ -2,7 +2,6 @@ extends MeshInstance
 class_name SkyGeometry
 
 var planet
-var coverage: int = 0
 
 
 # warning-ignore:shadowed_variable
@@ -25,39 +24,17 @@ func _process(_delta):
 		visible = false
 
 
-func update_coverage():
-	var stations = []
-	
-	var facis = planet.roads.facilities()
-	for node in facis:
-		var fac = facis[node]
-		if fac is PowerPlant:
-			stations.append( planet.planet_data.get_position(node) )
-	
+func draw_coverage():
 	var col1 = Color(1.0, 1.0, 1.0, 0.4)
 	var col2 = Color(1.0, 1.0, 1.0, 0.0)
 	
-	var count: int = 0
-	
-	var angle = deg2rad(45)
-	
 	var mdt = MeshDataTool.new()
 	mdt.create_from_surface(self.mesh, 0)
-	for i in range(mdt.get_vertex_count()):
-		var vertex: Vector3 = mdt.get_vertex(i)
-		
-		var covered = false
-		for v in stations:
-			if (vertex).angle_to(v) < angle:
-				covered = true
-				count += 1
-				break
-		
-		mdt.set_vertex_color(i, col2 if covered else col1)
 	
-	self.coverage = (100 * count) / mdt.get_vertex_count()
+	var covered = planet.space.covered
+	for i in range(mdt.get_vertex_count()):
+		mdt.set_vertex_color(i, col2 if covered[i] else col1)
 	
 	mesh.surface_remove(0)
 	mdt.commit_to_surface(mesh)
 	self.mesh = mesh
-

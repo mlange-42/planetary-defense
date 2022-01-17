@@ -44,7 +44,7 @@ func init(node: int, planet, type: String):
 
 # warning-ignore:unused_argument
 func on_ready(_planet_data):
-	pass
+	calc_is_supplied()
 
 
 func removed(_planet):

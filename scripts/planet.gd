@@ -65,6 +65,7 @@ var taxes: TaxManager
 var resources: ResourceManager
 var messages: MessageManager
 var story: StoryManager
+var space: SpaceManager
 
 # Array of Dictionaries to override parameters
 func _init(params: Array):
@@ -161,8 +162,10 @@ func _ready():
 		self.builder = BuildManager.new(consts, self, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, self)
+		self.space = SpaceManager.new(sky_geometry.mesh)
 		
 		self.resources.generate_resources()
+		self.space.update_coverage(self)
 		_redraw_resources()
 		_redraw_sky()
 		
@@ -253,6 +256,10 @@ func load_game():
 	self.flow = FlowManager.new(roads)
 	self.cities = CityManager.new(consts, self)
 	
+	
+	self.space = SpaceManager.new(sky_geometry.mesh)
+	
+	
 	while not file.eof_reached():
 		var line: String = file.get_line()
 		
@@ -278,6 +285,8 @@ func load_game():
 			roads.get_facility(facility.city_node_id).add_facility(node, facility)
 	
 	file.close()
+	
+	self.space.update_coverage(self)
 	
 	_redraw_roads()
 	_redraw_resources()
@@ -336,7 +345,7 @@ func _redraw_resources():
 
 
 func _redraw_sky():
-	sky_geometry.update_coverage()
+	sky_geometry.draw_coverage()
 
 
 func draw_flows(commodity: String, color1: Color, color2: Color) -> int:
@@ -404,6 +413,8 @@ func next_turn():
 	cities.post_update()
 	cities.assign_workers(builder)
 	
+	space.update_coverage(self)
+	
 	taxes.earn_taxes(roads.total_flows)
 	taxes.pay_costs(roads.facilities(), roads)
 	
@@ -411,5 +422,6 @@ func next_turn():
 	
 	_redraw_roads()
 	_redraw_resources()
+	_redraw_sky()
 	
 	emit_budget()
