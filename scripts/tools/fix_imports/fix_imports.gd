@@ -9,7 +9,7 @@ func _ready() -> void:
 func _process(delta) -> void:
 	delay = delay + delta
 	text = String(delay)
-	if (delay > 10):
+	if (delay > 120):
 		push_warning("Exiting reimport process...")
 		OS.exit_code = 0
 		get_tree().quit()

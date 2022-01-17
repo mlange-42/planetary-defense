@@ -54,7 +54,7 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
       - name: Reimport Assets
         run: godot --editor scenes/tools/fix_imports/fix_imports.tscn
-        timeout-minutes: 1
+        timeout-minutes: 3
         continue-on-error: true
       - name: Godot Linux Build
         run: |
@@ -119,7 +119,7 @@ jobs:
           mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
       - name: Reimport Assets
         run: godot --editor scenes/tools/fix_imports/fix_imports.tscn
-        timeout-minutes: 1
+        timeout-minutes: 3
         continue-on-error: true
       - name: Godot Windows Build
         run: |
