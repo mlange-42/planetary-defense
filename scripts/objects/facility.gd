@@ -97,8 +97,9 @@ func read(dict: Dictionary):
 		
 	var co = dict["conversions"]
 	for comm in co:
+		var nodes = comm[0]
 		var c = comm[1]
-		conversions[comm[0] as int] = [c[0] as int, c[1] as int, c[2]]
+		conversions[[nodes[0] as int, nodes[1] as int]] = [c[0] as int, c[1] as int, c[2]]
 
 
 func calc_is_supplied():
