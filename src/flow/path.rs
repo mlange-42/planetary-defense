@@ -112,12 +112,16 @@ impl MultiCommodityFlow {
         self.builder.solve(load_dependence);
     }
 
+    /// A list of edge flows [from, to, amount, cost, capacity]
     #[export]
     fn get_flows(&self, _owner: &Reference) -> GodotFlows {
         let flows = self.builder.get_flows();
         to_godot_flows(flows)
     }
 
+    // TODO: can be an array
+    /// A Dictionary of per-node sent and received flows.
+    /// Keys are commodity IDs, values are amounts [sent, received]
     #[export]
     fn get_node_flows(&self, _owner: &Reference, node: usize) -> Option<Dictionary<Shared>> {
         let ids = self.builder.commodity_ids();
@@ -136,6 +140,9 @@ impl MultiCommodityFlow {
         }
     }
 
+    // TODO: values can be arrays
+    /// A Dictionary of end-to-end flows.
+    /// Keys are [from, to] node IDs, values are Dictionaries commodity: amount
     #[export]
     fn get_pair_flows(&self, _owner: &Reference) -> Dictionary<Shared> {
         let flows = self.builder.get_pair_flows();
@@ -153,6 +160,8 @@ impl MultiCommodityFlow {
         dict.into_shared()
     }
 
+    // TODO: can be an array
+    /// Total source amount per commodity
     #[export]
     fn get_total_sources(&self, _owner: &Reference) -> Dictionary<Shared> {
         let sources = self.builder.get_total_sources();
@@ -166,6 +175,8 @@ impl MultiCommodityFlow {
         dict.into_shared()
     }
 
+    // TODO: can be an array
+    /// Total sink amount per commodity
     #[export]
     fn get_total_sinks(&self, _owner: &Reference) -> Dictionary<Shared> {
         let sinks = self.builder.get_total_sinks();

@@ -161,7 +161,7 @@ rect_min_size = Vector2( 10, 0 )
 [node name="Resources" parent="Entries" instance=ExtResource( 8 )]
 margin_left = 134.0
 margin_right = 250.0
-commodity = "Resources"
+commodity = 1
 
 [node name="Control2" type="Control" parent="Entries"]
 margin_left = 254.0
@@ -172,7 +172,7 @@ rect_min_size = Vector2( 10, 0 )
 [node name="Products" parent="Entries" instance=ExtResource( 8 )]
 margin_left = 268.0
 margin_right = 384.0
-commodity = "Products"
+commodity = 2
 
 [node name="Control3" type="Control" parent="Entries"]
 margin_left = 388.0
@@ -183,4 +183,4 @@ rect_min_size = Vector2( 10, 0 )
 [node name="Electricity" parent="Entries" instance=ExtResource( 8 )]
 margin_left = 402.0
 margin_right = 518.0
-commodity = "Electricity"
+commodity = 3

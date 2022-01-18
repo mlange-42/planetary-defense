@@ -48,11 +48,11 @@ func update_info(facility):
 	container.visible = true
 	
 	for comm in Commodities.COMM_ALL:
-		var flows = facility.flows.get(comm, [0, 0])
+		var flows = facility.flows[comm]
 		var pot_source = 0
 		for key in facility.conversions:
 			if key[1] == comm:
 				var conv = facility.conversions[key]
-				pot_source += facility.sinks.get(key[0], 0) * conv[1] / conv[0]
+				pot_source += facility.sinks[key[0]] * conv[1] / conv[0]
 		
-		infos[comm].set_values(facility.sources.get(comm, 0) + pot_source, flows[0], flows[1], facility.sinks.get(comm, 0))
+		infos[comm].set_values(facility.sources[comm] + pot_source, flows[0], flows[1], facility.sinks[comm])

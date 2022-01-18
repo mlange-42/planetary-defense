@@ -9,13 +9,14 @@ var facility_id: int
 var node_id: int
 
 # key: comm id, value: amount
-var sources: Dictionary
+var sources: Array = Commodities.create_int_array()
 # key: comm id, value: amount
-var sinks: Dictionary
+var sinks: Array = Commodities.create_int_array()
 # key: [from comm, to comm], value: [from amount, to amount, max from amount]
 var conversions: Dictionary
 
-var flows: Dictionary
+# key comm id, values: amounts [sent, received]
+var flows: Array
 
 var is_supplied: bool = false
 
@@ -25,6 +26,10 @@ var is_supplied: bool = false
 func init(node: int, planet, type: String):
 	self.node_id = node
 	self.type = type
+	
+	flows = []
+	for _c in Commodities.COMM_ALL:
+		flows.append([0, 0])
 	
 	var s = Facilities.FACILITY_SINKS[type]
 	if s != null:
@@ -78,17 +83,17 @@ func read(dict: Dictionary):
 	is_supplied = dict["is_supplied"] as bool
 	
 	var fl = dict["flows"]
-	for comm in fl:
-		var f = fl[comm]
-		flows[comm as int] = [f[0] as int, f[1] as int]
+	for i in range(flows.size()):
+		var f = fl[i]
+		flows[i] = [f[0] as int, f[1] as int]
 		
 	var so = dict["sources"]
-	for comm in so:
-		sources[comm as int] = so[comm] as int
+	for i in range(so.size()):
+		sources[i] = so[i] as int
 		
 	var si = dict["sinks"]
-	for comm in si:
-		sinks[comm as int] = si[comm] as int
+	for i in range(si.size()):
+		sinks[i] = si[i] as int
 		
 	var co = dict["conversions"]
 	for comm in co:
@@ -98,8 +103,8 @@ func read(dict: Dictionary):
 
 func calc_is_supplied():
 	var res = true
-	for comm in sinks:
-		var flow = flows.get(comm, [0, 0])
+	for comm in range(sinks.size()):
+		var flow = flows[comm]
 		if flow[1] < sinks[comm]:
 			res = false
 			break
@@ -108,59 +113,53 @@ func calc_is_supplied():
 
 
 func get_missing_supply() -> Dictionary:
-	var res = {}
+	var res = Commodities.create_int_array()
 	
-	for comm in sinks:
-		var flow = flows.get(comm, [0, 0])
+	for comm in range(sinks.size()):
+		var flow = flows[comm]
 		if flow[1] < sinks[comm]:
-			res[comm] = res.get(comm, 0) + sinks[comm] - flow[1]
+			res[comm] += sinks[comm] - flow[1]
 	
 	return res
 
 
-func get_total_sources() -> Dictionary:
-	var res = {}
-	for s in sources:
-		if res.has(s):
-			res[s] += sources[s]
-		else:
-			res[s] = sources[s]
+func get_total_sources() -> Array:
+	var res = Commodities.create_int_array()
+	for i in range(sources.size()):
+		res[i] += sources[i]
 	
 	for c in conversions:
 		var to = c[1]
 		var amount = conversions[c]
 		var out_value = (amount[2] * amount[1]) / amount[0]
-		if res.has(to):
-			res[to] += out_value
-		else:
-			res[to] = out_value
+		res[to] += out_value
 	
 	return res
 
 
 func clear_flows():
-	flows.clear()
+	for i in range(flows.size()):
+		flows[i][0] = 0
+		flows[i][1] = 0
 
+func clear_production():
+	for i in range(sources.size()):
+		sources[i] = 0
+		sinks[i] = 0
+	conversions.clear()
+
+# TODO: make argument an array
 func add_flows(f: Dictionary):
 	for key in f:
 		var v = f[key]
-		if flows.has(key):
-			var old = flows[key]
-			flows[key] = [old[0] + v[0], old[1] + v[1]]
-		else:
-			flows[key] = v
+		var old = flows[key]
+		flows[key] = [old[0] + v[0], old[1] + v[1]]
 
 func add_source(commodity: int, amount: int):
-	if commodity in sources:
-		sources[commodity] += amount
-	else:
-		sources[commodity] = amount
+	sources[commodity] += amount
 
 func add_sink(commodity: int, amount: int):
-	if commodity in sinks:
-		sinks[commodity] += amount
-	else:
-		sinks[commodity] = amount
+	sinks[commodity] += amount
 
 func add_conversion(from: int, from_amount: int, to: int, to_amount: int, max_amount):
 	conversions[[from, to]] = [from_amount, to_amount, max_amount]

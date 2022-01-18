@@ -38,16 +38,16 @@ func solve():
 			var to = from_to_comm[1]
 			var conv = facility.conversions[from_to_comm]
 			
-			if facility.sinks.has(from):
+			if facility.sinks[from] > 0:
 				flow.add_source_edge(Commodities.to_mode_id(facility.node_id, to), to, 0, source_cost)
 				flow.set_converter(Commodities.to_mode_id(facility.node_id, from), \
 									from, conv[0], to, conv[1],\
 									Commodities.to_mode_id(facility.node_id, to))
 		
-		for source in facility.sources:
+		for source in range(facility.sources.size()):
 			flow.add_source_edge(Commodities.to_mode_id(facility.node_id, source), source, facility.sources[source], source_cost)
 			
-		for sink in facility.sinks:
+		for sink in range(facility.sinks.size()):
 			flow.add_sink_edge(Commodities.to_mode_id(facility.node_id, sink), sink, facility.sinks[sink], sink_cost)
 	
 	flow.solve(load_depencence)

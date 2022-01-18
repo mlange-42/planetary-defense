@@ -178,11 +178,11 @@ func remove_facility(node: int):
 func update_visuals(planet_data):
 	city_sign.set_text("%s (%d/%d)" % [name, workers(), population()])
 	
-	var flows_food = flows.get(Commodities.COMM_FOOD, [0, 0])
-	var demand_food = sinks.get(Commodities.COMM_FOOD, 0)
+	var flows_food = flows[Commodities.COMM_FOOD]
+	var demand_food = sinks[Commodities.COMM_FOOD]
 	
-	var flows_prod = flows.get(Commodities.COMM_PRODUCTS, [0, 0])
-	var demand_prod = sinks.get(Commodities.COMM_PRODUCTS, 0)
+	var flows_prod = flows[Commodities.COMM_PRODUCTS]
+	var demand_prod = sinks[Commodities.COMM_PRODUCTS]
 	
 	if flows_food[1] < demand_food:
 		city_sign.set_warning_level(Consts.MESSAGE_ERROR)
