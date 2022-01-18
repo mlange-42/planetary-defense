@@ -20,6 +20,7 @@ func clear():
 	network.reset_flow()
 
 func solve():
+	self.clear()
 	flow.reset()
 	
 	var t_cost = 0
@@ -63,27 +64,19 @@ func solve():
 			if f != null:
 				facility.add_flows(f)
 	
-	self.clear()
-	
 	var flows = flow.get_flows()
-	var i = 0
-	for edge in flows:
-		# TODO: check - was < 1 before, not sure why. < 0 should be sink or source
-		if edge[0] < 0 or edge[1] < 0: # or edge[0] == edge[1]:
-			continue
-		
+	var comm_flows = flow.get_commodity_flows()
+	for i in range(flows.size()):
 		var path_cap = edges[i]
 		var path = path_cap[0]
-		var amount = edge[2]
+		var amount = flows[i]
 		
 		for j in range(path.size()-1):
 			var p1 = path[j]
 			var p2 = path[j+1]
 			var cost = network.get_edge([p1, p2]).cost
-			network.network.set_edge_flow(p1, p2, amount)
 			t_cost += amount * cost
-		
-		i += 1
+	
 	
 	var total_flows = Commodities.create_int_array()
 	for comm in Commodities.COMM_ALL:
@@ -98,6 +91,8 @@ func solve():
 			total_flows[comm] += edge_flow[comm]
 	
 	network.total_cost = t_cost
+	network.edge_flows = flows
+	network.commodity_flows = comm_flows
 	network.pair_flows = res_pair_flows
 	network.total_flows = total_flows
 	network.total_sources = flow.get_total_sources()

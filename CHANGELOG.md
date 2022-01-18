@@ -8,6 +8,8 @@
 * Sky dome to calculate and visualize communication coverage of certain facilities
 * Ground station facility to generate coverage
 * Resources are initially hidden, and only revealed through cities and coverage
+* Flows view now allows to show network flow (by animation) for each commodity separately
+* Button to toggle end-to-end flow visibility in flows view
 
 ### Changed
 

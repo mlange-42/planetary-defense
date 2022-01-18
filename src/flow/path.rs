@@ -12,8 +12,6 @@ use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
 use itertools::Itertools;
 
-type GodotFlows = Vec<(isize, isize, u32, u32, u32)>;
-
 #[derive(Eq, PartialEq, ToVariant)]
 pub struct NodePair(isize, isize);
 impl ToVariantEq for NodePair {}
@@ -118,11 +116,16 @@ impl MultiCommodityFlow {
         self.builder.solve(load_dependence);
     }
 
-    /// A list of edge flows [from, to, amount, cost, capacity]
+    /// A list of edge flow amounts per edge
     #[export]
-    fn get_flows(&self, _owner: &Reference) -> GodotFlows {
-        let flows = self.builder.get_flows();
-        to_godot_flows(flows)
+    fn get_flows(&self, _owner: &Reference) -> Vec<u32> {
+        self.builder.get_flows()
+    }
+
+    /// A list of edge commodity flows od length num_comm * edges
+    #[export]
+    fn get_commodity_flows(&self, _owner: &Reference) -> &[u32] {
+        self.builder.get_commodity_flows()
     }
 
     /// An array of sent and received flows for the node.
@@ -191,21 +194,6 @@ impl MultiCommodityFlow {
 
         res
     }
-}
-
-fn to_godot_flows(flows: &[Flow<usize, usize>]) -> GodotFlows {
-    flows
-        .iter()
-        .map(|flow| {
-            (
-                vertex_to_id(&flow.a),
-                vertex_to_id(&flow.b),
-                flow.amount,
-                flow.cost as u32,
-                flow.capacity as u32,
-            )
-        })
-        .collect::<Vec<_>>()
 }
 
 fn vertex_to_id(vertex: &Vertex<usize, usize>) -> isize {
@@ -334,6 +322,7 @@ struct Graph {
     load_dependence: f32,
     nodes: Vec<NodeData>,
     edges: Vec<Edge>,
+    commodity_flows: Vec<u32>,
     out_edges: Vec<Vec<usize>>,
     pair_flows: HashMap<(usize, usize), Vec<u32>>,
 }
@@ -360,12 +349,15 @@ impl Graph {
             load_dependence,
             nodes,
             edges: Vec::new(),
+            commodity_flows: Vec::new(),
             out_edges,
             pair_flows: Default::default(),
         }
     }
 
     fn solve(&mut self) {
+        self.commodity_flows = vec![0; self.edges.len() * self.commodities];
+
         let mut sources = vec![None; self.commodities];
         let mut sinks = vec![None; self.commodities];
         for (i, n) in self.nodes.iter().enumerate() {
@@ -432,7 +424,7 @@ impl Graph {
 
     fn apply_path(&mut self, path: &[PathNode], commodity: usize, amount: u32) {
         for p in path.iter().skip(1) {
-            self.apply_to_edge(p.1.unwrap(), amount);
+            self.apply_to_edge(p.1.unwrap(), commodity, amount);
         }
         self.nodes[path[0].0].supply[commodity] -= amount as i32;
         self.nodes[path[path.len() - 1].0].supply[commodity] += amount as i32;
@@ -486,8 +478,9 @@ impl Graph {
         }
     }
 
-    fn apply_to_edge(&mut self, edge: usize, amount: u32) {
+    fn apply_to_edge(&mut self, edge: usize, commodity: usize, amount: u32) {
         self.edges[edge].data.flow += amount as i32;
+        self.commodity_flows[edge * self.commodities + commodity] += amount;
     }
 
     fn find_path(&self, commodity: usize, start: usize) -> Option<(Vec<PathNode>, u32)> {
@@ -527,6 +520,7 @@ pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
     edge_list: EdgeList<T, U>,
     converters: Vec<(Vertex<T, U>, Converter<T, U>)>,
     flows: Option<Vec<Flow<T, U>>>,
+    commodity_flows: Option<Vec<u32>>,
     pair_flows: Option<PairFlows<T, U>>,
     nodes: Option<BTreeMap<Vertex<T, U>, NodeData>>,
     commodity_ids: Option<BTreeMap<U, usize>>,
@@ -542,6 +536,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             edge_list: Vec::new(),
             converters: Default::default(),
             flows: None,
+            commodity_flows: None,
             pair_flows: None,
             nodes: None,
             commodity_ids: None,
@@ -684,24 +679,32 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         let mut total_sinks: BTreeMap<_, _> =
             commodity_mapper.iter().map(|(c, _)| (*c, 0_u32)).collect();
 
+        let mut comm_flows = vec![];
+
         let flows: Vec<_> = g
             .edges
             .iter()
-            .map(|e| {
+            .enumerate()
+            .filter_map(|(i, e)| {
                 let a = node_mapper[&e.a.0];
                 let b = node_mapper[&e.b.0];
                 if let Vertex::Source(comm) = a {
                     *total_sources.entry(comm).or_default() += e.data.capacity as u32;
-                }
-                if let Vertex::Sink(comm) = b {
+                    None
+                } else if let Vertex::Sink(comm) = b {
                     *total_sinks.entry(comm).or_default() += e.data.capacity as u32;
-                }
-                Flow {
-                    a: a.clone(),
-                    b: b.clone(),
-                    amount: e.data.flow as u32,
-                    cost: e.data.cost,
-                    capacity: e.data.capacity,
+                    None
+                } else {
+                    comm_flows.extend_from_slice(
+                        &g.commodity_flows[(i * g.commodities)..((i + 1) * g.commodities)],
+                    );
+                    Some(Flow {
+                        a: a.clone(),
+                        b: b.clone(),
+                        amount: e.data.flow as u32,
+                        cost: e.data.cost,
+                        capacity: e.data.capacity,
+                    })
                 }
             })
             .collect();
@@ -728,6 +731,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .collect();
 
         self.flows = Some(flows);
+        self.commodity_flows = Some(comm_flows);
         self.pair_flows = Some(pair_flows);
         self.total_source = Some(
             total_sources
@@ -756,10 +760,19 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .expect("Unable to extract commodity id from unsolved graph")
     }
 
-    fn get_flows(&self) -> &[Flow<T, U>] {
+    fn get_flows(&self) -> Vec<u32> {
         self.flows
             .as_ref()
             .expect("Unable to extract flows from unsolved graph")
+            .iter()
+            .map(|f| f.amount)
+            .collect()
+    }
+
+    fn get_commodity_flows(&self) -> &[u32] {
+        self.commodity_flows
+            .as_ref()
+            .expect("Unable to extract commodity flows from unsolved graph")
     }
 
     fn get_pair_flows(&self) -> &PairFlows<T, U> {
@@ -790,9 +803,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
 #[cfg(test)]
 mod tests {
-    use super::Vertex::Node;
     use super::*;
-    use std::collections::HashMap;
 
     #[test]
     fn test_build_network() {
@@ -867,10 +878,9 @@ mod tests {
 
         builder.solve(0.2);
         let flows = builder.get_flows();
-        let map: HashMap<_, _> = flows.iter().map(|f| ((f.a, f.b), f.amount)).collect();
 
-        println!("{:?}", map);
-        assert_eq!(map[&(Node("SrcA"), Node("ConvAB"))], 10);
-        assert_eq!(map[&(Node("ConvAB"), Node("SinkB"))], 10);
+        println!("{:?}", flows);
+        assert_eq!(flows[0], 10);
+        assert_eq!(flows[1], 10);
     }
 }

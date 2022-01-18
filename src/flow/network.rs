@@ -20,7 +20,7 @@ pub struct Edge {
     #[property]
     net_type: i32,
     #[property]
-    flow: u32,
+    path_id: i32,
     #[property]
     capacity: u32,
     #[property]
@@ -40,9 +40,9 @@ impl Edge {
             from: from as i32,
             to: to as i32,
             net_type: net_type as i32,
+            path_id: -1,
             capacity,
             cost,
-            flow: 0,
         }
     }
     fn with_flow(
@@ -51,15 +51,15 @@ impl Edge {
         net_type: usize,
         capacity: u32,
         cost: u32,
-        flow: u32,
+        path_id: i32,
     ) -> Self {
         Self {
             from: from as i32,
             to: to as i32,
             net_type: net_type as i32,
-            flow,
             cost,
             capacity,
+            path_id,
         }
     }
 }
@@ -135,10 +135,10 @@ impl FlowNetwork {
         net_type: usize,
         capacity: u32,
         cost: u32,
-        flow: u32,
+        path_id: i32,
     ) {
         self.network
-            .connect_points_directional(v1, v2, net_type, capacity, cost, flow);
+            .connect_points_directional(v1, v2, net_type, capacity, cost, path_id);
     }
 
     #[export]
@@ -177,18 +177,8 @@ impl FlowNetwork {
     }
 
     #[export]
-    pub fn set_edge_flow(&mut self, _owner: &Reference, from: usize, to: usize, flow: u32) {
-        self.network.edges.get_mut(&(from, to)).unwrap().flow = flow;
-    }
-
-    #[export]
-    pub fn get_collapsed_edges(&self, _owner: &Reference) -> Vec<(Vec<usize>, u32, u32)> {
+    pub fn get_collapsed_edges(&mut self, _owner: &Reference) -> Vec<(Vec<usize>, u32, u32)> {
         self.network.get_collapsed_edges()
-    }
-
-    #[export]
-    pub fn get_total_flow(&self, _owner: &Reference) -> u32 {
-        self.network.edges.iter().map(|(_, e)| e.flow).sum()
     }
 
     #[export]
@@ -215,7 +205,7 @@ pub struct Network {
 impl Network {
     pub fn reset_flow(&mut self) {
         for (_, edge) in self.edges.iter_mut() {
-            edge.flow = 0;
+            edge.path_id = -1;
         }
     }
 
@@ -251,8 +241,8 @@ impl Network {
         capacity: u32,
         cost: u32,
     ) {
-        self._connect(v1, v2, net_type, capacity, cost, 0);
-        self._connect(v2, v1, net_type, capacity, cost, 0);
+        self._connect(v1, v2, net_type, capacity, cost, -1);
+        self._connect(v2, v1, net_type, capacity, cost, -1);
     }
 
     pub fn connect_points_directional(
@@ -262,9 +252,9 @@ impl Network {
         net_type: usize,
         capacity: u32,
         cost: u32,
-        flow: u32,
+        path_id: i32,
     ) {
-        self._connect(v1, v2, net_type, capacity, cost, flow);
+        self._connect(v1, v2, net_type, capacity, cost, path_id);
     }
 
     pub fn disconnect_points(&mut self, v1: usize, v2: usize) {
@@ -280,7 +270,7 @@ impl Network {
         )
     }
 
-    pub fn get_collapsed_edges(&self) -> Vec<(Vec<usize>, u32, u32)> {
+    pub fn get_collapsed_edges(&mut self) -> Vec<(Vec<usize>, u32, u32)> {
         let mut edge_list = vec![];
 
         for (key, n) in &self.neighbors {
@@ -291,6 +281,10 @@ impl Network {
             for i in 0..n.len() {
                 let trace = self.trace_edge(*key, i);
                 if let Some(trace) = trace {
+                    let idx = edge_list.len();
+                    for pp in trace.0.windows(2) {
+                        self.edges[&(pp[0], pp[1])].path_id = idx as i32;
+                    }
                     edge_list.push(trace);
                 }
             }
@@ -339,7 +333,7 @@ impl Network {
         net_type: usize,
         capacity: u32,
         cost: u32,
-        flow: u32,
+        path_id: i32,
     ) {
         match self.neighbors.entry(v1) {
             Entry::Vacant(e) => {
@@ -357,7 +351,7 @@ impl Network {
         }
         self.edges.insert(
             (v1, v2),
-            Edge::with_flow(v1, v2, net_type, capacity, cost, flow),
+            Edge::with_flow(v1, v2, net_type, capacity, cost, path_id),
         );
     }
 

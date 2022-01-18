@@ -335,6 +335,11 @@ func get_facility(id: int):
 	return roads.get_facility(id)
 
 
+func set_traffic_commodity(comm: int):
+	for tp in network_geometries:
+		(network_geometries[tp] as RoadGeometry).material_override.set_shader_param("channel", comm)
+
+
 func _redraw_roads():
 	for tp in network_geometries:
 		network_geometries[tp].draw_type(planet_data, roads, tp)
@@ -373,6 +378,9 @@ func clear_path():
 
 func clear_flows():
 	flows_graphs.clear_all()
+
+func show_flows(vis: bool):
+	flows_graphs.visible = vis
 
 
 func _add_mesh(mesh: Mesh, name: String) -> GeometryInstance:

@@ -14,6 +14,7 @@ uniform float AnimationBlend: hint_range(0, 1) = 1.0;
 uniform uint tex_width;
 uniform uint tex_height;
 uniform uint margin;
+uniform int channel;
 
 
 
@@ -32,8 +33,22 @@ void fragment() {
 	int frame = int(TIME * Fps) mod Frames;
 	int animation = 0; 
 	
-	if(COLOR.r > 0.0) {
-		animation = min(int(COLOR.r * float(int(UsedAnimations) - 1)) + 1, int(UsedAnimations) - 1);
+	float flow = 0.0;
+	
+	if (channel == 0) {
+		flow = COLOR.r;
+	} else if (channel == 1) {
+		flow = COLOR.g;
+	} else if (channel == 2) {
+		flow = COLOR.b;
+	} else if (channel == 3) {
+		flow = COLOR.a;
+	} else {
+		flow = COLOR.r + COLOR.g + COLOR.b + COLOR.a;
+	}
+	
+	if(flow > 0.0) {
+		animation = min(int(flow * float(int(UsedAnimations) - 1)) + 1, int(UsedAnimations) - 1);
 	}
 	
 	float dx = 1.0 / float(Animations);
@@ -57,7 +72,7 @@ void fragment() {
 	vec4 tex_read = texture(Texture, uv_scaled);
 	vec4 bg_read = texture(Background, uv_scaled_bg);
 	
-	float mix_amount = COLOR.g * AnimationBlend;
+	float mix_amount = AnimationBlend;
 	float alpha = tex_read.a * mix_amount;
 	ALBEDO = bg_read.rgb * (1.0 - alpha) + (tex_read.rgb * alpha);
 }
