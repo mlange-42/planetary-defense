@@ -80,20 +80,20 @@ func read(dict: Dictionary):
 	var fl = dict["flows"]
 	for comm in fl:
 		var f = fl[comm]
-		flows[comm] = [f[0] as int, f[1] as int]
+		flows[comm as int] = [f[0] as int, f[1] as int]
 		
 	var so = dict["sources"]
 	for comm in so:
-		sources[comm] = so[comm] as int
+		sources[comm as int] = so[comm] as int
 		
 	var si = dict["sinks"]
 	for comm in si:
-		sinks[comm] = si[comm] as int
+		sinks[comm as int] = si[comm] as int
 		
 	var co = dict["conversions"]
 	for comm in co:
 		var c = comm[1]
-		conversions[comm[0]] = [c[0] as int, c[1] as int, c[2]]
+		conversions[comm[0] as int] = [c[0] as int, c[1] as int, c[2]]
 
 
 func calc_is_supplied():

@@ -62,21 +62,21 @@ func read(dict: Dictionary):
 		var flows = e[1]
 		var edge_dict = {}
 		for comm in flows:
-			edge_dict[comm[0]] = comm[1] as int
+			edge_dict[comm[0] as int] = comm[1] as int
 		
 		pair_flows[[edge[0] as int, edge[1] as int]] = edge_dict
 	
 	var t_flows = dict["total_flows"]
 	for comm in t_flows:
-		total_flows[comm] = t_flows[comm] as int
+		total_flows[comm as int] = t_flows[comm] as int
 		
 	var t_sources = dict["total_sources"]
 	for comm in t_sources:
-		total_sources[comm] = t_sources[comm] as int
+		total_sources[comm as int] = t_sources[comm] as int
 		
 	var t_sinks = dict["total_sinks"]
 	for comm in t_sinks:
-		total_sinks[comm] = t_sinks[comm] as int
+		total_sinks[comm as int] = t_sinks[comm] as int
 
 
 func connect_points(v1: int, v2: int, type: int, capacity: int, cost: int):

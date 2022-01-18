@@ -28,7 +28,7 @@ func _ready():
 	if s != null:
 		var line = " Demand: "
 		for sink in s:
-			line += "%d %s, " % [sink[1], sink[0]]
+			line += "%d %s, " % [sink[1], Commodities.COMM_NAMES[sink[0]]]
 		text += "\n" + line.substr(0, line.length()-2)
 	
 	self.hint_tooltip = text
