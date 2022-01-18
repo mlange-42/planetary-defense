@@ -118,7 +118,7 @@ impl MultiCommodityFlow {
         self.builder.solve(load_dependence);
     }
 
-    /// A list of edge flows [from, to, amount, cost, capacity]
+    /// A list of edge flow amounts per edge
     #[export]
     fn get_flows(&self, _owner: &Reference) -> GodotFlows {
         let flows = self.builder.get_flows();

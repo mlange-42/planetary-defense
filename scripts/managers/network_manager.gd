@@ -30,7 +30,7 @@ func save() -> Dictionary:
 	for i in range(network.get_edge_count()):
 		var e = network.get_edge_at(i)
 		if Network.get_mode(e.from) == Network.get_mode(e.to):
-			edge_data.append([e.from, e.to, e.net_type, e.flow])
+			edge_data.append([e.from, e.to, e.net_type, e.path_id])
 	
 	dict["edge_data"] = edge_data
 	
@@ -55,9 +55,9 @@ func read(dict: Dictionary):
 		var tp = edge[2] as int
 		var cap = Network.TYPE_CAPACITY[tp]
 		var cost = Network.TYPE_TRANSPORT_COST_1000[tp]
-		var fl = edge[3] as int
+		var path_id = edge[3] as int
 		
-		network.connect_points_directional(v1, v2, tp, cap, cost, fl)
+		network.connect_points_directional(v1, v2, tp, cap, cost, path_id)
 	
 	var p_flows = dict["pair_flows"]
 	for e in p_flows:

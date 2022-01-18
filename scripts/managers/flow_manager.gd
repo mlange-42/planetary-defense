@@ -79,7 +79,6 @@ func solve():
 			var p1 = path[j]
 			var p2 = path[j+1]
 			var cost = network.get_edge([p1, p2]).cost
-			network.network.set_edge_flow(p1, p2, amount)
 			t_cost += amount * cost
 		
 		i += 1
