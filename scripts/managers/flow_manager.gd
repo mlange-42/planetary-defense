@@ -65,16 +65,15 @@ func solve():
 	
 	self.clear()
 	
+	var num_comm = Commodities.COMM_ALL.size()
 	var flows = flow.get_flows()
+	var comm_flows = flow.get_commodity_flows()
 	var i = 0
 	for edge in flows:
-		# TODO: check - was < 1 before, not sure why. < 0 should be sink or source
-		if edge[0] < 0 or edge[1] < 0: # or edge[0] == edge[1]:
-			continue
-		
 		var path_cap = edges[i]
 		var path = path_cap[0]
 		var amount = edge[2]
+		var comm_amounts = comm_flows.slice(i * num_comm, i * num_comm + num_comm - 1)
 		
 		for j in range(path.size()-1):
 			var p1 = path[j]

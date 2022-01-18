@@ -122,7 +122,7 @@ impl MultiCommodityFlow {
     #[export]
     fn get_flows(&self, _owner: &Reference) -> GodotFlows {
         let flows = self.builder.get_flows();
-        to_godot_flows(flows)
+        to_godot_flows(&flows[..])
     }
 
     /// A list of edge commodity flows od length num_comm * edges
@@ -199,7 +199,7 @@ impl MultiCommodityFlow {
     }
 }
 
-fn to_godot_flows(flows: &[Flow<usize, usize>]) -> GodotFlows {
+fn to_godot_flows(flows: &[&Flow<usize, usize>]) -> GodotFlows {
     flows
         .iter()
         .map(|flow| {
@@ -770,10 +770,17 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .expect("Unable to extract commodity id from unsolved graph")
     }
 
-    fn get_flows(&self) -> &[Flow<T, U>] {
+    fn get_flows(&self) -> Vec<&Flow<T, U>> {
         self.flows
             .as_ref()
             .expect("Unable to extract flows from unsolved graph")
+            .iter()
+            .filter(|f| match (&f.a, &f.b) {
+                (Vertex::Source(_), _) => false,
+                (_, Vertex::Sink(_)) => false,
+                (_, _) => true,
+            })
+            .collect()
     }
 
     fn get_commodity_flows(&self) -> &[u32] {
