@@ -9,9 +9,9 @@ var maintenance_facilities: int = 0
 var maintenance_land_use: int = 0
 
 
-func earn_taxes(total_flows: Dictionary):
+func earn_taxes(total_flows: Array):
 	var total = 0
-	for comm in total_flows:
+	for comm in range(total_flows.size()):
 		total += Commodities.COMM_TAX_RATES[comm] * total_flows[comm]
 	
 	taxes = total

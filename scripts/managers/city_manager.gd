@@ -37,8 +37,10 @@ func post_update():
 			var name = facility.name if facility is City else facility.type
 			var miss_text: String = ""
 			var miss = facility.get_missing_supply()
-			for comm in miss:
-				miss_text += "%d %s, " % [miss[comm], Commodities.COMM_NAMES[comm]]
+			for comm in range(miss.size()):
+				var amount = miss[comm]
+				if amount > 0:
+					miss_text += "%d %s, " % [amount, Commodities.COMM_NAMES[comm]]
 			miss_text = miss_text.substr(0, miss_text.length()-2)
 			planet.messages.add_message(facility.node_id, "[u]%s[/u] not supplied\n  Missing: %s" % [name, miss_text], Consts.MESSAGE_WARNING)
 	
@@ -57,11 +59,9 @@ func reveal_resources(city: City):
 
 
 func pre_update_city(city: City):
-	city.sources.clear()
-	city.sinks.clear()
-	city.conversions.clear()
+	city.clear_production()
 	
-	var food_available = city.flows[Commodities.COMM_FOOD][1] if Commodities.COMM_FOOD in city.flows else 0
+	var food_available = city.flows[Commodities.COMM_FOOD][1]
 	food_available -= city.workers()
 	
 	var workers_to_feed = city.workers()
@@ -108,13 +108,13 @@ func pre_update_city(city: City):
 
 
 func post_update_city(city: City) -> float:
-	var food_available = city.flows.get(Commodities.COMM_FOOD, [0, 0])[1]
+	var food_available = city.flows[Commodities.COMM_FOOD][1]
 	food_available -= city.workers()
 	
-	var comm_produced = {}
+	var comm_produced = Commodities.create_int_array()
 	
 	for comm in Commodities.COMM_ALL:
-		comm_produced[comm] = city.flows.get(comm, [0, 0])[0]
+		comm_produced[comm] = city.flows[comm][0]
 	
 	var all_workers_supplied = food_available >= 0
 	
@@ -158,7 +158,7 @@ func post_update_city(city: City) -> float:
 		if planet.planet_data.get_node(node).is_occupied or planet.roads.is_road(node):
 			occupied += 1
 	
-	var products_available = city.flows.get(Commodities.COMM_PRODUCTS, [0, 0])[1]
+	var products_available = city.flows[Commodities.COMM_PRODUCTS][1]
 	var demand = Cities.products_demand(city.population())
 	var share_satisfied = 1.0 if demand == 0 else clamp(products_available / float(demand), 0, 1)
 	var space_growth = clamp(1.0 - (occupied / float(city.cells.size())), 0, 1)
@@ -248,15 +248,11 @@ func assign_city_workers(city: City, builder: BuildManager):
 		else:
 			rel_weights[i] = 1.0 / rel_weights.size()
 	
-	var comm_map = {}
-	for i in range(Commodities.COMM_ALL.size()):
-		comm_map[Commodities.COMM_ALL[i]] = i
-	
 	if city.workers() > 0:
 		var sources = city.get_total_sources()
 		var total_source = 0
-		for comm in sources:
-			total_source += sources.get(comm, 0)
+		for comm in range(sources.size()):
+			total_source += sources[comm]
 		
 		var max_diff = 0
 		var best_commodity = -1
@@ -264,12 +260,11 @@ func assign_city_workers(city: City, builder: BuildManager):
 		target_sources.resize(Commodities.COMM_ALL.size())
 		
 		for comm in Commodities.COMM_ALL:
-			var i = comm_map[comm]
-			target_sources[i] = (total_source + 1) * rel_weights[i]
-			var diff = target_sources[i] - sources.get(comm, 0)
+			target_sources[comm] = (total_source + 1) * rel_weights[comm]
+			var diff = target_sources[comm] - sources[comm]
 			if diff > max_diff:
 				max_diff = diff
-				best_commodity = i
+				best_commodity = comm
 		
 		if best_commodity < 0:
 			return
@@ -292,7 +287,7 @@ func assign_city_workers(city: City, builder: BuildManager):
 			for lu in lu_options:
 				if lu_options[lu] == null:
 					continue
-				if comm_map[LandUse.LU_OUTPUT[lu]] == best_commodity \
+				if LandUse.LU_OUTPUT[lu] == best_commodity \
 						and LandUse.LU_WORKERS[lu] <= city.workers() \
 						and city.has_landuse_requirements(lu):
 					var opt: LandUse.VegLandUse = lu_options[lu]

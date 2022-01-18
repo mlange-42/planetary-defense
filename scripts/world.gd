@@ -86,9 +86,9 @@ func _show_info(id: int):
 	var text = "%s (%d)\nFlows:\n" % [facility.name, id]
 	
 	var flows = facility.flows
-	for comm in flows:
+	for i in range(flows.size()):
 		text += "  %s %d/%d -> X -> %d/%d\n" % \
-				[comm, flows[comm][1], facility.sinks.get(comm, 0), flows[comm][0], facility.sources.get(comm, 0)]
+				[Commodities.COMM_NAMES[i], flows[i][1], facility.sinks[i], flows[i][0], facility.sources[i]]
 	
 	if facility.conversions.size() > 0:
 		text += "Conversions:\n"

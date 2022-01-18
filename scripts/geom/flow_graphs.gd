@@ -29,11 +29,9 @@ func draw_flows(planet_data, flows: Dictionary, commodity: int) -> int:
 		var edge_flow = flows[edge]
 		var f: int = 0
 		if commodity < 0:
-			for comm in edge_flow:
+			for comm in range(edge_flow.size()):
 				f += edge_flow[comm]
 		else:
-			if not commodity in edge_flow:
-				continue
 			f = edge_flow[commodity]
 		if f > max_flow:
 			max_flow = f
@@ -50,11 +48,9 @@ func draw_flows(planet_data, flows: Dictionary, commodity: int) -> int:
 		var edge_flow = flows[edge]
 		var f: int = 0
 		if commodity < 0:
-			for comm in edge_flow:
+			for comm in range(edge_flow.size()):
 				f += edge_flow[comm]
 		else:
-			if not commodity in edge_flow:
-				continue
 			f = edge_flow[commodity]
 		
 		if f == 0:

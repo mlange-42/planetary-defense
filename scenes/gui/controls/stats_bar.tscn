@@ -61,7 +61,7 @@ __meta__ = {
 [node name="Resources" parent="HBoxContainer/ResourceInfos" instance=ExtResource( 6 )]
 margin_left = 146.0
 margin_right = 272.0
-commodity = "Resources"
+commodity = 1
 
 [node name="Dummy3" type="Control" parent="HBoxContainer/ResourceInfos"]
 margin_left = 276.0
@@ -75,7 +75,7 @@ __meta__ = {
 [node name="Products" parent="HBoxContainer/ResourceInfos" instance=ExtResource( 6 )]
 margin_left = 292.0
 margin_right = 418.0
-commodity = "Products"
+commodity = 2
 
 [node name="Dummy4" type="Control" parent="HBoxContainer/ResourceInfos"]
 margin_left = 422.0
@@ -89,7 +89,7 @@ __meta__ = {
 [node name="Electricity" parent="HBoxContainer/ResourceInfos" instance=ExtResource( 6 )]
 margin_left = 438.0
 margin_right = 564.0
-commodity = "Electricity"
+commodity = 3
 
 [node name="Dummy2" type="Control" parent="HBoxContainer"]
 margin_left = 643.0

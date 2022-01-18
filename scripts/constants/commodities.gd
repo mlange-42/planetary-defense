@@ -40,3 +40,11 @@ const COMM_NETWORK_MODE = {
 static func to_mode_id(id: int, comm: int) -> int:
 	var mode = COMM_NETWORK_MODE[comm]
 	return Network.to_mode_id(id, mode)
+
+
+const _int_array = [0, 0, 0, 0]
+
+static func create_int_array() -> Array:
+	var arr: Array = []
+	arr.append_array(_int_array)
+	return arr

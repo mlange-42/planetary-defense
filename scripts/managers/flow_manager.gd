@@ -8,10 +8,12 @@ var sink_cost_base: int = 25
 var load_depencence: float = 0.25
 
 var network: NetworkManager
-var flow = MultiCommodityFlow.new()
+var flow
 
 func _init(net: NetworkManager):
 	self.network = net
+	self.flow = MultiCommodityFlow.new()
+	self.flow.init(Commodities.COMM_ALL.size())
 
 
 func clear():
@@ -38,16 +40,16 @@ func solve():
 			var to = from_to_comm[1]
 			var conv = facility.conversions[from_to_comm]
 			
-			if facility.sinks.has(from):
+			if facility.sinks[from] > 0:
 				flow.add_source_edge(Commodities.to_mode_id(facility.node_id, to), to, 0, source_cost)
 				flow.set_converter(Commodities.to_mode_id(facility.node_id, from), \
 									from, conv[0], to, conv[1],\
 									Commodities.to_mode_id(facility.node_id, to))
 		
-		for source in facility.sources:
+		for source in range(facility.sources.size()):
 			flow.add_source_edge(Commodities.to_mode_id(facility.node_id, source), source, facility.sources[source], source_cost)
 			
-		for sink in facility.sinks:
+		for sink in range(facility.sinks.size()):
 			flow.add_sink_edge(Commodities.to_mode_id(facility.node_id, sink), sink, facility.sinks[sink], sink_cost)
 	
 	flow.solve(load_depencence)
@@ -83,7 +85,7 @@ func solve():
 		
 		i += 1
 	
-	var total_flows: Dictionary = {}
+	var total_flows = Commodities.create_int_array()
 	for comm in Commodities.COMM_ALL:
 		total_flows[comm] = 0
 	
@@ -92,13 +94,11 @@ func solve():
 	for edge in pair_flows:
 		var edge_flow = pair_flows[edge]
 		res_pair_flows[[Network.to_base_id(edge[0]), Network.to_base_id(edge[1])]] = edge_flow
-		for comm in edge_flow:
+		for comm in range(edge_flow.size()):
 			total_flows[comm] += edge_flow[comm]
-	
 	
 	network.total_cost = t_cost
 	network.pair_flows = res_pair_flows
 	network.total_flows = total_flows
 	network.total_sources = flow.get_total_sources()
 	network.total_sinks = flow.get_total_sinks()
-	
