@@ -19,6 +19,10 @@ var total_sinks: Array = Commodities.create_int_array()
 # does not need to be serialized
 var total_cost: int = 0
 
+var edge_flows: Array = []
+var commodity_flows: Array = []
+
+
 func _init():
 	pass
 
@@ -39,6 +43,8 @@ func save() -> Dictionary:
 		var flows = pair_flows[edge]
 		pair_data.append([edge, flows])
 	
+	dict["edge_flows"] = edge_flows
+	dict["commodity_flows"] = commodity_flows
 	dict["pair_flows"] = pair_data
 	dict["total_flows"] = total_flows
 	dict["total_sources"] = total_sources
@@ -79,6 +85,15 @@ func read(dict: Dictionary):
 	var t_sinks = dict["total_sinks"]
 	for comm in range(t_sinks.size()):
 		total_sinks[comm] = t_sinks[comm] as int
+	
+	var e_flows = dict["edge_flows"]
+	for e in e_flows:
+		edge_flows.append(e as int)
+	
+	var c_flows = dict["commodity_flows"]
+	for e in c_flows:
+		commodity_flows.append(e as int)
+		
 
 
 func connect_points(v1: int, v2: int, type: int, capacity: int, cost: int):
@@ -140,6 +155,19 @@ func path_exists(v1: int, v2: int):
 
 func get_edge(key: Array):
 	return network.get_edge(key)
+
+
+func get_flow(edge) -> int:
+	if edge.path_id < 0:
+		return 0
+	else:
+		return edge_flows[edge.path_id]
+
+func get_comm_flow(edge, comm: int) -> int:
+	if edge.path_id < 0:
+		return 0
+	else:
+		return commodity_flows[edge.path_id * Commodities.COMM_ALL.size() + comm]
 
 
 func reset_flow():

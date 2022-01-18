@@ -12,8 +12,6 @@ use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
 use itertools::Itertools;
 
-type GodotFlows = Vec<(isize, isize, u32, u32, u32)>;
-
 #[derive(Eq, PartialEq, ToVariant)]
 pub struct NodePair(isize, isize);
 impl ToVariantEq for NodePair {}
@@ -120,9 +118,8 @@ impl MultiCommodityFlow {
 
     /// A list of edge flow amounts per edge
     #[export]
-    fn get_flows(&self, _owner: &Reference) -> GodotFlows {
-        let flows = self.builder.get_flows();
-        to_godot_flows(&flows[..])
+    fn get_flows(&self, _owner: &Reference) -> Vec<u32> {
+        self.builder.get_flows()
     }
 
     /// A list of edge commodity flows od length num_comm * edges
@@ -197,21 +194,6 @@ impl MultiCommodityFlow {
 
         res
     }
-}
-
-fn to_godot_flows(flows: &[&Flow<usize, usize>]) -> GodotFlows {
-    flows
-        .iter()
-        .map(|flow| {
-            (
-                vertex_to_id(&flow.a),
-                vertex_to_id(&flow.b),
-                flow.amount,
-                flow.cost as u32,
-                flow.capacity as u32,
-            )
-        })
-        .collect::<Vec<_>>()
 }
 
 fn vertex_to_id(vertex: &Vertex<usize, usize>) -> isize {
@@ -697,24 +679,32 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         let mut total_sinks: BTreeMap<_, _> =
             commodity_mapper.iter().map(|(c, _)| (*c, 0_u32)).collect();
 
+        let mut comm_flows = vec![];
+
         let flows: Vec<_> = g
             .edges
             .iter()
-            .map(|e| {
+            .enumerate()
+            .filter_map(|(i, e)| {
                 let a = node_mapper[&e.a.0];
                 let b = node_mapper[&e.b.0];
                 if let Vertex::Source(comm) = a {
                     *total_sources.entry(comm).or_default() += e.data.capacity as u32;
-                }
-                if let Vertex::Sink(comm) = b {
+                    None
+                } else if let Vertex::Sink(comm) = b {
                     *total_sinks.entry(comm).or_default() += e.data.capacity as u32;
-                }
-                Flow {
-                    a: a.clone(),
-                    b: b.clone(),
-                    amount: e.data.flow as u32,
-                    cost: e.data.cost,
-                    capacity: e.data.capacity,
+                    None
+                } else {
+                    comm_flows.extend_from_slice(
+                        &g.commodity_flows[(i * g.commodities)..((i + 1) * g.commodities)],
+                    );
+                    Some(Flow {
+                        a: a.clone(),
+                        b: b.clone(),
+                        amount: e.data.flow as u32,
+                        cost: e.data.cost,
+                        capacity: e.data.capacity,
+                    })
                 }
             })
             .collect();
@@ -741,7 +731,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .collect();
 
         self.flows = Some(flows);
-        self.commodity_flows = Some(g.commodity_flows);
+        self.commodity_flows = Some(comm_flows);
         self.pair_flows = Some(pair_flows);
         self.total_source = Some(
             total_sources
@@ -770,16 +760,12 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             .expect("Unable to extract commodity id from unsolved graph")
     }
 
-    fn get_flows(&self) -> Vec<&Flow<T, U>> {
+    fn get_flows(&self) -> Vec<u32> {
         self.flows
             .as_ref()
             .expect("Unable to extract flows from unsolved graph")
             .iter()
-            .filter(|f| match (&f.a, &f.b) {
-                (Vertex::Source(_), _) => false,
-                (_, Vertex::Sink(_)) => false,
-                (_, _) => true,
-            })
+            .map(|f| f.amount)
             .collect()
     }
 
@@ -817,9 +803,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
 #[cfg(test)]
 mod tests {
-    use super::Vertex::Node;
     use super::*;
-    use std::collections::HashMap;
 
     #[test]
     fn test_build_network() {
@@ -894,10 +878,9 @@ mod tests {
 
         builder.solve(0.2);
         let flows = builder.get_flows();
-        let map: HashMap<_, _> = flows.iter().map(|f| ((f.a, f.b), f.amount)).collect();
 
-        println!("{:?}", map);
-        assert_eq!(map[&(Node("SrcA"), Node("ConvAB"))], 10);
-        assert_eq!(map[&(Node("ConvAB"), Node("SinkB"))], 10);
+        println!("{:?}", flows);
+        assert_eq!(flows[0], 10);
+        assert_eq!(flows[1], 10);
     }
 }

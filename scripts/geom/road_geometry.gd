@@ -53,7 +53,7 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 			var h_scale_2 = fac_height if roads.has_facility(Network.to_base_id(node2)) else base_height
 			var h_off_2 = h_scale_2 * road_width * p2.normalized()
 			
-			var flow = edge.flow/float(edge.capacity)
+			var flow = roads.get_flow(edge)/float(edge.capacity)
 			set_color(Color(flow, 1.0, 0.0))
 			_draw_pipe(p1 + h_off_1 + x_off - y_off, p2 + h_off_2 + x_off + y_off, 0.2 * road_width)
 			
@@ -93,7 +93,7 @@ func _draw_roads(planet_data, roads: NetworkManager, type: int):
 			
 			var norm = x_dir.cross(direction)
 			
-			set_color(Color(edge.flow/float(edge.capacity), 1.0, 0.0))
+			set_color(Color(roads.get_flow(edge)/float(edge.capacity), 1.0, 0.0))
 			
 			set_normal(norm)
 			
