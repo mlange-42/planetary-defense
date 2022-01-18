@@ -71,8 +71,9 @@ func draw_flows(planet_data, flows: Dictionary, commodity: int) -> int:
 func _draw_arc(p1: Vector3, p2: Vector3):
 	var rad1 = p1.length()
 	var rad2 = p2.length()
+	var dist = p1.distance_to(p2)
 	var rad_diff = rad2 - rad1
-	var height = min(rad1, rad2) * 0.05
+	var height = min(min(rad1, rad2) * 0.05, dist * 0.5)
 	
 	var n1 = p1.normalized()
 	var n2 = p2.normalized()
@@ -103,13 +104,13 @@ func _draw_arc(p1: Vector3, p2: Vector3):
 			add_vertex(prev_vert)
 			
 			if i == segments / 2:
-				var y_off = 4 * flow_width * (vert - prev_vert).normalized()
-				add_vertex(vert - y_off + 3 * x_off)
+				var y_off = 2 * flow_width * (vert - prev_vert).normalized()
+				add_vertex(vert - y_off + 1.7 * x_off)
 				add_vertex(vert - y_off + x_off)
 				add_vertex(vert + x_off)
 				
 				add_vertex(vert - y_off)
-				add_vertex(vert - y_off - 2 * x_off)
+				add_vertex(vert - y_off - 1.7 * x_off)
 				add_vertex(vert)
 			
 			

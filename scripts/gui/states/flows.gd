@@ -12,9 +12,9 @@ onready var flows_visible: Button = find_node("FlowsVisible")
 
 func _ready():
 	for comm in Commodities.COMM_ALL:
-		comm_list.add_item("", Commodities.COMM_ICONS[comm])
+		comm_list.add_icon_item(Commodities.COMM_ICONS[comm])
 	
-	comm_list.add_item("", Commodities.COMM_ICON_ALL)
+	comm_list.add_icon_item(Commodities.COMM_ICON_ALL)
 	
 	comm_list.select(Commodities.COMM_FOOD)
 	comm_list.grab_focus()
