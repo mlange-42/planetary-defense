@@ -6,6 +6,7 @@ const FAC_PORT: String = "Port"
 const FAC_TRAIN_STATION: String = "Train station"
 const FAC_AIR_DEFENSE: String = "Air Defense"
 const FAC_POWER_PLANT: String = "Power plant"
+const FAC_GROUND_STATION: String = "Ground station"
 
 # Also determines the order of tools
 const FACILITY_ICONS = {
@@ -14,6 +15,7 @@ const FACILITY_ICONS = {
 	FAC_TRAIN_STATION: preload("res://assets/icons/facilities/train_station.svg"),
 	FAC_POWER_PLANT: preload("res://assets/icons/facilities/power_plant.svg"),
 	FAC_AIR_DEFENSE: preload("res://assets/icons/facilities/air_defense.svg"),
+	FAC_GROUND_STATION: preload("res://assets/icons/facilities/ground_station.svg"),
 }
 
 const FACILITY_SCENES = {
@@ -22,6 +24,7 @@ const FACILITY_SCENES = {
 	FAC_TRAIN_STATION: "res://scenes/objects/train_station.tscn",
 	FAC_POWER_PLANT: "res://scenes/objects/power_plant.tscn",
 	FAC_AIR_DEFENSE: "res://scenes/objects/air_defense.tscn",
+	FAC_GROUND_STATION: "res://scenes/objects/ground_station.tscn",
 }
 
 const FACILITY_POINTERS = {
@@ -30,6 +33,7 @@ const FACILITY_POINTERS = {
 	FAC_TRAIN_STATION: "res://assets/geom/facilities/train_station.escn",
 	FAC_POWER_PLANT: "res://assets/geom/facilities/power_plant.escn",
 	FAC_AIR_DEFENSE: "res://assets/geom/facilities/air_defense.escn",
+	FAC_GROUND_STATION: "res://assets/geom/facilities/ground_station.escn",
 }
 
 const FACILITY_INFO = {
@@ -38,6 +42,7 @@ const FACILITY_INFO = {
 	FAC_TRAIN_STATION: "Connects roads and railways.",
 	FAC_POWER_PLANT: "Converts resources to electricity",
 	FAC_AIR_DEFENSE: "Defends an area agains air-borne attacks.\n Range increases with elevation.",
+	FAC_GROUND_STATION: "Reguired, distributed around the planet, to operate satellites.",
 }
 
 const FACILITY_RADIUS = {
@@ -46,6 +51,7 @@ const FACILITY_RADIUS = {
 	FAC_TRAIN_STATION: 0,
 	FAC_POWER_PLANT: 0,
 	FAC_AIR_DEFENSE: 8,
+	FAC_GROUND_STATION: 0,
 }
 
 # TODO: check - place all facilities in all modes?
@@ -55,6 +61,7 @@ const FACILITY_NETWORK_MODES = {
 	FAC_TRAIN_STATION: [Network.M_ROADS, Network.M_RAIL],
 	FAC_POWER_PLANT: [Network.M_ROADS, Network.M_ELECTRIC],
 	FAC_AIR_DEFENSE: [Network.M_ELECTRIC],
+	FAC_GROUND_STATION: [Network.M_ELECTRIC],
 }
 
 const FACILITY_RADIUS_FUNC = {
@@ -63,6 +70,7 @@ const FACILITY_RADIUS_FUNC = {
 	FAC_TRAIN_STATION: "constant_range",
 	FAC_POWER_PLANT: "constant_range",
 	FAC_AIR_DEFENSE: "air_defense_range",
+	FAC_GROUND_STATION: "constant_range",
 }
 
 const FACILITY_COSTS = {
@@ -71,6 +79,7 @@ const FACILITY_COSTS = {
 	FAC_TRAIN_STATION: 200,
 	FAC_POWER_PLANT: 100,
 	FAC_AIR_DEFENSE: 100,
+	FAC_GROUND_STATION: 250,
 }
 
 const FACILITY_MAINTENANCE = {
@@ -79,6 +88,7 @@ const FACILITY_MAINTENANCE = {
 	FAC_TRAIN_STATION: 3,
 	FAC_POWER_PLANT: 10,
 	FAC_AIR_DEFENSE: 8,
+	FAC_GROUND_STATION: 10,
 }
 
 const FACILITY_SINKS = {
@@ -87,6 +97,7 @@ const FACILITY_SINKS = {
 	FAC_TRAIN_STATION: null,
 	FAC_POWER_PLANT: null,
 	FAC_AIR_DEFENSE: [[Commodities.COMM_ELECTRICITY, 10]],
+	FAC_GROUND_STATION: [[Commodities.COMM_ELECTRICITY, 10]],
 }
 
 const FACILITY_SOURCES = {
@@ -95,6 +106,7 @@ const FACILITY_SOURCES = {
 	FAC_TRAIN_STATION: null,
 	FAC_POWER_PLANT: null,
 	FAC_AIR_DEFENSE: null,
+	FAC_GROUND_STATION: null,
 }
 
 const FACILITY_CONVERSIONS = {
@@ -103,6 +115,7 @@ const FACILITY_CONVERSIONS = {
 	FAC_TRAIN_STATION: null,
 	FAC_POWER_PLANT: [[Commodities.COMM_RESOURCES, 1, Commodities.COMM_ELECTRICITY, 3, 10]],
 	FAC_AIR_DEFENSE: null,
+	FAC_GROUND_STATION: null,
 }
 
 const FACILITY_IN_CITY = {
@@ -111,6 +124,7 @@ const FACILITY_IN_CITY = {
 	FAC_TRAIN_STATION: true,
 	FAC_POWER_PLANT: false,
 	FAC_AIR_DEFENSE: false,
+	FAC_GROUND_STATION: false,
 }
 
 const FACILITY_KEYS = {
@@ -119,6 +133,7 @@ const FACILITY_KEYS = {
 	FAC_TRAIN_STATION: KEY_S,
 	FAC_POWER_PLANT: KEY_T,
 	FAC_AIR_DEFENSE: KEY_A,
+	FAC_GROUND_STATION: KEY_G,
 }
 
 const FACILITY_CAN_BUILD_FUNC = {
@@ -127,6 +142,7 @@ const FACILITY_CAN_BUILD_FUNC = {
 	FAC_TRAIN_STATION: "can_build_land",
 	FAC_POWER_PLANT: "can_build_land",
 	FAC_AIR_DEFENSE: "can_build_land",
+	FAC_GROUND_STATION: "can_build_land",
 }
 
 class FacilityFunctions:

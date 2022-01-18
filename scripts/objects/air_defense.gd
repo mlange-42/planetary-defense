@@ -26,6 +26,8 @@ func _ready():
 
 
 func on_ready(planet_data):
+	.on_ready(planet_data)
+	
 	radius = Facilities.FacilityFunctions.new().calc_range(type, planet_data, node_id)
 	
 	var temp_cells = planet_data.get_in_radius(node_id, radius)
@@ -33,7 +35,6 @@ func on_ready(planet_data):
 		cells[c[0]] = c[1]
 	
 	_draw_cells(planet_data)
-	calc_is_supplied()
 
 
 func calc_is_supplied():

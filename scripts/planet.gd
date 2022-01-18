@@ -46,6 +46,7 @@ export var water_material: Material = preload("res://assets/materials/planet/wat
 var facilities: Spatial
 
 var network_geometries: Dictionary = {}
+var sky_geometry: SkyGeometry
 
 var path_debug: DebugDraw
 var resource_debug: DebugDraw
@@ -64,6 +65,7 @@ var taxes: TaxManager
 var resources: ResourceManager
 var messages: MessageManager
 var story: StoryManager
+var space: SpaceManager
 
 # Array of Dictionaries to override parameters
 func _init(params: Array):
@@ -141,6 +143,9 @@ func _ready():
 	var collision = _create_collision(result[2])
 	add_child(collision)
 	
+	sky_geometry = SkyGeometry.new(self)
+	add_child(sky_geometry)
+	
 	if not smooth:
 		GeoUtil.split_unsmooth(ground.mesh)
 	
@@ -157,9 +162,12 @@ func _ready():
 		self.builder = BuildManager.new(consts, self, facilities)
 		self.flow = FlowManager.new(roads)
 		self.cities = CityManager.new(consts, self)
+		self.space = SpaceManager.new(sky_geometry.mesh)
 		
 		self.resources.generate_resources()
+		self.space.update_coverage(self)
 		_redraw_resources()
+		_redraw_sky()
 		
 		if not load_planet:
 			FileUtil.create_user_dir(Consts.SAVEGAME_DIR)
@@ -248,6 +256,10 @@ func load_game():
 	self.flow = FlowManager.new(roads)
 	self.cities = CityManager.new(consts, self)
 	
+	
+	self.space = SpaceManager.new(sky_geometry.mesh)
+	
+	
 	while not file.eof_reached():
 		var line: String = file.get_line()
 		
@@ -274,8 +286,11 @@ func load_game():
 	
 	file.close()
 	
+	self.space.update_coverage(self)
+	
 	_redraw_roads()
 	_redraw_resources()
+	_redraw_sky()
 
 
 func calc_point_path(from: int, to: int, type: int) -> Array:
@@ -327,6 +342,10 @@ func _redraw_roads():
 
 func _redraw_resources():
 	resource_debug.draw_resources(planet_data, resources)
+
+
+func _redraw_sky():
+	sky_geometry.draw_coverage()
 
 
 func draw_flows(commodity: String, color1: Color, color2: Color) -> int:
@@ -394,6 +413,8 @@ func next_turn():
 	cities.post_update()
 	cities.assign_workers(builder)
 	
+	space.update_coverage(self)
+	
 	taxes.earn_taxes(roads.total_flows)
 	taxes.pay_costs(roads.facilities(), roads)
 	
@@ -401,5 +422,6 @@ func next_turn():
 	
 	_redraw_roads()
 	_redraw_resources()
+	_redraw_sky()
 	
 	emit_budget()

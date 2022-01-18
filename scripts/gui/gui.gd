@@ -42,6 +42,7 @@ func init():
 	
 	stats_bar.set_planet_name(planet.save_name)
 	stats_bar.update_commodities(planet)
+	stats_bar.update_coverage(planet.space)
 
 
 func _unhandled_key_input(event: InputEventKey):
@@ -193,6 +194,7 @@ func _on_next_turn():
 	update_messages(true)
 	show_message("Next turn", Consts.MESSAGE_INFO)
 	stats_bar.update_commodities(planet)
+	stats_bar.update_coverage(planet.space)
 
 
 func get_current_node():

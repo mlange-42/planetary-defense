@@ -184,6 +184,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/geom/geo_util.gd"
 }, {
+"base": "Facility",
+"class": "GroundStation",
+"language": "GDScript",
+"path": "res://scripts/objects/ground_station.gd"
+}, {
 "base": "Control",
 "class": "Gui",
 "language": "GDScript",
@@ -199,7 +204,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/geom/height_map.gd"
 }, {
-"base": "",
+"base": "Reference",
 "class": "IcoSphere",
 "language": "NativeScript",
 "path": "res://scripts/native/ico_sphere.gdns"
@@ -354,6 +359,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/gui/states/settings.gd"
 }, {
+"base": "MeshInstance",
+"class": "SkyGeometry",
+"language": "GDScript",
+"path": "res://scripts/geom/sky_geometry.gd"
+}, {
+"base": "Reference",
+"class": "SpaceManager",
+"language": "GDScript",
+"path": "res://scripts/managers/space_manager.gd"
+}, {
 "base": "PanelContainer",
 "class": "StatsBar",
 "language": "GDScript",
@@ -435,6 +450,7 @@ _global_script_class_icons={
 "GameOptions": "",
 "GameSettings": "",
 "GeoUtil": "",
+"GroundStation": "",
 "Gui": "",
 "GuiState": "",
 "HeightMap": "",
@@ -469,6 +485,8 @@ _global_script_class_icons={
 "RoadButton": "",
 "RoadGeometry": "",
 "SettingsState": "",
+"SkyGeometry": "",
+"SpaceManager": "",
 "StatsBar": "",
 "StatsManager": "",
 "StoryManager": "",

@@ -23,13 +23,15 @@ var rotation_y_target: float
 
 var min_height: float
 var max_height: float
+var max_curve_height: float
 
 
 func init():
 	arm2.translation.z = planet_radius
 	
 	min_height = 1.2
-	max_height = 3 * planet_radius
+	max_height = 5 * planet_radius
+	max_curve_height = 3 * planet_radius
 	
 	zoom_target = camera.translation.z
 	rotation_x_target = arm.rotation.x

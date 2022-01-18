@@ -33,6 +33,8 @@ class GrowthStats:
 
 
 func on_ready(planet_data):
+	.on_ready(planet_data)
+	
 	update_cells(planet_data)
 	
 	for node in land_use:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/styles/panel_stats_bar.stylebox" type="StyleBox" id=1]
 [ext_resource path="res://assets/fonts/consolas_20.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/icons/menu/next_turn.svg" type="Texture" id=4]
 [ext_resource path="res://assets/shortkeys/ctrl_t.tres" type="ShortCut" id=5]
 [ext_resource path="res://scenes/gui/controls/commodity_stats.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/icons/facilities/ground_station.svg" type="Texture" id=7]
 [ext_resource path="res://assets/icons/commodities/money.svg" type="Texture" id=9]
 
 [node name="StatsBar" type="PanelContainer"]
@@ -40,73 +41,81 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Food" parent="HBoxContainer" instance=ExtResource( 6 )]
+[node name="ResourceInfos" type="HBoxContainer" parent="HBoxContainer"]
 margin_left = 75.0
-margin_right = 161.0
+margin_right = 639.0
+margin_bottom = 32.0
 
-[node name="Dummy" type="Control" parent="HBoxContainer"]
-margin_left = 165.0
-margin_right = 177.0
+[node name="Food" parent="HBoxContainer/ResourceInfos" instance=ExtResource( 6 )]
+margin_right = 126.0
+
+[node name="Dummy" type="Control" parent="HBoxContainer/ResourceInfos"]
+margin_left = 130.0
+margin_right = 142.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 12, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Resources" parent="HBoxContainer" instance=ExtResource( 6 )]
-margin_left = 181.0
-margin_right = 267.0
+[node name="Resources" parent="HBoxContainer/ResourceInfos" instance=ExtResource( 6 )]
+margin_left = 146.0
+margin_right = 272.0
 commodity = "Resources"
 
-[node name="Dummy3" type="Control" parent="HBoxContainer"]
-margin_left = 271.0
-margin_right = 283.0
+[node name="Dummy3" type="Control" parent="HBoxContainer/ResourceInfos"]
+margin_left = 276.0
+margin_right = 288.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 12, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Products" parent="HBoxContainer" instance=ExtResource( 6 )]
-margin_left = 287.0
-margin_right = 373.0
+[node name="Products" parent="HBoxContainer/ResourceInfos" instance=ExtResource( 6 )]
+margin_left = 292.0
+margin_right = 418.0
 commodity = "Products"
 
-[node name="Dummy4" type="Control" parent="HBoxContainer"]
-margin_left = 377.0
-margin_right = 389.0
+[node name="Dummy4" type="Control" parent="HBoxContainer/ResourceInfos"]
+margin_left = 422.0
+margin_right = 434.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 12, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Electricity" parent="HBoxContainer" instance=ExtResource( 6 )]
-margin_left = 393.0
-margin_right = 479.0
+[node name="Electricity" parent="HBoxContainer/ResourceInfos" instance=ExtResource( 6 )]
+margin_left = 438.0
+margin_right = 564.0
 commodity = "Electricity"
 
 [node name="Dummy2" type="Control" parent="HBoxContainer"]
-margin_left = 483.0
-margin_right = 507.0
+margin_left = 643.0
+margin_right = 667.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 24, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect4" type="TextureRect" parent="HBoxContainer"]
-margin_left = 511.0
+[node name="BudgetInfos" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 671.0
+margin_right = 858.0
+margin_bottom = 32.0
+
+[node name="TextureRect4" type="TextureRect" parent="HBoxContainer/BudgetInfos"]
 margin_top = 4.0
-margin_right = 535.0
+margin_right = 24.0
 margin_bottom = 28.0
 size_flags_vertical = 4
 texture = ExtResource( 9 )
 
-[node name="NetLabel" type="Label" parent="HBoxContainer"]
-margin_left = 539.0
+[node name="NetLabel" type="Label" parent="HBoxContainer/BudgetInfos"]
+margin_left = 28.0
 margin_top = 5.0
-margin_right = 594.0
+margin_right = 83.0
 margin_bottom = 26.0
 hint_tooltip = "Resulting income"
 mouse_filter = 0
@@ -114,17 +123,17 @@ custom_fonts/font = ExtResource( 2 )
 text = "+1000"
 valign = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 598.0
-margin_right = 642.0
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/BudgetInfos"]
+margin_left = 87.0
+margin_right = 131.0
 margin_bottom = 32.0
 custom_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/BudgetInfos/VBoxContainer"]
 margin_right = 44.0
 margin_bottom = 16.0
 
-[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="HBoxContainer/BudgetInfos/VBoxContainer/HBoxContainer"]
 margin_right = 8.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
@@ -132,7 +141,7 @@ text = "+"
 align = 2
 valign = 1
 
-[node name="TaxesLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="TaxesLabel" type="Label" parent="HBoxContainer/BudgetInfos/VBoxContainer/HBoxContainer"]
 margin_left = 12.0
 margin_right = 44.0
 margin_bottom = 16.0
@@ -141,12 +150,12 @@ mouse_filter = 0
 text = "1000"
 valign = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/BudgetInfos/VBoxContainer"]
 margin_top = 16.0
 margin_right = 44.0
 margin_bottom = 32.0
 
-[node name="Label3" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label3" type="Label" parent="HBoxContainer/BudgetInfos/VBoxContainer/HBoxContainer2"]
 margin_right = 8.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
@@ -154,7 +163,7 @@ text = "-"
 align = 2
 valign = 1
 
-[node name="MaintenanceLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer2"]
+[node name="MaintenanceLabel" type="Label" parent="HBoxContainer/BudgetInfos/VBoxContainer/HBoxContainer2"]
 margin_left = 12.0
 margin_right = 44.0
 margin_bottom = 16.0
@@ -163,15 +172,15 @@ mouse_filter = 0
 text = "1000"
 valign = 1
 
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
-margin_left = 646.0
-margin_right = 650.0
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer/BudgetInfos"]
+margin_left = 135.0
+margin_right = 139.0
 margin_bottom = 32.0
 
-[node name="BudgetLabel" type="Label" parent="HBoxContainer"]
-margin_left = 654.0
+[node name="BudgetLabel" type="Label" parent="HBoxContainer/BudgetInfos"]
+margin_left = 143.0
 margin_top = 5.0
-margin_right = 698.0
+margin_right = 187.0
 margin_bottom = 26.0
 hint_tooltip = "Current budget"
 mouse_filter = 0
@@ -179,8 +188,43 @@ custom_fonts/font = ExtResource( 2 )
 text = "1000"
 valign = 1
 
+[node name="Dummy3" type="Control" parent="HBoxContainer"]
+margin_left = 862.0
+margin_right = 886.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 24, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CoverageInfos" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 890.0
+margin_right = 940.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect5" type="TextureRect" parent="HBoxContainer/CoverageInfos"]
+margin_top = 4.0
+margin_right = 24.0
+margin_bottom = 28.0
+size_flags_vertical = 4
+texture = ExtResource( 7 )
+
+[node name="CoverageLabel" type="Label" parent="HBoxContainer/CoverageInfos"]
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 50.0
+margin_bottom = 26.0
+hint_tooltip = "Sky communication coverage"
+mouse_filter = 0
+custom_fonts/font = ExtResource( 2 )
+text = "0%"
+valign = 1
+
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 702.0
+margin_left = 944.0
 margin_right = 1188.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
