@@ -5,13 +5,13 @@ var planet
 
 
 # warning-ignore:shadowed_variable
-func _init(planet):
+func _init(planet, subdivisions: int):
 	self.planet = planet
 	
 	var rad = self.planet.planet_data.get_radius() + self.planet.planet_data.get_max_elevation()
 	
 	var sky_gen = IcoSphere.new()
-	self.mesh = sky_gen.create_ico_sphere_mesh(rad, 3, false)
+	self.mesh = sky_gen.create_ico_sphere_mesh(rad, subdivisions, false)
 	self.material_override = preload("res://assets/materials/indicators/sky_coverage.tres")
 
 

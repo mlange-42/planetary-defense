@@ -31,6 +31,7 @@ export var climate_noise_seed: int = -1
 export (int, 0, 7) var subdivisions: int = 6
 export (int, 2, 48) var water_rings: int = 48
 export (int, 4, 96) var water_segments: int = 96
+export (int, 0, 4) var sky_subdivisions: int = 4
 export var smooth: bool = false
 export var atlas_size: Array = [4, 4]
 export var atlas_margin: Array = [32.0 / 2048.0, 32.0 / 1024.0]
@@ -143,7 +144,7 @@ func _ready():
 	var collision = _create_collision(result[2])
 	add_child(collision)
 	
-	sky_geometry = SkyGeometry.new(self)
+	sky_geometry = SkyGeometry.new(self, sky_subdivisions)
 	add_child(sky_geometry)
 	
 	if not smooth:
