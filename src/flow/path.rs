@@ -20,7 +20,7 @@ impl ToVariantEq for NodePair {}
 #[derive(NativeClass)]
 #[inherit(Reference)]
 pub struct MultiCommodityFlow {
-    builder: GraphBuilder<usize, String>,
+    builder: GraphBuilder<usize, usize>,
 }
 
 #[methods]
@@ -62,7 +62,7 @@ impl MultiCommodityFlow {
         &mut self,
         _owner: &Reference,
         to: usize,
-        commodity: String,
+        commodity: usize,
         capacity: i32,
         cost: i32,
     ) {
@@ -79,7 +79,7 @@ impl MultiCommodityFlow {
         &mut self,
         _owner: &Reference,
         from: usize,
-        commodity: String,
+        commodity: usize,
         capacity: i32,
         cost: i32,
     ) {
@@ -97,9 +97,9 @@ impl MultiCommodityFlow {
         &mut self,
         _owner: &Reference,
         vertex: usize,
-        from: String,
+        from: usize,
         from_amount: u32,
-        to: String,
+        to: usize,
         to_amount: u32,
         target_node: usize,
     ) {
@@ -180,7 +180,7 @@ impl MultiCommodityFlow {
     }
 }
 
-fn to_godot_flows(flows: &[Flow<usize, String>]) -> GodotFlows {
+fn to_godot_flows(flows: &[Flow<usize, usize>]) -> GodotFlows {
     flows
         .iter()
         .map(|flow| {
@@ -195,13 +195,14 @@ fn to_godot_flows(flows: &[Flow<usize, String>]) -> GodotFlows {
         .collect::<Vec<_>>()
 }
 
-fn vertex_to_id(vertex: &Vertex<usize, String>) -> isize {
+fn vertex_to_id(vertex: &Vertex<usize, usize>) -> isize {
     match vertex {
         Vertex::Source(_) => -1,
         Vertex::Sink(_) => -2,
         Vertex::Node(id) => *id as isize,
     }
 }
+
 #[derive(Copy, Clone, Hash, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Vertex<T: Clone + Ord, U: Clone + Ord> {
     Source(U),
@@ -624,9 +625,6 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         let commodities: Vec<&U> = commodity_mapper.keys().cloned().collect();
 
-        godot_print!("{:?}", commodity_mapper);
-        godot_print!("{:?}", commodities);
-
         let num_vertices = next_id;
         let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
 
@@ -692,10 +690,10 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
                 let a = node_mapper[&e.a.0];
                 let b = node_mapper[&e.b.0];
                 if let Vertex::Source(comm) = a {
-                    *total_sources.entry(&comm).or_default() += e.data.capacity as u32;
+                    *total_sources.entry(comm).or_default() += e.data.capacity as u32;
                 }
                 if let Vertex::Sink(comm) = b {
-                    *total_sinks.entry(&comm).or_default() += e.data.capacity as u32;
+                    *total_sinks.entry(comm).or_default() += e.data.capacity as u32;
                 }
                 Flow {
                     a: a.clone(),
