@@ -60,13 +60,13 @@ func _on_Commodities_item_selected(index: int):
 
 
 func update_flows(index: int):
-	var comm: String = "" if index >= Commodities.COMM_ALL.size() else Commodities.COMM_ALL[index]
+	var comm: int = -1 if index >= Commodities.COMM_ALL.size() else Commodities.COMM_ALL[index]
 	var grad: Gradient = gradient_tex.texture.gradient
 	
 	var max_value: int = fsm.planet.draw_flows(comm, grad.colors[0], grad.colors[-1])
 	max_label.text = str(max_value)
 	
-	comm_label.text = "All" if comm.empty() else comm
+	comm_label.text = "All" if comm < 0 else Commodities.COMM_NAMES[comm]
 
 
 func _on_gradient_color_changed(_color):

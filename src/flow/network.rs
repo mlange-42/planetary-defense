@@ -1,15 +1,12 @@
 use std::collections::BTreeSet;
-use std::hash::BuildHasherDefault;
 
 use gdnative::prelude::*;
 use gdnative::private::godot_object::Sealed;
 
 use indexmap::map::Entry;
-use indexmap::IndexMap;
 use pathfinding::prelude::dijkstra;
-use rustc_hash::FxHasher;
 
-type FxIndexMap<K, V> = IndexMap<K, V, BuildHasherDefault<FxHasher>>;
+use crate::FxIndexMap;
 
 #[allow(dead_code)]
 #[derive(NativeClass, ToVariant)]

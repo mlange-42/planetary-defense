@@ -348,7 +348,7 @@ func _redraw_sky():
 	sky_geometry.draw_coverage()
 
 
-func draw_flows(commodity: String, color1: Color, color2: Color) -> int:
+func draw_flows(commodity: int, color1: Color, color2: Color) -> int:
 	flows_graphs.set_colors(color1, color2)
 	return flows_graphs.draw_flows(planet_data, roads.pair_flows, commodity)
 

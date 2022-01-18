@@ -80,20 +80,20 @@ func read(dict: Dictionary):
 	var fl = dict["flows"]
 	for comm in fl:
 		var f = fl[comm]
-		flows[comm] = [f[0] as int, f[1] as int]
+		flows[comm as int] = [f[0] as int, f[1] as int]
 		
 	var so = dict["sources"]
 	for comm in so:
-		sources[comm] = so[comm] as int
+		sources[comm as int] = so[comm] as int
 		
 	var si = dict["sinks"]
 	for comm in si:
-		sinks[comm] = si[comm] as int
+		sinks[comm as int] = si[comm] as int
 		
 	var co = dict["conversions"]
 	for comm in co:
 		var c = comm[1]
-		conversions[comm[0]] = [c[0] as int, c[1] as int, c[2]]
+		conversions[comm[0] as int] = [c[0] as int, c[1] as int, c[2]]
 
 
 func calc_is_supplied():
@@ -150,18 +150,18 @@ func add_flows(f: Dictionary):
 		else:
 			flows[key] = v
 
-func add_source(commodity: String, amount: int):
+func add_source(commodity: int, amount: int):
 	if commodity in sources:
 		sources[commodity] += amount
 	else:
 		sources[commodity] = amount
 
-func add_sink(commodity: String, amount: int):
+func add_sink(commodity: int, amount: int):
 	if commodity in sinks:
 		sinks[commodity] += amount
 	else:
 		sinks[commodity] = amount
 
-func add_conversion(from: String, from_amount: int, to: String, to_amount: int, max_amount):
+func add_conversion(from: int, from_amount: int, to: int, to_amount: int, max_amount):
 	conversions[[from, to]] = [from_amount, to_amount, max_amount]
 	add_sink(from, max_amount)

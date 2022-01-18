@@ -292,19 +292,19 @@ class VegLandUse:
 		self.conversion = conversions
 
 class Production:
-	export var commodity: String
-	export var amount: int
-	func _init(com: String, amt: int):
+	var commodity: int
+	var amount: int
+	func _init(com: int, amt: int):
 		commodity = com
 		amount = amt
 
 class Conversion:
-	var from: String
+	var from: int
 	var from_amount: int
 	var max_from_amount: int
-	var to: String
+	var to: int
 	var to_amount: int
-	func _init(f: String, f_amt: int, t: String, t_amt: int, max_amount: int):
+	func _init(f: int, f_amt: int, t: int, t_amt: int, max_amount: int):
 		from = f
 		from_amount = f_amt
 		max_from_amount = max_amount

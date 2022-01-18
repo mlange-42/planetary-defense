@@ -1,11 +1,18 @@
 class_name Commodities
 
-const COMM_FOOD: String = "Food"
-const COMM_RESOURCES: String = "Resources"
-const COMM_PRODUCTS: String = "Products"
-const COMM_ELECTRICITY: String = "Electricity"
+const COMM_FOOD: int = 0
+const COMM_RESOURCES: int = 1
+const COMM_PRODUCTS: int = 2
+const COMM_ELECTRICITY: int = 3
 
 const COMM_ALL = [COMM_FOOD, COMM_RESOURCES, COMM_PRODUCTS, COMM_ELECTRICITY]
+
+const COMM_NAMES = {
+	COMM_FOOD: "Food",
+	COMM_RESOURCES: "Resources",
+	COMM_PRODUCTS: "Products",
+	COMM_ELECTRICITY: "Electricity",
+}
 
 const COMM_ICONS = {
 	COMM_FOOD: preload("res://assets/icons/commodities/food.svg"),
@@ -30,6 +37,6 @@ const COMM_NETWORK_MODE = {
 	COMM_ELECTRICITY: Network.M_ELECTRIC,
 }
 
-static func to_mode_id(id: int, comm: String) -> int:
+static func to_mode_id(id: int, comm: int) -> int:
 	var mode = COMM_NETWORK_MODE[comm]
 	return Network.to_mode_id(id, mode)

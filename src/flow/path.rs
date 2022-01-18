@@ -20,7 +20,7 @@ impl ToVariantEq for NodePair {}
 #[derive(NativeClass)]
 #[inherit(Reference)]
 pub struct MultiCommodityFlow {
-    builder: GraphBuilder<usize, String>,
+    builder: GraphBuilder<usize, usize>,
 }
 
 #[methods]
@@ -62,7 +62,7 @@ impl MultiCommodityFlow {
         &mut self,
         _owner: &Reference,
         to: usize,
-        commodity: String,
+        commodity: usize,
         capacity: i32,
         cost: i32,
     ) {
@@ -79,7 +79,7 @@ impl MultiCommodityFlow {
         &mut self,
         _owner: &Reference,
         from: usize,
-        commodity: String,
+        commodity: usize,
         capacity: i32,
         cost: i32,
     ) {
@@ -97,9 +97,9 @@ impl MultiCommodityFlow {
         &mut self,
         _owner: &Reference,
         vertex: usize,
-        from: String,
+        from: usize,
         from_amount: u32,
-        to: String,
+        to: usize,
         to_amount: u32,
         target_node: usize,
     ) {
@@ -180,7 +180,7 @@ impl MultiCommodityFlow {
     }
 }
 
-fn to_godot_flows(flows: &[Flow<usize, String>]) -> GodotFlows {
+fn to_godot_flows(flows: &[Flow<usize, usize>]) -> GodotFlows {
     flows
         .iter()
         .map(|flow| {
@@ -195,13 +195,14 @@ fn to_godot_flows(flows: &[Flow<usize, String>]) -> GodotFlows {
         .collect::<Vec<_>>()
 }
 
-fn vertex_to_id(vertex: &Vertex<usize, String>) -> isize {
+fn vertex_to_id(vertex: &Vertex<usize, usize>) -> isize {
     match vertex {
         Vertex::Source(_) => -1,
         Vertex::Sink(_) => -2,
         Vertex::Node(id) => *id as isize,
     }
 }
+
 #[derive(Copy, Clone, Hash, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Vertex<T: Clone + Ord, U: Clone + Ord> {
     Source(U),
@@ -592,7 +593,6 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         let mut index_mapper = BTreeMap::new();
         let mut node_mapper = BTreeMap::new();
         let mut commodity_mapper = BTreeMap::new();
-        let mut commodities = vec![];
         for vertex in self
             .edge_list
             .iter()
@@ -607,28 +607,33 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             if let Vertex::Source(comm) = vertex {
                 if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
-                    commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
             } else if let Vertex::Sink(comm) = vertex {
                 if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
-                    commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
             }
         }
 
+        commodity_mapper = commodity_mapper
+            .iter()
+            .enumerate()
+            .map(|(i, (c, _))| (*c, i))
+            .collect();
+
+        let commodities: Vec<&U> = commodity_mapper.keys().cloned().collect();
+
         let num_vertices = next_id;
         let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
 
-        for comm in commodities.iter() {
-            let comm_id = commodity_mapper[&comm];
-            if let Some(source) = index_mapper.get(&Vertex::Source(comm.clone())) {
-                g.nodes[*source].is_source = Some(comm_id);
+        for (comm, comm_id) in commodity_mapper.iter() {
+            if let Some(source) = index_mapper.get(&Vertex::Source((*comm).clone())) {
+                g.nodes[*source].is_source = Some(*comm_id);
             }
-            if let Some(sink) = index_mapper.get(&Vertex::Sink(comm.clone())) {
-                g.nodes[*sink].is_sink = Some(comm_id);
+            if let Some(sink) = index_mapper.get(&Vertex::Sink((*comm).clone())) {
+                g.nodes[*sink].is_sink = Some(*comm_id);
             }
         }
 
@@ -673,8 +678,10 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         g.solve();
 
-        let mut total_sources: BTreeMap<_, _> = commodities.iter().map(|c| (c, 0_u32)).collect();
-        let mut total_sinks: BTreeMap<_, _> = commodities.iter().map(|c| (c, 0_u32)).collect();
+        let mut total_sources: BTreeMap<_, _> =
+            commodity_mapper.iter().map(|(c, _)| (*c, 0_u32)).collect();
+        let mut total_sinks: BTreeMap<_, _> =
+            commodity_mapper.iter().map(|(c, _)| (*c, 0_u32)).collect();
 
         let flows: Vec<_> = g
             .edges

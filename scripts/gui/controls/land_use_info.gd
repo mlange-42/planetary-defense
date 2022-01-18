@@ -47,7 +47,7 @@ func update_info(planet: Planet, consts: LandUse, node: int):
 			var child = null
 			if prod.source == null:
 				if prod.conversion == null:
-					child = LandUseEntry.new(lut, "", 0)
+					child = LandUseEntry.new(lut, -1, 0)
 				else:
 					var c = prod.conversion
 					# TODO: display consumed commodity
@@ -67,7 +67,7 @@ func update_info(planet: Planet, consts: LandUse, node: int):
 				var child = null
 				
 				if prod.source == null:
-					child = LandUseEntry.new(lut, "", 0)
+					child = LandUseEntry.new(lut, -1, 0)
 				else:
 					child = LandUseEntry.new(lut, prod.source.commodity, prod.source.amount)
 				

@@ -5,6 +5,12 @@ extern crate gdnative;
 mod flow;
 mod geom;
 
+use std::hash::BuildHasherDefault;
+
+use gdnative::prelude::*;
+use indexmap::IndexMap;
+use rustc_hash::FxHasher;
+
 pub use flow::network::Edge;
 pub use flow::network::FlowNetwork;
 pub use flow::path::MultiCommodityFlow;
@@ -13,7 +19,7 @@ pub use geom::planet::data::NodeData;
 pub use geom::planet::data::PlanetData;
 pub use geom::planet::generator::PlanetGenerator;
 
-use gdnative::prelude::*;
+type FxIndexMap<K, V> = IndexMap<K, V, BuildHasherDefault<FxHasher>>;
 
 fn init(handle: InitHandle) {
     handle.add_class::<MultiCommodityFlow>();
