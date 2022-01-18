@@ -13,6 +13,8 @@
 
 * Increased resource abundance for the default settings
 * Allow building power lines over water
+* Internal restructuring for integer commodity IDs
+* Smaller power line geometries, lowered near facilities
 
 ## [v0.5.0]
 
