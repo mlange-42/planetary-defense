@@ -24,6 +24,9 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 	clear()
 	begin(Mesh.PRIMITIVE_TRIANGLES)
 	
+	var base_height = 6
+	var fac_height = 2
+	
 	for i in range(roads.network.get_node_count()):
 		var node = roads.network.get_node_at(i)
 		var node1 = node[0]
@@ -31,7 +34,8 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 		var nd1 = planet_data.get_node(node1)
 		
 		var p1 = nd1.position
-		var h_off = 8 * road_width * p1.normalized()
+		var h_scale_1 = fac_height if roads.has_facility(Network.to_base_id(node1)) else base_height
+		var h_off_1 = h_scale_1 * road_width * p1.normalized()
 		
 		var any_edge = false
 		for node2 in n:
@@ -46,15 +50,18 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 			var x_off = x_dir * road_width
 			var y_off = direction * (0.25 * road_width)
 			
+			var h_scale_2 = fac_height if roads.has_facility(Network.to_base_id(node2)) else base_height
+			var h_off_2 = h_scale_2 * road_width * p2.normalized()
+			
 			var flow = edge.flow/float(edge.capacity)
 			set_color(Color(flow, 1.0, 0.0))
-			_draw_pipe(p1 + h_off + x_off - y_off, p2 + h_off + x_off + y_off, 0.2 * road_width)
+			_draw_pipe(p1 + h_off_1 + x_off - y_off, p2 + h_off_2 + x_off + y_off, 0.2 * road_width)
 			
 			any_edge = true
 		
 		if any_edge:
 			set_color(Color(0.0, 0.0, 0.0))
-			_draw_pipe(p1, p1 + h_off, 0.3 * road_width, true)
+			_draw_pipe(p1, p1 + h_off_1, 0.3 * road_width, true)
 		
 	end()
 
