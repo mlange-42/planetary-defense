@@ -59,7 +59,11 @@ func draw_resources(planet_data, resources: ResourceManager):
 	clear()
 	begin(Mesh.PRIMITIVE_POINTS)
 	
+	# Dummy vertex, as two points are required for drawing
+	_draw_resource(Vector3.ZERO, Resources.RES_OIL)
+	
 	for node in resources.resources:
+		print("Res: %s" % node)
 		var res = resources.resources[node]
 		var pos: Vector3 = planet_data.get_position(node)
 		
