@@ -1,13 +1,13 @@
 extends HBoxContainer
 class_name CommodityStatsSimple
 
-var commodity: String
+var commodity: int
 
 onready var icon: TextureRect
 onready var label: Label
 
 
-func _init(comm: String, amount: int):
+func _init(comm: int, amount: int):
 	commodity = comm
 	
 	icon = TextureRect.new()
@@ -16,7 +16,7 @@ func _init(comm: String, amount: int):
 	icon.size_flags_vertical = 0
 	icon.expand = true
 	
-	icon.hint_tooltip = commodity
+	icon.hint_tooltip = Commodities.COMM_NAMES[commodity]
 	icon.texture = Commodities.COMM_ICONS[commodity]
 	
 	add_child(icon)

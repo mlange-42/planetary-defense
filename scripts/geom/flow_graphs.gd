@@ -19,7 +19,7 @@ func get_colors():
 	return [low_color, high_color]
 
 
-func draw_flows(planet_data, flows: Dictionary, commodity: String) -> int:
+func draw_flows(planet_data, flows: Dictionary, commodity: int) -> int:
 	clear()
 	var max_flow: int = 0
 	
@@ -28,7 +28,7 @@ func draw_flows(planet_data, flows: Dictionary, commodity: String) -> int:
 			continue
 		var edge_flow = flows[edge]
 		var f: int = 0
-		if commodity.empty():
+		if commodity < 0:
 			for comm in edge_flow:
 				f += edge_flow[comm]
 		else:
@@ -49,7 +49,7 @@ func draw_flows(planet_data, flows: Dictionary, commodity: String) -> int:
 		
 		var edge_flow = flows[edge]
 		var f: int = 0
-		if commodity.empty():
+		if commodity < 0:
 			for comm in edge_flow:
 				f += edge_flow[comm]
 		else:

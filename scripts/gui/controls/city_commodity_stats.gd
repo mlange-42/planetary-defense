@@ -1,7 +1,7 @@
 extends Control
 class_name CityCommodityStats
 
-export (String, "Food", "Resources", "Products", "Electricity") var commodity: String = "Food"
+export (int, "Food", "Resources", "Products", "Electricity") var commodity: int = 0
 export var dim_color: Color = Color.dimgray
 
 onready var icon: TextureRect = find_node("Icon")
@@ -15,7 +15,7 @@ onready var consumption_label: Control = find_node("ConsumptionLabel")
 onready var sink_label: Control = find_node("SinkLabel")
 
 func _ready():
-	icon.hint_tooltip = commodity
+	icon.hint_tooltip = Commodities.COMM_NAMES[commodity]
 	icon.texture = Commodities.COMM_ICONS[commodity]
 
 

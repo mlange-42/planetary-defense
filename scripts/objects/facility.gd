@@ -150,18 +150,18 @@ func add_flows(f: Dictionary):
 		else:
 			flows[key] = v
 
-func add_source(commodity: String, amount: int):
+func add_source(commodity: int, amount: int):
 	if commodity in sources:
 		sources[commodity] += amount
 	else:
 		sources[commodity] = amount
 
-func add_sink(commodity: String, amount: int):
+func add_sink(commodity: int, amount: int):
 	if commodity in sinks:
 		sinks[commodity] += amount
 	else:
 		sinks[commodity] = amount
 
-func add_conversion(from: String, from_amount: int, to: String, to_amount: int, max_amount):
+func add_conversion(from: int, from_amount: int, to: int, to_amount: int, max_amount):
 	conversions[[from, to]] = [from_amount, to_amount, max_amount]
 	add_sink(from, max_amount)

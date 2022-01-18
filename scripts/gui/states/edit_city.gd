@@ -2,16 +2,16 @@ extends GuiState
 class_name EditCityState
 
 onready var sliders = {
-	Commodities.COMM_ALL[0]: find_node("FoodSlider"),
-	Commodities.COMM_ALL[1]: find_node("ResourcesSlider"),
-	Commodities.COMM_ALL[2]: find_node("ProductsSlider"),
-	Commodities.COMM_ALL[3]: find_node("ElectricitySlider"),
+	Commodities.COMM_FOOD: find_node("FoodSlider"),
+	Commodities.COMM_RESOURCES: find_node("ResourcesSlider"),
+	Commodities.COMM_PRODUCTS: find_node("ProductsSlider"),
+	Commodities.COMM_ELECTRICITY: find_node("ElectricitySlider"),
 }
 onready var weights = {
-	Commodities.COMM_ALL[0]: find_node("FoodWeight"),
-	Commodities.COMM_ALL[1]: find_node("ResourcesWeight"),
-	Commodities.COMM_ALL[2]: find_node("ProductsWeight"),
-	Commodities.COMM_ALL[3]: find_node("ElectricityWeight"),
+	Commodities.COMM_FOOD: find_node("FoodWeight"),
+	Commodities.COMM_RESOURCES: find_node("ResourcesWeight"),
+	Commodities.COMM_PRODUCTS: find_node("ProductsWeight"),
+	Commodities.COMM_ELECTRICITY: find_node("ElectricityWeight"),
 }
 onready var city_label: Label = find_node("CityLabel")
 onready var grow_button: Button = find_node("GrowButton") 
