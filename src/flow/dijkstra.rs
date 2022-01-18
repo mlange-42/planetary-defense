@@ -1,12 +1,11 @@
 use std::cmp::Ordering;
 use std::collections::BinaryHeap;
-use std::hash::{BuildHasherDefault, Hash};
+use std::hash::Hash;
 
-use indexmap::{map::Entry::Occupied, IndexMap};
+use indexmap::map::Entry::Occupied;
 use num_traits::Zero;
-use rustc_hash::FxHasher;
 
-type FxIndexMap<K, V> = IndexMap<K, V, BuildHasherDefault<FxHasher>>;
+use crate::FxIndexMap;
 
 pub fn dijkstra<N, C, FN, IN, FS>(
     start: &N,
