@@ -111,7 +111,7 @@ func post_update_city(city: City) -> float:
 	var food_available = city.flows[Commodities.COMM_FOOD][1]
 	food_available -= city.workers()
 	
-	var comm_produced = {}
+	var comm_produced = Commodities.create_int_array()
 	
 	for comm in Commodities.COMM_ALL:
 		comm_produced[comm] = city.flows[comm][0]
@@ -248,10 +248,6 @@ func assign_city_workers(city: City, builder: BuildManager):
 		else:
 			rel_weights[i] = 1.0 / rel_weights.size()
 	
-	var comm_map = {}
-	for i in range(Commodities.COMM_ALL.size()):
-		comm_map[Commodities.COMM_ALL[i]] = i
-	
 	if city.workers() > 0:
 		var sources = city.get_total_sources()
 		var total_source = 0
@@ -264,12 +260,11 @@ func assign_city_workers(city: City, builder: BuildManager):
 		target_sources.resize(Commodities.COMM_ALL.size())
 		
 		for comm in Commodities.COMM_ALL:
-			var i = comm_map[comm]
-			target_sources[i] = (total_source + 1) * rel_weights[i]
-			var diff = target_sources[i] - sources[comm]
+			target_sources[comm] = (total_source + 1) * rel_weights[comm]
+			var diff = target_sources[comm] - sources[comm]
 			if diff > max_diff:
 				max_diff = diff
-				best_commodity = i
+				best_commodity = comm
 		
 		if best_commodity < 0:
 			return
@@ -292,7 +287,7 @@ func assign_city_workers(city: City, builder: BuildManager):
 			for lu in lu_options:
 				if lu_options[lu] == null:
 					continue
-				if comm_map[LandUse.LU_OUTPUT[lu]] == best_commodity \
+				if LandUse.LU_OUTPUT[lu] == best_commodity \
 						and LandUse.LU_WORKERS[lu] <= city.workers() \
 						and city.has_landuse_requirements(lu):
 					var opt: LandUse.VegLandUse = lu_options[lu]
