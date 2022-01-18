@@ -12,6 +12,7 @@
 ### Changed
 
 * Increased resource abundance for the default settings
+* Allow building power lines over water
 
 ## [v0.5.0]
 
