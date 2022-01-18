@@ -2,7 +2,7 @@ class_name Resources
 
 # See LandUse.VEG_RESOURCES for distribution and default amounts
 
-const MAX_REVEAL_PROPORTION = 0.005
+const MAX_REVEAL_PROPORTION = 0.001
 
 const RES_METAL: int = 0
 const RES_OIL: int = 1
