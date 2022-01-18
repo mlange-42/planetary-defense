@@ -35,8 +35,11 @@ func post_update():
 		facility.calc_is_supplied()
 		if not facility.is_supplied:
 			var name = facility.name if facility is City else facility.type
-			var miss_text: String = "%s" % facility.get_missing_supply()
-			miss_text = miss_text.substr(1, miss_text.length()-2)
+			var miss_text: String = ""
+			var miss = facility.get_missing_supply()
+			for comm in miss:
+				miss_text += "%d %s, " % [miss[comm], Commodities.COMM_NAMES[comm]]
+			miss_text = miss_text.substr(0, miss_text.length()-2)
 			planet.messages.add_message(facility.node_id, "[u]%s[/u] not supplied\n  Missing: %s" % [name, miss_text], Consts.MESSAGE_WARNING)
 	
 	migrate(attractiveness)
