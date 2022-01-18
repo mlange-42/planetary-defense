@@ -53,14 +53,19 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 			var h_scale_2 = fac_height if roads.has_facility(Network.to_base_id(node2)) else base_height
 			var h_off_2 = h_scale_2 * road_width * p2.normalized()
 			
-			var flow = roads.get_flow(edge)/float(edge.capacity)
-			set_color(Color(flow, 1.0, 0.0))
+			var cap = float(edge.capacity)
+			var flows = roads.get_comm_flows(edge)
+			if flows == null:
+				set_color(Color.black)
+			else:
+				set_color(Color(flows[0] / cap, flows[1] / cap, flows[2] / cap, flows[3] / cap))
+			
 			_draw_pipe(p1 + h_off_1 + x_off - y_off, p2 + h_off_2 + x_off + y_off, 0.2 * road_width)
 			
 			any_edge = true
 		
 		if any_edge:
-			set_color(Color(0.0, 0.0, 0.0))
+			set_color(Color.black)
 			_draw_pipe(p1, p1 + h_off_1, 0.3 * road_width, true)
 		
 	end()
@@ -93,7 +98,12 @@ func _draw_roads(planet_data, roads: NetworkManager, type: int):
 			
 			var norm = x_dir.cross(direction)
 			
-			set_color(Color(roads.get_flow(edge)/float(edge.capacity), 1.0, 0.0))
+			var cap = float(edge.capacity)
+			var flows = roads.get_comm_flows(edge)
+			if flows == null:
+				set_color(Color.black)
+			else:
+				set_color(Color(flows[0] / cap, flows[1] / cap, flows[2] / cap, flows[3] / cap))
 			
 			set_normal(norm)
 			

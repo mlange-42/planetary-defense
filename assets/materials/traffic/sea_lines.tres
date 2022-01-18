@@ -14,5 +14,6 @@ shader_param/AnimationBlend = 1.0
 shader_param/tex_width = 1088
 shader_param/tex_height = 1280
 shader_param/margin = 4
+shader_param/channel = -1
 shader_param/Texture = ExtResource( 1 )
 shader_param/Background = ExtResource( 3 )

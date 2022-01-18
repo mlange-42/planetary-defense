@@ -169,6 +169,14 @@ func get_comm_flow(edge, comm: int) -> int:
 	else:
 		return commodity_flows[edge.path_id * Commodities.COMM_ALL.size() + comm]
 
+func get_comm_flows(edge):
+	if edge.path_id < 0:
+		return null
+	else:
+		var l = Commodities.COMM_ALL.size()
+		var base = edge.path_id * l
+		return commodity_flows.slice(base, base + l - 1)
+
 
 func reset_flow():
 	network.reset_flow()

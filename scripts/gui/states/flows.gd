@@ -15,8 +15,9 @@ func _ready():
 	
 	comm_list.add_item("", Commodities.COMM_ICON_ALL)
 	
-	comm_list.select(0)
+	comm_list.select(Commodities.COMM_FOOD)
 	comm_list.grab_focus()
+	fsm.planet.set_traffic_commodity(Commodities.COMM_FOOD)
 	
 	set_colors(Color.white, Color.purple)
 
@@ -53,6 +54,7 @@ func on_next_turn():
 
 func state_exited():
 	fsm.planet.clear_flows()
+	fsm.planet.set_traffic_commodity(-1)
 
 
 func _on_Commodities_item_selected(index: int):
@@ -67,6 +69,8 @@ func update_flows(index: int):
 	max_label.text = str(max_value)
 	
 	comm_label.text = "All" if comm < 0 else Commodities.COMM_NAMES[comm]
+	
+	fsm.planet.set_traffic_commodity(comm)
 
 
 func _on_gradient_color_changed(_color):
