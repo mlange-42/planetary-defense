@@ -592,7 +592,6 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         let mut index_mapper = BTreeMap::new();
         let mut node_mapper = BTreeMap::new();
         let mut commodity_mapper = BTreeMap::new();
-        let mut commodities = vec![];
         for vertex in self
             .edge_list
             .iter()
@@ -607,28 +606,36 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             if let Vertex::Source(comm) = vertex {
                 if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
-                    commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
             } else if let Vertex::Sink(comm) = vertex {
                 if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
                     e.insert(next_comm_id);
-                    commodities.push(comm.clone());
                     next_comm_id += 1;
                 }
             }
         }
 
+        commodity_mapper = commodity_mapper
+            .iter()
+            .enumerate()
+            .map(|(i, (c, _))| (*c, i))
+            .collect();
+
+        let commodities: Vec<&U> = commodity_mapper.keys().cloned().collect();
+
+        godot_print!("{:?}", commodity_mapper);
+        godot_print!("{:?}", commodities);
+
         let num_vertices = next_id;
         let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
 
-        for comm in commodities.iter() {
-            let comm_id = commodity_mapper[&comm];
-            if let Some(source) = index_mapper.get(&Vertex::Source(comm.clone())) {
-                g.nodes[*source].is_source = Some(comm_id);
+        for (comm, comm_id) in commodity_mapper.iter() {
+            if let Some(source) = index_mapper.get(&Vertex::Source((*comm).clone())) {
+                g.nodes[*source].is_source = Some(*comm_id);
             }
-            if let Some(sink) = index_mapper.get(&Vertex::Sink(comm.clone())) {
-                g.nodes[*sink].is_sink = Some(comm_id);
+            if let Some(sink) = index_mapper.get(&Vertex::Sink((*comm).clone())) {
+                g.nodes[*sink].is_sink = Some(*comm_id);
             }
         }
 
@@ -673,8 +680,10 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
 
         g.solve();
 
-        let mut total_sources: BTreeMap<_, _> = commodities.iter().map(|c| (c, 0_u32)).collect();
-        let mut total_sinks: BTreeMap<_, _> = commodities.iter().map(|c| (c, 0_u32)).collect();
+        let mut total_sources: BTreeMap<_, _> =
+            commodity_mapper.iter().map(|(c, _)| (*c, 0_u32)).collect();
+        let mut total_sinks: BTreeMap<_, _> =
+            commodity_mapper.iter().map(|(c, _)| (*c, 0_u32)).collect();
 
         let flows: Vec<_> = g
             .edges
@@ -683,10 +692,10 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
                 let a = node_mapper[&e.a.0];
                 let b = node_mapper[&e.b.0];
                 if let Vertex::Source(comm) = a {
-                    *total_sources.entry(comm).or_default() += e.data.capacity as u32;
+                    *total_sources.entry(&comm).or_default() += e.data.capacity as u32;
                 }
                 if let Vertex::Sink(comm) = b {
-                    *total_sinks.entry(comm).or_default() += e.data.capacity as u32;
+                    *total_sinks.entry(&comm).or_default() += e.data.capacity as u32;
                 }
                 Flow {
                     a: a.clone(),
