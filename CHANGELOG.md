@@ -5,6 +5,9 @@
 ### Added
 
 * Provide different resource abundance settings for planet generation
+* Sky dome to calculate and visualize communication coverage of certain facilities
+* Ground station facility to generate coverage
+* Resources are initially hidden, and only revealed through cities and coverage
 
 ### Changed
 
