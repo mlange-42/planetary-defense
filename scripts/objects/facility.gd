@@ -148,9 +148,8 @@ func clear_production():
 		sinks[i] = 0
 	conversions.clear()
 
-# TODO: make argument an array
-func add_flows(f: Dictionary):
-	for key in f:
+func add_flows(f: Array):
+	for key in range(f.size()):
 		var v = f[key]
 		var old = flows[key]
 		flows[key] = [old[0] + v[0], old[1] + v[1]]

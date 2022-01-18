@@ -5,10 +5,16 @@ const MAX_INT = 9223372036854775807
 var network = FlowNetwork.new()
 var _facilities: Dictionary = {}
 
-var total_flows: Dictionary = {}
+# Total flow per commodity
+var total_flows: Array = Commodities.create_int_array()
+
+# keys: [from node, to node], values: array of flow per commodity
 var pair_flows: Dictionary = {}
-var total_sources: Dictionary = {}
-var total_sinks: Dictionary = {}
+
+# Total source per commodity
+var total_sources: Array = Commodities.create_int_array()
+# Total sink per commodity
+var total_sinks: Array = Commodities.create_int_array()
 
 # does not need to be serialized
 var total_cost: int = 0
@@ -31,10 +37,7 @@ func save() -> Dictionary:
 	var pair_data = []
 	for edge in pair_flows:
 		var flows = pair_flows[edge]
-		var entry = []
-		for comm in flows:
-			entry.append([comm, flows[comm]])
-		pair_data.append([edge, entry])
+		pair_data.append([edge, flows])
 	
 	dict["pair_flows"] = pair_data
 	dict["total_flows"] = total_flows
@@ -60,23 +63,22 @@ func read(dict: Dictionary):
 	for e in p_flows:
 		var edge = e[0]
 		var flows = e[1]
-		var edge_dict = {}
-		for comm in flows:
-			edge_dict[comm[0] as int] = comm[1] as int
+		for i in range(flows.size()):
+			flows[i] = flows[i] as int
 		
-		pair_flows[[edge[0] as int, edge[1] as int]] = edge_dict
+		pair_flows[[edge[0] as int, edge[1] as int]] = flows
 	
 	var t_flows = dict["total_flows"]
-	for comm in t_flows:
-		total_flows[comm as int] = t_flows[comm] as int
+	for comm in range(t_flows.size()):
+		total_flows[comm] = t_flows[comm] as int
 		
 	var t_sources = dict["total_sources"]
-	for comm in t_sources:
-		total_sources[comm as int] = t_sources[comm] as int
+	for comm in range(t_sources.size()):
+		total_sources[comm] = t_sources[comm] as int
 		
 	var t_sinks = dict["total_sinks"]
-	for comm in t_sinks:
-		total_sinks[comm as int] = t_sinks[comm] as int
+	for comm in range(t_sinks.size()):
+		total_sinks[comm] = t_sinks[comm] as int
 
 
 func connect_points(v1: int, v2: int, type: int, capacity: int, cost: int):

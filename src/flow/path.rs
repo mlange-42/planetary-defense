@@ -10,6 +10,7 @@ use crate::flow::dijkstra::dijkstra;
 use gdnative::api::Reference;
 use gdnative::core_types::Dictionary;
 use gdnative::prelude::*;
+use itertools::Itertools;
 
 type GodotFlows = Vec<(isize, isize, u32, u32, u32)>;
 
@@ -20,6 +21,7 @@ impl ToVariantEq for NodePair {}
 #[derive(NativeClass)]
 #[inherit(Reference)]
 pub struct MultiCommodityFlow {
+    commodities: usize,
     builder: GraphBuilder<usize, usize>,
 }
 
@@ -27,16 +29,20 @@ pub struct MultiCommodityFlow {
 impl MultiCommodityFlow {
     fn new(_owner: &Reference) -> Self {
         Self {
-            builder: GraphBuilder::new(),
+            commodities: 0,
+            builder: GraphBuilder::new(vec![]),
         }
     }
 
     #[export]
-    fn _init(&mut self, _owner: &Reference) {}
+    fn init(&mut self, _owner: &Reference, commodities: usize) {
+        self.commodities = commodities;
+        self.builder = GraphBuilder::new((0..commodities).collect());
+    }
 
     #[export]
     fn reset(&mut self, _owner: &Reference) {
-        self.builder = GraphBuilder::new();
+        self.builder = GraphBuilder::new((0..self.commodities).collect());
     }
 
     #[export]
@@ -119,28 +125,26 @@ impl MultiCommodityFlow {
         to_godot_flows(flows)
     }
 
-    // TODO: can be an array
-    /// A Dictionary of per-node sent and received flows.
-    /// Keys are commodity IDs, values are amounts [sent, received]
+    /// An array of sent and received flows for the node.
+    /// Indices are commodity IDs, values are amounts [sent, received]
     #[export]
-    fn get_node_flows(&self, _owner: &Reference, node: usize) -> Option<Dictionary<Shared>> {
+    fn get_node_flows(&self, _owner: &Reference, node: usize) -> Option<Vec<(i32, i32)>> {
         let ids = self.builder.commodity_ids();
         let flows = self.builder.get_node_flows(node);
 
         if let Some(flows) = flows {
-            let dict = Dictionary::new();
+            let mut dict = vec![(0, 0); ids.len()];
 
             for (name, id) in ids {
-                dict.insert(name, (flows.sent[*id], flows.received[*id]));
+                dict[*name] = (flows.sent[*id], flows.received[*id]);
             }
 
-            Some(dict.into_shared())
+            Some(dict)
         } else {
             None
         }
     }
 
-    // TODO: values can be arrays
     /// A Dictionary of end-to-end flows.
     /// Keys are [from, to] node IDs, values are Dictionaries commodity: amount
     #[export]
@@ -150,9 +154,9 @@ impl MultiCommodityFlow {
         let dict = Dictionary::new();
 
         for ((p1, p2), flows) in flows.iter() {
-            let fl = Dictionary::new();
+            let mut fl = vec![0; self.commodities];
             for (comm, flow) in flows {
-                fl.insert(comm, flow);
+                fl[*comm] = *flow;
             }
             dict.insert(NodePair(vertex_to_id(p1), vertex_to_id(p2)), fl);
         }
@@ -160,34 +164,32 @@ impl MultiCommodityFlow {
         dict.into_shared()
     }
 
-    // TODO: can be an array
     /// Total source amount per commodity
     #[export]
-    fn get_total_sources(&self, _owner: &Reference) -> Dictionary<Shared> {
+    fn get_total_sources(&self, _owner: &Reference) -> Vec<i32> {
         let sources = self.builder.get_total_sources();
 
-        let dict = Dictionary::new();
+        let mut res = vec![0; self.commodities];
 
         for (comm, amount) in sources.iter() {
-            dict.insert(comm, amount);
+            res[*comm] = *amount as i32;
         }
 
-        dict.into_shared()
+        res
     }
 
-    // TODO: can be an array
     /// Total sink amount per commodity
     #[export]
-    fn get_total_sinks(&self, _owner: &Reference) -> Dictionary<Shared> {
+    fn get_total_sinks(&self, _owner: &Reference) -> Vec<i32> {
         let sinks = self.builder.get_total_sinks();
 
-        let dict = Dictionary::new();
+        let mut res = vec![0; self.commodities];
 
         for (comm, amount) in sinks.iter() {
-            dict.insert(comm, amount);
+            res[*comm] = *amount as i32;
         }
 
-        dict.into_shared()
+        res
     }
 }
 
@@ -528,13 +530,14 @@ pub struct GraphBuilder<T: Clone + Ord, U: Clone + Ord> {
     pair_flows: Option<PairFlows<T, U>>,
     nodes: Option<BTreeMap<Vertex<T, U>, NodeData>>,
     commodity_ids: Option<BTreeMap<U, usize>>,
+    commodities: Vec<U>,
     total_source: Option<BTreeMap<U, u32>>,
     total_sink: Option<BTreeMap<U, u32>>,
 }
 
 #[allow(dead_code)]
 impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
-    fn new() -> Self {
+    fn new(commodities: Vec<U>) -> Self {
         Self {
             edge_list: Vec::new(),
             converters: Default::default(),
@@ -542,6 +545,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
             pair_flows: None,
             nodes: None,
             commodity_ids: None,
+            commodities,
             total_source: None,
             total_sink: None,
         }
@@ -600,10 +604,16 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
         );
 
         let mut next_id = 0;
-        let mut next_comm_id = 0_usize;
         let mut index_mapper = BTreeMap::new();
         let mut node_mapper = BTreeMap::new();
-        let mut commodity_mapper = BTreeMap::new();
+
+        let commodities: Vec<_> = self.commodities.iter().sorted_unstable().collect();
+        let commodity_mapper: BTreeMap<_, _> = commodities
+            .iter()
+            .enumerate()
+            .map(|(i, c)| (*c, i))
+            .collect();
+
         for vertex in self
             .edge_list
             .iter()
@@ -614,27 +624,7 @@ impl<T: Clone + Ord + Debug, U: Clone + Ord + Debug> GraphBuilder<T, U> {
                 node_mapper.insert(next_id, vertex);
                 next_id += 1;
             }
-
-            if let Vertex::Source(comm) = vertex {
-                if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
-                    e.insert(next_comm_id);
-                    next_comm_id += 1;
-                }
-            } else if let Vertex::Sink(comm) = vertex {
-                if let BEntry::Vacant(e) = commodity_mapper.entry(comm) {
-                    e.insert(next_comm_id);
-                    next_comm_id += 1;
-                }
-            }
         }
-
-        commodity_mapper = commodity_mapper
-            .iter()
-            .enumerate()
-            .map(|(i, (c, _))| (*c, i))
-            .collect();
-
-        let commodities: Vec<&U> = commodity_mapper.keys().cloned().collect();
 
         let num_vertices = next_id;
         let mut g = Graph::new_default(num_vertices, commodity_mapper.len(), load_dependence);
@@ -806,7 +796,7 @@ mod tests {
 
     #[test]
     fn test_build_network() {
-        let mut builder: GraphBuilder<&str, _> = GraphBuilder::new();
+        let mut builder: GraphBuilder<&str, _> = GraphBuilder::new(vec!["Res", "Prod"]);
 
         builder.add_edge(
             Vertex::Source("Res"),
@@ -864,7 +854,7 @@ mod tests {
 
     #[test]
     fn test_converter() {
-        let mut builder: GraphBuilder<&str, _> = GraphBuilder::new();
+        let mut builder: GraphBuilder<&str, _> = GraphBuilder::new(vec!["A", "B"]);
 
         builder.add_edge(Vertex::Source("A"), "SrcA", Capacity(10), Cost(0));
         builder.add_edge("SrcA", "ConvAB", Capacity(10), Cost(0));

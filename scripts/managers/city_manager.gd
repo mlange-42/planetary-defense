@@ -37,7 +37,7 @@ func post_update():
 			var name = facility.name if facility is City else facility.type
 			var miss_text: String = ""
 			var miss = facility.get_missing_supply()
-			for comm in miss:
+			for comm in range(miss.size()):
 				var amount = miss[comm]
 				if amount > 0:
 					miss_text += "%d %s, " % [amount, Commodities.COMM_NAMES[comm]]
