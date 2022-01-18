@@ -24,6 +24,8 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 	clear()
 	begin(Mesh.PRIMITIVE_TRIANGLES)
 	
+	var nothing = Color(0, 0, 0, 0)
+	
 	var base_height = 6
 	var fac_height = 2
 	
@@ -56,7 +58,7 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 			var cap = float(edge.capacity)
 			var flows = roads.get_comm_flows(edge)
 			if flows == null:
-				set_color(Color.black)
+				set_color(nothing)
 			else:
 				set_color(Color(flows[0] / cap, flows[1] / cap, flows[2] / cap, flows[3] / cap))
 			
@@ -65,7 +67,7 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 			any_edge = true
 		
 		if any_edge:
-			set_color(Color.black)
+			set_color(nothing)
 			_draw_pipe(p1, p1 + h_off_1, 0.3 * road_width, true)
 		
 	end()
@@ -74,6 +76,8 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 func _draw_roads(planet_data, roads: NetworkManager, type: int):
 	clear()
 	begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var nothing = Color(0, 0, 0, 0)
 	
 	for i in range(roads.network.get_node_count()):
 		var node = roads.network.get_node_at(i)
@@ -101,7 +105,7 @@ func _draw_roads(planet_data, roads: NetworkManager, type: int):
 			var cap = float(edge.capacity)
 			var flows = roads.get_comm_flows(edge)
 			if flows == null:
-				set_color(Color.black)
+				set_color(nothing)
 			else:
 				set_color(Color(flows[0] / cap, flows[1] / cap, flows[2] / cap, flows[3] / cap))
 			

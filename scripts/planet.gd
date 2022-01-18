@@ -379,6 +379,9 @@ func clear_path():
 func clear_flows():
 	flows_graphs.clear_all()
 
+func show_flows(vis: bool):
+	flows_graphs.visible = vis
+
 
 func _add_mesh(mesh: Mesh, name: String) -> GeometryInstance:
 	var node = MeshInstance.new()

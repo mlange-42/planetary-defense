@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/flows.svg-6e71858b56c1b00b0d6411adc57152df.stex"
+path="res://.import/flows.svg-790a6ac396a1d1159fde6eef9e404f32.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icons/land_use/flows.svg"
-dest_files=[ "res://.import/flows.svg-6e71858b56c1b00b0d6411adc57152df.stex" ]
+source_file="res://assets/icons/menu/flows.svg"
+dest_files=[ "res://.import/flows.svg-790a6ac396a1d1159fde6eef9e404f32.stex" ]
 
 [params]
 

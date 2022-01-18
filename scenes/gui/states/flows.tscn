@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/gui/states/flows.gd" type="Script" id=1]
 [ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=2]
 [ext_resource path="res://assets/fonts/consolas_bold.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=4]
+[ext_resource path="res://assets/icons/menu/flows.svg" type="Texture" id=5]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 1, 1, 1, 1, 0.63, 0.13, 0.94, 1 )
@@ -26,19 +27,19 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 margin_right = 148.0
-margin_bottom = 221.0
+margin_bottom = 229.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
 [node name="LegendContainer" type="PanelContainer" parent="Buttons"]
 margin_right = 148.0
-margin_bottom = 221.0
+margin_bottom = 229.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/LegendContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 217.0
+margin_bottom = 225.0
 
 [node name="BackControls" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
 margin_right = 140.0
@@ -72,16 +73,32 @@ auto_height = true
 max_columns = 4
 icon_mode = 0
 
-[node name="CommodityLabel" type="Label" parent="Buttons/LegendContainer/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
 margin_top = 41.0
 margin_right = 140.0
-margin_bottom = 57.0
+margin_bottom = 65.0
+
+[node name="CommodityLabel" type="Label" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer3"]
+margin_top = 4.0
+margin_right = 112.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Commodity"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 61.0
+[node name="FlowsVisible" type="Button" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 116.0
 margin_right = 140.0
-margin_bottom = 83.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 24, 24 )
+toggle_mode = true
+pressed = true
+icon = ExtResource( 5 )
+expand_icon = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
+margin_top = 69.0
+margin_right = 140.0
+margin_bottom = 91.0
 
 [node name="MaxColorButton" type="ColorPickerButton" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer"]
 margin_right = 30.0
@@ -103,9 +120,9 @@ text = "100"
 align = 1
 
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 87.0
+margin_top = 95.0
 margin_right = 140.0
-margin_bottom = 187.0
+margin_bottom = 195.0
 
 [node name="Control" type="Control" parent="Buttons/LegendContainer/VBoxContainer/AspectRatioContainer"]
 margin_left = 20.0
@@ -126,9 +143,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
-margin_top = 191.0
+margin_top = 199.0
 margin_right = 140.0
-margin_bottom = 213.0
+margin_bottom = 221.0
 
 [node name="MinColorButton" type="ColorPickerButton" parent="Buttons/LegendContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 30.0
@@ -151,5 +168,6 @@ align = 1
 
 [connection signal="pressed" from="Buttons/LegendContainer/VBoxContainer/BackControls/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="item_selected" from="Buttons/LegendContainer/VBoxContainer/Commodities" to="." method="_on_Commodities_item_selected"]
+[connection signal="toggled" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer3/FlowsVisible" to="." method="_on_FlowsVisible_toggled"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer/MaxColorButton" to="." method="_on_gradient_color_changed"]
 [connection signal="color_changed" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer2/MinColorButton" to="." method="_on_gradient_color_changed"]

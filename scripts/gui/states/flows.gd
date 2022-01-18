@@ -8,6 +8,7 @@ onready var gradient_tex: TextureRect = find_node("TextureRect")
 
 onready var min_color_button: ColorPickerButton = find_node("MinColorButton")
 onready var max_color_button: ColorPickerButton = find_node("MaxColorButton")
+onready var flows_visible: Button = find_node("FlowsVisible")
 
 func _ready():
 	for comm in Commodities.COMM_ALL:
@@ -44,6 +45,7 @@ func on_planet_clicked(node: int, button: int):
 
 
 func state_entered():
+	fsm.planet.show_flows(flows_visible.pressed)
 	if comm_list.is_anything_selected():
 		update_flows(comm_list.get_selected_items()[0])
 
@@ -54,6 +56,7 @@ func on_next_turn():
 
 func state_exited():
 	fsm.planet.clear_flows()
+	fsm.planet.show_flows(false)
 	fsm.planet.set_traffic_commodity(-1)
 
 
@@ -79,3 +82,7 @@ func _on_gradient_color_changed(_color):
 
 func _on_BackButton_pressed():
 	fsm.pop()
+
+
+func _on_FlowsVisible_toggled(button_pressed):
+	fsm.planet.show_flows(button_pressed)
