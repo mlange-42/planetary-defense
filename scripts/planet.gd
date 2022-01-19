@@ -289,7 +289,7 @@ func load_game():
 	
 	self.space.update_coverage()
 	
-	_redraw_roads()
+	_redraw_roads(-1)
 	_redraw_resources()
 	_redraw_sky()
 
@@ -319,7 +319,7 @@ func add_road(from: int, to: int, type: int):
 	var path = calc_id_path(from, to, type)
 	var err = builder.add_road(path, type)
 	
-	_redraw_roads()
+	_redraw_roads(type)
 	emit_budget()
 	
 	return err
@@ -329,7 +329,7 @@ func remove_road(from: int, to: int, type: int):
 	var mode = Network.TYPE_MODES[type]
 	var path = calc_id_path(from, to, type)
 	if builder.remove_road(path, mode):
-		_redraw_roads()
+		_redraw_roads(type)
 
 
 func get_facility(id: int):
@@ -341,9 +341,12 @@ func set_traffic_commodity(comm: int):
 		(network_geometries[tp] as RoadGeometry).material_override.set_shader_param("channel", comm)
 
 
-func _redraw_roads():
-	for tp in network_geometries:
-		network_geometries[tp].draw_type(planet_data, roads, tp)
+func _redraw_roads(type: int):
+	if type < 0:
+		for tp in network_geometries:
+			network_geometries[tp].draw_type(planet_data, roads, tp)
+	else:
+		network_geometries[type].draw_type(planet_data, roads, type)
 
 
 func _redraw_resources():
@@ -428,7 +431,7 @@ func next_turn():
 	space.update_turn()
 	stats.update_turn()
 	
-	_redraw_roads()
+	_redraw_roads(-1)
 	_redraw_resources()
 	_redraw_sky()
 	
