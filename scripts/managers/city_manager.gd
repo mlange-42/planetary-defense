@@ -218,7 +218,7 @@ func mirgate_inhabitant(from: City, attractiveness: Dictionary):
 		
 		from.update_visuals(planet.planet_data)
 		max_city.update_visuals(planet.planet_data)
-		planet.messages.add_message(from.node_id, "Worker migrated from [u]%s[/u] to [u]%s[/u]" \
+		planet.messages.add_message(max_city.node_id, "Worker migrated from [u]%s[/u] to [u]%s[/u]" \
 					% [from.name, max_city.name], Consts.MESSAGE_INFO)
 
 

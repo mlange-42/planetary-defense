@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/gui/states/flows.gd" type="Script" id=1]
 [ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=2]
 [ext_resource path="res://assets/fonts/consolas_bold.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=4]
 [ext_resource path="res://assets/icons/menu/flows.svg" type="Texture" id=5]
+[ext_resource path="res://assets/shortkeys/space.tres" type="ShortCut" id=6]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 1, 1, 1, 1, 0.63, 0.13, 0.94, 1 )
@@ -67,10 +68,9 @@ margin_top = 28.0
 margin_right = 140.0
 margin_bottom = 37.0
 hint_tooltip = "Select commodity to view flow"
-custom_constants/icon_margin = 0
-custom_constants/hseparation = 2
+custom_constants/hseparation = 0
 auto_height = true
-max_columns = 4
+max_columns = 5
 icon_mode = 0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Buttons/LegendContainer/VBoxContainer"]
@@ -90,8 +90,10 @@ margin_left = 116.0
 margin_right = 140.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
+hint_tooltip = "Hide/show end-to-end arrows"
 toggle_mode = true
 pressed = true
+shortcut = ExtResource( 6 )
 icon = ExtResource( 5 )
 expand_icon = true
 
