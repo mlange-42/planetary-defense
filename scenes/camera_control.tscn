@@ -9,7 +9,7 @@ _data = [ Vector2( 0, 0.727273 ), 0.0, -2.55122, 0, 0, Vector2( 0.325048, 0.2 ),
 
 [sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0, 0.208647, 1 )
-colors = PoolColorArray( 0.529412, 0.807843, 0.980392, 1, 0.0117647, 0.054902, 0.282353, 1, 0, 0.00637817, 0.0742188, 1 )
+colors = PoolColorArray( 0.529412, 0.807843, 0.980392, 1, 0.0117647, 0.054902, 0.282353, 1, 0, 0.00784314, 0.0745098, 1 )
 
 [sub_resource type="GradientTexture" id=3]
 gradient = SubResource( 2 )
@@ -42,5 +42,6 @@ near = 0.2
 
 [node name="PostProcess" type="MeshInstance" parent="Arm/Arm2/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+cast_shadow = 0
 mesh = SubResource( 4 )
 material/0 = ExtResource( 3 )

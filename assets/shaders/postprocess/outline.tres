@@ -8,7 +8,6 @@ uniform float threshold: hint_range(0, 1) = 0.025;
 uniform float width: hint_range(1, 5) = 1.0;
 uniform vec4 color: hint_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float alpha: hint_range(0, 1) = 0.7;
-uniform float max_distance = 100.0;
 
 varying mat4 CAMERA;
 
@@ -20,21 +19,20 @@ float lin_depth(sampler2D depth_tex, vec2 screen_uv, mat4 inv_matrix) {
 	return -view.z;
 }
 
-bool simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh, mat4 inv_matrix) {
+float simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh, mat4 inv_matrix) {
 	float d = lin_depth(depth_tex, uv, inv_matrix);
+	float diff = 0.0;
 	for (int i = -1; i <= 1; i++) {
 		float dx = rad.x * float(i);
 		for (int j = -1; j <= 1; j++) {
 			if(i != 0 || j != 0) {
 				float dy = rad.y * float(j);
 				float d2 = lin_depth(depth_tex, uv + vec2(dx, dy), inv_matrix);
-				if(abs(d2 - d) > thresh) {
-					return true;
-				}
+				diff += float(abs(d2 - d) > thresh);
 			}
 		}
 	}
-	return false;
+	return diff / 8.0;
 }
 
 void vertex() {
@@ -46,17 +44,15 @@ void fragment() {
 	ALBEDO = color.rgb;
 	float depth = lin_depth(DEPTH_TEXTURE, SCREEN_UV, INV_PROJECTION_MATRIX);
 	
-	if(depth > max_distance) {
-		ALPHA = 0.0;
+	vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
+	
+	float is_edge_2 = simple_edge(DEPTH_TEXTURE, SCREEN_UV, (width + 1.0) * pixel_size, depth * threshold, INV_PROJECTION_MATRIX);
+	if(is_edge_2 > 0.15) {
+		float is_edge = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, depth * threshold, INV_PROJECTION_MATRIX);
+		ALPHA = clamp((1.5 * is_edge + 0.5 * is_edge_2) * alpha, 0.0, alpha);
 	} else {
-		vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
-		bool is_edge = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, depth * threshold, INV_PROJECTION_MATRIX);
-		
-		if (is_edge) {
-			ALPHA = alpha;
-		} else {
-			ALPHA = 0.0;
-		}
+		ALPHA = 0.0;
 	}
+	
 }
 "
