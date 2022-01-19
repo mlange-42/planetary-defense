@@ -31,7 +31,8 @@ func update_turn():
 		var revealed = planet.resources.reveal_random_resources(prop, 1)
 		for node in revealed:
 			var res = planet.resources.resources[node][0]
-			planet.messages.add_message(node, "%s deposit prospected" % [Resources.RES_NAMES[res]], Consts.MESSAGE_INFO)
+			planet.messages.add_message(node, "%s prospected" % \
+					StrUtil.bb_link("%s deposit" % Resources.RES_NAMES[res], node), Consts.MESSAGE_INFO)
 
 
 func update_coverage():

@@ -1,7 +1,7 @@
 extends Control
 class_name MessageWindow
 
-signal go_to_pressed(message)
+signal go_to_pressed(node)
 
 onready var container: VBoxContainer = find_node("MessageContainer")
 
@@ -28,5 +28,5 @@ func add_message(m: MessageManager.Message):
 func _on_HideButton_pressed():
 	self.visible = false
 
-func _on_GoTo_pressed(message):
-	emit_signal("go_to_pressed", message)
+func _on_GoTo_pressed(node):
+	emit_signal("go_to_pressed", node)

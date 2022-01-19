@@ -103,7 +103,7 @@ func do_effect(planet):
 		
 		city.update_visuals(planet.planet_data)
 		
-	return "Alien air attack at [u]%s[/u], %d killed" % [city.name, kills]
+	return "Alien air attack at %s, %d killed" % [StrUtil.bb_name(city), kills]
 
 
 func show_effect(planet):

@@ -1,7 +1,7 @@
 extends HBoxContainer
 class_name MessageEntry
 
-signal go_to_pressed(message)
+signal go_to_pressed(node)
 
 var message: MessageManager.Message
 
@@ -25,6 +25,8 @@ func _ready():
 	message_label.bbcode_enabled = true
 	message_label.bbcode_text = message.text
 	
+	message_label.connect("meta_clicked", self, "_on_meta_clicked")
+	
 	var vbox = VBoxContainer.new()
 	vbox.alignment = ALIGN_CENTER
 	vbox.size_flags_horizontal = SIZE_FILL | SIZE_EXPAND
@@ -34,5 +36,9 @@ func _ready():
 	rect_size = Vector2(0, 0)
 
 
+func _on_meta_clicked(meta):
+	emit_signal("go_to_pressed", int(meta))
+
+
 func _on_button_pressed():
-	emit_signal("go_to_pressed", message)
+	emit_signal("go_to_pressed", message.node)
