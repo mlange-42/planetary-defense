@@ -2,11 +2,11 @@
 
 [resource]
 code = "shader_type spatial;
-render_mode unshaded, depth_test_disable, blend_mul;
+render_mode skip_vertex_transform, depth_test_disable,
+        unshaded, shadows_disabled, ambient_light_disabled, blend_mul;
 
 uniform float threshold: hint_range(0, 1) = 0.025;
 uniform float width: hint_range(1, 5) = 1.0;
-uniform vec4 color: hint_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float alpha: hint_range(0, 1) = 0.7;
 
 uniform float camera_near;
@@ -28,11 +28,9 @@ float simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh) {
 	for (int i = -1; i <= 1; i++) {
 		dx = rad.x * float(i);
 		for (int j = -1; j <= 1; j++) {
-			//if(i != 0 || j != 0) {
-				dy = rad.y * float(j);
-				d2 = lin_depth(depth_tex, uv + vec2(dx, dy));
-				diff += float(abs(d2 - d) > t);
-			//}
+			dy = rad.y * float(j);
+			d2 = lin_depth(depth_tex, uv + vec2(dx, dy));
+			diff += float(abs(d2 - d) > t);
 		}
 	}
 	return diff / 4.0;
@@ -43,16 +41,12 @@ void vertex() {
 }
 
 void fragment() {
-	if(true) {
-		vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
-		float is_edge_2 = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, threshold);
-		
-		if(is_edge_2 > 0.15) {
-			float v = 1.0 - clamp(2.0 * is_edge_2 * alpha, 0.0, alpha);
-			ALBEDO = vec3(v, v, v);
-		} else {
-			ALBEDO = vec3(1.0, 1.0, 1.0);
-		}
+	vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
+	float is_edge = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, threshold);
+	
+	if(is_edge > 0.15) {
+		float v = 1.0 - clamp(2.0 * is_edge * alpha, 0.0, alpha);
+		ALBEDO = vec3(v, v, v);
 	} else {
 		ALBEDO = vec3(1.0, 1.0, 1.0);
 	}

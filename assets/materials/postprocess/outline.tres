@@ -7,7 +7,6 @@ render_priority = 100
 shader = ExtResource( 1 )
 shader_param/threshold = 0.035
 shader_param/width = 1.0
-shader_param/color = Color( 0, 0, 0, 1 )
 shader_param/alpha = 0.7
 shader_param/camera_near = 0.2
 shader_param/camera_far = 100.0
