@@ -104,8 +104,8 @@ func update_build_info(type, road_length: int = -1):
 	info_tabs.current_tab = 1
 
 
-func _on_Messages_go_to_pressed(message):
-	var loc = planet.planet_data.get_position(message.node)
+func _on_Messages_go_to_pressed(node):
+	var loc = planet.planet_data.get_position(node)
 	go_to(loc)
 
 

@@ -34,7 +34,6 @@ func post_update():
 		
 		facility.calc_is_supplied()
 		if not facility.is_supplied:
-			var name = facility.name if facility is City else facility.type
 			var miss_text: String = ""
 			var miss = facility.get_missing_supply()
 			for comm in range(miss.size()):
@@ -42,7 +41,7 @@ func post_update():
 				if amount > 0:
 					miss_text += "%d %s, " % [amount, Commodities.COMM_NAMES[comm]]
 			miss_text = miss_text.substr(0, miss_text.length()-2)
-			planet.messages.add_message(facility.node_id, "[u]%s[/u] not supplied\n  Missing: %s" % [name, miss_text], Consts.MESSAGE_WARNING)
+			planet.messages.add_message(facility.node_id, "%s not supplied\n  Missing: %s" % [StrUtil.bb_name(facility), miss_text], Consts.MESSAGE_WARNING)
 	
 	migrate(attractiveness)
 
@@ -55,7 +54,7 @@ func reveal_resources(city: City):
 			revealed[res] = cell
 	
 	for res in revealed:
-		planet.messages.add_message(revealed[res], "%s deposit discovered near %s" % [Resources.RES_NAMES[res], city.name], Consts.MESSAGE_INFO)
+		planet.messages.add_message(revealed[res], "%s deposit discovered near %s" % [Resources.RES_NAMES[res], StrUtil.bb_name(city)], Consts.MESSAGE_INFO)
 
 
 func pre_update_city(city: City):
@@ -151,7 +150,7 @@ func post_update_city(city: City) -> float:
 					var realized_amount = planet.resources.extract_resource(node, extract_resource, amount)
 					comm_produced[comm] -= realized_amount
 					if not planet.resources.has_resource(node, extract_resource):
-						planet.messages.add_message(node, "%s depleted in %s" % [Resources.RES_NAMES[extract_resource], city.name], Consts.MESSAGE_WARNING)
+						planet.messages.add_message(node, "%s depleted in %s" % [Resources.RES_NAMES[extract_resource], StrUtil.bb_name(city)], Consts.MESSAGE_WARNING)
 	
 	var occupied = 0
 	for node in city.cells:
@@ -176,7 +175,7 @@ func post_update_city(city: City) -> float:
 		if randf() < Cities.CITY_GROWTH_PROB * attractiveness:
 			city.add_workers(1)
 			city.update_visuals(planet.planet_data)
-			planet.messages.add_message(city.node_id, "Population growth in [u]%s[/u]" % city.name, Consts.MESSAGE_INFO)
+			planet.messages.add_message(city.node_id, "Population growth in %s" % StrUtil.bb_name(city), Consts.MESSAGE_INFO)
 	else:
 		city.growth_stats.total = 0
 		city.growth_stats.supply_factor = 0
@@ -218,8 +217,8 @@ func mirgate_inhabitant(from: City, attractiveness: Dictionary):
 		
 		from.update_visuals(planet.planet_data)
 		max_city.update_visuals(planet.planet_data)
-		planet.messages.add_message(max_city.node_id, "Worker migrated from [u]%s[/u] to [u]%s[/u]" \
-					% [from.name, max_city.name], Consts.MESSAGE_INFO)
+		planet.messages.add_message(max_city.node_id, "Worker migrated from %s to %s" \
+					% [StrUtil.bb_name(from), StrUtil.bb_name(max_city)], Consts.MESSAGE_INFO)
 
 
 func assign_workers(builder: BuildManager):
@@ -306,7 +305,7 @@ func assign_city_workers(city: City, builder: BuildManager):
 		var node = max_solution[0]
 		var lu = max_solution[1]
 		planet.messages.add_message(node, "%s assigned %d worker(s) to %s" \
-					% [city.name, LandUse.LU_WORKERS[lu], LandUse.LU_NAMES[lu]], Consts.MESSAGE_INFO)
+					% [StrUtil.bb_name(city), LandUse.LU_WORKERS[lu], LandUse.LU_NAMES[lu]], Consts.MESSAGE_INFO)
 		if builder.set_land_use(city, node, lu) != null:
 			print("Warning: unable to auto-assign land use")
 		#	break

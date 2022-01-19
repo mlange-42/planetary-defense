@@ -390,6 +390,11 @@ _global_script_classes=[ {
 "path": "res://scripts/managers/story_manager.gd"
 }, {
 "base": "Reference",
+"class": "StrUtil",
+"language": "GDScript",
+"path": "res://scripts/util/string_util.gd"
+}, {
+"base": "Reference",
 "class": "TaxManager",
 "language": "GDScript",
 "path": "res://scripts/managers/tax_manager.gd"
@@ -496,6 +501,7 @@ _global_script_class_icons={
 "StatsBar": "",
 "StatsManager": "",
 "StoryManager": "",
+"StrUtil": "",
 "TaxManager": "",
 "TexSettings": "",
 "TrainStation": "",
