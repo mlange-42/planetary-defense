@@ -2,57 +2,62 @@
 
 [resource]
 code = "shader_type spatial;
-render_mode unshaded, depth_test_disable;
+render_mode vertex_lighting, depth_draw_opaque, blend_mul;
 
 uniform float threshold: hint_range(0, 1) = 0.025;
 uniform float width: hint_range(1, 5) = 1.0;
 uniform vec4 color: hint_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float alpha: hint_range(0, 1) = 0.7;
 
-varying mat4 CAMERA;
+uniform float camera_near;
+uniform float camera_far;
 
-float lin_depth(sampler2D depth_tex, vec2 screen_uv, mat4 inv_matrix) {
+float lin_depth(sampler2D depth_tex, vec2 screen_uv) {
 	float depth = texture(depth_tex, screen_uv).x;
-	vec3 ndc = vec3(screen_uv, depth) * 2.0 - 1.0;
-	vec4 view = inv_matrix * vec4(ndc, 1.0);
-	view.xyz /= view.w;
-	return -view.z;
+	float z_n = 2.0 * depth - 1.0;
+    return 2.0 * camera_near * camera_far / (camera_far + camera_near - z_n * (camera_far - camera_near));
 }
 
-float simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh, mat4 inv_matrix) {
-	float d = lin_depth(depth_tex, uv, inv_matrix);
+float simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh) {
+	float d = lin_depth(depth_tex, uv);
+	float t = d * thresh;
 	float diff = 0.0;
+	float dx = 0.0;
+	float dy = 0.0;
+	float d2 = 0.0;
 	for (int i = -1; i <= 1; i++) {
-		float dx = rad.x * float(i);
+		dx = rad.x * float(i);
 		for (int j = -1; j <= 1; j++) {
-			if(i != 0 || j != 0) {
-				float dy = rad.y * float(j);
-				float d2 = lin_depth(depth_tex, uv + vec2(dx, dy), inv_matrix);
-				diff += float(abs(d2 - d) > thresh);
-			}
+			//if(i != 0 || j != 0) {
+				dy = rad.y * float(j);
+				d2 = lin_depth(depth_tex, uv + vec2(dx, dy));
+				diff += float(abs(d2 - d) > t);
+			//}
 		}
 	}
-	return diff / 8.0;
+	return diff / 4.0;
 }
 
 void vertex() {
 	POSITION = vec4(VERTEX, 1.0);
-	CAMERA = CAMERA_MATRIX;
 }
 
 void fragment() {
-	ALBEDO = color.rgb;
-	float depth = lin_depth(DEPTH_TEXTURE, SCREEN_UV, INV_PROJECTION_MATRIX);
-	
-	vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
-	
-	float is_edge_2 = simple_edge(DEPTH_TEXTURE, SCREEN_UV, (width + 1.0) * pixel_size, depth * threshold, INV_PROJECTION_MATRIX);
-	if(is_edge_2 > 0.15) {
-		float is_edge = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, depth * threshold, INV_PROJECTION_MATRIX);
-		ALPHA = clamp((1.5 * is_edge + 0.5 * is_edge_2) * alpha, 0.0, alpha);
+	if(true) {
+		vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
+		
+		float is_edge_2 = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, threshold);
+		if(is_edge_2 > 0.15) {
+			//ALPHA = clamp(2.0 * is_edge_2 * alpha, 0.0, alpha);
+			float v = 1.0 - clamp(2.0 * is_edge_2 * alpha, 0.0, alpha);
+			ALBEDO = vec3(v, v, v);
+		} else {
+			//ALPHA = 0.0;
+			ALBEDO = vec3(1.0, 1.0, 1.0);
+		}
 	} else {
-		ALPHA = 0.0;
+		ALBEDO = vec3(1.0, 1.0, 1.0);
+		//ALPHA = 0.8;
 	}
-	
 }
 "
