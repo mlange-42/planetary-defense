@@ -2,7 +2,7 @@
 
 [resource]
 code = "shader_type spatial;
-render_mode specular_schlick_ggx;
+render_mode shadows_disabled, specular_disabled, unshaded;
 
 uniform float Fps = 24;
 uniform uint Frames = 32;
