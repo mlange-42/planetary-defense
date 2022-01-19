@@ -4,3 +4,4 @@
 flags_transparent = true
 flags_vertex_lighting = true
 vertex_color_use_as_albedo = true
+params_depth_draw_mode = 1

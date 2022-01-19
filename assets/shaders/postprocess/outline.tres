@@ -1,0 +1,54 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type spatial;
+render_mode skip_vertex_transform, depth_test_disable,
+        unshaded, shadows_disabled, ambient_light_disabled, blend_mul;
+
+uniform float threshold: hint_range(0, 1) = 0.025;
+uniform float width: hint_range(1, 5) = 1.0;
+uniform float alpha: hint_range(0, 1) = 0.7;
+
+uniform float camera_near;
+uniform float camera_far;
+
+float lin_depth(sampler2D depth_tex, vec2 screen_uv) {
+	float depth = texture(depth_tex, screen_uv).x;
+	float z_n = 2.0 * depth - 1.0;
+    return 2.0 * camera_near * camera_far / (camera_far + camera_near - z_n * (camera_far - camera_near));
+}
+
+float simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh) {
+	float d = lin_depth(depth_tex, uv);
+	float t = d * thresh;
+	float diff = 0.0;
+	float dx = 0.0;
+	float dy = 0.0;
+	float d2 = 0.0;
+	for (int i = -1; i <= 1; i++) {
+		dx = rad.x * float(i);
+		for (int j = -1; j <= 1; j++) {
+			dy = rad.y * float(j);
+			d2 = lin_depth(depth_tex, uv + vec2(dx, dy));
+			diff += float(abs(d2 - d) > t);
+		}
+	}
+	return diff / 4.0;
+}
+
+void vertex() {
+	POSITION = vec4(VERTEX, 1.0);
+}
+
+void fragment() {
+	vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
+	float is_edge = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, threshold);
+	
+	if(is_edge > 0.15) {
+		float v = 1.0 - clamp(2.0 * is_edge * alpha, 0.0, alpha);
+		ALBEDO = vec3(v, v, v);
+	} else {
+		ALBEDO = vec3(1.0, 1.0, 1.0);
+	}
+}
+"

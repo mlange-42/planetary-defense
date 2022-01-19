@@ -1,0 +1,16 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type spatial;
+render_mode skip_vertex_transform, depth_test_disable,
+        unshaded, shadows_disabled, ambient_light_disabled, blend_mul;
+
+void vertex() {
+	POSITION = vec4(VERTEX, 1.0);
+}
+
+void fragment() {
+	float x = SCREEN_UV.x;
+	ALBEDO = vec3(x, x, x);
+}
+"
