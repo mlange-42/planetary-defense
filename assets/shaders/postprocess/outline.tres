@@ -4,7 +4,7 @@
 code = "shader_type spatial;
 render_mode unshaded, depth_test_disable;
 
-uniform float threshold: hint_range(-1, 1) = 0.025;
+uniform float threshold: hint_range(0, 1) = 0.025;
 uniform float width: hint_range(1, 5) = 1.0;
 uniform vec4 color: hint_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float alpha: hint_range(0, 1) = 0.7;
@@ -28,7 +28,7 @@ bool simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh, mat4 inv_
 			if(i != 0 || j != 0) {
 				float dy = rad.y * float(j);
 				float d2 = lin_depth(depth_tex, uv + vec2(dx, dy), inv_matrix);
-				if( (thresh >= 0.0 && d2 - d > thresh) || (thresh < 0.0 && d2 - d < thresh) ) {
+				if(abs(d2 - d) > thresh) {
 					return true;
 				}
 			}
