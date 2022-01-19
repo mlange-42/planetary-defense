@@ -7,6 +7,7 @@ onready var mouse: Mouse = $Mouse
 onready var pointer: Spatial = $MousePointer
 onready var gui: Gui = $GUI
 onready var cam_control: CameraControl = $CameraControl
+onready var occluder: Occluder = $Occluder
 
 # Array of Dictionaries to override parameters
 var planet_params = []
@@ -29,6 +30,8 @@ func _ready():
 	gui.planet = planet
 	cam_control.planet_radius = planet.radius
 	cam_control.init()
+	
+	(occluder.shape as OccluderShapeSphere).spheres[0].d = planet.radius * 0.98
 	
 	# warning-ignore:return_value_discarded
 	mouse.connect("planet_entered", self, "_on_planet_entered")
