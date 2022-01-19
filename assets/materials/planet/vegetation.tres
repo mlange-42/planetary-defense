@@ -4,4 +4,6 @@
 
 [resource]
 flags_vertex_lighting = true
+params_diffuse_mode = 4
+params_specular_mode = 3
 albedo_texture = ExtResource( 1 )
