@@ -16,6 +16,7 @@ gradient = SubResource( 2 )
 width = 1024
 
 [sub_resource type="QuadMesh" id=4]
+material = ExtResource( 3 )
 size = Vector2( 2, 2 )
 
 [node name="CameraControl" type="Spatial"]
@@ -41,8 +42,9 @@ fov = 55.0
 near = 0.2
 
 [node name="PostProcess" type="MeshInstance" parent="Arm/Arm2/Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+visible = false
 cast_shadow = 0
 mesh = SubResource( 4 )
 skeleton = NodePath("")
-material/0 = ExtResource( 3 )
+material/0 = null

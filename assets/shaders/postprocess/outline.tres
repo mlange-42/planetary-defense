@@ -2,7 +2,7 @@
 
 [resource]
 code = "shader_type spatial;
-render_mode vertex_lighting, depth_draw_opaque, blend_mul;
+render_mode unshaded, depth_test_disable, blend_mul;
 
 uniform float threshold: hint_range(0, 1) = 0.025;
 uniform float width: hint_range(1, 5) = 1.0;
@@ -45,19 +45,16 @@ void vertex() {
 void fragment() {
 	if(true) {
 		vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
-		
 		float is_edge_2 = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, threshold);
+		
 		if(is_edge_2 > 0.15) {
-			//ALPHA = clamp(2.0 * is_edge_2 * alpha, 0.0, alpha);
 			float v = 1.0 - clamp(2.0 * is_edge_2 * alpha, 0.0, alpha);
 			ALBEDO = vec3(v, v, v);
 		} else {
-			//ALPHA = 0.0;
 			ALBEDO = vec3(1.0, 1.0, 1.0);
 		}
 	} else {
 		ALBEDO = vec3(1.0, 1.0, 1.0);
-		//ALPHA = 0.8;
 	}
 }
 "

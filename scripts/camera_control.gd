@@ -63,7 +63,7 @@ func zoom(wheel_up: bool):
 	zoom_target = clamp(zoom_target * factor, min_height, max_height)
 
 
-func _process(delta):
+func _physics_process(delta):
 	camera.translation.z = lerp(camera.translation.z, zoom_target, lerp_speed * delta)
 	var angle = 90 * angle_curve.interpolate(camera.translation.z / max_height)
 	
