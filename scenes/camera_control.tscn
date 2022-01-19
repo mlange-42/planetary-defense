@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/camera_control.gd" type="Script" id=1]
 [ext_resource path="res://assets/camera_env.tres" type="Environment" id=2]
+[ext_resource path="res://assets/materials/postprocess/outline.tres" type="Material" id=3]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0.727273 ), 0.0, -2.55122, 0, 0, Vector2( 0.325048, 0.2 ), -0.811751, -0.811751, 0, 0, Vector2( 0.762906, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 1, 0 ]
@@ -13,6 +14,9 @@ colors = PoolColorArray( 0.529412, 0.807843, 0.980392, 1, 0.0117647, 0.054902, 0
 [sub_resource type="GradientTexture" id=3]
 gradient = SubResource( 2 )
 width = 1024
+
+[sub_resource type="QuadMesh" id=4]
+size = Vector2( 2, 2 )
 
 [node name="CameraControl" type="Spatial"]
 script = ExtResource( 1 )
@@ -35,3 +39,8 @@ environment = ExtResource( 2 )
 current = true
 fov = 55.0
 near = 0.2
+
+[node name="PostProcess" type="MeshInstance" parent="Arm/Arm2/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+mesh = SubResource( 4 )
+material/0 = ExtResource( 3 )
