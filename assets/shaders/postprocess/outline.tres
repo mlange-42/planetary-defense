@@ -4,6 +4,12 @@
 code = "shader_type spatial;
 render_mode unshaded, depth_test_disable;
 
+uniform float threshold: hint_range(-1, 1) = 0.025;
+uniform float width: hint_range(1, 5) = 1.0;
+uniform vec4 color: hint_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform float alpha: hint_range(0, 1) = 0.7;
+uniform float max_distance = 100.0;
+
 varying mat4 CAMERA;
 
 float lin_depth(sampler2D depth_tex, vec2 screen_uv, mat4 inv_matrix) {
@@ -11,13 +17,24 @@ float lin_depth(sampler2D depth_tex, vec2 screen_uv, mat4 inv_matrix) {
 	vec3 ndc = vec3(screen_uv, depth) * 2.0 - 1.0;
 	vec4 view = inv_matrix * vec4(ndc, 1.0);
 	view.xyz /= view.w;
-	float linear_depth = -view.z;
-	
-	return linear_depth;
+	return -view.z;
 }
 
-float rand(vec2 co){
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+bool simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh, mat4 inv_matrix) {
+	float d = lin_depth(depth_tex, uv, inv_matrix);
+	for (int i = -1; i <= 1; i++) {
+		float dx = rad.x * float(i);
+		for (int j = -1; j <= 1; j++) {
+			if(i != 0 || j != 0) {
+				float dy = rad.y * float(j);
+				float d2 = lin_depth(depth_tex, uv + vec2(dx, dy), inv_matrix);
+				if( (thresh >= 0.0 && d2 - d > thresh) || (thresh < 0.0 && d2 - d < thresh) ) {
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 void vertex() {
@@ -26,11 +43,20 @@ void vertex() {
 }
 
 void fragment() {
-	float linear_depth = lin_depth(DEPTH_TEXTURE, SCREEN_UV, INV_PROJECTION_MATRIX);
-	float d = (linear_depth - 0.5) / 5.0;
+	ALBEDO = color.rgb;
+	float depth = lin_depth(DEPTH_TEXTURE, SCREEN_UV, INV_PROJECTION_MATRIX);
 	
-	vec4 screen = texture(SCREEN_TEXTURE, SCREEN_UV);
-	ALBEDO = vec3(0.0, 0.0, 0.0); //vec3(d, d, d);
-	ALPHA = 0.0;
+	if(depth > max_distance) {
+		ALPHA = 0.0;
+	} else {
+		vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
+		bool is_edge = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, depth * threshold, INV_PROJECTION_MATRIX);
+		
+		if (is_edge) {
+			ALPHA = alpha;
+		} else {
+			ALPHA = 0.0;
+		}
+	}
 }
 "
