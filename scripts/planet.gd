@@ -306,10 +306,11 @@ func calc_id_path(from: int, to: int, type: int) -> Array:
 	return path
 
 
-func draw_path(from: int, to: int, type: int, max_length: int) -> Array:
+func draw_path(from: int, to: int, type: int, erase: bool, max_length: int) -> Array:
 	var path = calc_point_path(from, to, type)
 	if path.size() > 0:
-		path_debug.draw_path(path, max_length, Color.blue, Color.red)
+		var col = Color.magenta if erase else Color.blue
+		path_debug.draw_path(path, max_length, col, Color.red)
 	else:
 		path_debug.clear()
 	return path

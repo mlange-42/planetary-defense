@@ -87,6 +87,8 @@ func _ready():
 	
 	# warning-ignore:return_value_discarded
 	button_group.connect("pressed", self, "_on_tool_changed")
+	# warning-ignore:return_value_discarded
+	clear_button.connect("pressed", self, "_on_ClearButton_pressed")
 
 
 func _unhandled_key_input(event: InputEventKey):
@@ -198,8 +200,9 @@ func on_planet_hovered(node: int):
 		if road_start_point >= 0:
 			# warning-ignore:return_value_discarded
 			var cost = Network.TYPE_COSTS[road_tool]
-			var max_length = 9999 if cost == 0 else fsm.planet.taxes.budget / cost
-			var path = fsm.planet.draw_path(road_start_point, node, road_tool, max_length)
+			var clear = clear_button.pressed
+			var max_length = 9999 if cost == 0 or clear else fsm.planet.taxes.budget / cost
+			var path = fsm.planet.draw_path(road_start_point, node, road_tool, clear, max_length)
 			# warning-ignore:narrowing_conversion
 			fsm.update_build_info(road_tool, max(1, path.size() - 1))
 		else:
@@ -272,6 +275,8 @@ func on_planet_clicked(node: int, button: int):
 func on_next_turn():
 	on_planet_hovered(fsm.get_current_node())
 
+func _on_ClearButton_pressed():
+	on_planet_hovered(fsm.get_current_node())
 
 func _on_tool_changed(_button):
 	var curr_tool = get_facility_tool()
