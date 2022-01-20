@@ -30,6 +30,9 @@ var button_group: ButtonGroup
 
 var infos = {}
 
+var facility_functions: Facilities.FacilityFunctions = Facilities.FacilityFunctions.new()
+
+
 func init(the_fsm: Gui, args: Dictionary):
 	.init(the_fsm, args)
 	
@@ -192,7 +195,14 @@ func move_pointer(node: int):
 	
 	var curr_tool = get_land_use_tool()
 	if curr_tool == null:
-		sub_pointer.material_override = preload("res://assets/materials/color/white.tres")
+		var fac_tool = get_facility_tool()
+		if fac_tool == null:
+			sub_pointer.material_override = preload("res://assets/materials/color/white.tres")
+		else:
+			if facility_functions.can_build(fac_tool, fsm.planet, node, null):
+				sub_pointer.material_override = preload("res://assets/materials/color/green.tres")
+			else:
+				sub_pointer.material_override = preload("res://assets/materials/color/red.tres")
 	else:
 		if fsm.planet.builder.can_set_land_use(city, node, curr_tool, true)[0]:
 			sub_pointer.material_override = preload("res://assets/materials/color/green.tres")
