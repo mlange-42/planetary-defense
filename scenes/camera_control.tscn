@@ -43,7 +43,6 @@ near = 0.2
 
 [node name="PostProcess" type="MeshInstance" parent="Arm/Arm2/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
-visible = false
 cast_shadow = 0
 mesh = SubResource( 4 )
 skeleton = NodePath("")
