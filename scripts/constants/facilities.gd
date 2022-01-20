@@ -60,7 +60,7 @@ const FACILITY_COVERAGE = {
 	FAC_TRAIN_STATION: 0,
 	FAC_POWER_PLANT: 0,
 	FAC_AIR_DEFENSE: 0,
-	FAC_GROUND_STATION: 45,
+	FAC_GROUND_STATION: 30,
 }
 
 # TODO: check - place all facilities in all modes?
@@ -80,6 +80,15 @@ const FACILITY_RADIUS_FUNC = {
 	FAC_POWER_PLANT: "constant_range",
 	FAC_AIR_DEFENSE: "air_defense_range",
 	FAC_GROUND_STATION: "constant_range",
+}
+
+const FACILITY_COVERAGE_FUNC = {
+	FAC_CITY: "constant_coverage",
+	FAC_PORT: "constant_coverage",
+	FAC_TRAIN_STATION: "constant_coverage",
+	FAC_POWER_PLANT: "constant_coverage",
+	FAC_AIR_DEFENSE: "constant_coverage",
+	FAC_GROUND_STATION: "ground_station_coverage",
 }
 
 const FACILITY_COSTS = {
@@ -161,8 +170,8 @@ class FacilityFunctions:
 	func calc_range(type, planet_data, node) -> bool:
 		return self.call(FACILITY_RADIUS_FUNC[type], planet_data, node, FACILITY_RADIUS[type])
 	
-	func calc_coverage(type, _planet_data, _node) -> bool:
-		return FACILITY_COVERAGE[type]
+	func calc_coverage(type, planet_data, node) -> bool:
+		return self.call(FACILITY_COVERAGE_FUNC[type], planet_data, node, FACILITY_COVERAGE[type])
 	
 	
 	func can_build_land(planet, node, _owner) -> bool:
@@ -197,6 +206,17 @@ class FacilityFunctions:
 			return int(round(radius * 1.4))
 		else:
 			return int(round(radius * 1.75))
+	
+	
+	func constant_coverage(_planet_data, _node, coverage) -> int:
+		return coverage
+	
+	
+	func ground_station_coverage(planet_data, node, coverage) -> int:
+		var nd = planet_data.get_node(node)
+		var ele = Consts.elevation(nd.elevation)
+		
+		return coverage + 10 * int(max(ele, 0) / 1000.0)
 	
 	
 	func _is_occupied(planet, node) -> bool:

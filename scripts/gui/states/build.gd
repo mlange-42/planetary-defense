@@ -31,7 +31,7 @@ func _ready():
 	indicator.material_override = Materials.RANGE_BUILD
 	fsm.planet.add_child(indicator)
 	
-	cov_indicator = CoverageIndicator.new(24, fsm.planet.sky_geometry.radius)
+	cov_indicator = CoverageIndicator.new(48, fsm.planet.sky_geometry.radius)
 	cov_indicator.material_override = Materials.VERTEX_COLOR
 	cov_indicator.visible = false
 	fsm.planet.add_child(cov_indicator)

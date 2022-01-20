@@ -4,6 +4,7 @@ class_name CoverageIndicator
 var segments: int = 24
 var radius: float = 10
 
+var sin_cos_45 = sin(deg2rad(45))
 
 # warning-ignore:shadowed_variable
 # warning-ignore:shadowed_variable
@@ -14,7 +15,10 @@ func _init(segments: int, radius: float):
 
 
 func set_coverage(angle: float):
-	pass
+	var sx = cos(deg2rad(angle)) / sin_cos_45
+	var sy = sin(deg2rad(angle)) / sin_cos_45
+	
+	scale = Vector3(sy, sy, sx)
 
 
 func _create_mesh():
