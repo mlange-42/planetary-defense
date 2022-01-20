@@ -7,6 +7,7 @@ onready var remove_button: Button = find_node("Remove")
 var clear_button: Button
 
 var indicator: RangeIndicator
+var cov_indicator: CoverageIndicator
 
 var pointer_offset = -0.03
 var pointer: Spatial
@@ -18,6 +19,7 @@ var facility_functions: Facilities.FacilityFunctions = Facilities.FacilityFuncti
 
 var cells: Dictionary = {}
 var radius: int = 0
+var coverage: int = 0
 
 var road_start_point: int = -1
 
@@ -28,6 +30,11 @@ func _ready():
 	indicator = RangeIndicator.new()
 	indicator.material_override = Materials.RANGE_BUILD
 	fsm.planet.add_child(indicator)
+	
+	cov_indicator = CoverageIndicator.new(24, fsm.planet.sky_geometry.radius)
+	cov_indicator.material_override = Materials.VERTEX_COLOR
+	cov_indicator.visible = false
+	fsm.planet.add_child(cov_indicator)
 	
 	pointer = Spatial.new()
 	fsm.planet.add_child(pointer)
@@ -100,6 +107,7 @@ func state_entered():
 
 func state_exited():
 	indicator.visible = false
+	cov_indicator.visible = false
 	pointer.visible = false
 	fsm.planet.clear_path()
 
@@ -161,9 +169,11 @@ func move_pointer(node: int):
 func on_planet_entered(_node: int):
 	var curr_tool = get_facility_tool()
 	indicator.visible = curr_tool != null and radius > 0
+	cov_indicator.visible = curr_tool != null and coverage > 0
 
 func on_planet_exited():
 	indicator.visible = false
+	cov_indicator.visible = false
 	pointer.visible = false
 	fsm.planet.clear_path()
 	fsm.update_facility_info(fsm.get_current_node())
@@ -177,8 +187,10 @@ func on_planet_hovered(node: int):
 	if curr_tool != null:
 		if node < 0:
 			radius = 0
+			coverage = 0
 		else:
 			radius = facility_functions.calc_range(curr_tool, fsm.planet.planet_data, node)
+			coverage = facility_functions.calc_coverage(curr_tool, fsm.planet.planet_data, node)
 		
 		_update_range(node)
 		fsm.update_build_info(curr_tool, -1)
@@ -194,6 +206,7 @@ func on_planet_hovered(node: int):
 			fsm.update_build_info(road_tool, 1)
 	else:
 		indicator.visible = false
+		cov_indicator.visible = false
 	
 	pointer.visible = true
 	move_pointer(node)
@@ -270,8 +283,10 @@ func _on_tool_changed(_button):
 		var node = fsm.get_current_node()
 		if node < 0:
 			radius = 0
+			coverage = 0
 		else:
 			radius = facility_functions.calc_range(curr_tool, fsm.planet.planet_data, node)
+			coverage = facility_functions.calc_coverage(curr_tool, fsm.planet.planet_data, node)
 		
 		fsm.planet.clear_path()
 		_update_range(node)
@@ -280,45 +295,66 @@ func _on_tool_changed(_button):
 		set_pointer(curr_tool, null)
 	elif road_tool != null:
 		radius = 0
+		coverage = 0
 		
 		indicator.visible = false
+		cov_indicator.visible = false
 		fsm.update_build_info(road_tool, 1)
 		on_planet_hovered(fsm.get_current_node())
 		set_pointer(null, road_tool)
 	else:
 		road_start_point = -1
 		indicator.visible = false
+		cov_indicator.visible = false
 		fsm.planet.clear_path()
 		set_pointer(null, null)
 
 
 func _update_range(node: int):
-	if radius == 0 or node < 0:
+	if node < 0:
 		indicator.visible = false
+		cov_indicator.visible = false
 		return
 	
-	cells.clear()
-	var temp_cells = fsm.planet.planet_data.get_in_radius(node, radius)
-	for c in temp_cells:
-		cells[c[0]] = c[1]
+	if radius > 0:
+		cells.clear()
+		var temp_cells = fsm.planet.planet_data.get_in_radius(node, radius)
+		for c in temp_cells:
+			cells[c[0]] = c[1]
+		
+		var pos = fsm.planet.planet_data.get_position(node)
+		indicator.translation = pos
+		indicator.look_at(2 * pos, Vector3.UP)
+		
+		_draw_range(node, radius)
+	else:
+		indicator.visible = false
 	
-	var pos = fsm.planet.planet_data.get_position(node)
-	indicator.translation = pos
-	indicator.look_at(2 * pos, Vector3.UP)
 	
-	_draw_range(node, radius)
+	if coverage > 0:
+		var pos = fsm.planet.planet_data.get_position(node)
+		cov_indicator.look_at(2 * pos, Vector3.UP)
+		_draw_coverage(node, coverage)
+	else:
+		cov_indicator.visible = false
 
 
 func _draw_range(center: int, new_radius):
 	indicator.draw_range(fsm.planet.planet_data, center, cells, new_radius, Color.white)
 	indicator.visible = true
 
+func _draw_coverage(_center: int, new_coverage):
+	cov_indicator.set_coverage(new_coverage)
+	cov_indicator.visible = true
+
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
 		fsm.planet.remove_child(indicator)
+		fsm.planet.remove_child(cov_indicator)
 		fsm.planet.remove_child(pointer)
 		indicator.queue_free()
+		cov_indicator.queue_free()
 		pointer.queue_free()
 
 

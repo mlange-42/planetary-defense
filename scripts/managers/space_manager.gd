@@ -7,6 +7,7 @@ var covered: Array
 
 var coverage: int = 0
 
+var facility_functions: Facilities.FacilityFunctions = Facilities.FacilityFunctions.new()
 
 # warning-ignore:shadowed_variable
 func _init(planet, mesh: ArrayMesh):
@@ -41,7 +42,7 @@ func update_coverage():
 	var facis = planet.roads.facilities()
 	for node in facis:
 		var fac = facis[node]
-		var cov = Facilities.FACILITY_COVERAGE[fac.type]
+		var cov = facility_functions.calc_coverage(fac.type, planet.planet_data, node)
 		if fac is GroundStation and fac.is_supplied and cov > 0:
 			stations.append( [planet.planet_data.get_position(node), cov] )
 	

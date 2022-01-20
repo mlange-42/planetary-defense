@@ -158,8 +158,11 @@ class FacilityFunctions:
 	func can_build(type, planet, node, owner) -> bool:
 		return not _is_occupied(planet, node) and self.call(FACILITY_CAN_BUILD_FUNC[type], planet, node, owner)
 		
-	func calc_range(type, planet, node) -> bool:
-		return self.call(FACILITY_RADIUS_FUNC[type], planet, node, FACILITY_RADIUS[type])
+	func calc_range(type, planet_data, node) -> bool:
+		return self.call(FACILITY_RADIUS_FUNC[type], planet_data, node, FACILITY_RADIUS[type])
+	
+	func calc_coverage(type, _planet_data, _node) -> bool:
+		return FACILITY_COVERAGE[type]
 	
 	
 	func can_build_land(planet, node, _owner) -> bool:
