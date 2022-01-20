@@ -9,6 +9,8 @@ onready var gui: Gui = $GUI
 onready var cam_control: CameraControl = $CameraControl
 onready var occluder: Occluder = $Occluder
 
+onready var settings: GameSettings = get_node("/root/Settings")
+
 # Array of Dictionaries to override parameters
 var planet_params = []
 
@@ -19,6 +21,7 @@ func _init():
 
 
 func _ready():
+	settings.apply()
 	get_tree().set_auto_accept_quit(false)
 	
 	randomize()

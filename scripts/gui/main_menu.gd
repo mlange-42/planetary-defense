@@ -23,7 +23,7 @@ onready var settings: GameSettings = get_node("/root/Settings")
 
 func _ready():
 	load_options()
-	OS.window_fullscreen = settings.fullscreen
+	settings.apply()
 	
 	name_edit.grab_focus()
 	
@@ -78,8 +78,8 @@ func _on_OptionsButton_pressed():
 
 
 func _on_options_confirmed():
+	settings.apply()
 	save_options()
-	OS.window_fullscreen = settings.fullscreen
 	options.visible = false
 
 
