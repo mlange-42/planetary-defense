@@ -3,7 +3,7 @@
 [resource]
 code = "shader_type spatial;
 render_mode skip_vertex_transform, depth_test_disable,
-        unshaded, shadows_disabled, ambient_light_disabled, blend_mul;
+        unshaded, shadows_disabled, ambient_light_disabled;
 
 uniform float threshold: hint_range(0, 1) = 0.025;
 uniform float width: hint_range(1, 5) = 1.0;
@@ -11,6 +11,8 @@ uniform float alpha: hint_range(0, 1) = 0.7;
 
 uniform float camera_near;
 uniform float camera_far;
+
+varying vec2 pixel_size;
 
 float lin_depth(sampler2D depth_tex, vec2 screen_uv) {
 	float depth = texture(depth_tex, screen_uv).x;
@@ -38,17 +40,17 @@ float simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh) {
 
 void vertex() {
 	POSITION = vec4(VERTEX, 1.0);
+	pixel_size = 1.0 / VIEWPORT_SIZE;
 }
 
 void fragment() {
-	vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
 	float is_edge = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, threshold);
 	
 	if(is_edge > 0.15) {
 		float v = 1.0 - clamp(2.0 * is_edge * alpha, 0.0, alpha);
-		ALBEDO = vec3(v, v, v);
+		ALBEDO = texture(SCREEN_TEXTURE, SCREEN_UV).rgb * v; // vec3(v, v, v);
 	} else {
-		ALBEDO = vec3(1.0, 1.0, 1.0);
+		ALBEDO = texture(SCREEN_TEXTURE, SCREEN_UV).rgb; // vec3(1.0, 1.0, 1.0);
 	}
 }
 "

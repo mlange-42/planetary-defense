@@ -19,19 +19,19 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 margin_right = 148.0
-margin_bottom = 164.0
+margin_bottom = 246.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Buttons"]
 margin_right = 148.0
-margin_bottom = 164.0
+margin_bottom = 246.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/PanelContainer"]
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 144.0
-margin_bottom = 160.0
+margin_bottom = 242.0
 
 [node name="BackControls" type="HBoxContainer" parent="Buttons/PanelContainer/VBoxContainer"]
 margin_right = 140.0
@@ -54,18 +54,18 @@ hint_tooltip = "Apply and exit settings"
 shortcut = ExtResource( 4 )
 icon = ExtResource( 2 )
 
-[node name="Graphics" type="Label" parent="Buttons/PanelContainer/VBoxContainer"]
+[node name="Controls" type="Label" parent="Buttons/PanelContainer/VBoxContainer"]
 margin_top = 28.0
 margin_right = 140.0
 margin_bottom = 44.0
-text = "Graphics"
+text = "Controls"
 
-[node name="Fullscreen" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
+[node name="InvertZoom" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
 margin_top = 48.0
 margin_right = 140.0
 margin_bottom = 72.0
-hint_tooltip = "Play fullscreen (recommended)"
-text = "Fullscreen"
+hint_tooltip = "Invert mouse wheel zoom"
+text = "Invert zoom"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -75,26 +75,59 @@ margin_top = 76.0
 margin_right = 140.0
 margin_bottom = 80.0
 
-[node name="Controls" type="Label" parent="Buttons/PanelContainer/VBoxContainer"]
+[node name="Graphics" type="Label" parent="Buttons/PanelContainer/VBoxContainer"]
 margin_top = 84.0
 margin_right = 140.0
 margin_bottom = 100.0
-text = "Controls"
+text = "Graphics"
 
-[node name="InvertZoom" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
+[node name="Fullscreen" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
 margin_top = 104.0
 margin_right = 140.0
 margin_bottom = 128.0
-hint_tooltip = "Invert mouse wheel zoom"
-text = "Invert zoom"
+hint_tooltip = "Play fullscreen (recommended)"
+text = "Fullscreen"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Outlines" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 132.0
+margin_right = 140.0
+margin_bottom = 156.0
+hint_tooltip = "Draw toon-like outlines
+(may cause performance issues with MSAA enabled)"
+text = "Outlines"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MSAA" type="OptionButton" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 160.0
+margin_right = 140.0
+margin_bottom = 182.0
+hint_tooltip = "Configure multi-sample antialiasing
+(may cause performance issues with oulines enabled)"
+text = "MSAA"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FXAA" type="CheckBox" parent="Buttons/PanelContainer/VBoxContainer"]
+margin_top = 186.0
+margin_right = 140.0
+margin_bottom = 210.0
+hint_tooltip = "Configure screen-space antialiasing.
+Cheap alternative for MSAA."
+text = "FXAA"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="OkButton" type="Button" parent="Buttons/PanelContainer/VBoxContainer"]
-margin_top = 132.0
+margin_top = 214.0
 margin_right = 140.0
-margin_bottom = 156.0
+margin_bottom = 238.0
 hint_tooltip = "Apply settings (or simply selectany other tool)"
 text = "Apply"
 
