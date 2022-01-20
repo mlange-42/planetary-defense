@@ -54,6 +54,15 @@ const FACILITY_RADIUS = {
 	FAC_GROUND_STATION: 0,
 }
 
+const FACILITY_COVERAGE = {
+	FAC_CITY: 0,
+	FAC_PORT: 0,
+	FAC_TRAIN_STATION: 0,
+	FAC_POWER_PLANT: 0,
+	FAC_AIR_DEFENSE: 0,
+	FAC_GROUND_STATION: 45,
+}
+
 # TODO: check - place all facilities in all modes?
 const FACILITY_NETWORK_MODES = {
 	FAC_CITY: [Network.M_ROADS, Network.M_ELECTRIC],
