@@ -12,6 +12,8 @@ uniform float alpha: hint_range(0, 1) = 0.7;
 uniform float camera_near;
 uniform float camera_far;
 
+varying vec2 pixel_size;
+
 float lin_depth(sampler2D depth_tex, vec2 screen_uv) {
 	float depth = texture(depth_tex, screen_uv).x;
 	float z_n = 2.0 * depth - 1.0;
@@ -38,10 +40,10 @@ float simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh) {
 
 void vertex() {
 	POSITION = vec4(VERTEX, 1.0);
+	pixel_size = 1.0 / VIEWPORT_SIZE;
 }
 
 void fragment() {
-	vec2 pixel_size = 1.0 / vec2(textureSize(DEPTH_TEXTURE, 0));
 	float is_edge = simple_edge(DEPTH_TEXTURE, SCREEN_UV, width * pixel_size, threshold);
 	
 	if(is_edge > 0.15) {
