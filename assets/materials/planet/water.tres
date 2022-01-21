@@ -25,7 +25,7 @@ noise = SubResource( 5 )
 [resource]
 params_specular_mode = 3
 params_point_size = 4.0
-albedo_color = Color( 0.188235, 0.286275, 0.470588, 1 )
+albedo_color = Color( 0.294118, 0.45098, 0.741176, 1 )
 albedo_texture = SubResource( 2 )
 roughness = 0.01
 normal_enabled = true

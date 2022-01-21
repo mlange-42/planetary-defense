@@ -12,13 +12,14 @@
 * Button to toggle end-to-end flow visibility in flows view
 * Make all message locations/cities clickable, underlined links
 * Zoom to migration target by default, not source
-* Outline shader for more toon-style graphics
+* Outline shader for more toon-style graphics (custom inverse hull)
 * In-game settings for antialiasing and outlines
 * In build mode, the pointer now looks like the facility to build
 * In build and city management mode, it is indicated whether building under the mouse is possible
 * Coverage of facilities like the ground station is indicated ba a hovering circle
 * Coverage is now elevation-dependent (like range)
 * Road indicator changes color depending on whether building or clearing
+* Animated water
 
 ### Changed
 
@@ -26,6 +27,7 @@
 * Allow building power lines over water
 * Internal restructuring for integer commodity IDs
 * Smaller power line geometries, lowered near facilities
+* Changed renderer from GLES 3 to GLES 2
 
 ## [v0.5.0]
 

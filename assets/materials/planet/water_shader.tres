@@ -1,0 +1,38 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
+
+[ext_resource path="res://assets/shaders/water.tres" type="Shader" id=1]
+
+[sub_resource type="OpenSimplexNoise" id=3]
+octaves = 2
+period = 16.0
+
+[sub_resource type="NoiseTexture" id=2]
+resource_name = "_albedo"
+seamless = true
+bump_strength = 0.2
+noise = SubResource( 3 )
+
+[sub_resource type="OpenSimplexNoise" id=5]
+octaves = 2
+period = 1.0
+
+[sub_resource type="NoiseTexture" id=4]
+width = 1024
+height = 1024
+seamless = true
+as_normalmap = true
+bump_strength = 0.2
+noise = SubResource( 5 )
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/color1 = Color( 0.068, 0.0884, 0.17, 1 )
+shader_param/color2 = Color( 0.252, 0.3843, 0.63, 1 )
+shader_param/speed_tex = -0.002
+shader_param/speed_normal = -0.002
+shader_param/roughness = 0.01
+shader_param/specular = 0.5
+shader_param/rim = 0.2
+shader_param/rim_tint = 0.5
+shader_param/noise_tex = SubResource( 2 )
+shader_param/normal_map = SubResource( 4 )
