@@ -12,6 +12,11 @@ uniform sampler2D normal_map: hint_normal;
 uniform float speed_tex;
 uniform float speed_normal;
 
+uniform float roughness: hint_range(0.0, 1.0) = 0.01;
+uniform float specular: hint_range(0.0, 1.0) = 0.5;
+uniform float rim: hint_range(0.0, 1.0) = 0.2;
+uniform float rim_tint: hint_range(0.0, 1.0) = 0.5;
+
 
 void vertex() {
 	
@@ -22,11 +27,11 @@ void fragment() {
 	vec2 uvn = vec2(UV.x + speed_normal * TIME, UV.y);
 	
 	ALBEDO = mix(color1.rgb, color2.rgb, texture(noise_tex, uvt).r);
-	
 	NORMALMAP = texture(normal_map, uvn).rgb;
-	ROUGHNESS = 0.01;
-	SPECULAR = 0.5f;
-	RIM = 0.1;
-	RIM_TINT = 0.5;
+	
+	ROUGHNESS = roughness;
+	SPECULAR = specular;
+	RIM = rim;
+	RIM_TINT = rim_tint;
 }
 "
