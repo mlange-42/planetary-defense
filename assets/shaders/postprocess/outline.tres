@@ -5,12 +5,12 @@ code = "shader_type spatial;
 render_mode skip_vertex_transform, depth_test_disable,
         unshaded, shadows_disabled, ambient_light_disabled;
 
-uniform float threshold: hint_range(0, 1) = 0.025;
-uniform float width: hint_range(1, 5) = 1.0;
-uniform float alpha: hint_range(0, 1) = 0.7;
+uniform lowp float threshold: hint_range(0, 1) = 0.025;
+uniform lowp float width: hint_range(1, 5) = 1.0;
+uniform lowp float alpha: hint_range(0, 1) = 0.7;
 
-uniform float camera_near;
-uniform float camera_far;
+uniform lowp float camera_near;
+uniform lowp float camera_far;
 
 varying vec2 pixel_size;
 
@@ -29,10 +29,12 @@ float simple_edge(sampler2D depth_tex, vec2 uv, vec2 rad, float thresh) {
 	float d2 = 0.0;
 	for (int i = -1; i <= 1; i++) {
 		dx = rad.x * float(i);
-		for (int j = -1; j <= 1; j++) {
+		for(int j = -1; j <= 1; j++) {
 			dy = rad.y * float(j);
 			d2 = lin_depth(depth_tex, uv + vec2(dx, dy));
-			diff += float(abs(d2 - d) > t);
+			if(abs(d2 - d) > t) {
+				diff += 1.0;
+			}
 		}
 	}
 	return diff / 4.0;
@@ -48,9 +50,9 @@ void fragment() {
 	
 	if(is_edge > 0.15) {
 		float v = 1.0 - clamp(2.0 * is_edge * alpha, 0.0, alpha);
-		ALBEDO = texture(SCREEN_TEXTURE, SCREEN_UV).rgb * v; // vec3(v, v, v);
+		ALBEDO = texture(SCREEN_TEXTURE, SCREEN_UV).rgb * v;
 	} else {
-		ALBEDO = texture(SCREEN_TEXTURE, SCREEN_UV).rgb; // vec3(1.0, 1.0, 1.0);
+		ALBEDO = texture(SCREEN_TEXTURE, SCREEN_UV).rgb;
 	}
 }
 "

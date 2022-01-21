@@ -159,7 +159,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/managers/flow_manager.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "FlowNetwork",
 "language": "NativeScript",
 "path": "res://scripts/native/flow_network.gdns"
@@ -209,7 +209,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/geom/height_map.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "IcoSphere",
 "language": "NativeScript",
 "path": "res://scripts/native/ico_sphere.gdns"
@@ -274,7 +274,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -309,7 +309,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"
 }, {
-"base": "Reference",
+"base": "",
 "class": "PlanetGenerator",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_generator.gdns"
@@ -550,7 +550,7 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-quality/filters/sharpen_intensity=0.33
+quality/driver/driver_name="GLES2"
 2d/snapping/use_gpu_pixel_snap=true
 batching/precision/uv_contract=true
 environment/default_clear_color=Color( 0, 0, 0, 1 )
