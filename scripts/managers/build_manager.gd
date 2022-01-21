@@ -99,7 +99,7 @@ func add_facility(type: String, location: int, name: String, owner, pay: bool = 
 	if pay and costs > planet.taxes.budget:
 		return [null, "Not enough money (requires %d)" % costs]
 	
-	if not facility_functions.can_build(type, planet.planet_data, location, owner):
+	if not facility_functions.can_build(type, planet, location, owner):
 		return [null, "Can't build this facility here"]
 	
 	var facility: Facility = load(Facilities.FACILITY_SCENES[type]).instance()

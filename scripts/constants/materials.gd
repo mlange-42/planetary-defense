@@ -1,5 +1,7 @@
 class_name Materials
 
+const VERTEX_COLOR: Material = preload("res://assets/materials/unlit_vertex_color.tres")
+
 const RANGE_BUILD: Material = preload("res://assets/materials/indicators/range_build.tres")
 const RANGE_CITY_HIGHLIGHT: Material = preload("res://assets/materials/indicators/range_city_highlight.tres")
 

@@ -54,6 +54,15 @@ const FACILITY_RADIUS = {
 	FAC_GROUND_STATION: 0,
 }
 
+const FACILITY_COVERAGE = {
+	FAC_CITY: 0,
+	FAC_PORT: 0,
+	FAC_TRAIN_STATION: 0,
+	FAC_POWER_PLANT: 0,
+	FAC_AIR_DEFENSE: 0,
+	FAC_GROUND_STATION: 30,
+}
+
 # TODO: check - place all facilities in all modes?
 const FACILITY_NETWORK_MODES = {
 	FAC_CITY: [Network.M_ROADS, Network.M_ELECTRIC],
@@ -71,6 +80,15 @@ const FACILITY_RADIUS_FUNC = {
 	FAC_POWER_PLANT: "constant_range",
 	FAC_AIR_DEFENSE: "air_defense_range",
 	FAC_GROUND_STATION: "constant_range",
+}
+
+const FACILITY_COVERAGE_FUNC = {
+	FAC_CITY: "constant_coverage",
+	FAC_PORT: "constant_coverage",
+	FAC_TRAIN_STATION: "constant_coverage",
+	FAC_POWER_PLANT: "constant_coverage",
+	FAC_AIR_DEFENSE: "constant_coverage",
+	FAC_GROUND_STATION: "ground_station_coverage",
 }
 
 const FACILITY_COSTS = {
@@ -146,25 +164,29 @@ const FACILITY_CAN_BUILD_FUNC = {
 }
 
 class FacilityFunctions:
-	func can_build(type, planet_data, node, owner) -> bool:
-		return self.call(FACILITY_CAN_BUILD_FUNC[type], planet_data, node, owner)
+	func can_build(type, planet, node, owner) -> bool:
+		return not _is_occupied(planet, node) and self.call(FACILITY_CAN_BUILD_FUNC[type], planet, node, owner)
 		
 	func calc_range(type, planet_data, node) -> bool:
 		return self.call(FACILITY_RADIUS_FUNC[type], planet_data, node, FACILITY_RADIUS[type])
 	
+	func calc_coverage(type, planet_data, node) -> bool:
+		return self.call(FACILITY_COVERAGE_FUNC[type], planet_data, node, FACILITY_COVERAGE[type])
 	
-	func can_build_land(planet_data, node, _owner) -> bool:
-		return not planet_data.get_node(node).is_water
-
-	func can_build_port(planet_data, node, _owner) -> bool:
-		var nd = planet_data.get_node(node)
+	
+	func can_build_land(planet, node, _owner) -> bool:
+		return not planet.planet_data.get_node(node).is_water
+	
+	
+	func can_build_port(planet, node, _owner) -> bool:
+		var nd = planet.planet_data.get_node(node)
 		
 		if not nd.is_water:
 			return false
 		
-		var neigh = planet_data.get_neighbors(node)
+		var neigh = planet.planet_data.get_neighbors(node)
 		for n in neigh:
-			if not planet_data.get_node(n).is_water:
+			if not planet.planet_data.get_node(n).is_water:
 				return true
 		
 		return false
@@ -184,4 +206,20 @@ class FacilityFunctions:
 			return int(round(radius * 1.4))
 		else:
 			return int(round(radius * 1.75))
+	
+	
+	func constant_coverage(_planet_data, _node, coverage) -> int:
+		return coverage
+	
+	
+	func ground_station_coverage(planet_data, node, coverage) -> int:
+		var nd = planet_data.get_node(node)
+		var ele = Consts.elevation(nd.elevation)
+		
+		return coverage + 10 * int(max(ele, 0) / 1000.0)
+	
+	
+	func _is_occupied(planet, node) -> bool:
+		return planet.roads.has_facility(node) or planet.planet_data.get_node(node).is_occupied
+	
 
