@@ -15,4 +15,5 @@ const LAND_USE: Material = preload("res://assets/materials/planet/land_use.tres"
 const FACILITIES: Material = preload("res://assets/materials/planet/facilities.tres")
 
 const PLANET_OUTLINES: Material = preload("res://assets/materials/planet/planet_outlines.tres")
-const VCOL_OUTLINES: Material = preload("res://assets/materials/planet/vcol_outlines.tres")
+const LAND_USE_OUTLINES: Material = preload("res://assets/materials/planet/land_use_outlines.tres")
+const FACILITIES_OUTLINES: Material = preload("res://assets/materials/planet/facilities_outlines.tres")
