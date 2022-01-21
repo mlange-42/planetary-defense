@@ -1,0 +1,32 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type spatial;
+render_mode shadows_disabled, diffuse_burley, specular_toon;
+
+uniform vec4 color1: hint_color;
+uniform vec4 color2: hint_color;
+uniform sampler2D noise_tex: hint_albedo;
+uniform sampler2D normal_map: hint_normal;
+
+uniform float speed_tex;
+uniform float speed_normal;
+
+
+void vertex() {
+	
+}
+
+void fragment() {
+	vec2 uvt = vec2(UV.x + speed_tex * TIME, UV.y);
+	vec2 uvn = vec2(UV.x + speed_normal * TIME, UV.y);
+	
+	ALBEDO = mix(color1.rgb, color2.rgb, texture(noise_tex, uvt).r);
+	
+	NORMALMAP = texture(normal_map, uvn).rgb;
+	ROUGHNESS = 0.01;
+	SPECULAR = 0.5f;
+	RIM = 0.1;
+	RIM_TINT = 0.5;
+}
+"

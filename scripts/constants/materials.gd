@@ -10,7 +10,7 @@ const RANGE_DEFENSE: Material = preload("res://assets/materials/indicators/range
 const RANGE_DEFENSE_UNSUPPLIED: Material = preload("res://assets/materials/indicators/range_defense_unsupplied.tres")
 
 const VEGETATION: Material = preload("res://assets/materials/planet/vegetation.tres")
-const WATER: Material = preload("res://assets/materials/planet/water.tres")
+const WATER: Material = preload("res://assets/materials/planet/water_shader.tres")
 const LAND_USE: Material = preload("res://assets/materials/planet/land_use.tres")
 const FACILITIES: Material = preload("res://assets/materials/planet/facilities.tres")
 
