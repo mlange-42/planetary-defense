@@ -11,7 +11,14 @@
 * Flows view now allows to show network flow (by animation) for each commodity separately
 * Button to toggle end-to-end flow visibility in flows view
 * Make all message locations/cities clickable, underlined links
-* Zoom to mirtation target by default, not source
+* Zoom to migration target by default, not source
+* Outline shader for more toon-style graphics
+* In-game settings for antialiasing and outlines
+* In build mode, the pointer now looks like the facility to build
+* In build and city management mode, it is indicated whether building under the mouse is possible
+* Coverage of facilities like the ground station is indicated ba a hovering circle
+* Coverage is now elevation-dependent (like range)
+* Road indicator changes color depending on whether building or clearing
 
 ### Changed
 

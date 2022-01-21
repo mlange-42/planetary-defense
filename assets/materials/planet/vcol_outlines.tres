@@ -4,7 +4,7 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/use_colors = true
+shader_param/vertex_colors_normals = true
 shader_param/relative_thickness = true
 shader_param/outline_thickness = 0.002
 shader_param/min_abs_thickness = 0.005
