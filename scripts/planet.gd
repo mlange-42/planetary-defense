@@ -41,8 +41,8 @@ export var min_elevation_cliffs: int = int(Consts.ELEVATION_SCALE * 0.6)
 
 export var resource_abundance: int = PlanetSettings.RESOURCE_ABUNDANCE["normal"]
 
-export var land_material: Material = preload("res://assets/materials/planet/vegetation.tres")
-export var water_material: Material = preload("res://assets/materials/planet/water.tres")
+export var land_material: Material = Materials.VEGETATION
+export var water_material: Material = Materials.WATER
 
 var facilities: Spatial
 

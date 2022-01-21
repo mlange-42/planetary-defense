@@ -1,8 +1,10 @@
-[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+[gd_resource type="SpatialMaterial" load_steps=3 format=2]
 
 [ext_resource path="res://assets/textures/land_use.svg" type="Texture" id=1]
+[ext_resource path="res://assets/materials/planet/vcol_outlines.tres" type="Material" id=2]
 
 [resource]
+next_pass = ExtResource( 2 )
 flags_vertex_lighting = true
 params_diffuse_mode = 4
 params_specular_mode = 3
