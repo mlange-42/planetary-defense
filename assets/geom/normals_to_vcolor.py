@@ -51,6 +51,7 @@ if __name__ == "__main__":
         "use_mesh_modifiers": False,
         "use_export_shape_key": True,
         "use_export_animation": True,
+        "use_stashed_action": True,
     }
     io_scene_godot.export(path, overrides)
     
