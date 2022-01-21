@@ -4,17 +4,17 @@
 code = "shader_type spatial;
 render_mode shadows_disabled, specular_disabled, unshaded;
 
-uniform float Fps = 24;
-uniform uint Frames = 32;
-uniform uint Animations = 8;
-uniform uint UsedAnimations = 7;
-uniform sampler2D Texture : hint_albedo;
-uniform sampler2D Background : hint_albedo;
-uniform float AnimationBlend: hint_range(0, 1) = 1.0;
-uniform uint tex_width;
-uniform uint tex_height;
-uniform uint margin;
-uniform int channel;
+uniform lowp float Fps = 24;
+uniform lowp int Frames = 32;
+uniform lowp int Animations = 8;
+uniform lowp int UsedAnimations = 7;
+uniform highp sampler2D Texture : hint_albedo;
+uniform highp sampler2D Background : hint_albedo;
+uniform lowp float AnimationBlend: hint_range(0, 1) = 1.0;
+uniform lowp int tex_width;
+uniform lowp int tex_height;
+uniform lowp int margin;
+uniform lowp int channel;
 
 
 
@@ -30,7 +30,7 @@ void fragment() {
 	float mar_x_bg = mar_x * float(Animations);
 	float mar_y_bg = mar_y * float(Frames) / float(Animations);
 	
-	int frame = int(TIME * Fps) mod Frames;
+	int frame = int(int(TIME * Fps) % Frames);
 	int animation = 0; 
 	
 	float flow = 0.0;
@@ -48,7 +48,7 @@ void fragment() {
 	}
 	
 	if(flow > 0.0) {
-		animation = min(int(flow * float(int(UsedAnimations) - 1)) + 1, int(UsedAnimations) - 1);
+		animation = int(min(int(flow * float(UsedAnimations - 1)) + 1, UsedAnimations - 1));
 	}
 	
 	float dx = 1.0 / float(Animations);

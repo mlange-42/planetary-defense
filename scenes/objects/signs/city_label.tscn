@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://assets/fonts/consolas_46.tres" type="DynamicFont" id=1]
-[ext_resource path="res://assets/icons/menu/warning_48px.svg" type="Texture" id=2]
+[ext_resource path="res://assets/fonts/consolas_32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/icons/menu/warning_32px.svg" type="Texture" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 8.0
@@ -19,8 +19,8 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="CityLabel" type="PanelContainer"]
-margin_right = 16.0
-margin_bottom = 56.0
+margin_right = 124.0
+margin_bottom = 42.0
 size_flags_horizontal = 8
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
@@ -30,22 +30,21 @@ __meta__ = {
 [node name="Container" type="HBoxContainer" parent="."]
 margin_left = 8.0
 margin_top = 5.0
-margin_right = 160.0
-margin_bottom = 53.0
+margin_right = 116.0
+margin_bottom = 38.0
 
 [node name="Icon" type="TextureRect" parent="Container"]
-margin_right = 48.0
-margin_bottom = 48.0
+margin_right = 32.0
+margin_bottom = 33.0
 texture = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="Container"]
-margin_left = 52.0
-margin_top = 1.0
-margin_right = 152.0
-margin_bottom = 48.0
+margin_left = 36.0
+margin_right = 108.0
+margin_bottom = 33.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 8
+size_flags_vertical = 1
 custom_fonts/font = ExtResource( 1 )
 text = "Test"
 valign = 1

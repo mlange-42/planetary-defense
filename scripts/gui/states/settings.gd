@@ -3,7 +3,6 @@ class_name SettingsState
 
 onready var invert_zoom: CheckBox = find_node("InvertZoom")
 onready var fullscreen: CheckBox = find_node("Fullscreen")
-onready var fx_outlines: CheckBox = find_node("FxOutlines")
 onready var planet_outlines: CheckBox = find_node("PlanetOutlines")
 onready var geometry_outlines: CheckBox = find_node("GeometryOutlines")
 onready var msaa: OptionButton = find_node("MSAA")
@@ -21,7 +20,6 @@ func _ready():
 	fullscreen.pressed = settings.fullscreen
 	msaa.selected = settings.msaa
 	fxaa.pressed = settings.fxaa
-	fx_outlines.pressed = settings.fx_outlines
 	planet_outlines.pressed = settings.planet_outlines
 	geometry_outlines.pressed = settings.geometry_outlines
 
@@ -35,7 +33,6 @@ func apply_settings():
 	settings.invert_zoom = invert_zoom.pressed
 	settings.msaa = msaa.selected
 	settings.fxaa = fxaa.pressed
-	settings.fx_outlines = fx_outlines.pressed
 	settings.planet_outlines = planet_outlines.pressed
 	settings.geometry_outlines = geometry_outlines.pressed
 	

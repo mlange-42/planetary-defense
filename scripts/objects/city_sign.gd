@@ -16,7 +16,7 @@ func _ready():
 	sprite.texture = $Sprite3D/Viewport.get_texture()
 	
 	sprite.material_override.albedo_texture = $Sprite3D/Viewport.get_texture()
-	sprite.material_override.albedo_texture.set_flags(Texture.FLAG_FILTER | Texture.FLAG_MIPMAPS)
+	sprite.material_override.albedo_texture.set_flags(Texture.FLAG_FILTER)
 
 
 func _process(_delta):
