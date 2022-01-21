@@ -68,7 +68,7 @@ func read(path):
 		msaa = config.get_value("Graphics", "msaa", 2)
 		fxaa = config.get_value("Graphics", "fxaa", false)
 		fx_outlines = config.get_value("Graphics", "fx_outlines", false)
-		planet_outlines = config.get_value("Graphics", "planet_outlines", false)
+		planet_outlines = config.get_value("Graphics", "planet_outlines", true)
 		geometry_outlines = config.get_value("Graphics", "geometry_outlines", true)
 	else:
 		save(path)

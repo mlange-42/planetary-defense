@@ -75,7 +75,7 @@ const TYPE_NAMES = {
 const TYPE_INFO = {
 	T_CLEAR: "Clear roads",
 	T_ROAD: "On roads, food, resources and products\n are transported",
-	T_HIGHWAY: "On highways, large amounts food, resources\n and products are transported",
+	T_HIGHWAY: "On highways, large amounts of food, resources\n and products are transported",
 	T_RAIL: "On railways, huge amounts of food, resources\n and products are transported",
 	T_SEA_LINE: "On sea lines, food, resources and products\n are shipped",
 	T_POWER_LINE: "Power lines transport electricity",
