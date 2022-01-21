@@ -5,7 +5,9 @@ var fullscreen: bool = false
 var invert_zoom: bool = false
 var msaa: int = 2
 var fxaa: bool = false
-var outlines: bool = false
+var fx_outlines: bool = false
+var planet_outlines: bool = false
+var geometry_outlines: bool = true
 
 func default_path() -> String:
 	return "user://%s/options.cfg" % Consts.CONFIG_DIR
@@ -22,7 +24,13 @@ func apply():
 	
 	var cam: Camera = get_viewport().get_camera()
 	if cam != null and cam.has_node("PostProcess"):
-		get_viewport().get_camera().get_node("PostProcess").visible = outlines
+		get_viewport().get_camera().get_node("PostProcess").visible = fx_outlines
+	
+	if not fx_outlines:
+		var mat_veg = preload("res://assets/materials/planet/vegetation.tres")
+		mat_veg.next_pass = Materials.PLANET_OUTLINES if planet_outlines else null
+		var mat_lu = preload("res://assets/materials/planet/land_use.tres")
+		mat_lu.next_pass = Materials.VCOL_OUTLINES if geometry_outlines else null
 
 
 func save(path):
@@ -35,7 +43,9 @@ func save(path):
 	config.set_value("Graphics", "fullscreen", fullscreen)
 	config.set_value("Graphics", "msaa", msaa)
 	config.set_value("Graphics", "fxaa", fxaa)
-	config.set_value("Graphics", "outlines", outlines)
+	config.set_value("Graphics", "fx_outlines", fx_outlines)
+	config.set_value("Graphics", "planet_outlines", planet_outlines)
+	config.set_value("Graphics", "geometry_outlines", geometry_outlines)
 	
 	FileUtil.create_user_dir(Consts.CONFIG_DIR)
 	
@@ -54,6 +64,8 @@ func read(path):
 		fullscreen = config.get_value("Graphics", "fullscreen", false)
 		msaa = config.get_value("Graphics", "msaa", 2)
 		fxaa = config.get_value("Graphics", "fxaa", false)
-		outlines = config.get_value("Graphics", "outlines", false)
+		fx_outlines = config.get_value("Graphics", "fx_outlines", false)
+		planet_outlines = config.get_value("Graphics", "planet_outlines", false)
+		geometry_outlines = config.get_value("Graphics", "geometry_outlines", true)
 	else:
 		save(path)
