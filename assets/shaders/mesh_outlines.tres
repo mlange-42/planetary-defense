@@ -6,9 +6,11 @@ render_mode cull_front, unshaded, ambient_light_disabled, shadows_disabled;
 
 uniform bool vertex_colors_normals = false;
 uniform bool relative_thickness = true;
-uniform lowp float outline_thickness: hint_range(0.0, 1.0, 0.001) = 0.002;
-uniform lowp float min_abs_thickness: hint_range(0.0, 1.0, 0.001) = 0.005;
+uniform lowp float outline_thickness: hint_range(0.0, 1.0, 0.0001) = 0.002;
+uniform lowp float min_abs_thickness: hint_range(0.0, 1.0, 0.0001) = 0.005;
 uniform lowp vec4 outline_color: hint_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform highp sampler2D outline_texture: hint_albedo;
+uniform lowp float max_intensity: hint_range(0.0, 1.0, 0.001) = 0.1;
 
 void vertex() {
 	float t = outline_thickness;
@@ -28,6 +30,10 @@ void vertex() {
 }
 
 void fragment() {
-	ALBEDO = outline_color.rgb;
+	vec3 col = texture(outline_texture, UV).rgb;
+	vec3 col_sc = outline_color.rgb * col;
+	float avg = (0.28 * col_sc.r + 0.58 * col_sc.g + 0.14 * col_sc.b);
+	float scale = min(max_intensity / avg, 1.0);
+	ALBEDO = col_sc * scale;
 }
 "

@@ -1,7 +1,7 @@
 [gd_resource type="SpatialMaterial" load_steps=3 format=2]
 
 [ext_resource path="res://assets/textures/facilities.svg" type="Texture" id=1]
-[ext_resource path="res://assets/materials/planet/vcol_outlines.tres" type="Material" id=2]
+[ext_resource path="res://assets/materials/planet/facilities_outlines.tres" type="Material" id=2]
 
 [resource]
 next_pass = ExtResource( 2 )

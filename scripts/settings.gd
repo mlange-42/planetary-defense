@@ -31,9 +31,9 @@ func apply():
 		mat_veg.next_pass = Materials.PLANET_OUTLINES if planet_outlines else null
 		
 		var mat_lu = preload("res://assets/materials/planet/land_use.tres")
-		mat_lu.next_pass = Materials.VCOL_OUTLINES if geometry_outlines else null
+		mat_lu.next_pass = Materials.LAND_USE_OUTLINES if geometry_outlines else null
 		var mat_fac = preload("res://assets/materials/planet/facilities.tres")
-		mat_fac.next_pass = Materials.VCOL_OUTLINES if geometry_outlines else null
+		mat_fac.next_pass = Materials.FACILITIES_OUTLINES if geometry_outlines else null
 
 
 func save(path):
