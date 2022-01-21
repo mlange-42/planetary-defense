@@ -30,6 +30,7 @@ height = 0.015
 depth = 1.0
 material = SubResource( 2 )
 script = ExtResource( 1 )
+default_pixel_size = 0.008
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5 )
@@ -37,12 +38,12 @@ layers = 2
 material_override = ExtResource( 3 )
 cast_shadow = 0
 centered = false
-offset = Vector2( 0, -30 )
+offset = Vector2( 0, -20 )
 pixel_size = 0.004
 double_sided = false
 
 [node name="Viewport" type="Viewport" parent="Sprite3D"]
-size = Vector2( 800, 60 )
+size = Vector2( 600, 42 )
 transparent_bg = true
 hdr = false
 usage = 0
