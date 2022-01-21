@@ -23,9 +23,6 @@ if __name__ == "__main__":
         color.resize_4d()
         
         mesh.vertex_colors.active.data[loop_index].color = color
-        
-        print("normal",norm)
-        print("color",color)
     
     mesh.update()
     
