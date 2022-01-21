@@ -1,7 +1,8 @@
 [gd_resource type="Environment" format=2]
 
 [resource]
-background_color = Color( 0.0392157, 0.0392157, 0.0392157, 1 )
+background_mode = 1
+background_color = Color( 0.286275, 0.321569, 0.415686, 1 )
 ambient_light_color = Color( 1, 1, 1, 1 )
 fog_enabled = true
 fog_sun_amount = 1.0

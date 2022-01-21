@@ -4,6 +4,7 @@
 code = "shader_type spatial;
 render_mode cull_front, unshaded, ambient_light_disabled;
 
+uniform bool use_colors = false;
 uniform bool relative_thickness = true;
 uniform float outline_thickness: hint_range(0.0, 1.0, 0.001) = 0.002;
 uniform float min_abs_thickness: hint_range(0.0, 1.0, 0.001) = 0.005;
@@ -18,7 +19,12 @@ void vertex() {
 		
 		t = max(min_abs_thickness, camera_distance * outline_thickness);
 	}
-	VERTEX += normalize(VERTEX) * t;
+	
+	if(use_colors) {
+		VERTEX += normalize((COLOR.rgb - vec3(0.5)) * 2.0) * t;
+	} else {
+		VERTEX += normalize(VERTEX) * t;
+	}
 }
 
 void fragment() {

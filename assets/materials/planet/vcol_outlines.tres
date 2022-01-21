@@ -1,9 +1,10 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
-[ext_resource path="res://assets/shaders/planet_outline.tres" type="Shader" id=1]
+[ext_resource path="res://assets/shaders/mesh_outlines.tres" type="Shader" id=1]
 
 [resource]
 shader = ExtResource( 1 )
+shader_param/use_colors = true
 shader_param/relative_thickness = true
 shader_param/outline_thickness = 0.002
 shader_param/min_abs_thickness = 0.005
