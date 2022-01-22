@@ -59,7 +59,10 @@ func _draw():
 	for n in series:
 		var ser = series[n]
 		for i in range(ser.data.size()-1):
-			draw_line(to_view(Vector2(i, ser.data[i])), to_view(Vector2(i+1, ser.data[i+1])), ser.color, 2.0)
+			draw_line( \
+					to_view(Vector2(i, ser.data[i])), \
+					to_view(Vector2(i+1, ser.data[i+1])), \
+					ser.color, ser.width)
 
 
 func to_view(p: Vector2) -> Vector2:

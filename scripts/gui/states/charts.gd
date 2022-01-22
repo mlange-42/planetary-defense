@@ -8,8 +8,12 @@ func _ready():
 	stats_buttons.set_selected("charts")
 	
 	for c in Commodities.COMM_ALL:
-		var data = fsm.planet.stats.production[c]
-		chart.add_series(ChartSeries.new(Commodities.COMM_NAMES[c], data, Commodities.COMM_COLORS[c]))
+		var data = fsm.planet.stats.potential_production[c]
+		chart.add_series(ChartSeries.new("%s (pot)" % Commodities.COMM_NAMES[c], data, Commodities.COMM_COLORS[c], 1))
+		
+		data = fsm.planet.stats.production[c]
+		chart.add_series(ChartSeries.new(Commodities.COMM_NAMES[c], data, Commodities.COMM_COLORS[c], 3))
+		
 	chart.repaint()
 
 
