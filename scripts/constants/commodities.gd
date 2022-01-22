@@ -20,8 +20,14 @@ const COMM_ICONS = {
 	COMM_PRODUCTS: preload("res://assets/icons/commodities/products.svg"),
 	COMM_ELECTRICITY: preload("res://assets/icons/commodities/electricity.svg"),
 }
-
 const COMM_ICON_ALL: Texture = preload("res://assets/icons/commodities/all.svg")
+
+const COMM_COLORS = {
+	COMM_FOOD: Color.orange,
+	COMM_RESOURCES: Color.green,
+	COMM_PRODUCTS: Color.lightblue,
+	COMM_ELECTRICITY: Color.cyan,
+}
 
 const COMM_TAX_RATES = {
 	COMM_FOOD: 1,

@@ -1,6 +1,8 @@
 extends GuiState
 class_name FlowsState
 
+onready var stats_buttons: StatsButtons = find_node("StatsButtons")
+
 onready var comm_list: ItemList = find_node("Commodities")
 onready var comm_label: Label = find_node("CommodityLabel")
 onready var max_label: Label = find_node("MaxLabel")
@@ -11,6 +13,8 @@ onready var max_color_button: ColorPickerButton = find_node("MaxColorButton")
 onready var flows_visible: Button = find_node("FlowsVisible")
 
 func _ready():
+	stats_buttons.set_selected("flows")
+	
 	for comm in Commodities.COMM_ALL:
 		comm_list.add_icon_item(Commodities.COMM_ICONS[comm])
 	
@@ -21,6 +25,11 @@ func _ready():
 	fsm.planet.set_traffic_commodity(Commodities.COMM_FOOD)
 	
 	set_colors(Color.white, Color.purple)
+
+
+func _on_stats_panel_selected(panel):
+	fsm.pop()
+	fsm.push(panel, {})
 
 
 func set_colors(low: Color, high: Color):
@@ -86,3 +95,4 @@ func _on_BackButton_pressed():
 
 func _on_FlowsVisible_toggled(button_pressed):
 	fsm.planet.show_flows(button_pressed)
+
