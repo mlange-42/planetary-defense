@@ -101,7 +101,7 @@ text = "Outlines"
 margin_top = 152.0
 margin_right = 140.0
 margin_bottom = 176.0
-hint_tooltip = "Draw toon-like outlines using inverse hull. Cheap."
+hint_tooltip = "Draw toon-like outlines using around geometries"
 text = "Geometries"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -111,8 +111,7 @@ __meta__ = {
 margin_top = 180.0
 margin_right = 140.0
 margin_bottom = 204.0
-hint_tooltip = "Draw toon-like outlines for the planet, using inverse hull.
-(may cause performance issues with MSAA enabled)"
+hint_tooltip = "Draw toon-like outlines for the planet"
 text = "Planet geom."
 __meta__ = {
 "_edit_use_anchors_": false
@@ -129,7 +128,7 @@ margin_top = 228.0
 margin_right = 140.0
 margin_bottom = 250.0
 hint_tooltip = "Configure multi-sample antialiasing
-(may cause performance issues with oulines enabled)"
+(lower this in case of performance problems)"
 text = "MSAA"
 __meta__ = {
 "_edit_use_anchors_": false
