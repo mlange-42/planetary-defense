@@ -110,7 +110,7 @@ func _draw_arc(p1: Vector3, p2: Vector3):
 				add_vertex(vert + x_off)
 				
 				add_vertex(vert - y_off)
-				add_vertex(vert - y_off - 1.7 * x_off)
+				add_vertex(vert - y_off - 0.7 * x_off)
 				add_vertex(vert)
 			
 			
