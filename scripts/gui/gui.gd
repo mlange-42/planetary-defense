@@ -232,5 +232,5 @@ func _on_Build_pressed():
 
 func _on_Stats_pressed():
 	pop_all()
-	push("charts", {})
+	push("flows", {})
 

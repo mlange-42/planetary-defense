@@ -65,7 +65,7 @@ icon = ExtResource( 7 )
 margin_left = 72.0
 margin_right = 104.0
 margin_bottom = 32.0
-hint_tooltip = "View statistics and lists"
+hint_tooltip = "View statistics, flows and lists"
 shortcut = ExtResource( 10 )
 icon = ExtResource( 9 )
 

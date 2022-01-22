@@ -21,22 +21,22 @@ margin_right = 144.0
 margin_bottom = 36.0
 columns = 4
 
-[node name="Charts" type="Button" parent="GridContainer"]
-margin_right = 32.0
-margin_bottom = 32.0
-hint_tooltip = "Time series charts"
-toggle_mode = true
-shortcut = ExtResource( 5 )
-icon = ExtResource( 4 )
-
 [node name="Flows" type="Button" parent="GridContainer"]
-margin_left = 36.0
-margin_right = 68.0
+margin_right = 32.0
 margin_bottom = 32.0
 hint_tooltip = "Commodity flows"
 toggle_mode = true
 shortcut = ExtResource( 2 )
 icon = ExtResource( 1 )
 
-[connection signal="pressed" from="GridContainer/Charts" to="." method="_on_Charts_pressed"]
+[node name="Charts" type="Button" parent="GridContainer"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+hint_tooltip = "Time series charts"
+toggle_mode = true
+shortcut = ExtResource( 5 )
+icon = ExtResource( 4 )
+
 [connection signal="pressed" from="GridContainer/Flows" to="." method="_on_Flows_pressed"]
+[connection signal="pressed" from="GridContainer/Charts" to="." method="_on_Charts_pressed"]
