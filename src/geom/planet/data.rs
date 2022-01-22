@@ -293,18 +293,24 @@ impl PlanetData {
             .enumerate()
             .filter_map(move |(i, n)| {
                 let target = &self.nodes[*n];
-                let nav_water = nav_type == self.NAV_WATER;
-                if !target.is_occupied
-                    && (nav_water
-                        || max_slope <= 0.0
-                        || (source.elevation - target.elevation).abs() <= max_slope)
-                    && (nav_type == self.NAV_ALL
-                        || (nav_water == source.is_water && nav_water == target.is_water)
-                        || (nav_type == self.NAV_LAND
-                            && ((target.is_port && !source.is_water)
-                                || (source.is_port && !target.is_water))))
-                {
-                    Some((*n, neigh.distances[i]))
+                if !target.is_occupied {
+                    let nav_water = nav_type == self.NAV_WATER;
+                    let slope = if source.elevation < 0.0 || target.elevation < 0.0 {
+                        0.0
+                    } else {
+                        (source.elevation - target.elevation).abs()
+                    };
+                    if (max_slope <= 0.0 || slope <= max_slope)
+                        && (nav_type == self.NAV_ALL
+                            || (nav_water == source.is_water && nav_water == target.is_water)
+                            || (nav_type == self.NAV_LAND
+                                && ((target.is_port && !source.is_water)
+                                    || (source.is_port && !target.is_water))))
+                    {
+                        Some((*n, neigh.distances[i]))
+                    } else {
+                        None
+                    }
                 } else {
                     None
                 }
