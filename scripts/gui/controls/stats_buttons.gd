@@ -17,8 +17,15 @@ func _ready():
 
 func set_selected(panel):
 	current = panel
-	if panel == "flows":
+	if panel == "charts":
+		charts_button.pressed = true
+	elif panel == "flows":
 		flows_button.pressed = true
+
+
+func _on_Charts_pressed():
+	if current != "charts":
+		emit_signal("stats_panel_selected", "charts")
 
 
 func _on_Flows_pressed():

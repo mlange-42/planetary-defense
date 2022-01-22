@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/gui/states/charts.gd" type="Script" id=1]
+[ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=2]
+[ext_resource path="res://assets/fonts/consolas_bold.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=4]
+[ext_resource path="res://scenes/gui/controls/stats_buttons.tscn" type="PackedScene" id=7]
+
+[node name="Charts" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Margin" type="MarginContainer" parent="."]
+anchor_bottom = 1.0
+margin_top = 96.0
+margin_right = 148.0
+margin_bottom = -572.0
+rect_min_size = Vector2( 148, 0 )
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buttons" type="VBoxContainer" parent="Margin"]
+margin_right = 148.0
+margin_bottom = 76.0
+rect_min_size = Vector2( 100, 0 )
+mouse_filter = 2
+
+[node name="StatsButtons" parent="Margin/Buttons" instance=ExtResource( 7 )]
+
+[node name="LegendContainer" type="PanelContainer" parent="Margin/Buttons"]
+margin_top = 44.0
+margin_right = 148.0
+margin_bottom = 76.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/Buttons/LegendContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 144.0
+margin_bottom = 28.0
+
+[node name="BackControls" type="HBoxContainer" parent="Margin/Buttons/LegendContainer/VBoxContainer"]
+margin_right = 140.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Margin/Buttons/LegendContainer/VBoxContainer/BackControls"]
+margin_top = 4.0
+margin_right = 112.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Charts"
+clip_text = true
+
+[node name="BackButton" type="Button" parent="Margin/Buttons/LegendContainer/VBoxContainer/BackControls"]
+margin_left = 116.0
+margin_right = 140.0
+margin_bottom = 24.0
+hint_tooltip = "Exit flows view"
+shortcut = ExtResource( 4 )
+icon = ExtResource( 2 )
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 218.0
+margin_top = 46.0
+margin_bottom = -70.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="stats_panel_selected" from="Margin/Buttons/StatsButtons" to="." method="_on_stats_panel_selected"]
+[connection signal="pressed" from="Margin/Buttons/LegendContainer/VBoxContainer/BackControls/BackButton" to="." method="_on_BackButton_pressed"]

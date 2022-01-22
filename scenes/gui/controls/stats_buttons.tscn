@@ -38,4 +38,5 @@ toggle_mode = true
 shortcut = ExtResource( 2 )
 icon = ExtResource( 1 )
 
+[connection signal="pressed" from="GridContainer/Charts" to="." method="_on_Charts_pressed"]
 [connection signal="pressed" from="GridContainer/Flows" to="." method="_on_Flows_pressed"]

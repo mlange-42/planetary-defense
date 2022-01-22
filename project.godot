@@ -40,6 +40,11 @@ _global_script_classes=[ {
 "path": "res://scripts/camera_control.gd"
 }, {
 "base": "GuiState",
+"class": "ChartsState",
+"language": "GDScript",
+"path": "res://scripts/gui/states/charts.gd"
+}, {
+"base": "GuiState",
 "class": "CheatsState",
 "language": "GDScript",
 "path": "res://scripts/gui/states/cheats.gd"
@@ -441,6 +446,7 @@ _global_script_class_icons={
 "BuildManager": "",
 "BuildState": "",
 "CameraControl": "",
+"ChartsState": "",
 "CheatsState": "",
 "Cities": "",
 "City": "",

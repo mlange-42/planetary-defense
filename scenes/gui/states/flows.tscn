@@ -8,11 +8,11 @@
 [ext_resource path="res://assets/shortkeys/space.tres" type="ShortCut" id=6]
 [ext_resource path="res://scenes/gui/controls/stats_buttons.tscn" type="PackedScene" id=7]
 
-[sub_resource type="Gradient" id=1]
+[sub_resource type="Gradient" id=3]
 colors = PoolColorArray( 1, 1, 1, 1, 0.63, 0.13, 0.94, 1 )
 
 [sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 1 )
+gradient = SubResource( 3 )
 width = 512
 
 [node name="InspectFlows" type="MarginContainer"]
