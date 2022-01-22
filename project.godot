@@ -384,6 +384,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/gui/controls/stats_bar.gd"
 }, {
+"base": "PanelContainer",
+"class": "StatsButtons",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/stats_buttons.gd"
+}, {
 "base": "Reference",
 "class": "StatsManager",
 "language": "GDScript",
@@ -505,6 +510,7 @@ _global_script_class_icons={
 "SkyGeometry": "",
 "SpaceManager": "",
 "StatsBar": "",
+"StatsButtons": "",
 "StatsManager": "",
 "StoryManager": "",
 "StrUtil": "",

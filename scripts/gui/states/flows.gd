@@ -1,6 +1,8 @@
 extends GuiState
 class_name FlowsState
 
+onready var stats_buttons: StatsButtons = find_node("StatsButtons")
+
 onready var comm_list: ItemList = find_node("Commodities")
 onready var comm_label: Label = find_node("CommodityLabel")
 onready var max_label: Label = find_node("MaxLabel")
@@ -11,6 +13,8 @@ onready var max_color_button: ColorPickerButton = find_node("MaxColorButton")
 onready var flows_visible: Button = find_node("FlowsVisible")
 
 func _ready():
+	stats_buttons.set_selected("flows")
+	
 	for comm in Commodities.COMM_ALL:
 		comm_list.add_icon_item(Commodities.COMM_ICONS[comm])
 	
