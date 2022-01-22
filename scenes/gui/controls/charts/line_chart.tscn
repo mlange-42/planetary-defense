@@ -1,0 +1,59 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/gui/controls/charts/line_chart.gd" type="Script" id=1]
+[ext_resource path="res://scripts/gui/controls/charts/line_chart_panel.gd" type="Script" id=2]
+[ext_resource path="res://assets/fonts/consolas_20.tres" type="DynamicFont" id=3]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="LineChart" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="LineChart"]
+margin_right = 50.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="MaxLabel" type="Label" parent="LineChart/VBox"]
+margin_right = 50.0
+margin_bottom = 21.0
+custom_fonts/font = ExtResource( 3 )
+text = "1000"
+align = 2
+
+[node name="Control" type="Control" parent="LineChart/VBox"]
+margin_top = 25.0
+margin_right = 50.0
+margin_bottom = 695.0
+size_flags_vertical = 3
+
+[node name="MinLabel" type="Label" parent="LineChart/VBox"]
+margin_top = 699.0
+margin_right = 50.0
+margin_bottom = 720.0
+custom_fonts/font = ExtResource( 3 )
+text = "1000"
+align = 2
+
+[node name="ChartPanel" type="Control" parent="LineChart"]
+margin_left = 60.0
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+
+[node name="Legend" type="VBoxContainer" parent="."]
+margin_left = 75.0
+margin_right = 75.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

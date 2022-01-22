@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/camera_control.gd"
 }, {
+"base": "Reference",
+"class": "ChartSeries",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/charts/chart_series.gd"
+}, {
 "base": "GuiState",
 "class": "ChartsState",
 "language": "GDScript",
@@ -244,6 +249,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/objects/land_use_node.gd"
 }, {
+"base": "Control",
+"class": "LineChart",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/charts/line_chart.gd"
+}, {
+"base": "Control",
+"class": "LineChartPanel",
+"language": "GDScript",
+"path": "res://scripts/gui/controls/charts/line_chart_panel.gd"
+}, {
 "base": "Reference",
 "class": "Materials",
 "language": "GDScript",
@@ -446,6 +461,7 @@ _global_script_class_icons={
 "BuildManager": "",
 "BuildState": "",
 "CameraControl": "",
+"ChartSeries": "",
 "ChartsState": "",
 "CheatsState": "",
 "Cities": "",
@@ -487,6 +503,8 @@ _global_script_class_icons={
 "LandUseEntry": "",
 "LandUseInfo": "",
 "LandUseNode": "",
+"LineChart": "",
+"LineChartPanel": "",
 "Materials": "",
 "MathUtil": "",
 "MessageEntry": "",

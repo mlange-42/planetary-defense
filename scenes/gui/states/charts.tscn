@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/gui/states/charts.gd" type="Script" id=1]
 [ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=2]
 [ext_resource path="res://assets/fonts/consolas_bold.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=4]
+[ext_resource path="res://scenes/gui/controls/charts/line_chart.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/gui/controls/stats_buttons.tscn" type="PackedScene" id=7]
 
 [node name="Charts" type="Control"]
@@ -66,7 +67,7 @@ hint_tooltip = "Exit flows view"
 shortcut = ExtResource( 4 )
 icon = ExtResource( 2 )
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="ChartContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 218.0
@@ -75,6 +76,14 @@ margin_bottom = -70.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="LineChart" parent="ChartContainer" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 1058.0
+margin_bottom = 600.0
 
 [connection signal="stats_panel_selected" from="Margin/Buttons/StatsButtons" to="." method="_on_stats_panel_selected"]
 [connection signal="pressed" from="Margin/Buttons/LegendContainer/VBoxContainer/BackControls/BackButton" to="." method="_on_BackButton_pressed"]
