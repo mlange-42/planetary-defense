@@ -23,6 +23,11 @@ func _ready():
 	set_colors(Color.white, Color.purple)
 
 
+func _on_stats_panel_selected(panel):
+	fsm.pop()
+	fsm.push(panel, {})
+
+
 func set_colors(low: Color, high: Color):
 	var grad: Gradient = gradient_tex.texture.gradient
 	grad.colors[0] = low
@@ -86,3 +91,4 @@ func _on_BackButton_pressed():
 
 func _on_FlowsVisible_toggled(button_pressed):
 	fsm.planet.show_flows(button_pressed)
+

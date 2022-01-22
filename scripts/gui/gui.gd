@@ -19,17 +19,12 @@ onready var error_panel: ErrorPanel = $ErrorContainer/ErrorPanel
 
 onready var error_timer = find_node("ErrorTimer")
 
-var mode_buttons: ButtonGroup
 var planet: Planet
 var states = []
 
 var _current_node: int = -1
 
-func _ready():
-	mode_buttons = ButtonGroup.new()
-	find_node("Flows").group = mode_buttons
-	find_node("Settings").group = mode_buttons
-	
+func _ready():	
 	# warning-ignore:return_value_discarded
 	stats_bar.connect("next_turn", self, "_on_next_turn")
 
@@ -143,10 +138,6 @@ func pop():
 	var new_state = state()
 	self.add_child(new_state)
 	new_state.state_entered()
-	
-	if states.size() == 1:
-		for button in mode_buttons.get_buttons():
-			button.pressed = false
 
 
 func pop_all():
@@ -239,6 +230,7 @@ func _on_Build_pressed():
 	pop_all()
 	push("build", {})
 
-func _on_Flows_pressed():
+func _on_Stats_pressed():
 	pop_all()
 	push("flows", {})
+

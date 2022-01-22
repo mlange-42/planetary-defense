@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/gui/states/flows.gd" type="Script" id=1]
 [ext_resource path="res://assets/icons/menu/close_16px.svg" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/shortkeys/escape.tres" type="ShortCut" id=4]
 [ext_resource path="res://assets/icons/menu/flows.svg" type="Texture" id=5]
 [ext_resource path="res://assets/shortkeys/space.tres" type="ShortCut" id=6]
+[ext_resource path="res://scenes/gui/controls/stats_buttons.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 1, 1, 1, 1, 0.63, 0.13, 0.94, 1 )
@@ -28,13 +29,16 @@ __meta__ = {
 
 [node name="Buttons" type="VBoxContainer" parent="."]
 margin_right = 148.0
-margin_bottom = 229.0
+margin_bottom = 273.0
 rect_min_size = Vector2( 100, 0 )
 mouse_filter = 2
 
+[node name="StatsButtons" parent="Buttons" instance=ExtResource( 7 )]
+
 [node name="LegendContainer" type="PanelContainer" parent="Buttons"]
+margin_top = 44.0
 margin_right = 148.0
-margin_bottom = 229.0
+margin_bottom = 273.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Buttons/LegendContainer"]
 margin_left = 4.0
@@ -168,6 +172,7 @@ size_flags_horizontal = 3
 text = "0"
 align = 1
 
+[connection signal="stats_panel_selected" from="Buttons/StatsButtons" to="." method="_on_stats_panel_selected"]
 [connection signal="pressed" from="Buttons/LegendContainer/VBoxContainer/BackControls/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="item_selected" from="Buttons/LegendContainer/VBoxContainer/Commodities" to="." method="_on_Commodities_item_selected"]
 [connection signal="toggled" from="Buttons/LegendContainer/VBoxContainer/HBoxContainer3/FlowsVisible" to="." method="_on_FlowsVisible_toggled"]

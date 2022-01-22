@@ -8,9 +8,9 @@
 [ext_resource path="res://assets/icons/menu/main_menu.svg" type="Texture" id=6]
 [ext_resource path="res://assets/icons/menu/settings.svg" type="Texture" id=7]
 [ext_resource path="res://assets/icons/menu/messages.svg" type="Texture" id=8]
-[ext_resource path="res://assets/icons/menu/flows.svg" type="Texture" id=9]
+[ext_resource path="res://assets/icons/menu/stats.svg" type="Texture" id=9]
+[ext_resource path="res://assets/shortkeys/ctrl_a.tres" type="ShortCut" id=10]
 [ext_resource path="res://assets/shortkeys/ctrl_m.tres" type="ShortCut" id=12]
-[ext_resource path="res://assets/shortkeys/ctrl_f.tres" type="ShortCut" id=15]
 [ext_resource path="res://assets/shortkeys/ctrl_n.tres" type="ShortCut" id=16]
 [ext_resource path="res://assets/shortkeys/ctrl_shift_s.tres" type="ShortCut" id=17]
 [ext_resource path="res://scenes/gui/controls/visibility_buttons.tscn" type="PackedScene" id=18]
@@ -58,17 +58,15 @@ margin_left = 36.0
 margin_right = 68.0
 margin_bottom = 32.0
 hint_tooltip = "Settings"
-toggle_mode = true
 shortcut = ExtResource( 17 )
 icon = ExtResource( 7 )
 
-[node name="Flows" type="Button" parent="Buttons/GridContainer"]
+[node name="Stats" type="Button" parent="Buttons/GridContainer"]
 margin_left = 72.0
 margin_right = 104.0
 margin_bottom = 32.0
-hint_tooltip = "View commodity flows"
-toggle_mode = true
-shortcut = ExtResource( 15 )
+hint_tooltip = "View statistics and lists"
+shortcut = ExtResource( 10 )
 icon = ExtResource( 9 )
 
 [node name="Messages" type="Button" parent="Buttons/GridContainer"]
@@ -166,7 +164,7 @@ anchor_bottom = 1.0
 
 [connection signal="pressed" from="Buttons/GridContainer/MainMenu" to="." method="_on_MainMenu_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Settings" to="." method="_on_Settings_pressed"]
-[connection signal="pressed" from="Buttons/GridContainer/Flows" to="." method="_on_Flows_pressed"]
+[connection signal="pressed" from="Buttons/GridContainer/Stats" to="." method="_on_Stats_pressed"]
 [connection signal="pressed" from="Buttons/GridContainer/Messages" to="." method="_on_Messages_pressed"]
 [connection signal="timeout" from="ErrorTimer" to="." method="_on_ErrorTimer_timeout"]
 [connection signal="go_to_pressed" from="MessageWindow" to="." method="_on_Messages_go_to_pressed"]
