@@ -23,9 +23,9 @@ const COMM_ICONS = {
 const COMM_ICON_ALL: Texture = preload("res://assets/icons/commodities/all.svg")
 
 const COMM_COLORS = {
-	COMM_FOOD: Color.yellow,
+	COMM_FOOD: Color.orange,
 	COMM_RESOURCES: Color.green,
-	COMM_PRODUCTS: Color.purple,
+	COMM_PRODUCTS: Color.lightblue,
 	COMM_ELECTRICITY: Color.cyan,
 }
 

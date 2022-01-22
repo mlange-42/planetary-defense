@@ -20,6 +20,7 @@
 * Coverage is now elevation-dependent (like range)
 * Road indicator changes color depending on whether building or clearing
 * Animated water
+* Statistics GUI state, with time series charts for production, population and finances
 
 ### Changed
 
@@ -28,6 +29,11 @@
 * Internal restructuring for integer commodity IDs
 * Smaller power line geometries, lowered near facilities
 * Changed renderer from GLES 3 to GLES 2
+* Moved flows viewer to category Statistice
+
+### Bug fixes
+
+* Ignore slope when building power lines over water
 
 ## [v0.5.0]
 

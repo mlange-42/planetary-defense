@@ -52,9 +52,8 @@ func recalc():
 func _draw():
 	recalc()
 	
-	var origin = to_view(lower)
-	draw_line(origin, to_view(Vector2(upper.x, lower.y)), Color.white, 2.0)
-	draw_line(origin, to_view(Vector2(lower.x, upper.y)), Color.white, 2.0)
+	draw_line(to_view(Vector2(lower.x, 0)), to_view(Vector2(upper.x, 0)), Color.white, 2.0)
+	draw_line(to_view(lower), to_view(Vector2(lower.x, upper.y)), Color.white, 2.0)
 	
 	for n in series:
 		var ser = series[n]
