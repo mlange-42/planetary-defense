@@ -429,6 +429,8 @@ func next_turn():
 	taxes.earn_taxes(roads.total_flows)
 	taxes.pay_costs(roads.facilities(), roads)
 	
+	stats.add_production(roads.total_flows)
+	
 	space.update_turn()
 	stats.update_turn()
 	
