@@ -17,7 +17,7 @@ func _init(consts: LandUse, planet, node: Spatial):
 	self.parent_node = node
 
 
-func add_road(path: Array, road_type: int):
+func add_road(path: Array, road_type: int, changed_out: Dictionary):
 	if path.size() == 0:
 		return "No path specified"
 	
@@ -35,10 +35,18 @@ func add_road(path: Array, road_type: int):
 			warn = "Road not completed - not enough money!"
 			break
 		
+		var conn = false
+		
 		var p1 = Network.to_mode_id(path[i], mode)
 		var p2 = Network.to_mode_id(path[i+1], mode)
-		if not planet.roads.points_connected(p1, p2):
-			var conn = false
+		if planet.roads.points_connected(p1, p2):
+			var edge = planet.roads.get_edge([p1, p2])
+			if edge.net_type != road_type:
+				planet.roads.disconnect_points(p1, p2)
+				changed_out[edge.net_type] = true
+			else:
+				conn = true
+		else:
 			for block in Network.MODE_BLOCK[mode]:
 				var pp1 = Network.to_mode_id(p1, block)
 				var pp2 = Network.to_mode_id(p2, block)
@@ -46,9 +54,10 @@ func add_road(path: Array, road_type: int):
 					conn = true
 					break
 			
-			if not conn:
-				planet.roads.connect_points(p1, p2, road_type, capacity, t_cost)
-				sum_cost += cost
+		if not conn:
+			changed_out[road_type] = true
+			planet.roads.connect_points(p1, p2, road_type, capacity, t_cost)
+			sum_cost += cost
 	
 	planet.taxes.budget -= sum_cost
 	

@@ -21,6 +21,7 @@
 * Road indicator changes color depending on whether building or clearing
 * Animated water
 * Statistics GUI state, with time series charts for production, population and finances
+* Possibility to build network links directly over existing links (e.g. highway over road)
 
 ### Changed
 
@@ -34,6 +35,7 @@
 ### Bug fixes
 
 * Ignore slope when building power lines over water
+* Multiple converters per city now possible (i.e. factory and irrigated crops; crashed before) [#298]
 
 ## [v0.5.0]
 
