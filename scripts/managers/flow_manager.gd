@@ -44,7 +44,7 @@ func solve():
 			if facility.sinks[from] > 0:
 				flow.add_source_edge(Commodities.to_mode_id(facility.node_id, to), to, 0, source_cost)
 				flow.set_converter(Commodities.to_mode_id(facility.node_id, from), \
-									from, conv[0], to, conv[1],\
+									from, conv[0], to, conv[1], conv[2], \
 									Commodities.to_mode_id(facility.node_id, to))
 		
 		for source in range(facility.sources.size()):

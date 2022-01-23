@@ -99,7 +99,7 @@ func read(dict: Dictionary):
 	for comm in co:
 		var nodes = comm[0]
 		var c = comm[1]
-		conversions[[nodes[0] as int, nodes[1] as int]] = [c[0] as int, c[1] as int, c[2]]
+		conversions[[nodes[0] as int, nodes[1] as int]] = [c[0] as int, c[1] as int, c[2] as int]
 
 
 func calc_is_supplied():
@@ -162,5 +162,9 @@ func add_sink(commodity: int, amount: int):
 	sinks[commodity] += amount
 
 func add_conversion(from: int, from_amount: int, to: int, to_amount: int, max_amount):
-	conversions[[from, to]] = [from_amount, to_amount, max_amount]
+	var key = [from, to]
+	if conversions.has(key):
+		conversions[key][2] += max_amount
+	else:
+		conversions[key] = [from_amount, to_amount, max_amount]
 	add_sink(from, max_amount)

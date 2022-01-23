@@ -53,6 +53,6 @@ func update_info(facility):
 		for key in facility.conversions:
 			if key[1] == comm:
 				var conv = facility.conversions[key]
-				pot_source += facility.sinks[key[0]] * conv[1] / conv[0]
+				pot_source += conv[2] * conv[1] / conv[0]
 		
 		infos[comm].set_values(facility.sources[comm] + pot_source, flows[0], flows[1], facility.sinks[comm])
