@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/vegetation_corners.svg-de6db6edc6b806b8b9ff54db1b8b0fb2.s3tc.stex"
-path.etc2="res://.import/vegetation_corners.svg-de6db6edc6b806b8b9ff54db1b8b0fb2.etc2.stex"
+path.s3tc="res://.import/enemy_ships.svg-170ef0baa242caf712688e049854cd0b.s3tc.stex"
+path.etc2="res://.import/enemy_ships.svg-170ef0baa242caf712688e049854cd0b.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/vegetation_corners.svg"
-dest_files=[ "res://.import/vegetation_corners.svg-de6db6edc6b806b8b9ff54db1b8b0fb2.s3tc.stex", "res://.import/vegetation_corners.svg-de6db6edc6b806b8b9ff54db1b8b0fb2.etc2.stex" ]
+source_file="res://assets/textures/enemy_ships.svg"
+dest_files=[ "res://.import/enemy_ships.svg-170ef0baa242caf712688e049854cd0b.s3tc.stex", "res://.import/enemy_ships.svg-170ef0baa242caf712688e049854cd0b.etc2.stex" ]
 
 [params]
 
@@ -24,8 +24,8 @@ compress/normal_map=0
 flags/repeat=true
 flags/filter=true
 flags/mipmaps=true
-flags/anisotropic=true
-flags/srgb=1
+flags/anisotropic=false
+flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false

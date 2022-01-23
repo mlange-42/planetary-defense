@@ -1,7 +1,7 @@
 [gd_resource type="SpatialMaterial" load_steps=3 format=2]
 
 [sub_resource type="Gradient" id=1]
-colors = PoolColorArray( 1, 0, 0, 0.498039, 1, 0, 0, 0 )
+colors = PoolColorArray( 1, 0.156863, 0.156863, 0.498039, 1, 0.156863, 0.156863, 0 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
