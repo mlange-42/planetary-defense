@@ -33,10 +33,13 @@ func pay_costs(facilities: Dictionary, network: NetworkManager):
 				maintenance_land_use += LandUse.LU_MAINTENANCE[lu]
 		else:
 			maintenance_facilities += Facilities.FACILITY_MAINTENANCE[type]
-	
+
+
+	var net = network.planet_data.get_network()
+
 	var total = 0
-	for i in range(network.network.get_edge_count()):
-		var edge = network.network.get_edge_at(i)
+	for i in range(net.get_edge_count()):
+		var edge = net.get_edge_at(i)
 		total += Network.TYPE_MAINTENANCE_1000[edge.net_type] / 1000.0
 	
 	# warning-ignore:integer_division

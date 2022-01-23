@@ -19,7 +19,7 @@ func removed(planet):
 	var p2 = Network.to_mode_id(self.node_id, Network.M_SEA)
 	planet.roads.disconnect_points(p1, p2)
 	
-	var neigh = planet.roads.network.get_node(node_id)
+	var neigh = planet.planet_data.get_network().get_node(node_id)
 	if neigh != null:
 		for n in neigh[1]:
 			planet.roads.disconnect_points(node_id, n)

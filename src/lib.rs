@@ -4,6 +4,7 @@ extern crate gdnative;
 
 mod flow;
 mod geom;
+mod network;
 
 use std::hash::BuildHasherDefault;
 
@@ -11,13 +12,13 @@ use gdnative::prelude::*;
 use indexmap::IndexMap;
 use rustc_hash::FxHasher;
 
-pub use flow::network::Edge;
-pub use flow::network::FlowNetwork;
 pub use flow::path::MultiCommodityFlow;
 pub use geom::ico_sphere::IcoSphere;
 pub use geom::planet::data::NodeData;
 pub use geom::planet::data::PlanetData;
 pub use geom::planet::generator::PlanetGenerator;
+pub use network::Edge;
+pub use network::FlowNetwork;
 
 type FxIndexMap<K, V> = IndexMap<K, V, BuildHasherDefault<FxHasher>>;
 
