@@ -318,9 +318,11 @@ func draw_path(from: int, to: int, type: int, erase: bool, max_length: int) -> A
 
 func add_road(from: int, to: int, type: int):
 	var path = calc_id_path(from, to, type)
-	var err = builder.add_road(path, type)
+	var changed = {}
+	var err = builder.add_road(path, type, changed)
 	
-	_redraw_roads(type)
+	for c in changed:
+		_redraw_roads(c)
 	emit_budget()
 	
 	return err
