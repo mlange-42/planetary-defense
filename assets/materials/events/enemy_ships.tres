@@ -1,0 +1,11 @@
+[gd_resource type="SpatialMaterial" load_steps=3 format=2]
+
+[ext_resource path="res://assets/textures/enemy_ships.svg" type="Texture" id=1]
+[ext_resource path="res://assets/materials/events/enemy_ships_outlines.tres" type="Material" id=2]
+
+[resource]
+next_pass = ExtResource( 2 )
+flags_vertex_lighting = true
+params_diffuse_mode = 4
+params_specular_mode = 3
+albedo_texture = ExtResource( 1 )
