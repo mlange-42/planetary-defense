@@ -73,6 +73,15 @@ const FACILITY_NETWORK_MODES = {
 	FAC_GROUND_STATION: [Network.M_ELECTRIC],
 }
 
+const FACILITY_BLIND_END = {
+	FAC_CITY: null,
+	FAC_PORT: null,
+	FAC_TRAIN_STATION: null,
+	FAC_POWER_PLANT: [Network.M_ROADS, Network.M_RAIL],
+	FAC_AIR_DEFENSE: [Network.M_ROADS, Network.M_RAIL],
+	FAC_GROUND_STATION: [Network.M_ROADS, Network.M_RAIL],
+}
+
 const FACILITY_RADIUS_FUNC = {
 	FAC_CITY: "constant_range",
 	FAC_PORT: "constant_range",
@@ -165,7 +174,9 @@ const FACILITY_CAN_BUILD_FUNC = {
 
 class FacilityFunctions:
 	func can_build(type, planet, node, owner) -> bool:
-		return not _is_occupied(planet, node) and self.call(FACILITY_CAN_BUILD_FUNC[type], planet, node, owner)
+		return not _is_occupied(planet, node) \
+				and _can_build_blind_end(type, planet, node) \
+				and self.call(FACILITY_CAN_BUILD_FUNC[type], planet, node, owner)
 		
 	func calc_range(type, planet_data, node) -> bool:
 		return self.call(FACILITY_RADIUS_FUNC[type], planet_data, node, FACILITY_RADIUS[type])
@@ -173,7 +184,21 @@ class FacilityFunctions:
 	func calc_coverage(type, planet_data, node) -> bool:
 		return self.call(FACILITY_COVERAGE_FUNC[type], planet_data, node, FACILITY_COVERAGE[type])
 	
-	
+
+	func _can_build_blind_end(type, planet, node) -> bool:
+		var modes = FACILITY_BLIND_END[type]
+		if modes == null:
+			return true
+		
+		var net = planet.planet_data.get_network()
+		for mode in modes:
+			var neigh = net.get_node(Network.to_mode_id(node, mode))
+			if neigh != null and neigh.size() > 1:
+				return false
+		
+		return true
+
+
 	func can_build_land(planet, node, _owner) -> bool:
 		return not planet.planet_data.get_node(node).is_water
 	

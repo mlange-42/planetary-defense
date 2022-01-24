@@ -37,8 +37,19 @@ func add_road(path: Array, road_type: int, changed_out: Dictionary):
 		
 		var conn = false
 		
+		if not _can_build_dead_end(path[i], mode):
+			var fac = planet.roads.get_facility(path[i])
+			warn = "Road not completed - can't build through %s!" % fac.type
+			break
+		
+		if not _can_build_dead_end(path[i+1], mode):
+			var fac = planet.roads.get_facility(path[i+1])
+			warn = "Road not completed - can't build through %s!" % fac.type
+			break
+		
 		var p1 = Network.to_mode_id(path[i], mode)
 		var p2 = Network.to_mode_id(path[i+1], mode)
+		
 		if planet.roads.points_connected(p1, p2):
 			var edge = planet.roads.get_edge([p1, p2])
 			if edge.net_type != road_type:
@@ -62,6 +73,22 @@ func add_road(path: Array, road_type: int, changed_out: Dictionary):
 	planet.taxes.budget -= sum_cost
 	
 	return warn
+
+
+func _can_build_dead_end(node, mode) -> bool:
+	var fac = planet.roads.get_facility(node)
+	if fac == null:
+		return true
+	
+	var modes = Facilities.FACILITY_BLIND_END[fac.type]
+	if modes == null or not mode in modes:
+		return true
+	
+	var neigh = planet.roads.get_neighbors(Network.to_mode_id(node, mode))
+	if neigh != null:
+		return false
+	
+	return true
 
 
 func remove_road(path: Array, mode: int) -> bool:

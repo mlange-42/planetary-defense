@@ -173,6 +173,10 @@ func get_edge(key: Array):
 	return planet_data.get_network().get_edge(key)
 
 
+func get_neighbors(node: int):
+	return planet_data.get_network().get_node(node)
+
+
 func get_flow(edge) -> int:
 	if edge.path_id < 0:
 		return 0
