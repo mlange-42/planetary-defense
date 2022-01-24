@@ -2,7 +2,6 @@ class_name NetworkManager
 
 const MAX_INT = 9223372036854775807
 
-var network = FlowNetwork.new()
 var _facilities: Dictionary = {}
 
 # Total flow per commodity
@@ -22,15 +21,19 @@ var total_cost: int = 0
 var edge_flows: Array = []
 var commodity_flows: Array = []
 
+var planet_data
 
-func _init():
-	pass
+# warning-ignore: shadowed_variable
+func _init(planet_data):
+	self.planet_data = planet_data
 
 
 func save() -> Dictionary:
 	var dict = {}
 	
 	var edge_data = []
+	
+	var network = planet_data.get_network()
 	for i in range(network.get_edge_count()):
 		var e = network.get_edge_at(i)
 		if Network.get_mode(e.from) == Network.get_mode(e.to):
@@ -54,6 +57,8 @@ func save() -> Dictionary:
 
 
 func read(dict: Dictionary):
+	var network = planet_data.get_network()
+	
 	var capacity = dict["edge_data"]
 	for edge in capacity:
 		var v1 = edge[0] as int
@@ -97,11 +102,11 @@ func read(dict: Dictionary):
 
 
 func connect_points(v1: int, v2: int, type: int, capacity: int, cost: int):
-	network.connect_points(v1, v2, type, capacity, cost)
+	planet_data.get_network().connect_points(v1, v2, type, capacity, cost)
 
 
 func disconnect_points(v1: int, v2: int):
-	network.disconnect_points(v1, v2)
+	planet_data.get_network().disconnect_points(v1, v2)
 
 
 func facilities() -> Dictionary:
@@ -110,6 +115,9 @@ func facilities() -> Dictionary:
 
 func add_facility(v: int, facility: Facility):
 	assert(not _facilities.has(v), "There is already a facility at node %s" % v)
+	
+	var network = planet_data.get_network()
+	
 	_facilities[v] = facility
 	for mode in Facilities.FACILITY_NETWORK_MODES[facility.type]:
 		network.set_facility(Network.to_mode_id(v, mode), true)
@@ -118,6 +126,9 @@ func add_facility(v: int, facility: Facility):
 func remove_facility(v: int):
 	var fac = _facilities.get(v)
 	assert(_facilities.erase(v), "There is no a facility at node %s to remove" % v)
+	
+	var network = planet_data.get_network()
+	
 	for mode in Facilities.FACILITY_NETWORK_MODES[fac.type]:
 		network.set_facility(Network.to_mode_id(v, mode), false)
 
@@ -127,6 +138,7 @@ func has_facility(v: int) -> bool:
 
 
 func is_road(v: int) -> bool:
+	var network = planet_data.get_network()
 	for mode in Network.ALL_MODES:
 		if network.is_road(Network.to_mode_id(v, mode)):
 			return true
@@ -137,15 +149,19 @@ func get_facility(v: int) -> Facility:
 	return _facilities.get(v)
 
 
+func get_collapsed_edges():
+	return planet_data.get_network().get_collapsed_edges()
+
 func points_connected(v1: int, v2: int) -> bool:
-	return network.points_connected(v1, v2)
+	return planet_data.get_network().points_connected(v1, v2)
 
 
 func get_id_path(v1: int, v2: int):
-	return network.get_id_path(v1, v2)
+	return planet_data.get_network().get_id_path(v1, v2)
 
 
 func path_exists(v1: int, v2: int):
+	var network = planet_data.get_network()
 	if network.is_road(v1) and network.is_road(v1):
 		var path = network.get_id_path(v1, v2)
 		if not path.empty():
@@ -154,7 +170,11 @@ func path_exists(v1: int, v2: int):
 
 
 func get_edge(key: Array):
-	return network.get_edge(key)
+	return planet_data.get_network().get_edge(key)
+
+
+func get_neighbors(node: int):
+	return planet_data.get_network().get_node(node)
 
 
 func get_flow(edge) -> int:
@@ -179,7 +199,7 @@ func get_comm_flows(edge):
 
 
 func reset_flow():
-	network.reset_flow()
+	planet_data.get_network().reset_flow()
 	
 	for comm in Commodities.COMM_ALL:
 		total_flows[comm] = 0

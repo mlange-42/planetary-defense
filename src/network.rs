@@ -64,7 +64,6 @@ impl Edge {
     }
 }
 
-#[allow(dead_code)]
 #[derive(NativeClass, Default)]
 #[inherit(Reference)]
 pub struct FlowNetwork {
@@ -81,11 +80,14 @@ unsafe impl GodotObject for FlowNetwork {
     }
 }
 
-#[allow(dead_code)]
+impl FlowNetwork {}
+
 #[methods]
 impl FlowNetwork {
     fn new(_owner: &Reference) -> Self {
-        Self::default()
+        Self {
+            network: Default::default(),
+        }
     }
 
     #[export]

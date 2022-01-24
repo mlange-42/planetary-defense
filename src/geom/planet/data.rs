@@ -3,6 +3,7 @@ use std::marker::PhantomData;
 
 use crate::geom::planet::serialize::to_csv;
 use crate::geom::util::xyz_to_ll;
+use crate::FlowNetwork;
 use euclid::UnknownUnit;
 use gdnative::prelude::*;
 use kdtree::{distance::squared_euclidean, KdTree};
@@ -91,6 +92,7 @@ pub struct PlanetData {
     pub vertices: Vec<Vector3>,
     pub neighbors: Vec<NodeNeighbors>,
     pub faces: Vec<(usize, usize, usize)>,
+    pub network: Option<Instance<FlowNetwork, Shared>>,
     tree: KdTree<f32, usize, [f32; 3]>,
 
     #[property]
@@ -119,6 +121,7 @@ impl PlanetData {
             vertices,
             neighbors,
             faces,
+            network: None,
             tree,
             NAV_ALL,
             NAV_LAND,
@@ -131,6 +134,24 @@ impl PlanetData {
 impl PlanetData {
     #[export]
     fn _init(&mut self, _owner: &Reference) {}
+
+    #[export]
+    fn set_network(&mut self, _owner: &Reference, network: Variant) {
+        let network = network
+            .try_to_object::<Reference>()
+            .expect("Failed to convert network variant to object");
+        let network = network
+            .cast_instance::<FlowNetwork>()
+            .expect("Failed to cast network object to instance");
+        self.network = Some(network);
+    }
+
+    #[export]
+    fn get_network(&self, _owner: &Reference) -> &Instance<FlowNetwork, Shared> {
+        self.network
+            .as_ref()
+            .expect("No network set for planet data!")
+    }
 
     #[export]
     fn get_radius(&self, _owner: &Reference) -> f32 {
@@ -357,7 +378,6 @@ mod tests {
             cell_radius: 0.01,
             max_elevation: 0.1,
         };
-
         let data = PlanetData::new(props, nodes, vertices, neighbors, faces);
 
         assert_eq!(data.get_nodes_in_radius(0, 0), [(0, 0)]);

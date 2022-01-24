@@ -133,6 +133,7 @@ func _ready():
 	var result = gen.from_csv(planet_file) if load_planet else gen.generate()
 	
 	self.planet_data = result[0]
+	self.planet_data.set_network(FlowNetwork.new())
 	radius = self.planet_data.get_radius()
 	
 	var ground: MeshInstance = _add_mesh(result[1], "Ground")
@@ -157,7 +158,7 @@ func _ready():
 		self.stats = StatsManager.new()
 		self.messages = MessageManager.new()
 		self.story = StoryManager.new(self)
-		self.roads = NetworkManager.new()
+		self.roads = NetworkManager.new(planet_data)
 		self.taxes = TaxManager.new()
 		self.resources = ResourceManager.new(planet_data, resource_abundance)
 		self.builder = BuildManager.new(consts, self, facilities)
@@ -242,7 +243,7 @@ func load_game():
 	self.story.read(parse_json(story_json))
 	
 	var roads_json = file.get_line()
-	self.roads = NetworkManager.new()
+	self.roads = NetworkManager.new(planet_data)
 	self.roads.read(parse_json(roads_json))
 	
 	var taxes_json = file.get_line()

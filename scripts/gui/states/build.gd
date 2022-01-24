@@ -138,7 +138,6 @@ func set_pointer(facility_tool, road_tool):
 	var child: Spatial = null
 	if facility_tool != null:
 		child = load(Facilities.FACILITY_POINTERS[facility_tool]).instance()
-		print("instance")
 	elif road_tool != null:
 		return # TODO
 	else:

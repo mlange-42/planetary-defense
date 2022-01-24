@@ -28,9 +28,11 @@ func _draw_power_lines(planet_data, roads: NetworkManager, type: int):
 	
 	var base_height = 6
 	var fac_height = 2
+
+	var network = planet_data.get_network()
 	
-	for i in range(roads.network.get_node_count()):
-		var node = roads.network.get_node_at(i)
+	for i in range(network.get_node_count()):
+		var node = network.get_node_at(i)
 		var node1 = node[0]
 		var n = node[1]
 		var nd1 = planet_data.get_node(node1)
@@ -78,9 +80,11 @@ func _draw_roads(planet_data, roads: NetworkManager, type: int):
 	begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	var nothing = Color(0, 0, 0, 0)
+
+	var network = planet_data.get_network()
 	
-	for i in range(roads.network.get_node_count()):
-		var node = roads.network.get_node_at(i)
+	for i in range(network.get_node_count()):
+		var node = network.get_node_at(i)
 		var node1 = node[0]
 		var n = node[1]
 		var nd1 = planet_data.get_node(node1)
