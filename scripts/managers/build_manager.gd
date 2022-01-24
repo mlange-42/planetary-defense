@@ -37,12 +37,12 @@ func add_road(path: Array, road_type: int, changed_out: Dictionary):
 		
 		var conn = false
 		
-		if not _can_build_dead_end(path[i], mode):
+		if not _can_build_dead_end(path[i], path[i+1], mode):
 			var fac = planet.roads.get_facility(path[i])
 			warn = "Road not completed - can't build through %s!" % fac.type
 			break
 		
-		if not _can_build_dead_end(path[i+1], mode):
+		if not _can_build_dead_end(path[i+1], path[i], mode):
 			var fac = planet.roads.get_facility(path[i+1])
 			warn = "Road not completed - can't build through %s!" % fac.type
 			break
@@ -75,7 +75,7 @@ func add_road(path: Array, road_type: int, changed_out: Dictionary):
 	return warn
 
 
-func _can_build_dead_end(node, mode) -> bool:
+func _can_build_dead_end(node, other, mode) -> bool:
 	var fac = planet.roads.get_facility(node)
 	if fac == null:
 		return true
@@ -84,8 +84,15 @@ func _can_build_dead_end(node, mode) -> bool:
 	if modes == null or not mode in modes:
 		return true
 	
-	var neigh = planet.roads.get_neighbors(Network.to_mode_id(node, mode))
-	if neigh != null:
+	var n_mode = Network.to_mode_id(node, mode)
+	var neigh = planet.roads.get_neighbors(n_mode)
+	if neigh == null:
+		return true
+	
+	if neigh.size() > 1:
+		return false
+	
+	if neigh[0] != Network.to_mode_id(other, mode):
 		return false
 	
 	return true

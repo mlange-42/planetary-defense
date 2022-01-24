@@ -169,7 +169,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/managers/flow_manager.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "FlowNetwork",
 "language": "NativeScript",
 "path": "res://scripts/native/flow_network.gdns"
@@ -219,7 +219,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/geom/height_map.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "IcoSphere",
 "language": "NativeScript",
 "path": "res://scripts/native/ico_sphere.gdns"
@@ -294,7 +294,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/mouse.gd"
 }, {
-"base": "Reference",
+"base": "",
 "class": "MultiCommodityFlow",
 "language": "NativeScript",
 "path": "res://scripts/native/multi_commodity.gdns"
@@ -329,7 +329,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://scripts/native/planet_data.gdns"
 }, {
-"base": "Reference",
+"base": "",
 "class": "PlanetGenerator",
 "language": "NativeScript",
 "path": "res://scripts/native/planet_generator.gdns"
