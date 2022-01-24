@@ -90,7 +90,10 @@ __meta__ = {
 }
 
 [node name="ErrorPanel" parent="ErrorContainer" instance=ExtResource( 3 )]
-margin_bottom = 32.0
+anchor_left = 0.0
+anchor_right = 0.0
+margin_left = 0.0
+margin_right = 108.0
 
 [node name="ErrorTimer" type="Timer" parent="."]
 wait_time = 5.0
