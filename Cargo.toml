@@ -1,6 +1,6 @@
 [package]
 name = "planetary_defense"
-version = "0.5.0"
+version = "0.6.0"
 authors = ["Martin Lange <martin_lange_@gmx.net>"]
 edition = "2021"
 readme = "README.md"
