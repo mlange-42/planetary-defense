@@ -8,13 +8,11 @@ A game about planetary colonization and defense, with a focus on infrastructure 
 
 **[Read the tutorial](docs/tutorial.md)** for getting started.
 
-![Screenshot](https://user-images.githubusercontent.com/44003176/149753990-7eb8929d-61ec-4da1-931e-b870d78dba06.png)
-
-![Screenshot](https://user-images.githubusercontent.com/44003176/149754010-adcd3923-3601-4627-ad63-d882966a8ea8.png)
+![Screenshot](https://user-images.githubusercontent.com/44003176/151182996-2f8e5e3f-0759-4ba5-937c-fe0d3ddc93a1.png)
 
 Made with [Godot](https://godotengine.org/) and :crab: [Rust](https://rust-lang.org).
 
-**[!] Early work in progress [!]**
+**[!] Work in progress (but playable) [!]**
 
 ## Game idea
 

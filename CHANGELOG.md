@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [v0.6.0]
 
 ### Added
 
@@ -16,12 +16,13 @@
 * In-game settings for antialiasing and outlines
 * In build mode, the pointer now looks like the facility to build
 * In build and city management mode, it is indicated whether building under the mouse is possible
-* Coverage of facilities like the ground station is indicated ba a hovering circle
-* Coverage is now elevation-dependent (like range)
+* Coverage of facilities like the ground station is indicated by a hovering circle
+* Coverage is now elevation-dependent (similar to range)
 * Road indicator changes color depending on whether building or clearing
 * Animated water
 * Statistics GUI state, with time series charts for production, population and finances
 * Possibility to build network links directly over existing links (e.g. highway over road)
+* Textured geometry for alien attack ship
 
 ### Changed
 
@@ -31,6 +32,8 @@
 * Smaller power line geometries, lowered near facilities
 * Changed renderer from GLES 3 to GLES 2
 * Moved flows viewer to category Statistice
+* Cyan flow animation for power lines, to make them better distinguishable from underlying roads
+* Facilities Power plant, Air defense and Ground station can only be build on blind end roads, not on through-roads anymore
 
 ### Bug fixes
 
